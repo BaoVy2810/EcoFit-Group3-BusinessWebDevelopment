@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>01_HOMEPAGE</title>
+  <link rel="stylesheet" href="../css/mainstyle.css">
+</head>
+<body>
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("header-frame");
+        header.onload = () => {
+            header.contentWindow.postMessage({ activeNav: "nav-home" }, "*");
+        };
+        });
+    </script>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero__content">
+      <h1 class="hero__title">Green Future Technology</h1>
+      <p class="hero__subtitle">Powering a sustainable tomorrow with innovative eco-friendly solutions.</p>
+      <a href="shopping.html" class="hero__cta">
+            Get Started
+            <span>
+                <img src="../images/arrow_up_right.png" alt="arrow">
+            </span>
+        </a>
+    </div>
+
+    <div class="hero__bottom-left">
+      <p>Power up your savings the green way</p>
+      <div class="hero__arrows">
+        <button class="hero__arrow">
+            <img src="../images/arrow_left_circle.png"/>
+        </button>
+        <button class="hero__arrow">
+            <img src="../images/arrow_right_circle.png"/>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero__customers">
+      <p>Happy Customers</p>
+      <div class="amount">$ 42.5k</div>
+      <div class="vnd">1.120.465.750 VND</div>
+      <div class="hero__avatars">
+        <img src="../images/avatar_group.png" />
+      </div>
+    </div>
+  </section>
+
+  <!--Sustainability Session-->
+  <section class="sustainability">
+    <div class="sustainability__header">
+        <h1>Why Sustainability Matters to Us</h1>
+        <p align="center">
+            At EcoFit, we believe technology and sustainability can go hand in hand.<br/>
+            Our mission is to create green products that protect the planet and empower modern living.
+        </p>
+    </div>
+
+    <div class="sustainability__cards">
+        <div class="card">
+            <div class="icon" style="margin-bottom: 200px;">
+                <img src="../images/eco-friendly.png" alt="Eco-Friendly" />
+            </div>
+            <h3>Eco-Friendly Materials</h3>
+            <p align="justify">
+                We use recyclable, responsibly sourced materials to reduce waste and protect the planet - from packaging to product design.
+            </p>
+        </div>
+
+        <div class="card active">
+            <h3>Energy Efficient</h3>
+            <p align="justify"
+                style="margin-bottom: 200px;">
+                Our smart technology helps you save power and live more sustainably without sacrificing performance.
+            </p>
+            <div class="icon">
+                <img src="../images/energy.png" alt="Energy Efficient" />
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="icon" style="margin-bottom: 200px;">
+                <img src="../images/recycle.png" alt="Zero Waste" />
+            </div>
+            <h3>Zero Waste Production</h3>
+            <p align="justify">
+                We follow a circular process where every leftover is reused or repurposed - aiming for a cleaner, greener future.
+            </p>
+        </div>
+    </div>
+  </section>
+  
+  <!--Solutions Section-->
+  <section class="solutions">
+    <div class="solutions__container">
+        <div class="solutions__image">
+            <img src="../images/Green_solution_bg.png" alt="Green Energy">
+        </div>
+
+        <div class="solutions__content">
+            <h2>Explore Our Green Solutions</h2>
+            <p>
+                Discover how EcoFit helps you live sustainably with smart, high-quality products designed for a better planet.
+            </p>
+
+            <div class="solutions__grid">
+                <div class="solution__item">
+                    <div class="icon">
+                        <img src="../images/solar_panel.png" alt="">
+                    </div>
+                    <div class="text">
+                        <h3>Solar Panel Kit</h3>
+                        <p>Easy to install and provides clean energy while lowering electricity costs.</p>
+                    </div>
+                </div>
+
+                <div class="solution__item">
+                    <div class="icon">
+                        <img src="../images/lightbulb.png" alt="">
+                    </div>
+                    <div class="text">
+                        <h3>Eco Smart Bulbs</h3>
+                        <p>Long-lasting bulbs that save up to 80% of power and reduce waste.</p>
+                    </div>
+                </div>
+
+                <div class="solution__item">
+                    <div class="icon">
+                        <img src="../images/wind_turbine.png" alt="">
+                    </div>
+                    <div class="text">
+                        <h3>Home Wind Turbine</h3>
+                        <p>Compact and quiet, delivering steady green power for your home.</p>
+                    </div>
+                </div>
+
+                <div class="solution__item">
+                    <div class="icon">
+                        <img src="../images/air_purifier.png" alt="">
+                    </div>
+                    <div class="text">
+                        <h3>GreenAir Purifier</h3>
+                        <p>Made from recycled materials to keep your air fresh and healthy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!--BestSellers Session-->
+  <section class="best-sellers">
+    <h2>Best Sellers</h2>
+    <p>
+        Discover our most loved eco-friendly innovations - where smart design meets sustainable living for a greener tomorrow.
+    </p>
+    <div class="best-sellers__grid">
+        <div class="product-card">
+            <img src="../images/bamboo-pen.png" alt="Bamboo Pen">
+            <a href="#" class="product-btn">Bamboo pen blue ink</a>
+        </div>
+
+        <div class="product-card">
+            <img src="../images/flower-pot.png" alt="Flower in Pot">
+            <a href="#" class="product-btn">Flower in pot</a>
+        </div>
+
+        <div class="product-card">
+            <img src="../images/cotton-bag.png" alt="Fairtrade Cotton Bag">
+            <a href="#" class="product-btn">Fairtrade cotton bag</a>
+        </div>
+    </div>
+  </section>
+
+  <!--Core Values Session-->
+  <section class="core-values">
+    <h2>EcoFit Core Values</h2>
+
+    <div class="core-values__container">
+        <!-- Cột trái -->
+        <div class="core-values__left">
+            <div class="value-item">
+                <div class="icon">
+                    <img src="../images/recycle.png" alt="">
+                </div>
+                <div class="text">
+                    <h3>Sustainable Materials</h3>
+                    <p>Every product is crafted from eco-friendly and recyclable materials.</p>
+                </div>
+            </div>
+
+            <div class="value-item">
+                <div class="icon">
+                    <img src="../images/leaf.png" alt="">
+                </div>
+                    <div class="text">
+                        <h3>Eco Impact</h3>
+                        <p>Each purchase helps reduce carbon footprint and supports reforestation.</p>
+                    </div>
+            </div>
+        </div>
+
+        <div class="core-values__image">
+            <img src="../images/CoreValues_bg.png" alt="EcoFit Core Values">
+        </div>
+
+        <div class="core-values__right">
+            <div class="value-item right">
+                <div class="icon">
+                    <img src="../images/brain.png" alt="">
+                </div>
+                <div class="text">
+                    <h3>Smart Innovation</h3>
+                    <p>We combine technology and green energy for smarter living.</p>
+                </div>
+            </div>
+
+            <div class="value-item right">
+                <div class="icon">
+                    <img src="../images/message.png" alt="">
+                </div>
+                <div class="text">
+                    <h3>Real Choices, Real Change</h3>
+                    <p>Our community proves that small steps can make a big difference.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="inspiration">
+    <div class="inspiration__header">
+        <h2>From Inspiration to Action</h2>
+        <p>Discover tips, guides, and stories to help you live and shop more sustainably.</p>
+    </div>
+
+    <div class="inspiration__container">
+        <div class="inspiration__list">
+            <a href="blog_plasticfree.html" class="inspiration__card" target="_blank">
+                <img src="../images/plastic_free.png" alt="Plastic Free">
+                <div class="text">
+                    <h3>5 Easy Ways to Go Plastic-Free at Home</h3>
+                    <p>Small changes that make a big difference.</p>
+                </div>
+            </a>
+
+            <a href="blog_ecoproducts.html" class="inspiration__card" target="_blank">
+                <img src="../images/eco_products.png" alt="Eco Friendly">
+                <div class="text">
+                    <h3>How to Choose Eco-Friendly Products</h3>
+                    <p>What to look for when shopping sustainably.</p>
+                </div>
+            </a>
+
+            <a href="blog_partners.html" class="inspiration__card" target="_blank">
+                <img src="../images/green_partners.png" alt="Green Partners">
+                <div class="text">
+                    <h3>Meet Our Green Partners</h3>
+                    <p>Learn how our suppliers are reducing waste and emissions.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="inspiration__feature">
+            <a href="blog_greenroutine.html" target="_blank">
+                <img src="../images/green_routine.png" alt="Green Routine">
+            </a>
+            <div class="feature__text">
+                <h3>The Green Routine: Everyday Habits for a Cleaner Planet</h3>
+                <p>
+                Simple daily habits can make a big impact. Choose eco products, save energy, 
+                and live cleaner every day.
+                </p>
+                <a href="blog.html" class="inspiration__btn"> Explore Blog
+                    <span>
+                        <img src="../images/green_arrow_up_right.png" alt="Arrow">
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!--Banner Section-->
+  <section class="eco-hero">
+    <div class="eco-hero__content">
+        <h2>Every purchase feels meaningful.<br/> Love how EcoFit blends tech with nature.</h2>
+        <p>Go Green, Stay Lean</p>
+        <a href="shopping.html" class="eco-hero__btn">
+            Get Started
+            <span>
+                <img src="../images/arrow_up_right.png" alt="arrow">
+            </span>
+        </a>
+    </div>
+  </section>
+
+  <!--Newsletter Section-->
+  <section class="newsletter">
+    <div class="newsletter__left">
+        <h2>Ready to Get<br>Our New Stuff?</h2>
+        <form class="newsletter__form">
+            <input type="email" placeholder="Your Email">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <div class="newsletter__right">
+        <h3>Go Green, Stay Lean</h3>
+        <p>
+            Your needs come first - we craft innovative home systems tailored to comfort, efficiency, and sustainability.
+        </p>
+    </div>
+</section>
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+</body>
+</html>
