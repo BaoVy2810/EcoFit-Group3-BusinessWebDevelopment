@@ -832,7 +832,7 @@ section.hero::after {
   background-color: #33773E;
   color: white;
   border-radius: 25px;
-  margin: 30px auto;
+  margin: 30px 30px 60px 30px;
   padding: 60px 80px;
   display: flex;
   justify-content: space-between;
