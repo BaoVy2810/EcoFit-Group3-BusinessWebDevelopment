@@ -395,7 +395,8 @@ section.hero::after {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 .product-card img {
-  width: 100%;
+  width: 450px;
+  height:500px;
   border-radius: 12px;
   margin-bottom: 40px;
   display:block;
@@ -1239,4 +1240,217 @@ section.hero::after {
 .service-info {
   margin-top: 0 !important;
   padding-bottom: 40px !important;
+}
+
+/*PRODUCT DETAIL PAGE*/
+/*Product Showcase Section*/
+.product-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 40px;
+    border-radius: 20px;
+    background: #f9fcf8;
+}
+.product-gallery {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.gallery-main img {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.gallery-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+.gallery-thumbnails img {
+    width: 75px;
+    height: 90px;
+    border-radius: 12px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.gallery-thumbnails img:hover {
+    transform: scale(1.05);
+}
+.gallery-thumbnails img.active {
+    border-color: #3eaf3e;
+}
+.gallery-prev,
+.gallery-next {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    background: #3eaf3e;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    transition: background 0.2s;
+}
+.gallery-prev:hover,
+.gallery-next:hover {
+    background: #339933;
+}
+.gallery-prev {
+    left: -20px;
+}
+.gallery-next {
+    right: -20px;
+}
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.product-category {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.status-tag {
+    background: #c9e6ca;
+    color: #256b28;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.product-title {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+}
+.product-rating {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 15px;
+    color: #555;
+}
+.product-rating .stars {
+    color: #ffb400;
+}
+.product-price p {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+}
+.product-desc {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.6;
+}
+.product-desc .more {
+    color: #3eaf3e;
+    font-weight: 600;
+    cursor: pointer;
+}
+.product-options {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+}
+.option-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+.option-group select {
+    width: 160px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+.product-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.quantity {
+    display: flex;
+    align-items: center;
+    border: 1px solid #aaa;
+    border-radius: 25px;
+    overflow: hidden;
+}
+.quantity button {
+    border: none;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+.quantity input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    background: transparent;
+}
+.add-cart {
+    border: 1px solid #333;
+    background: white;
+    border-radius: 25px;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.add-cart:hover {
+    background: #f0f0f0;
+}
+.buy-now {
+    background: #3eaf3e;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.buy-now:hover {
+    background: #339933;
+}
+.product-share {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+}
+.product-share a {
+    text-decoration: none;
+    color: #222;
+    font-size: 22px;
+    transition: color 0.2s;
+}
+.product-share a:hover {
+    color: #3eaf3e;
 }
