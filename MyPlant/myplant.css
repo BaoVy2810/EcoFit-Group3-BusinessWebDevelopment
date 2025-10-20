@@ -1,0 +1,49 @@
+/* General */
+body { background-color:#ffffff; }
+.nav-link.active { font-weight: 800; }
+.rounder-spill { border-radius: 30px; }
+.ps-30 { padding-left: 45px; }
+.search-icon { position:absolute;width:20px;height:20px;opacity:0.7;margin:20px 40px 0 14px;transform: translateY(-50%); }
+
+/* Circle Buttons */
+.circle-btn {
+  border:none; outline:none;
+  border-radius:50%; width:40px; height:40px;
+  display:flex; justify-content:center; align-items:center;
+}
+.bell-btn { background-color:#F7F1D8; }
+.cart-btn { background-color:#69BD76; }
+.user-btn { background-color:#D9D9D9; }
+
+/* Main layout */
+.main-container {
+  display:flex; align-items:flex-start;
+  max-width:1200px; margin:40px auto;
+}
+.sidebar { width:240px; margin-right:40px; text-align:left; }
+.sidebar ul, .sidebar section ul { list-style:none; padding:0; }
+.sidebar li.active { font-weight:600; }
+.main-content {
+  flex:1; background:#F9FCF8;
+  border-radius:20px; padding:30px;
+}
+.plant-card { display:flex; align-items:center; gap:40px; margin-bottom:40px; }
+.plant-display img { width:180px; height:auto; }
+.plant-info { font-size:18px; }
+
+/* Calendar */
+.calendar { background:white; border-radius:20px; padding:30px; box-shadow:0 4px 8px rgba(0,0,0,0.1); }
+.month-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; font-weight:600; font-size:20px; }
+.days-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:10px; margin-bottom:30px; }
+.day-cell {
+  display:flex; justify-content:center; align-items:center;
+  background-color:#E5F2E5; border-radius:10px;
+  height:40px; cursor:pointer; font-weight:500; user-select:none;
+}
+.day-cell.today { background-color:#69BD76; color:white; font-weight:700; }
+.day-cell.claimed { background-color:#A3D9A5; color:white; }
+.claim-container { display:flex; justify-content:center; }
+.claim-container button {
+  background-color:#69BD76; color:white; font-size:18px; font-weight:600;
+  padding:12px 40px; border:none; border-radius:30px; cursor:pointer;
+}
