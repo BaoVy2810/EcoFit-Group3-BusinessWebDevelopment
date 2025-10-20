@@ -1,0 +1,190 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Payment1</title>
+    <link rel="stylesheet" href="../css/style_payment1.css">
+    <link rel="stylesheet" href="../css/header_footer.css">
+  </head>
+  <body class="bodypayment">
+    <div id="header"></div>
+    
+    <main class="checkout-container">
+
+      <!-- LEFT -->
+      <section class="checkout-left">
+
+        <h1 class="page-title">PAYMENT</h1>
+
+        <div class="status-box">
+          <div class="status-icon">💳</div>
+          <div class="status-text">
+            <div class="status-title">Awaiting Payment</div>
+            <div class="status-sub">Order #1056</div>
+          </div>
+        </div>
+
+        <!-- BIG PAYMENT BOX (contains 3 sections) -->
+        <div class="payment-box">
+
+          <!-- Payment Detail -->
+          <div class="section payment-detail">
+            <h2 class="title">Payment Detail</h2>
+
+            <div class="pd-list">
+              <div class="pd-row"><div class="pd-label">Total order amount</div><div class="pd-value">165.000</div></div>
+              <div class="pd-row"><div class="pd-label">Amount due</div><div class="pd-value">165.000</div></div>
+              <div class="pd-row"><div class="pd-label">Payment method</div><div class="pd-value small">Transfer via QR code</div></div>
+            </div>
+
+            <div class="pay-wrap">
+              <a href="payment2.html" style="text-decoration: none;color: #fff;"><button class="btn-pay">PAY NOW →</button></a>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Transfer Description + QR -->
+          <div class="section transfer-section">
+            <div class="transfer-left">
+              <div class="transfer-card">
+                <div class="transfer-title">Transfer Description</div>
+
+                <div class="tr-row"><div class="tr-label">Account</div><div class="tr-value">ECOFIT</div></div>
+                <div class="tr-row"><div class="tr-label">Receiving Bank</div><div class="tr-value">Vietcombank</div></div>
+                <div class="tr-row"><div class="tr-label">Account Number</div>
+                  <div class="tr-value">
+                    <span id="acc">0339667803</span>
+                    <button class="copy" data-target="acc" title="Copy">📋</button>
+                  </div>
+                </div>
+                <div class="tr-row"><div class="tr-label">Transfer Note</div>
+                  <div class="tr-value">
+                    <span id="note">ORDER_1056</span>
+                    <button class="copy" data-target="note" title="Copy">📋</button>
+                  </div>
+                </div>
+                <div class="tr-row last"><div class="tr-label">Transfer Amount</div>
+                  <div class="tr-value">
+                    <strong id="amt">165.000</strong>
+                    <button class="copy" data-target="amt" title="Copy">📋</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="transfer-right">
+              <div class="qr-card">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=EcoFitPayment&size=160x160" alt="QR Code" style="width:140px;height:140px;object-fit:cover;border-radius:6px">
+                <img src="../images/Logo-Napas.jpg" width="70px" style="margin-top: 8px;"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Proof of Transfer -->
+          <h2 class="title">Proof of Transfer</h2>
+          <div class="section proof-section">
+            <p class="proof-text">Kindly upload your proof to transfer to help us verify your payment faster</p>
+            <div class="proof-action">
+              <label class="upload-btn">
+                <img src="../images/ic_upload.png" width="15px" height="15px"/> Upload
+                <input type="file" hidden>
+              </label>
+            </div>
+          </div>
+
+        </div> <!-- payment-box -->
+
+        <!-- DELIVERY BOX (separate) -->
+        <div class="delivery-box">
+          <h2 class="title">Delivery address</h2>
+          <p class="delivery-text">
+            Bui Hoang Dieu | 0775499598<br>
+            KTX Khu B-ĐHQG, Thu Duc, HCMC
+          </p>
+        </div>
+
+      </section>
+
+      <!-- RIGHT -->
+      <div class="checkout-right">
+            <div class="order-detail">
+            <h3>ORDER DETAIL</h3>
+            <div class="order-item">
+                <img src="https://via.placeholder.com/60" alt="">
+                <div class="order-item-info">
+                <h4>Organic Cotton T-Shirt</h4>
+                <p>Color: White | Size: XXL</p>
+                <span class="order-item-price">50.000</span>
+                </div>
+                <span class="order-item-qty">x1</span>
+            </div>
+            <hr/>
+            <div class="order-item">
+                <img src="https://via.placeholder.com/60" alt="">
+                <div class="order-item-info">
+                <h4>Recycled PET Sneakers</h4>
+                <p>Color: Beige | Size: 43</p>
+                <span class="order-item-price">150.000</span>
+                </div>
+                <span class="order-item-qty">x1</span>
+            </div>
+            </div>
+
+            <div class="order-summary">
+            <h3>ORDER SUMMARY</h3>
+            <div class="summary-item"><span>Subtotal Product</span><span>150.000</span></div>
+            <div class="summary-item"><span>Shipping Cost</span><span>30.000</span></div>
+            <div class="summary-item"><span>Discount</span><span>-15.000</span></div>
+            
+            <hr/>
+            <div class="total">
+                <span>Total</span>
+                <span>165.000</span>
+            </div>
+
+    </main>
+    <div id="footer"></div>
+    <script>
+        const currentPage= 'payment1';
+    
+        fetch('../template/header.html')
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                const links = document.querySelectorAll('.nav-link');
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes('payment1.html')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+        fetch('../template/footer.html')
+            .then(res => res.text())
+            .then(data => document.getElementById('footer').innerHTML = data);
+    
+      // copy buttons
+      document.querySelectorAll('.copy').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = btn.getAttribute('data-target');
+          const text = document.getElementById(id).textContent.trim();
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(()=> {
+              btn.textContent = '✓';
+              setTimeout(()=> btn.textContent = '📋', 900);
+            }, ()=> {
+              alert('Copy failed');
+            });
+          } else {
+            alert('Copy not supported');
+          }
+        });
+      });
+    </script>
+    
+
+  </body>
+</html>
