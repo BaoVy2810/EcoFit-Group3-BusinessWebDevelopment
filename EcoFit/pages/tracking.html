@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <title>Demo Tracking</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <!-- Leaflet CSS -->
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+      <!-- Leaflet JS -->
+      <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+      </script>
+      <style>
+        body { font-family: Arial, sans-serif; font-size: 13px; margin: 24px; background:#f4f6f7; color:#222; display:flex; justify-content:center; }
+        h2 {
+        font-size:17px;
+        margin:0 0 5x;
+        font-weight:700}
+        .card { width: 100%; max-width: 980px; background:#fff; border-radius:12px; box-shadow:0 8px 30px rgba(10,10,10,0.05); padding:18px; }
+        #map { height:420px; border-radius:8px; border:1px solid #e6e9eb; }
+        .info { display:flex; gap:12px; margin-top:12px; align-items:center; flex-wrap:wrap; }
+        .info .box { background:#f7fafb; padding:10px 12px; border-radius:8px; min-width:160px; }
+        .controls { margin-left:auto; display:flex; gap:8px; align-items:center; }
+        button { padding:8px 12px; border-radius:6px; border:1px solid #d0d6da; background:#fff; cursor:pointer; }
+        input[type=range] { width:140px; }
+        small { color:#666; display:block; margin-top:6px; }
+        .legend { font-size:13px; color:#444; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <h2>Tracking Orders</h2>
+
+        <div id="map"></div>
+
+        <div class="info">
+          <div class="box"><strong>Shipper:</strong> <div id="shipperName">Nguyễn Văn A</div></div>
+          <div class="box"><strong>Status:</strong> <div id="status">—</div></div>
+          <div class="box"><strong>Coordinates:</strong> <div id="coords">—</div></div>
+          <div class="box"><strong>ETA:</strong> <div id="eta">—</div></div>
+
+          <div class="controls">
+            <button id="btn-start">Start</button>
+            <button id="btn-stop">Stop</button>
+            <div style="display:flex;flex-direction:column;align-items:flex-start;">
+              <label style="font-size:13px;">Speed (ms/step)</label>
+              <input id="speed" type="range" min="200" max="3000" step="100" value="800">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Leaflet JS -->
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-o9N1jM0yP2yF2K2YfDqQG2u1zQ6kQz+V1p8a+v+0iig=" crossorigin=""></script>
+
+      <script>
+      // ----- CẤU HÌNH -----
+      // Mảng tọa độ đường đi giả lập (từ kho -> khách)
+      const route = [
+        { lat: 10.7800, lng: 106.6950 },
+        { lat: 10.7850, lng: 106.7050 },
+        { lat: 10.7900, lng: 106.7100 },
+        { lat: 10.8000, lng: 106.7200 },
+        { lat: 10.8150, lng: 106.7400 },
+        { lat: 10.8350, lng: 106.7500 },
+        { lat: 10.8550, lng: 106.7700 },
+        { lat: 10.8750, lng: 106.7850 },
+        { lat: 10.8850, lng: 106.7950 }
+      ];
+
+      let map, shipperMarker, polyline, routeLine;
+      let currentIndex = 0, timer = null;
+
+      // Khởi tạo map
+      function init() {
+        map = L.map('map', { zoomControl: true }).setView([route[0].lat, route[0].lng], 13);
+
+        // OpenStreetMap tile
+        L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors, HOT OSM'
+      }).addTo(map);
+
+
+        // Start (Kho) marker
+        L.marker([route[0].lat, route[0].lng], { title: 'Kho hàng' }).addTo(map).bindPopup('Kho hàng (A)').openPopup();
+
+        // End (Khách) marker
+        L.marker([route[route.length -1].lat, route[route.length -1].lng], { title: 'Khách hàng' }).addTo(map).bindPopup('Khách hàng (B)');
+
+        // Vẽ đường đi (polyline)
+        routeLine = L.polyline(route.map(p => [p.lat, p.lng]), { color: '#1976d2', weight: 4 }).addTo(map);
+        map.fitBounds(routeLine.getBounds(), { padding: [40,40] });
+
+        // Marker shipper (icon arrow)
+        const shipIcon = L.divIcon({
+          className: 'ship-icon',
+          html: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 12L22 2L15 12L22 22L2 12Z" fill="#1e88e5"/></svg>`,
+          iconSize: [28,28],
+          iconAnchor: [14,14]
+        });
+
+        shipperMarker = L.marker([route[0].lat, route[0].lng], { icon: shipIcon, rotationAngle: 0 }).addTo(map);
+
+        updateUI(route[0], 'Đang rời kho...');
+      }
+
+      // Cập nhật text UI
+      function updateUI(pos, statusText) {
+        document.getElementById('coords').innerText = pos.lat.toFixed(6) + ', ' + pos.lng.toFixed(6);
+        document.getElementById('status').innerText = statusText || '—';
+        const remaining = Math.max(0, route.length - 1 - currentIndex);
+        document.getElementById('eta').innerText = remaining ? `${remaining * 3} phút` : 'Gần tới';
+      }
+
+      // Di chuyển shipper theo index với nội suy mượt (linear interpolation)
+      function moveToIndex(nextIndex) {
+        if (nextIndex < 0 || nextIndex >= route.length) return;
+        const start = route[currentIndex];
+        const end = route[nextIndex];
+        const steps = 12; // số bước nội suy => càng lớn càng mượt
+        let step = 0;
+        const speedMs = parseInt(document.getElementById('speed').value, 10); // thời gian tổng cho 1 segment
+        const stepMs = Math.max(40, Math.floor(speedMs / steps));
+
+        const animate = () => {
+          step++;
+          const t = step / steps;
+          const curLat = start.lat + (end.lat - start.lat) * t;
+          const curLng = start.lng + (end.lng - start.lng) * t;
+          shipperMarker.setLatLng([curLat, curLng]);
+
+          // cập nhật hướng (góc) đơn giản
+          const angle = Math.atan2(end.lng - start.lng, end.lat - start.lat) * (180 / Math.PI);
+          const iconHtml = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="transform:rotate(${angle}deg)"><path d="M2 12L22 2L15 12L22 22L2 12Z" fill="#1e88e5"/></svg>`;
+          shipperMarker.setIcon(L.divIcon({ className:'ship-icon', html: iconHtml, iconSize:[28,28], iconAnchor:[14,14] }));
+
+          updateUI({ lat: curLat, lng: curLng }, currentIndex === 0 ? 'Rời kho' : (nextIndex === route.length-1 ? 'Sắp tới nơi' : 'Đang giao hàng'));
+          if (step < steps) {
+            setTimeout(animate, stepMs);
+          } else {
+            // hoàn thành segment
+            currentIndex = nextIndex;
+            routeLine.addLatLng([end.lat, end.lng]); // (tuỳ) vẽ thêm nếu muốn lộ trình dynamic
+          }
+        };
+        animate();
+      }
+
+      // Start simulation
+      function startSim() {
+        if (timer) return;
+        // nếu đang ở cuối, reset để demo tiếp
+        if (currentIndex >= route.length - 1) {
+          currentIndex = 0;
+          shipperMarker.setLatLng([route[0].lat, route[0].lng]);
+          map.panTo([route[0].lat, route[0].lng]);
+        }
+
+        timer = setInterval(() => {
+          const next = Math.min(route.length - 1, currentIndex + 1);
+          moveToIndex(next);
+          // khi đến cuối thì dừng interval
+          if (next >= route.length - 1) {
+            clearInterval(timer);
+            timer = null;
+            updateUI(route[route.length -1], 'Đã giao ✅');
+          }
+        }, parseInt(document.getElementById('speed').value, 10) + 60); // interval ≈ speed cho mỗi segment
+      }
+
+      function stopSim() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      // Nút điều khiển
+      document.addEventListener('click', (e) => {
+        if (!e.target) return;
+        if (e.target.id === 'btn-start') startSim();
+        if (e.target.id === 'btn-stop') stopSim();
+      });
+
+      // Khởi tạo map khi DOM ready
+      document.addEventListener('DOMContentLoaded', () => {
+        init();
+        // cho phép thay đổi tốc độ ngay lập tức
+        document.getElementById('speed').addEventListener('input', () => {
+          // nếu đang chạy, restart để áp dụng tốc độ mới chính xác
+          if (timer) {
+            stopSim();
+            startSim();
+          }
+        });
+      });
+      </script>
+    </body>
+</html>
