@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/header_footer.css">
+    <link rel="stylesheet" href="../css/faq.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div class="faq-container">
+        <div class="faq-header">
+            <h1>FREQUENTLY ASKED QUESTIONS</h1>
+            <p>These are the most commonly asked questions about EcoFit.<br>
+            Can't find what you're looking for? <a href="#">Chat to our team</a>!</p>
+        </div>
+
+        <div class="search-box">
+            <span class="search-icon"><img src="../images/Search_icon.png"></span>
+            <input type="text" placeholder="Search term">
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Is there a free trial available?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes, you can try us for free for 30 days. If you want, we'll provide you with a free 30-minute onboarding call to get you up and running. Book a call <a href="#">here</a>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Can I change my plan later?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What is your cancellation policy?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Can other info be added to an invoice?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How does billing work?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How do I change my account email?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How does support work?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do you provide tutorials?</h3>
+                    <span class="faq-toggle">▾</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script>
+        const currentPage = 'faq';
+        
+        fetch('../template/header.html')
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                const links = document.querySelectorAll('.nav-link');
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes('faq.html')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+        fetch('../template/footer.html')
+            .then(res => res.text())
+            .then(data => document.getElementById('footer').innerHTML = data);
+    </script>
+    
+    <script src="../js/faq.js"></script>
+
+</body>
+</html>
