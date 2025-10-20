@@ -1,0 +1,125 @@
+.faq-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px 20px;
+    background-color: white;
+}
+
+.faq-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+
+.faq-header p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.faq-header a {
+    color: #666;
+    text-decoration: underline;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    margin: 30px auto;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.search-icon {
+    color: #666;
+    font-size: 18px;
+}
+
+.faq-list {
+    margin-top: 40px;
+}
+
+.faq-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #f9f9f9;
+}
+
+.faq-question h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+.faq-toggle {
+    font-size: 20px;
+    color: #999;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.faq-item.active .faq-toggle {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: #fafafa;
+}
+
+.faq-answer-content {
+    padding: 0 24px 20px 24px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.faq-answer-content a {
+    color: #4a90e2;
+    text-decoration: underline;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+}
