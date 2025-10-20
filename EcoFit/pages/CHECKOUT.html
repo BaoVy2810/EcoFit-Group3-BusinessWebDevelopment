@@ -2,7 +2,8 @@
     <head>
     <meta charset="UTF-8">
     <title>Checkout Page</title>
-    <link rel="stylesheet" type="text/css" href="style_checkout.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style_checkout.css"/>
+    <link rel="stylesheet" href="../css/header_footer.css">
     <script>
         document.addEventListener("click", e => {
         if (e.target.type === "radio") {
@@ -12,13 +13,12 @@
             e.target.wasChecked = e.target.checked;
         }
         });
+        
     </script>
 
     </head>
-    <body>
-        <iframe src="../EcoFit-Group3-BusinessWebDevelopment-main/template/header.html" 
-          style="width:100%; border:none; height:100px; display:block; margin-bottom: 15px;"></iframe>
-
+    <body style="background-color: #f9faf8;;">
+        <div id="header"></div>
         <div class="checkout-container">
         <!-- LEFT -->
         <div class="checkout-left">
@@ -54,11 +54,11 @@
 
             <h2>PAYMENT METHOD</h2>
             <div class="option-box">
-            <label class="custom-radio"><input type="radio" name="payment"/><span class="radio-mark"></span>Transfer via QR code <img src="images/qr.png" width="20px" style="vertical-align: bottom;" /></label>
+            <label class="custom-radio"><input type="radio" name="payment"/><span class="radio-mark"></span>Transfer via QR code <img src="../images/qr.png" width="20px" style="vertical-align: bottom;" /></label>
             
             </div>
             <div class="option-box">
-            <label class="custom-radio"><input type="radio" name="payment"/><span class="radio-mark"></span>Transfer via Momo <img src="images/momo.svg" width="20px" style="vertical-align: bottom;" /></label>
+            <label class="custom-radio"><input type="radio" name="payment"/><span class="radio-mark"></span>Transfer via Momo <img src="../images/momo.svg" width="20px" style="vertical-align: bottom;" /></label>
             </div>
         </div>
 
@@ -109,8 +109,26 @@
             </div>
         </div>
         </div>
-        <iframe src="../EcoFit-Group3-BusinessWebDevelopment-main/template/footer.html" 
-                style="width:100%; height:450px; border:none; position: relative; margin-top: 15px;"></iframe>
+        <div id="footer"></div>
+        <script>
+            const currentPage= 'checkout';
+        
+            fetch('../template/header.html')
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                    const links = document.querySelectorAll('.nav-link');
+                    links.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').includes('CHECKOUT.html')) {
+                            link.classList.add('active');
+                        }
+                    });
+                });
 
+            fetch('../template/footer.html')
+                .then(res => res.text())
+                .then(data => document.getElementById('footer').innerHTML = data);
+        </script>
     </body>
 </html>
