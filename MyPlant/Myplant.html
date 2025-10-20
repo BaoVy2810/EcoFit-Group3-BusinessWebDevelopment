@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoFit - My Plant & Daily Green Streak</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="mainstyle.css">
+  <link rel="stylesheet" href="myplant.css">
+
+  <style>
+    .nav-link.active { font-weight: 800; }
+    .rounder-spill { border-radius: 30px; }
+    .ps-30 { padding-left: 45px; }
+
+    /* Calendar styles */
+    .days-grid {
+      display:grid; 
+      grid-template-columns: repeat(7, 1fr); 
+      gap:10px; 
+      margin-bottom:30px;
+    }
+    .day-cell {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background-color:#E5F2E5;
+      border-radius:10px;
+      height:40px;
+      cursor:pointer;
+      font-weight:500;
+      user-select:none;
+    }
+    .day-cell.today {
+      background-color:#69BD76;
+      color:white;
+      font-weight:700;
+    }
+    .day-cell.claimed {
+      background-color:#A3D9A5;
+      color:white;
+    }
+  </style>
+</head>
+
+<body style="background-color:#ffffff">
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light" style="padding:0">
+      <div class="container-fluid d-flex flex-row align-items-center px-0 position-relative">
+        <!-- Logo -->
+        <a class="navbar-brand ms-2 ms-lg-0" href="#">
+          <img src="logoEcoFit.png" alt="logoEcoFit" style="height:40px; margin: 15px 40px 0 50px;"/>
+        </a>
+
+        <!-- Navigation -->
+        <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 15px;">
+          <ul class="navbar-nav mt-2 mt-lg-0" style="font-size: 16px; gap: 40px;">
+            <li class="nav-item"><a class="nav-link" href="../pages/01_HOMEPAGE.html" id="nav-home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="../pages/03_PRODUCT_SearchFilter.html" id="nav-shop">Shop</a></li>
+            <li class="nav-item"><a class="nav-link" href="#/" id="nav-about">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="#/" id="nav-blog">Blog</a></li>
+            <li class="nav-item"><a class="nav-link" href="#/" id="nav-faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Search Box -->
+        <div class="position-relative" style="margin: 13px 40px 0 40px; display: inline-block;">
+          <img src="Search_icon.png" alt="Search Icon" style="position:absolute;width:20px;height:20px;opacity:0.7;margin:20px 40px 0 14px;transform: translateY(-50%);">
+          <input type="text" class="form-control rounder-spill ps-30" placeholder="Search product" style="background-color: #FAFAFA;width:350px;border-radius: 30px;padding-left: 45px;font-size: 16px;"/>
+        </div>
+
+        <!-- Notifications, Cart, User -->
+        <div class="d-flex align-items-center" style="gap: 15px; margin:10px 50px 0 0">
+          <!-- Notification -->
+          <button type="button" class="position-relative" style="background-color: #F7F1D8; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;border:none;">
+            <img src="Bell_icon.png" alt="bell" style="width:30px; height:30px;">
+            <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" style="font-size: 10px">1</span>
+          </button>
+
+          <!-- Cart -->
+          <button type="button" class="position-relative" style="background-color: #69BD76; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;border:none;">
+            <img src="Cart_icon.png" alt="cart" style="width: 30px; height:30px;">
+            <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" style="font-size: 10px">8</span>
+          </button>
+
+          <!-- User -->
+          <button type="button" style="background-color: #D9D9D9; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;border:none;">
+            <img src="Profile_icon.png" alt="user" style="width:30px; height:30px;">
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container" style="display:flex; align-items:flex-start; max-width:1200px; margin:40px auto;">
+    <!-- Sidebar -->
+    <aside class="sidebar" style="width:240px; margin-right:40px; text-align:left;">
+      <h3>My Account</h3>
+      <ul style="list-style:none; padding:0;">
+        <li class="active">My Plant & Daily Green Streak</li>
+        <li>Notifications</li>
+        <li>Orders</li>
+      </ul>
+      <section style="margin-top:20px;">
+        <h3>Settings</h3>
+        <ul style="list-style:none; padding:0;">
+          <li>Personal Info</li>
+          <li>Password</li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" style="flex:1; background:#F9FCF8; border-radius:20px; padding:30px;">
+      <h2>My Plant & Daily Green Streak</h2>
+
+      <div class="plant-card" style="display:flex; align-items:center; gap:40px; margin-bottom:40px;">
+        <div class="plant-display">
+          <img id="plant-img" src="hat.png" alt="Plant Stage" style="width:180px; height:auto;"/>
+        </div>
+
+        <div class="plant-info" style="font-size:18px;">
+          <p>Current Period: <b id="period">Seed 🌱</b></p>
+          <p>Green Score (Year): <b id="green-score">0</b></p>
+        </div>
+      </div>
+
+      <div class="calendar" style="background:white; border-radius:20px; padding:30px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+        <div class="month-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <span class="arrow" id="prev-month" style="cursor:pointer; font-size:24px;">←</span>
+          <span class="month-title" id="month-title" style="font-size:20px; font-weight:600;">October 2025</span>
+          <span class="arrow" id="next-month" style="cursor:pointer; font-size:24px;">→</span>
+        </div>
+
+        <div class="days-grid" id="days-container"></div>
+
+        <!-- Claim Reward -->
+        <div style="display:flex; justify-content:center;">
+          <button id="reward-btn" style="background-color:#69BD76; color:white; font-size:18px; font-weight:600; padding:12px 40px; border:none; border-radius:30px; cursor:pointer;">
+            Claim Reward
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" style="font-size: 14px; line-height: 20pt;">
+    <div style="background-color: #DCEFDE">
+      <div class="container-fluid px-5 py-4">
+        <div class="row">
+          <div class="col-lg-6 col-md-12 mb-4" style="margin-top: 15px;">
+            <img src="logoEcoFit.png" alt="EcoFit Logo" class="mb-3" style="height: 40px;">
+            <p align="justify" style="max-width: 500px;">
+              Founded in 2025, EcoFit is a B2C e-commerce platform dedicated to eco-friendly products. We aim to make sustainable living more accessible by connecting green consumers with responsible brands, providing transparency, and inspiring positive lifestyle changes for a greener future.
+            </p>
+
+            <div class="social-icons d-flex align-items-center gap-2 mt-2" style="margin-bottom: 0;">
+              <a href="#"><img src="Facebook_icon.png" alt="Facebook" style="width: 30px; margin-right:10px"></a>
+              <a href="#"><img src="Instagram_icon.png" alt="Instagram" style="width: 30px"></a>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4" style="margin-top: 20px;">
+            <h5 class="mb-3">About EcoFit</h5>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2"><a href="#" class="text-black text-decoration-none">Our Story</a></li>
+              <li class="mb-2"><a href="#" class="text-black text-decoration-none">EcoFit Guarantee</a></li>
+              <li class="mb-2"><a href="#" class="text-black text-decoration-none">Product Self-declaration</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4" style="margin-top: 20px;">
+            <h5 class="mb-3">Contact Us</h5>
+            <div class="contact-info">
+              <p class="d-flex d-sm-block align-items-center"><span>Hotline: 1900 41112</span></p>
+              <p class="d-flex d-sm-block align-items-center"><span>Email: customerservice@ecofit.com</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background-color: #F9FCF8;">
+      <div class="container-fluid px-5 py-3 d-flex justify-content-between align-items-center flex-wrap">
+        <p class="mb-0" style="line-height: 20pt">Copyright by EcoFit team. All rights reserved</p>
+        <div>
+          <a href="#" class="text-black text-decoration-none">Terms & Conditions</a>
+          <span class="mx-2"></span>
+          <a href="#" class="text-black text-decoration-none">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <!-- <script>
+    const daysContainer = document.getElementById('days-container');
+    const monthTitle = document.getElementById('month-title');
+    const rewardBtn = document.getElementById('reward-btn');
+
+    let currentDate = new Date();
+    let claimedDays = new Set(); // lưu ngày đã claim
+
+    function renderCalendar(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+      monthTitle.textContent = `${monthNames[month]} ${year}`;
+      daysContainer.innerHTML = '';
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+
+      // Thêm ô trống đầu tuần
+      for(let i=0;i<firstDay;i++){
+        const emptyCell = document.createElement('div');
+        daysContainer.appendChild(emptyCell);
+      }
+
+      // Tạo ô ngày
+      for(let day=1; day<=daysInMonth; day++){
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('day-cell');
+        dayCell.textContent = day;
+
+        const today = new Date();
+        if(day === today.getDate() && month === today.getMonth() && year === today.getFullYear()){
+          dayCell.classList.add('today');
+        }
+
+        // Nếu đã claim
+        if(claimedDays.has(day)){
+          dayCell.classList.add('claimed');
+          dayCell.textContent = '🌱';
+        }
+
+        // Click để claim
+        dayCell.addEventListener('click', () => {
+          claimedDays.add(day);
+          dayCell.classList.add('claimed');
+          dayCell.textContent = '🌱';
+        });
+
+        daysContainer.appendChild(dayCell);
+      }
+    }
+
+    // Render lần đầu
+    renderCalendar(currentDate);
+
+    // Chuyển tháng
+    document.getElementById('prev-month').addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth()-1);
+      renderCalendar(currentDate);
+    });
+    document.getElementById('next-month').addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth()+1);
+      renderCalendar(currentDate);
+    });
+
+    // Nút claim reward (claim hôm nay)
+    rewardBtn.addEventListener('click', () => {
+      const today = new Date();
+      claimedDays.add(today.getDate());
+      renderCalendar(currentDate);
+    });
+  </script> -->
+
+</body>
+</html>
+
+<script src="./myplant.js"></script>
