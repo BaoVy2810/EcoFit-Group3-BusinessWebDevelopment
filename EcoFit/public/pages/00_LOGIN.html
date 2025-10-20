@@ -333,26 +333,30 @@
         </div>
       </div>
     </div>
-    <script>
-      document
-        .querySelector(".btn-login")
-        .addEventListener("click", function () {
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value.trim();
+<script>
+document.querySelector(".btn-login").addEventListener("click", async function() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-          if (!email || !password) {
-            alert("Please fill in all fields.");
-            return;
-          }
+  const response = await fetch("http://localhost:5000/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
 
-          // ví dụ: tài khoản test
-          if (email === "admin@gmail.com" && password === "123456") {
-            alert("Login success!");
-            window.location.href = "homepage.html"; // chuyển trang
-          } else {
-            alert("Invalid email or password.");
-          }
-        });
-    </script>
+  const data = await response.json();
+
+  if (response.ok) {
+    if (data.role === "admin") {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "01_HOMEPAGE.html";
+    }
+  } else {
+    alert(data.message);
+  }
+});
+</script>
+
   </body>
 </html>
