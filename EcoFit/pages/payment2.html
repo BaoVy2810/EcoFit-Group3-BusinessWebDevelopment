@@ -20,18 +20,17 @@
         }
 
         /* Progress bar tổng thể */
-        .progress {
+        .order-progress {
         position: relative;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         width: 100%;
-        max-width: 800px;
-        margin: 20px auto;
+        margin: 20px 0;
         }
 
         /* Đường kẻ nền */
-        .progress::before {
+        .order-progress::before {
         content: "";
         position: absolute;
         top: 20px; /* căn giữa theo chiều dọc của circle */
@@ -44,7 +43,7 @@
         }
 
         /* Đường kẻ tiến trình */
-        .progress::after {
+        .order-progress::after {
         content: "";
         position: absolute;
         top: 20px;
@@ -58,11 +57,11 @@
         }
 
         /* Chiều dài tùy step */
-        .progress[data-step="1"]::after { width: 0%; }
-        .progress[data-step="2"]::after { width: 25%; }
-        .progress[data-step="3"]::after { width: 50%; }
-        .progress[data-step="4"]::after { width: 75%; }
-        .progress[data-step="5"]::after { width: 100%; }
+        .order-progress[data-step="1"]::after { width: 0%; }
+        .order-progress[data-step="2"]::after { width: 25%; }
+        .order-progress[data-step="3"]::after { width: 50%; }
+        .order-progress[data-step="4"]::after { width: 75%; }
+        .order-progress[data-step="5"]::after { width: 100%; }
 
         /* Từng step */
         .step {
@@ -139,6 +138,7 @@
         border-radius: 10px;
         padding: 18px;
         margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         .shipping-info {
@@ -169,7 +169,7 @@
     </style>
     </head>
 
-    <body>
+    <body class="bodypayment">
         <div id="header"></div>
         <main class="checkout-container">
             <!-- LEFT -->
@@ -179,7 +179,7 @@
 
                 <div class="sectiontracking">
                 <h2 class="title">Arrives at 17 November</h2>
-                <div class="progress" data-step="2" aria-label="Order progress">
+                <div class="order-progress" data-step="2" aria-label="Order progress">
                     <div class="step done">
                     <div class="circle">&#10003;</div>
                     <div class="label">ORDER PLACED</div>
@@ -204,7 +204,7 @@
 
                 <h2 class="title">Shipping Service</h2>
                 <div class="shipping-info">
-                    <img src="images/logo-viettle.jpg" alt="Viettel Post" style="width: 100px; height: auto;"/>
+                    <img src="../images/logo-viettle.jpg" alt="Viettel Post" style="width: 100px; height: auto;"/>
                     <div>
                     <strong>Viettel Post</strong><br>
                     <small>#JHSDH-ADF65-SDKF5</small>
