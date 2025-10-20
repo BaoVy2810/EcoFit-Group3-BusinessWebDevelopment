@@ -1,0 +1,496 @@
+<html>
+<head>
+    <title>03_PRODUCT_SearchFilter</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/mainstyle.css'>
+</head>
+<body>
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <script>
+    window.addEventListener("DOMContentLoaded", () => {
+    const header = document.getElementById("header-frame");
+    header.onload = () => {
+        header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+    };
+    const voucherBtn = document.getElementById("getVoucherBtn");
+    if (voucherBtn) {
+        voucherBtn.addEventListener("click", () => {
+        alert("Bạn đã nhận được voucher giảm 25%! Hãy dùng ngay khi mua sắm nhé!");
+        });
+    }
+    });
+    </script>
+    <!--Promotion Banner Section-->
+    <section class="shop-banner">
+        <div class="shop-banner__content">
+            <p>Special Offer</p>
+            <h1>25% OFF</h1>
+            <button id="getVoucherBtn" class="shop-banner__btn">GET IT</button>
+            <img src="../images/page_control.png"/>
+        </div>
+    </section>
+    <form class="searchBar">
+        <input type="search" placeholder="Searching">
+        <button type="submit">Search</button>
+    </form>
+    <!--View Products -->
+     <main class="shop-content">
+    <!--Filter Bar-->
+        <aside class="filter">
+            <h3>Filter Options</h3>
+            <div class="filter-group">
+                <h4>By categories</h4>
+                <label><input type="checkbox"> Shirts</label>
+                <label><input type="checkbox"> Pants</label>
+                <label><input type="checkbox"> Dresses</label>
+                <label><input type="checkbox"> Accessories</label>
+            </div>
+            <div class="filter-group">
+                <h4>Green Score</h4>
+                <label>
+                    <input type="checkbox" checked> 80 - 100
+                    <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                </label>
+                <label>
+                    <input type="checkbox"> 60 - 80
+                    <img src="../images/60-80greenscore.png" style="width:fit-content"/>
+                </label>
+                <label>
+                    <input type="checkbox"> 40 - 60
+                    <img src="../images/40-60greenscore.png" style="width:fit-content"/>
+                </label>
+                <label>
+                    <input type="checkbox"> 20 - 40
+                    <img src="../images/20-40greenscore.png" style="width:fit-content"/>
+                </label>
+                <label>
+                    <input type="checkbox"> 0 - 20
+                   <img src="../images/0-20greenscore.png" style="width:fit-content"/>
+                </label>
+            </div>
+            <div class="filter-group">
+                <h4>Price</h4>
+                <div class="min_max">
+                    <input type="text" placeholder="Min">
+                    <span class="range-divider">-</span>
+                    <input type="text" placeholder="Max">
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4>Review</h4>
+                <label>
+                    <input type="checkbox" checked>
+                    <img src="../images/fivestars.png"/>
+                </label>
+                <label>
+                    <input type="checkbox" checked>
+                    <img src="../images/fourstars.png"/>
+                </label>
+                <label>
+                    <input type="checkbox">
+                    <img src="../images/threestars.png"/>
+                </label>
+                <label>
+                    <input type="checkbox">
+                    <img src="../images/twostars.png"/>
+                </label>
+                <label>
+                    <input type="checkbox">
+                   <img src="../images/onestar.png"/>
+                </label>
+            </div>
+            <div class="filter-group">
+                <h4>By Promotions</h4>
+                <label><input type="checkbox"> New Arrivals</label>
+                <label><input type="checkbox" checked> Best Sellers</label>
+                <label><input type="checkbox"> On Sale</label>
+            </div>
+            <div class="filter-group">
+                <h4>Availability</h4>
+                <label><input type="checkbox" checked> In Stock</label>
+                <label><input type="checkbox"> Out of Stocks</label>
+            </div>
+            <button class="filter-btn">Filter</button>
+        </aside>
+        
+        <!--Products View Section-->
+        <section class="products">
+            <div class="products__header">
+                <p>Showing 1-12 of 223 results</p>
+                <div>
+                    <label>Sort by:</label>
+                    <select>
+                        <option selected disabled>Select sorting option</option>
+                        <option>Default Sorting</option>
+                        <option>Popularity</option>
+                        <option>Lastest</option>
+                        <option>Price: high to low</option>
+                        <option>Price: low to high</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="discount">25% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/organic_cotton_tee.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                150,000đ <span>200,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Organic Cotton Tee</p>
+                        <p class="type">Shirts</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">600+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">10% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/bamboo_daily_shirt.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                180,000đ <span>200,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="name">Bamboo Daily Shirt</p>
+                        <p class="type">Shirts</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">400+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">25% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/hemp_classic_shirt.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                210,000đ <span>280,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Hemp Classic Shirt</p>
+                        <p class="type">Shirts</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">450+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">25% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/recycled_denim_jeans.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                420,000đ <span>560,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Recycled Denim Jeans</p>
+                        <p class="type">Pants</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">500+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">20% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/tencel_culottes.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                370,000đ <span>462,500đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="name">Tencel Culottes</p>
+                        <p class="type">Pants</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">400+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">40% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/organic_cotton_cargo_pants.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                390,000đ <span>650,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="name">Organic Cotton Cargo Pants</p>
+                        <p class="type">Pants</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">420+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">25% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/eco_linen_midi_dress.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                480,000đ <span>640,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>5.0</span>
+                            </div>
+                        </div>
+                        <p class="name">Eco Linen Midi Dress</p>
+                        <p class="type">Dresses</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">700+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">10% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/organic_cotton_wrap_dress.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                450,000đ <span>500,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Organic Cotton Wrap Dress</p>
+                        <p class="type">Dresses</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">600+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">20% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/tencel_pleated_maxi_dress.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                490,000đ <span>612,500đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Tencel Pleated Maxi Dress</p>
+                        <p class="type">Dresses</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">520+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">20% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/upcycled_tote_bag.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                220,000đ <span>275,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Upcycled Tote Bag</p>
+                        <p class="type">Accessories</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">900+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">20% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/recycled_plastic_sunglasses.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                320,000đ <span>400,000đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="name">Recycled Plastic Sunglasses</p>
+                        <p class="type">Accessories</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">550+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount">10% off</div>
+                    <div class="img-placeholder">
+                        <img src="../images/recycled_canvas_backpack.png"/>
+                    </div>
+                    <div class="product-info">
+                        <div class="price-rating">
+                            <p class="price">
+                                350,000đ <span>437,500đ</span>
+                            </p>
+                            <div class="rating-line">
+                                <img src="../images/star_filled.png" alt="rating star" />
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="name">Recycled Canvas Backpack</p>
+                        <p class="type">Accessories</p>
+                        <p class="greenscore">
+                            <img src="../images/80-100greenscore.png" style="width:fit-content;"/>
+                            <span class="bought">500+ bought</span>
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn-outline">Add to cart</button>
+                            <button class="btn-fill">Buy now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination">
+                <img src="../images/Pagination.png" alt="pagination">
+            </div>
+        </section>
+    </main>
+
+    <!--Service Info Section-->
+    <section class="service-info">
+        <div class="service-item">
+            <div class="service-icon">
+                <img src="../images/delivery_icon.png" alt="Freeshipping">
+            </div>
+            <div class="service-text">
+                <h3>Freeshipping</h3>
+                <p>Freeshipping for order above 100.000đ.</p>
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="service-icon">
+                <img src="../images/payment_icon.png" alt="Flexible Payment">
+            </div>
+            <div class="service-text">
+                <h3>Flexible Payment</h3>
+                <p>Multiple secure payment options.</p>
+            </div>
+        </div>
+        <div class="service-item">
+            <div class="service-icon">
+                <img src="../images/support_icon.png" alt="24x7 support">
+            </div>
+            <div class="service-text">
+                <h3>24x7 support</h3>
+                <p>We support online all days.</p>
+            </div>
+        </div>
+    </section>
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+</body>
+</html>
