@@ -4,10 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Account Management Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       /* --- Reset & base --- */
       * {
         box-sizing: border-box;
+        font-family: "Outfit", sans-serif;
       }
       body {
         margin: 0;
@@ -44,15 +51,14 @@
       .logo {
         width: 48px;
         height: 48px;
+        display: flex;                 /* bật flex */
+        align-items: center;           /* canh giữa theo chiều dọc */
+        justify-content: center;       /* canh giữa theo chiều ngang */
         border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        background: linear-gradient(135deg, #69BD76, #3DA547);
         color: #fff;
-        font-weight: 700;
-        font-size: 18px;
       }
+
       .brand h1 {
         margin: 0;
         font-size: 20px;
@@ -72,13 +78,13 @@
         display: flex;
         gap: 10px;
         align-items: center;
-        background: #eef2ff;
+        background: #eefeec;
         padding: 8px 12px;
         border-radius: 10px;
       }
       .user-name {
         font-weight: 600;
-        font-size: 14px;
+        font-size: 16px;
       }
       .btn-logout {
         background: #ef4444;
@@ -282,9 +288,13 @@
     <div class="container">
       <header>
         <div class="brand">
-          <div class="logo">DS</div>
+          <div class="logo">
+            <img src="../images/EcoFit_logo_white.png" width="30"/>
+          </div>
           <div>
-            <h1>Dash<span style="color: #3b82f6">Stack</span></h1>
+            <h1>
+              Eco<span style="color: #3DA547">Fit</span>
+            </h1>
             <p>Admin Panel</p>
           </div>
         </div>
@@ -298,20 +308,14 @@
               fill="none"
               style="opacity: 0.95"
             >
-              <path
-                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 20c0-3.31 2.69-6 6-6s6 2.69 6 6"
-                stroke="#4f46e5"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+            <img src="../images/admin.png" width="24"/>
             </svg>
             <div>
               <div class="user-name">Admin</div>
-              <div style="font-size: 12px; color: #2563eb">Administrator</div>
+              <div style="font-size: 12px; color: #10b981">Administrator</div>
             </div>
           </div>
-          <button class="btn-logout">Đăng xuất</button>
+          <button class="btn-logout">Sign out</button>
         </div>
       </header>
 
@@ -320,13 +324,13 @@
         <!-- Stats -->
         <div class="grid">
           <div class="card total">
-            <div class="title">Tổng tài khoản</div>
+            <div class="title">Total Account</div>
             <div class="value" id="totalAccounts">0</div>
             <div class="meta"><span>▲</span><span>100%</span></div>
           </div>
 
           <div class="card admin">
-            <div class="title">Quản trị viên</div>
+            <div class="title">Administrator</div>
             <div class="value" id="totalAdmins">0</div>
             <div class="meta">
               <span>🛡</span><span id="adminPercent">0%</span>
@@ -334,7 +338,7 @@
           </div>
 
           <div class="card customer">
-            <div class="title">Khách hàng</div>
+            <div class="title">Customer</div>
             <div class="value" id="totalCustomers">0</div>
             <div class="meta">
               <span>✔</span><span id="customerPercent">0%</span>
@@ -344,7 +348,7 @@
 
         <!-- Chart -->
         <div class="chart-card">
-          <h3 style="margin: 0 0 12px 0; font-size: 16px">Phân bố vai trò</h3>
+          <h3 style="margin: 0 0 12px 0; font-size: 16px">Role Distribution</h3>
           <div class="chart-wrap">
             <svg
               id="pieChart"
@@ -428,13 +432,13 @@
               />
             </div>
             <select id="roleFilter">
-              <option value="all">Tất cả vai trò</option>
+              <option value="all">All Roles</option>
               <option value="administrator">Administrator</option>
               <option value="customer">Customer</option>
             </select>
           </div>
 
-          <button class="add-btn" id="addBtn">＋ Thêm tài khoản</button>
+          <button class="add-btn" id="addBtn">＋ Add Account</button>
         </div>
 
         <!-- Table -->
@@ -443,10 +447,10 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Tên</th>
+                <th>Name</th>
                 <th>Email</th>
-                <th>Vai trò</th>
-                <th>Thao tác</th>
+                <th>Role</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="accountsTbody">
@@ -455,7 +459,7 @@
           </table>
         </div>
 
-        <div class="note">Dữ liệu lấy từ file <code>accounts.json</code></div>
+        <div class="note">Can not get data from <code>accounts.json</code></div>
       </main>
     </div>
 
@@ -533,35 +537,31 @@
       let accounts = [];
 
       async function loadAccounts() {
-        try {
-          const res = await fetch("./accounts.json", { cache: "no-store" });
-          if (!res.ok)
-            throw new Error("Không thể tải accounts.json: " + res.status);
-          const json = await res.json();
-          accounts = Array.isArray(json.accounts) ? json.accounts : [];
-          renderAll();
-        } catch (err) {
-          console.error(err);
-          // Fallback: show sample if file missing
-          accounts = [
-            {
-              id: 1,
-              email: "admin@gmail.com",
-              name: "Admin",
-              password: "admin123",
-              role: "administrator",
-            },
-            {
-              id: 2,
-              email: "dieubh@gmail.com",
-              name: "Hoang Dieu",
-              password: "123",
-              role: "customer",
-            },
-          ];
-          renderAll();
-        }
-      }
+  try {
+    const response = await fetch('../../dataset/accounts.json', { cache: "no-store" });
+    if (!response.ok) throw new Error("Không thể tải accounts.json: " + response.status);
+    const json = await response.json();
+
+    // Kiểm tra dữ liệu profile tồn tại
+    if (Array.isArray(json.profile)) {
+      // Chuyển đổi các trường để phù hợp với cấu trúc cũ
+      accounts = json.profile.map((p, idx) => ({
+        id: p.profile_id || p.id || idx + 1,
+        name: p.fullname || p.name || "No Name",
+        email: p.email || "",
+        password: p.password || "",
+        role: p.role || "customer",
+      }));
+    } else {
+      accounts = [];
+    }
+
+    renderAll();
+  } catch (err) {
+    console.error(err);
+    alert("Lỗi khi tải dữ liệu tài khoản: " + err.message);
+  }
+}
 
       function computeStats(list) {
         const total = list.length;
