@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.stylebody {
+    font-family: 'Outfit' !important;
+    background-color: #F9FCF8;
+    color: #333;
+    line-height: 1.6;
+    text-align: justify;
+    scroll-padding-top: 90px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    
+}
+
+.term_head {
+    text-align: center;
+    margin-bottom: 50px;
+    
+}
+
+.term_head h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.term_head h1 span {
+    color: #5a9e5a;
+}
+
+.term_head p {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 60px;
+    position: relative;
+}
+
+.content-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 280px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ddd;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    padding-right: 40px;
+    position: sticky;
+    top: 120px;
+    align-self: flex-start;
+    height: fit-content;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 12px;
+    color: #1a1a1a;
+    font-weight: bold;
+}
+
+.sidebar nav ul li a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    display: block;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.current-section {
+    color: #5a9e5a; /* Đổi màu nổi bật */
+    font-weight: 700; /* In đậm hơn */
+    font-size: 1.06rem; /* Phóng to nhẹ chữ */
+    transform: scale(1.05); /* Tùy chọn: Nhấn mạnh thêm chút nữa */
+    display: inline-block; /* Cần có để transform: scale() hoạt động */
+    transition: all 0.3s ease;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    text-align: justify;
+    margin-right: 45px;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section h2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.section p {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.section ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+.section ul li {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.7;
+}
+
+.section ul li::before {
+    content: '•';
+    position: absolute;
+    left: 5px;
+    color: #5a9e5a;
+    font-weight: bold;
+}
+
+.section ol {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.section ol li {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.section ol li strong {
+    color: #333;
+    font-weight: 600;
+}
+
+strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 30px 15px;
+    }
+
+    .term_head h1 {
+        font-size: 2rem;
+    }
+
+    .section h2 {
+        font-size: 1.3rem;
+    }
+}
