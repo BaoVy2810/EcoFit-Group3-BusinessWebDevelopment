@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart - EcoFit</title>
+  <link rel="stylesheet" href="../css/mainstyle.css">
+  <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("header-frame");
+        header.onload = () => {
+            header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+        };
+        });
+    </script>
+
+    <!-- Shopping Cart Section -->
+    <section class="cart-section">
+        <div class="cart-container">
+            <!-- Left Side - Cart Items -->
+            <div class="cart-left">
+                <h1 class="cart-title">SHOPPING CART</h1>
+                
+                <div class="cart-table">
+                    <div class="cart-table__header">
+                        <div class="col-item">Item</div>
+                        <div class="col-quantity">Quantity</div>
+                        <div class="col-subtotal">Subtotal</div>
+                    </div>
+
+                    <!-- Cart Item 1 -->
+                    <div class="cart-item">
+                        <div class="cart-item__left">
+                            <input type="checkbox" class="cart-checkbox">
+                            <div class="cart-item__image">
+                                <img src="../images/organic_cotton_tee.png" alt="Organic Cotton T-Shirt">
+                            </div>
+                            <div class="cart-item__info">
+                                <h3 class="cart-item__name">Organic Cotton T-Shirt</h3>
+                                <p class="cart-item__detail">Color: White</p>
+                                <p class="cart-item__detail">Size: XXL</p>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item__quantity">
+                            <div class="quantity-control">
+                                <button class="qty-btn minus">-</button>
+                                <input type="number" value="1" min="1" class="qty-input">
+                                <button class="qty-btn plus">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item__subtotal">
+                            <span class="price">50.000</span>
+                            <button class="remove-btn">×</button>
+                        </div>
+                    </div>
+
+                    <!-- Cart Item 2 -->
+                    <div class="cart-item">
+                        <div class="cart-item__left">
+                            <input type="checkbox" class="cart-checkbox" checked>
+                            <div class="cart-item__image">
+                                <img src="../images/recycled_pet_sneakers.png" alt="Recycled PET Sneakers">
+                            </div>
+                            <div class="cart-item__info">
+                                <h3 class="cart-item__name">Recycled PET Sneakers</h3>
+                                <p class="cart-item__detail">Color: Beige</p>
+                                <p class="cart-item__detail">Size: 43</p>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item__quantity">
+                            <div class="quantity-control">
+                                <button class="qty-btn minus">-</button>
+                                <input type="number" value="2" min="1" class="qty-input">
+                                <button class="qty-btn plus">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item__subtotal">
+                            <span class="price">150.000</span>
+                            <button class="remove-btn">×</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Order Summary -->
+            <div class="cart-right">
+                <div class="order-summary">
+                    <h2 class="order-summary__title">ORDER SUMMARY</h2>
+                    
+                    <div class="order-summary__row">
+                        <span>Subtotal Product</span>
+                        <span class="order-summary__value">150.000</span>
+                    </div>
+                    
+                    <div class="order-summary__row">
+                        <span>Shipping Cost</span>
+                        <span class="order-summary__value">30.000</span>
+                    </div>
+                    
+                    <div class="order-summary__row">
+                        <span>Discount</span>
+                        <span class="order-summary__value discount">-15.000</span>
+                    </div>
+                    
+                    <div class="order-summary__discount">
+                        <input type="text" placeholder="Enter your discount code" class="discount-input">
+                        <button class="apply-btn">APPLY</button>
+                    </div>
+                    
+                    <div class="order-summary__total">
+                        <span>Total</span>
+                        <span class="total-value">165.000</span>
+                    </div>
+                    
+                    <button class="checkout-btn">
+                        CHECKOUT →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+
+    <script src="../js/cart.js"></script>
+</body>
+</html>
