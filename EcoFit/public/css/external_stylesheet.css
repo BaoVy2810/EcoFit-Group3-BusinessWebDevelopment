@@ -1,0 +1,27 @@
+.btn-cta {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  padding: 18px;
+  background: linear-gradient(180deg, #69bd76 0%, #3da547 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 30px;
+  font-family: "Outfit", sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(92, 184, 92, 0.3);
+}
+
+.btn-cta:active {
+  transform: translateY(0);
+}
