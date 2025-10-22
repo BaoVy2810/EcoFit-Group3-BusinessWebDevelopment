@@ -817,7 +817,8 @@ section.hero::after {
   font-weight: 400;
   font-size: 20px;
   line-height: 1.6;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid black;
+  color:black ;
 }
 /*PRODUCT SEARCH & FILTER PAGE */
 .shop-content {
