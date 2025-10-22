@@ -456,3 +456,8 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+thead tr th{
+    font-size:16px;
+    padding: 12px; font-weight: 500; color: #6b7280;
+}

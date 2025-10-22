@@ -156,6 +156,21 @@
       ],
       "time_completed": "",
       "note": "Chờ xác nhận từ kho."
+    },
+    {
+      "order_id": "O011",
+      "customer_id": "4",
+      "order_date": "2025-09-25",
+      "status": "Completed",
+      "shipping_address": "12 Tran Hung Dao, Da Nang",
+      "discount": 0,
+      "shipping_fee": 20000,
+      "total_amount": 250000,
+      "items": [
+        { "product_id": "P013", "product_name": "Upcycled Tote Bag", "quantity": 1, "unit_price": 220000 }
+      ],
+      "time_completed": "2025-09-27 13:50:00",
+      "note": ""
     }
   ]
 }
