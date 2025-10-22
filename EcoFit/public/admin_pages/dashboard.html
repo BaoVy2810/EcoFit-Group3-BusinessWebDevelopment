@@ -1,285 +1,442 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Recharts via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="dashboard-container">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <!--cụm logo-->
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+  <!-- Recharts via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!--cụm logo-->
+      <div
+        style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
         <div class="logo">
-            <img src="../images/EcoFit_logo_white.png" width="30"/>
+          <img src="../images/EcoFit_logo_white.png" width="30" />
         </div>
         <div>
-            <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
-            <p style="margin: 0; font-size: 16px;">Admin Panel</p>
+          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
+          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
         </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="nav-menu">
+        <button class="menu-item active" data-menu="Dashboard">
+          <i data-lucide="bar-chart-3"></i>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="menu-item" data-menu="Accounts" name="accounts"
+          onclick="location.href='accounts.html'; target='_self'">
+          <i data-lucide="square-user-round"></i>
+          <span>Accounts</span>
+        </button>
+
+        <button class="menu-item" data-menu="Products" name="products"
+          onclick="location.href='products.html'; target='_self'">
+          <i data-lucide="package"></i>
+          <span>Products</span>
+        </button>
+
+        <button class="menu-item" data-menu="Order Lists">
+          <i data-lucide="list"></i>
+          <span>Order Lists</span>
+        </button>
+
+        <button class="menu-item" data-menu="Inbox">
+          <i data-lucide="inbox"></i>
+          <span>Inbox</span>
+        </button>
+
+        <!-- Pages Divider -->
+
+        <div class="pages-divider">
+          <p>PAGES</p>
         </div>
 
-        <!-- Navigation Menu -->
-        <nav class="nav-menu">
-          <button class="menu-item active" data-menu="Dashboard">
-            <i data-lucide="bar-chart-3"></i>
-            <span>Dashboard</span>
+        <button class="menu-item" data-menu="Pricing">
+          <i data-lucide="gift"></i>
+          <span>Promotions</span>
+        </button>
+
+        <button class="menu-item" data-menu="Calendar">
+          <i data-lucide="calendar"></i>
+          <span>Blogs</span>
+        </button>
+
+        <button class="menu-item" data-menu="To-Do">
+          <i data-lucide="check-square"></i>
+          <span>To-Do</span>
+        </button>
+        <button class="menu-item" data-menu="Contact">
+          <i data-lucide="message-circle"></i>
+          <span>Contact</span>
+        </button>
+        <button class="menu-item" data-menu="Invoice">
+          <i data-lucide="file-text"></i>
+          <span>Invoice</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle">
+            <i data-lucide="menu"></i>
           </button>
 
-        <button class="menu-item" data-menu="Accounts" name="accounts" onclick="location.href='accounts.html'; target='_self'">
-            <i data-lucide="square-user-round"></i>
-            <label for="accounts">Accounts</label>
-          </button>
-
-          <button class="menu-item" data-menu="Products" name="products" onclick="location.href='products.html'; target='_self'">
-            <i data-lucide="package"></i>
-            <span>Products</span>
-          </button>
-
-          <button class="menu-item" data-menu="Order Lists">
-            <i data-lucide="list"></i>
-            <span>Order Lists</span>
-          </button>
-
-          <button class="menu-item" data-menu="Inbox">
-            <i data-lucide="inbox"></i>
-            <span>Inbox</span>
-          </button>
-
-          <!-- Pages Divider -->
-
-          <div class="pages-divider">
-            <p>PAGES</p>
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Search" />
           </div>
 
-          <button class="menu-item" data-menu="Pricing">
-            <i data-lucide="gift"></i>
-            <span>Promotions</span>
+        </div>
+
+        <div class="header-right">
+
+          <button class="notification-btn">
+            <i data-lucide="bell"></i>
+            <span class="notification-dot"></span>
           </button>
 
-          <button class="menu-item" data-menu="Calendar">
-            <i data-lucide="calendar"></i>
-            <span>Blogs</span>
-          </button>
-
-          <button class="menu-item" data-menu="To-Do">
-            <i data-lucide="check-square"></i>
-            <span>To-Do</span>
-          </button>
-          <button class="menu-item" data-menu="Contact">
-            <i data-lucide="message-circle"></i>
-            <span>Contact</span>
-          </button>
-          <button class="menu-item" data-menu="Invoice">
-            <i data-lucide="file-text"></i>
-            <span>Invoice</span>
-          </button>
-        </nav>
-      </aside>
-
-      <!-- Main Content -->
-      <div class="main-content">
-        <!-- Header -->
-        <header class="header">
-          <div class="header-left">
-            <button class="menu-toggle">
-              <i data-lucide="menu"></i>
-            </button>
-
-            <div class="search-box">
-              <i data-lucide="search"></i>
-              <input type="text" placeholder="Search" />
+          <div class="user-profile">
+            <div class="user-info">
+              <p class="user-name">Moni Roy</p>
+              <p class="user-role">Admin</p>
             </div>
-
+            <img src="../images/admin.png" alt="Admin" />
           </div>
+        </div>
+      </header>
 
-          <div class="header-right">
+      <!-- Dashboard Content -->
+      <main class="content">
+        <h2 class="page-title">Dashboard</h2>
 
-            <button class="notification-btn">
-              <i data-lucide="bell"></i>
-              <span class="notification-dot"></span>
-            </button>
-
-            <div class="user-profile">
-              <div class="user-info">
-                <p class="user-name">Moni Roy</p>
-                <p class="user-role">Admin</p>
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total User</p>
+                <h3 class="stat-value" id="total-user">--</h3>
               </div>
-              <img
-                src="../images/admin.png"
-                alt="Admin"
-              />
-            </div>
-          </div>
-        </header>
-
-        <!-- Dashboard Content -->
-        <main class="content">
-          <h2 class="page-title">Dashboard</h2>
-
-          <!-- Stats Grid -->
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-header">
-      <div class="stat-info">
-        <p class="stat-label">Total User</p>
-        <h3 class="stat-value" id="total-user">--</h3>
-      </div>
-      <div class="stat-icon blue-icon">
-        <i data-lucide="users"></i>
-      </div>
-    </div>
-    <div class="stat-growth positive">
-      <i data-lucide="trending-up"></i>
-      <span class="growth-value" id="user-growth">0%</span>
-      <span class="growth-text">Up from yesterday</span>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-header">
-      <div class="stat-info">
-        <p class="stat-label">Total Order</p>
-        <h3 class="stat-value" id="total-order">--</h3>
-      </div>
-      <div class="stat-icon yellow-icon">
-        <i data-lucide="package"></i>
-      </div>
-    </div>
-    <div class="stat-growth positive">
-      <i data-lucide="trending-up"></i>
-      <span class="growth-value" id="order-growth">0%</span>
-      <span class="growth-text">Up from past week</span>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-header">
-      <div class="stat-info">
-        <p class="stat-label">Total Sales</p>
-        <h3 class="stat-value" id="total-sales">--</h3>
-      </div>
-      <div class="stat-icon green-icon">
-        <i data-lucide="dollar-sign"></i>
-      </div>
-    </div>
-    <div class="stat-growth negative">
-      <i data-lucide="trending-down"></i>
-      <span class="growth-value" id="sales-growth">0%</span>
-      <span class="growth-text">Down from yesterday</span>
-    </div>
-  </div>
-</div>
-
-
-          <!-- Sales Chart -->
-          <div class="chart-container">
-            <div class="chart-header">
-              <h3>Sales Details</h3>
-              <select id="monthSelect" class="month-select">
-                <option>October</option>
-                <option>November</option>
-                <option>December</option>
-              </select>
-            </div>
-
-            <div class="chart-wrapper">
-              <canvas id="salesChart"></canvas>
-              <!-- Product Icons -->
-              <div class="product-icons">
-                <div class="product-icon small">
-                  <i data-lucide="shopping-cart"></i>
-                </div>
-                <div class="product-icon medium">
-                  <i data-lucide="package"></i>
-                </div>
-                <div class="product-icon medium">
-                  <i data-lucide="box"></i>
-                </div>
-                <div class="product-icon large">
-                  <i data-lucide="file-text"></i>
-                </div>
+              <div class="stat-icon blue-icon">
+                <i data-lucide="users"></i>
               </div>
-
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value" id="user-growth">0%</span>
+              <span class="growth-text">Up from yesterday</span>
             </div>
           </div>
-        </main>
-      </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total Order</p>
+                <h3 class="stat-value" id="total-order">--</h3>
+              </div>
+              <div class="stat-icon yellow-icon">
+                <i data-lucide="package"></i>
+              </div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value" id="order-growth">0%</span>
+              <span class="growth-text">Up from past week</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total Sales</p>
+                <h3 class="stat-value" id="total-sales">--</h3>
+              </div>
+              <div class="stat-icon green-icon">
+                <i data-lucide="dollar-sign"></i>
+              </div>
+            </div>
+            <div class="stat-growth negative">
+              <i data-lucide="trending-down"></i>
+              <span class="growth-value" id="sales-growth">0%</span>
+              <span class="growth-text">Down from yesterday</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Sales Chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3>Sales Details</h3>
+            <select id="monthSelect" class="month-select">
+              <option>January</option>
+              <option>February</option>
+              <option>March</option>
+              <option>April</option>
+              <option>May</option>
+              <option>June</option>
+              <option>July</option>
+              <option>August</option>
+              <option>September</option>
+              <option>October</option>
+              <option>November</option>
+              <option>December</option>
+            </select>
+            <script>
+              // Set default month to current month
+              const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+              const recentMonth = months[new Date().getMonth()];
+              document.getElementById('monthSelect').value = recentMonth;
+            </script>
+          </div>
+
+          <div class="chart-wrapper">
+            <canvas id="salesChart"></canvas>
+          </div>
+
+        </div>
     </div>
-<script>
-  
-// lấy đường dẫn đến dataset
-const profileURL = "../../dataset/accounts.json";
-const ordersURL = "../../dataset/orders.json";
-const productURL = "../../dataset/products.json";
+    </main>
+  </div>
+  </div>
+  <script>
 
-async function loadDashboardData() {
-  try {
-    // Đọc dữ liệu JSON song song
-    const [profileRes, orderRes, productRes] = await Promise.all([
-      fetch(profileURL),
-      fetch(ordersURL),
-      fetch(productURL)
-    ]);
+    // lấy đường dẫn đến dataset
+    const profileURL = "../../dataset/accounts.json";
+    const ordersURL = "../../dataset/orders.json";
 
-    const profiles = await profileRes.json();
-    const orders = await orderRes.json();
-    const products = await productRes.json();
 
-    // ---- Tính toán dữ liệu cơ bản ----
-    const totalUsers = profiles.profile ? profiles.profile.length : 0;
-    const totalOrders = orders.orders ? orders.orders.length : 0;
+    async function loadDashboardData() {
+      try {
+        // Đọc dữ liệu JSON song song
+        const [profileRes, orderRes, productRes] = await Promise.all([
+          fetch(profileURL),
+          fetch(ordersURL),
 
-    // ---- Tính tổng doanh thu (tự động tính lại theo công thức) ----
-    const totalSales = orders.orders
-      ? orders.orders.reduce((sum, order) => {
-          const itemTotal = order.items
-            ? order.items.reduce((acc, item) => acc + item.quantity * item.unit_price, 0)
+        ]);
+
+        const profiles = await profileRes.json();
+        const orders = await orderRes.json();
+
+
+        // ---- Tính toán dữ liệu cơ bản ----
+        const totalUsers = profiles.profile ? profiles.profile.length : 0;
+        const totalOrders = orders.orders ? orders.orders.length : 0;
+
+        // ---- Tính tổng doanh thu theo giá bán hàng hóa (không gồm giảm giá & phí ship) ----
+        const totalSales = orders.orders
+          ? orders.orders.reduce((sum, order) => {
+            if (order.status === "Completed") {
+              const itemTotal = order.items
+                ? order.items.reduce((acc, item) => acc + item.quantity * item.unit_price, 0)
+                : 0;
+              return sum + itemTotal;
+            }
+            return sum;
+          }, 0)
+          : 0;
+
+
+        // ---- Cập nhật vào giao diện ----
+        document.getElementById("total-user").textContent = totalUsers.toLocaleString();
+        document.getElementById("total-order").textContent = totalOrders.toLocaleString();
+        document.getElementById("total-sales").textContent = "$" + totalSales.toLocaleString();
+
+        // ---- Tính tăng trưởng thực tế ----
+
+        /// 1️⃣ Xác định ngày hiện tại và chia mốc tuần
+        const now = new Date();
+        const getWeekNumber = (date) => {
+          const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+          const pastDays = (date - firstDayOfYear) / 86400000;
+          return Math.ceil((pastDays + firstDayOfYear.getDay() + 1) / 7);
+        };
+
+        const currentWeek = getWeekNumber(now);
+        const previousWeek = currentWeek - 1;
+
+        // 2️⃣ Lọc đơn hàng theo tuần
+        const completedOrders = orders.orders.filter(o => o.status === "Completed");
+
+        const currentWeekOrders = completedOrders.filter(
+          o => getWeekNumber(new Date(o.order_date)) === currentWeek
+        );
+        const previousWeekOrders = completedOrders.filter(
+          o => getWeekNumber(new Date(o.order_date)) === previousWeek
+        );
+
+        // 3️⃣ Tính số đơn hàng
+        const currentOrderCount = currentWeekOrders.length;
+        const previousOrderCount = previousWeekOrders.length;
+
+        // 4️⃣ Tính doanh thu (chỉ hàng hóa, không gồm phí ship & giảm giá)
+        const calcSales = (list) =>
+          list.reduce((sum, order) => {
+            const items = order.items || [];
+            const itemTotal = items.reduce((acc, i) => acc + i.quantity * i.unit_price, 0);
+            return sum + itemTotal;
+          }, 0);
+
+        const currentSales = calcSales(currentWeekOrders);
+        const previousSales = calcSales(previousWeekOrders);
+
+        // Tính tỉ lệ tăng trưởng (giữ nguyên 1 số thập phân)
+        const orderGrowth =
+          previousOrderCount > 0
+            ? ((currentOrderCount - previousOrderCount) / previousOrderCount * 100).toFixed(1)
             : 0;
-          const discount = order.discount || 0;
-          const shippingFee = 30000; // fix cứng theo yêu cầu
-          const total = itemTotal - discount + shippingFee;
-          return sum + total;
-        }, 0)
-      : 0;
 
-    // ---- Cập nhật vào giao diện ----
-    document.getElementById("total-user").textContent = totalUsers.toLocaleString();
-    document.getElementById("total-order").textContent = totalOrders.toLocaleString();
-    document.getElementById("total-sales").textContent = "$" + totalSales.toLocaleString();
+        const salesGrowth =
+          previousSales > 0
+            ? ((currentSales - previousSales) / previousSales * 100).toFixed(1)
+            : 0;
 
-    // ---- Tính tỉ lệ tăng trưởng giả lập (demo) ----
-    const userGrowth = (Math.random() * 5 + 1).toFixed(1);
-    const orderGrowth = (Math.random() * 4 + 1).toFixed(1);
-    const salesGrowth = (Math.random() * 3 - 1.5).toFixed(1); // có thể âm
 
-    document.getElementById("user-growth").textContent = `${userGrowth}%`;
-    document.getElementById("order-growth").textContent = `${orderGrowth}%`;
-    document.getElementById("sales-growth").textContent = `${salesGrowth}%`;
+        // Gọi hàm cập nhật
+        updateGrowthDisplay("order", orderGrowth, "Số đơn hàng");
+        updateGrowthDisplay("sales", salesGrowth, "Doanh thu");
 
-  } catch (error) {
-    console.error("Error loading dashboard data:", error);
-  }
-}
+      } catch (error) {
+        console.error("Error loading dashboard data:", error);
+      }
+    }
 
-// Gọi hàm khi load trang
-document.addEventListener("DOMContentLoaded", loadDashboardData);
+    // Gọi hàm khi load trang
+    document.addEventListener("DOMContentLoaded", () => {
+      loadDashboardData();
+      lucide.createIcons(); // vẽ lại icon 
+    });
 
-</script>
+  </script>
 
-</script>
-    <script src="script.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> /*Load thư viện vẽ Chart của JS*/
+  <script>
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const monthSelect = document.getElementById('monthSelect');
+    let salesChart;
+    let currentMonth = monthSelect.value;
+
+    // Hàm load và tính tổng doanh thu theo tuần trong tháng
+    async function loadMonthlySales(monthName) {
+      const response = await fetch('../../dataset/orders.json');
+      const data = await response.json();
+      const orders = data.orders;
+
+      // Tạo map tháng → số (để lọc dữ liệu theo order_date)
+      const monthMap = {
+        January: 1, February: 2, March: 3, April: 4,
+        May: 5, June: 6, July: 7, August: 8,
+        September: 9, October: 10, November: 11, December: 12
+      };
+
+      const selectedMonth = monthMap[monthName];
+      const currentYear = new Date().getFullYear();
+
+      // Lọc các đơn hàng của tháng đã chọn
+      const filteredOrders = orders.filter(o => {
+        const d = new Date(o.order_date);
+        return d.getMonth() + 1 === selectedMonth && d.getFullYear() === currentYear;
+      });
+
+      // Chia doanh thu theo tuần trong tháng
+      const weeklyRevenue = [0, 0, 0, 0];
+      filteredOrders.forEach(o => {
+        const day = new Date(o.order_date).getDate();
+        const weekIndex = Math.min(Math.floor((day - 1) / 7), 3);
+        if (o.status === "Completed") {
+          weeklyRevenue[weekIndex] += o.total_amount;
+        }
+      });
+
+      return weeklyRevenue;
+    }
+
+    // Hàm tạo chart
+    function createChart(month, weeklyRevenue) {
+      return new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          datasets: [{
+            label: `Revenue in ${month}`,
+            data: weeklyRevenue,
+            borderColor: 'rgba(61,165,71,100)',
+            backgroundColor: 'rgba(61,165,71,0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: 'rgba(61,165,71,100)'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+              callbacks: {
+                label: context => 'Revenue: $' + context.parsed.y.toLocaleString()
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: {
+              grid: { color: 'rgba(200,200,200,0.1)' },
+              ticks: { callback: value => '$' + value.toLocaleString() }
+            }
+          }
+        }
+      });
+    }
+
+    // Khởi tạo chart mặc định theo tháng đang chọn
+    async function initChart() {
+      const monthlyRevenue = await loadMonthlySales(currentMonth);
+      salesChart = createChart(currentMonth, monthlyRevenue);
+    }
+
+    // Chỉ cập nhật khi chọn tháng mới
+    monthSelect.addEventListener('change', async () => {
+      const newMonth = monthSelect.value;
+      if (newMonth !== currentMonth) {
+        currentMonth = newMonth;
+        const monthlyRevenue = await loadMonthlySales(newMonth);
+        salesChart.destroy();
+        salesChart = createChart(newMonth, monthlyRevenue);
+      }
+    });
+
+    // Load chart đầu tiên
+    initChart();
+  </script>
+  <script src="script.js"></script>
+</body>
+
 </html>
