@@ -7,12 +7,25 @@
 <body>
     <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
-        const header = document.getElementById("header-frame");
-        header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
-        };
+    window.addEventListener("DOMContentLoaded", () => {
+    const header = document.getElementById("header-frame");
+    header.onload = () => {
+        header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+    };
+
+    const buttons = document.querySelectorAll(".review-actions button");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+        if (btn.classList.contains("active")) {
+            btn.classList.remove("active");
+        } else {
+            const parent = btn.closest(".review-actions");
+            parent.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+        }
         });
+    });
+    });
     </script>
     <!--Product Showcase Section-->
     <section class="product-container">
@@ -123,10 +136,335 @@
                 </a>
             </div>
     </section>
+    <!--Review + Feedback Section-->
+    <section class="review_feedback_section">
+        <h2>Additional Information</h2>
+        <section class="additional-info">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Printing size Front:</td>
+                        <td>100 x 70 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Printing size Back:</td>
+                        <td>250 x 100 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery time:</td>
+                        <td>7 working days | incl. print</td>
+                    </tr>
+                    <tr>
+                        <td>Material:</td>
+                        <td>Recycled polyester</td>
+                    </tr>
+                    <tr>
+                        <td>Weight:</td>
+                        <td>190 gr.</td>
+                    </tr>
+                    <tr>
+                        <td>Minimum quantity:</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>Size:</td>
+                        <td>XS to XXXL</td>
+                    </tr>
+                    <tr>
+                        <td>Technique:</td>
+                        <td>Printing</td>
+                    </tr>
+                    <tr>
+                        <td>Material thickness:</td>
+                        <td>70 gsm</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <h2>Description</h2>
+        <section class="description">
+            <p>
+                Looking for a corporate gift with a great story? Then this lightweight unisex jacket is definitely worth considering! Made from 100% recycled polyester (70 gsm), it’s as sustainable as it gets. The adjustable hood, elastic cuffs, and slightly longer back provide extra comfort. Thanks to its water-repellent coating, you’ll stay dry even during heavy rain. Plus, every purchase supports Water.org. You can customize this jacket with a print on the front and back in 1 to 4 colors. Perfect for a sporty corporate event or as a stylish company jacket with your logo!
+            </p>
+            <ul>
+                <li>Made from 100% recycled polyester</li>
+                <li>Water-repellent coating</li>
+                <li>With AWARE™ tracing</li>
+            </ul>
+            <div class="images">
+                <img src="../images/Bamboo_daily_shirt_frontview.png" alt="bamboo shirt front view">
+                <img src="../images/Bamboo_daily_shirt_backview.png" alt="bamboo shirt back view">
+            </div>
+        </section>
+        <h2>Reviews</h2>
+        <section class="reviews">
+            <table class="review-table">
+                <tr>
+                    <td colspan="2">
+                        <div class="review-summary">
+                            <div class="review-score">
+                                <div class="rating-circle">
+                                    <div class="rating-number">4.5</div>
+                                </div>
+                                <div class="stars">
+                                    <img src="../images/fivestars.png"/>
+                                </div>
+                                <p>from 1,25k reviews</p>
+                            </div>
+                            <div class="rating-bars">
+                                <div class="rating-bar">
+                                    <span>5.0
+                                        <img src="../images/star_filled.png"/>
+                                    </span>
+                                    <div class="bar">
+                                        <div class="fill" style="width:95%;"></div>
+                                    </div>
+                                    <p>2823</p>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>4.0
+                                        <img src="../images/star_filled.png"/>
+                                    </span>
+                                    <div class="bar">
+                                        <div class="fill" style="width:45%;"></div>
+                                    </div>
+                                    <p>38</p>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>3.0
+                                        <img src="../images/star_filled.png"/>
+                                    </span>
+                                    <div class="bar">
+                                        <div class="fill" style="width:25%;"></div>
+                                    </div>
+                                    <p>4</p>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>2.0
+                                        <img src="../images/star_filled.png"/>
+                                    </span>
+                                    <div class="bar">
+                                        <div class="fill" style="width:0%;"></div>
+                                    </div>
+                                    <p>0</p>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>1.0
+                                        <img src="../images/star_filled.png"/>
+                                    </span>
+                                    <div class="bar">
+                                        <div class="fill" style="width:0%;"></div>
+                                    </div>
+                                    <p>0</p>
+                                </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="review-filter-cell">
+                        <aside class="review-filter">
+                            <h2>Reviews Filter</h2>
+                            <div class="filter-group">
+                                <p>Rating</p>
+                                <ul>
+                                    <li>
+                                        <input type="checkbox" checked>
+                                        <span>5
+                                            <img src="../images/star_filled.png"/>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox">
+                                        <span>4
+                                            <img src="../images/star_filled.png"/>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox">
+                                        <span>3
+                                            <img src="../images/star_filled.png"/>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox">
+                                        <span>2
+                                            <img src="../images/star_filled.png"/>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox">
+                                        <span>1
+                                            <img src="../images/star_filled.png"/>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="filter-group">
+                                <p>Review Topics</p>
+                                <ul>
+                                    <li><input type="checkbox"> Product Quality</li>
+                                    <li><input type="checkbox"> Seller Services</li>
+                                    <li><input type="checkbox"> Product Price</li>
+                                    <li><input type="checkbox"> Shipment</li>
+                                    <li><input type="checkbox"> Match with Description</li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </td>
+                    <td class="review-list-cell">
+                        <div class="review-list">
+                            <h2>Review Lists</h2>
+                            <div class="review-tabs">
+                                <button class="active">All Reviews</button>
+                                <button>With Photo & Video</button>
+                                <button>With Description</button>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-stars">
+                                        <img src="../images/fivestars.png" alt="stars" />
+                                    </div>
+                                </div>
+                                <p class="review-text">
+                                    <strong>
+                                        This is amazing product I have
+                                    </strong>
+                                </p>
+                                <p class="review-meta">2 Oct, 2025</p>
+                                <div class="review-footer">
+                                    <div class="review-user">
+                                        <img src="../images/avatar1.png" alt="user" />
+                                    <span>Jungkook</span>
+                                    </div>
+                                    <div class="review-actions">
+                                        <button>
+                                            <span>
+                                                <img src="../images/thumb_up.png"/>
+                                            </span> 
+                                            4</button>
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                <img src="../images/thumb_down.png"/>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-stars">
+                                        <img src="../images/fivestars.png" alt="stars" />
+                                    </div>
+                                </div>
+                                <p class="review-text">
+                                    <strong>
+                                        The design is simple yet stylish. I appreciate that EcoFit focuses on sustainable materials. Perfect for both casual and workout days!
+                                    </strong>
+                                </p>
+                                <p class="review-meta">30 Sep, 2025</p>
+                                <div class="review-footer">
+                                    <div class="review-user">
+                                        <img src="../images/avatar2.png" alt="user" />
+                                    <span>Adralina</span>
+                                    </div>
+                                    <div class="review-actions">
+                                        <button>
+                                            <span>
+                                                <img src="../images/thumb_up.png"/>
+                                            </span> 
+                                            14</button>
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                <img src="../images/thumb_down.png"/>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-stars">
+                                        <img src="../images/fivestars.png" alt="stars" />
+                                    </div>
+                                </div>
+                                <p class="review-text">
+                                    <strong>
+                                        High-quality shirt with a great fit. It's lightweight, comfortable, and the eco-friendly packaging was a lovely touch!
+                                    </strong>
+                                </p>
+                                <p class="review-meta">2 Sep, 2025</p>
+                                <div class="review-footer">
+                                    <div class="review-user">
+                                        <img src="../images/avatar3.png" alt="user" />
+                                    <span>Yoongi</span>
+                                    </div>
+                                    <div class="review-actions">
+                                        <button>
+                                            <span>
+                                                <img src="../images/thumb_up.png"/>
+                                            </span> 
+                                            24</button>
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                <img src="../images/thumb_down.png"/>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="review-stars">
+                                        <img src="../images/fivestars.png" alt="stars" />
+                                    </div>
+                                </div>
+                                <p class="review-text">
+                                    <strong>Great fit and simple design. Perfect for daily wear!</strong>
+                                </p>
+                                <p class="review-meta">1 Jun, 2025</p>
+                                <div class="review-footer">
+                                    <div class="review-user">
+                                        <img src="../images/avatar4.png" alt="user" />
+                                    <span>Julien</span>
+                                    </div>
+                                    <div class="review-actions">
+                                        <button>
+                                            <span>
+                                                <img src="../images/thumb_up.png"/>
+                                            </span> 
+                                            124</button>
+                                        <button>
+                                            <span class="material-symbols-outlined">
+                                                <img src="../images/thumb_down.png"/>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pagination">
+                                <img src="../images/Pagination.png" alt="pagination">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </section>
     <!--Related Products Section-->
     <section class="related_products">
-        <p>Related Products</p>
-        <h3>Explore Related Products</h3>
+        <div class="section-header">
+            <p class="section-subtitle">Related Products</p>
+            <h2 class="section-title">
+                <span>Explore</span> 
+                <span class="bold-green">Related Products</span>
+            </h2>
+        </div>
         <div class="product-grid">
             <div class="product-card">
                 <div class="discount">25% off</div>
@@ -237,6 +575,7 @@
                 </div>
             </div>
         </div>
+        <img src="../images/pagecontrol_relatedproducts.png" style="margin-top:10px"/>
     </section>
     <!--Service Info Section-->
     <section class="service-info">
