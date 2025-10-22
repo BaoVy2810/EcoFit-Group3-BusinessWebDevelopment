@@ -1,275 +1,730 @@
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { TrendingUp, TrendingDown, Users, Package, DollarSign, Clock, ShoppingCart, Heart, Inbox, List, Box, Gift, Calendar, CheckSquare, MessageCircle, FileText, BarChart3, Menu, Search, Bell } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Account Management Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* --- Reset & base --- */
+      * {
+        box-sizing: border-box;
+        font-family: "Outfit", sans-serif;
+      }
+      body {
+        margin: 0;
+        background: #f3f4f6;
+        color: #0f172a;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-const AdminDashboard = () => {
-  const [stats, setStats] = useState({
-    totalUsers: 40689,
-    totalOrders: 10293,
-    totalSales: 89000,
-    totalPending: 2040,
-    userGrowth: 8.5,
-    orderGrowth: 1.3,
-    salesGrowth: -4.3,
-    pendingGrowth: 1.8
-  });
+      /* --- Container --- */
+      .container {
+        max-width: 1200px;
+        margin: 24px auto;
+        padding: 20px;
+      }
 
-  const [salesData, setData] = useState([
-    { month: '5k', value: 35000 },
-    { month: '10k', value: 38000 },
-    { month: '15k', value: 42000 },
-    { month: '20k', value: 64364.77 },
-    { month: '25k', value: 45000 },
-    { month: '30k', value: 48000 },
-    { month: '35k', value: 52000 },
-    { month: '40k', value: 43000 },
-    { month: '45k', value: 58000 },
-    { month: '50k', value: 55000 },
-    { month: '55k', value: 47000 },
-    { month: '60k', value: 51000 }
-  ]);
+      /* --- Header --- */
+      header {
+        background: #fff;
+        border-radius: 12px;
+        padding: 18px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 4px rgba(2, 6, 23, 0.06);
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo {
+        width: 48px;
+        height: 48px;
+        display: flex;                 /* bật flex */
+        align-items: center;           /* canh giữa theo chiều dọc */
+        justify-content: center;       /* canh giữa theo chiều ngang */
+        border-radius: 10px;
+        background: linear-gradient(135deg, #69BD76, #3DA547);
+        color: #fff;
+      }
 
-  const [selectedMonth, setSelectedMonth] = useState('October');
-  const [activeMenu, setActiveMenu] = useState('Dashboard');
+      .brand h1 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .brand p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 12px;
+      }
 
-  const menuItems = [
-    { icon: BarChart3, label: 'Dashboard', active: true },
-    { icon: Package, label: 'Products' },
-    { icon: Heart, label: 'Favorites' },
-    { icon: Inbox, label: 'Inbox' },
-    { icon: List, label: 'Order Lists' },
-    { icon: Box, label: 'Product Stock' }
-  ];
+      .user-area {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .user-card {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        background: #eefeec;
+        padding: 8px 12px;
+        border-radius: 10px;
+      }
+      .user-name {
+        font-weight: 600;
+        font-size: 16px;
+      }
+      .btn-logout {
+        background: #ef4444;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
 
-  const pageItems = [
-    { icon: Gift, label: 'Pricing' },
-    { icon: Calendar, label: 'Calender' },
-    { icon: CheckSquare, label: 'To-Do' },
-    { icon: MessageCircle, label: 'Contact' },
-    { icon: FileText, label: 'Invoice' },
-    { icon: BarChart3, label: 'UI Elements' }
-  ];
+      /* --- Stats grid --- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 16px;
+        margin-top: 20px;
+      }
+      @media (min-width: 800px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
 
-  const StatCard = ({ title, value, growth, isNegative, icon: Icon, color }) => (
-    <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <p className="text-gray-500 text-sm mb-2">{title}</p>
-          <h3 className="text-3xl font-bold text-gray-900">{value}</h3>
-        </div>
-        <div className={`p-4 rounded-2xl bg-${color}-50`}>
-          <Icon className={`w-6 h-6 text-${color}-500`} />
-        </div>
-      </div>
-      <div className="flex items-center gap-2 text-sm">
-        {isNegative ? (
-          <TrendingDown className="w-4 h-4 text-red-500" />
-        ) : (
-          <TrendingUp className="w-4 h-4 text-green-500" />
-        )}
-        <span className={isNegative ? 'text-red-500' : 'text-green-500'}>
-          {Math.abs(growth)}%
-        </span>
-        <span className="text-gray-500">
-          {title === 'Total Order' ? 'Up from past week' : 
-           isNegative ? 'Down from yesterday' : 'Up from yesterday'}
-        </span>
-      </div>
-    </div>
-  );
+      .card {
+        background: #fff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(2, 6, 23, 0.04);
+        border-left: 6px solid #e5e7eb;
+      }
+      .card .title {
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      .card .value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .card .meta {
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        color: #10b981;
+        font-size: 13px;
+      }
 
-  const MenuItem = ({ icon: Icon, label, active }) => (
-    <button
-      onClick={() => setActiveMenu(label)}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-        activeMenu === label
-          ? 'bg-blue-500 text-white shadow-lg shadow-blue-200'
-          : 'text-gray-600 hover:bg-gray-100'
-      }`}
-    >
-      <Icon className="w-5 h-5" />
-      <span className="font-medium">{label}</span>
-    </button>
-  );
+      .card.admin {
+        border-left-color: #8b5cf6;
+      }
+      .card.total {
+        border-left-color: #3b82f6;
+      }
+      .card.customer {
+        border-left-color: #10b981;
+      }
 
-  return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold">
-            <span className="text-blue-500">Dash</span>
-            <span className="text-gray-900">Stack</span>
-          </h1>
-        </div>
+      /* --- Chart area --- */
+      .chart-card {
+        margin-top: 18px;
+        background: #fff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 1px 6px rgba(2, 6, 23, 0.04);
+      }
+      .chart-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        padding: 12px 0;
+        flex-wrap: wrap;
+      }
 
-        <nav className="flex-1 px-4 space-y-2">
-          {menuItems.map((item, idx) => (
-            <MenuItem key={idx} {...item} />
-          ))}
+      /* --- Controls --- */
+      .controls {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+        align-items: center;
+      }
+      .search {
+        flex: 1;
+        position: relative;
+      }
+      .search input {
+        width: 100%;
+        padding: 10px 14px 10px 38px;
+        border-radius: 10px;
+        border: 1px solid #e6e9ef;
+      }
+      .search .icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+      }
 
-          <div className="pt-6 pb-2">
-            <p className="text-xs font-semibold text-gray-400 px-4 mb-2">PAGES</p>
+      select {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6e9ef;
+      }
+
+      .add-btn {
+        background: #2563eb;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* --- Table --- */
+      .table-card {
+        margin-top: 14px;
+        background: #fff;
+        border-radius: 12px;
+        overflow: auto;
+        box-shadow: 0 1px 6px rgba(2, 6, 23, 0.04);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+      th,
+      td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 14px;
+        color: #0f172a;
+      }
+      thead th {
+        color: #6b7280;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      tr:hover td {
+        background: #f8fafc;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+      }
+      .actions button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 8px;
+      }
+      .actions .edit:hover {
+        background: #eef2ff;
+        color: #2563eb;
+      }
+      .actions .delete:hover {
+        background: #fff1f2;
+        color: #ef4444;
+      }
+
+      /* small helper */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+      .badge.admin {
+        background: #f3e8ff;
+        color: #6d28d9;
+      }
+      .badge.customer {
+        background: #ecfdf5;
+        color: #065f46;
+      }
+
+      /* footer note */
+      .note {
+        margin-top: 10px;
+        color: #6b7280;
+        font-size: 13px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">
+          <div class="logo">
+            <img src="../images/EcoFit_logo_white.png" width="30"/>
           </div>
+          <div>
+            <h1>
+              Eco<span style="color: #3DA547">Fit</span>
+            </h1>
+            <p>Admin Panel</p>
+          </div>
+        </div>
 
-          {pageItems.map((item, idx) => (
-            <MenuItem key={idx} {...item} />
-          ))}
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button className="p-2 hover:bg-gray-100 rounded-lg lg:hidden">
-                <Menu className="w-6 h-6" />
-              </button>
-              <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="pl-10 pr-4 py-2 bg-gray-100 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+        <div class="user-area">
+          <div class="user-card">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              style="opacity: 0.95"
+            >
+            <img src="../images/admin.png" width="24"/>
+            </svg>
+            <div>
+              <div class="user-name" name="adminName">Admin User</div>
+              <div style="font-size: 12px; color: #10b981">Administrator</div>
             </div>
+          </div>
+          <button class="btn-logout">Sign out</button>
+        </div>
+      </header>
 
-            <div className="flex items-center gap-4">
-              <button className="relative p-2 hover:bg-gray-100 rounded-lg">
-                <Bell className="w-6 h-6 text-gray-600" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-              
-              <div className="flex items-center gap-2">
-                <img src="https://flagcdn.com/w40/gb.png" alt="English" className="w-6 h-4" />
-                <span className="text-sm font-medium">English</span>
-              </div>
+      <!-- Main -->
+      <main>
+        <!-- Stats -->
+        <div class="grid">
+          <div class="card total">
+            <div class="title">Total Account</div>
+            <div class="value" id="totalAccounts">0</div>
+            <div class="meta"><span>▲</span><span>100%</span></div>
+          </div>
 
-              <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
-                <div className="text-right">
-                  <p className="font-semibold text-gray-900">Moni Roy</p>
-                  <p className="text-xs text-gray-500">Admin</p>
-                </div>
-                <img
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Moni"
-                  alt="Admin"
-                  className="w-10 h-10 rounded-full"
-                />
-              </div>
+          <div class="card admin">
+            <div class="title">Administrator</div>
+            <div class="value" id="totalAdmins">0</div>
+            <div class="meta">
+              <span>🛡</span><span id="adminPercent">0%</span>
             </div>
           </div>
-        </header>
 
-        {/* Dashboard Content */}
-        <main className="flex-1 overflow-auto p-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h2>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard
-              title="Total User"
-              value="40,689"
-              growth={stats.userGrowth}
-              icon={Users}
-              color="blue"
-            />
-            <StatCard
-              title="Total Order"
-              value="10293"
-              growth={stats.orderGrowth}
-              icon={Package}
-              color="yellow"
-            />
-            <StatCard
-              title="Total Sales"
-              value="$89,000"
-              growth={stats.salesGrowth}
-              isNegative={true}
-              icon={DollarSign}
-              color="green"
-            />
-            <StatCard
-              title="Total Pending"
-              value="2040"
-              growth={stats.pendingGrowth}
-              icon={Clock}
-              color="red"
-            />
+          <div class="card customer">
+            <div class="title">Customer</div>
+            <div class="value" id="totalCustomers">0</div>
+            <div class="meta">
+              <span>✔</span><span id="customerPercent">0%</span>
+            </div>
           </div>
+        </div>
 
-          {/* Sales Chart */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold text-gray-900">Sales Details</h3>
-              <select 
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <!-- Chart -->
+        <div class="chart-card">
+          <h3 style="margin: 0 0 12px 0; font-size: 16px">Role Distribution</h3>
+          <div class="chart-wrap">
+            <svg
+              id="pieChart"
+              width="260"
+              height="260"
+              viewBox="0 0 260 260"
+              aria-hidden
+            ></svg>
+
+            <div style="min-width: 160px">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-bottom: 8px;
+                "
               >
-                <option>October</option>
-                <option>November</option>
-                <option>December</option>
-              </select>
-            </div>
-
-            <div className="relative">
-              <ResponsiveContainer width="100%" height={350}>
-                <AreaChart data={salesData}>
-                  <defs>
-                    <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis 
-                    dataKey="month" 
-                    stroke="#9CA3AF"
-                    style={{ fontSize: '12px' }}
-                  />
-                  <YAxis 
-                    stroke="#9CA3AF"
-                    style={{ fontSize: '12px' }}
-                    tickFormatter={(value) => `${value/1000}k`}
-                  />
-                  <Tooltip 
-                    formatter={(value) => [`$${value.toLocaleString()}`, 'Sales']}
-                    contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb' }}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#3B82F6" 
-                    strokeWidth={2}
-                    fill="url(#colorValue)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-
-              {/* Product Icons */}
-              <div className="absolute bottom-16 left-0 right-0 flex justify-around items-end pointer-events-none">
-                <div className="bg-blue-600 p-4 rounded-2xl shadow-lg">
-                  <ShoppingCart className="w-8 h-8 text-white" />
+                <span
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #3b82f6;
+                    border-radius: 3px;
+                    display: inline-block;
+                  "
+                ></span>
+                <div>
+                  <div style="font-weight: 700" id="legendAdmin">Admin: 0</div>
+                  <div
+                    style="color: #6b7280; font-size: 13px"
+                    id="legendAdminPct"
+                  >
+                    (0%)
+                  </div>
                 </div>
-                <div className="bg-blue-600 p-6 rounded-2xl shadow-lg">
-                  <Package className="w-10 h-10 text-white" />
-                </div>
-                <div className="bg-blue-600 p-6 rounded-2xl shadow-lg">
-                  <Box className="w-10 h-10 text-white" />
-                </div>
-                <div className="bg-blue-600 p-8 rounded-2xl shadow-lg">
-                  <FileText className="w-12 h-12 text-white" />
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <span
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #10b981;
+                    border-radius: 3px;
+                    display: inline-block;
+                  "
+                ></span>
+                <div>
+                  <div style="font-weight: 700" id="legendCustomer">
+                    Customer: 0
+                  </div>
+                  <div
+                    style="color: #6b7280; font-size: 13px"
+                    id="legendCustomerPct"
+                  >
+                    (0%)
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      </div>
-    </div>
-  );
-};
+        </div>
 
-export default AdminDashboard;
+        <!-- Controls -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; display: flex; gap: 12px">
+            <div class="search">
+              <span class="icon">🔎</span>
+              <input
+                id="searchInput"
+                placeholder="Tìm kiếm theo tên hoặc email..."
+              />
+            </div>
+            <select id="roleFilter">
+              <option value="all">All Roles</option>
+              <option value="administrator">Administrator</option>
+              <option value="customer">Customer</option>
+            </select>
+          </div>
+
+          <button class="add-btn" id="addBtn">＋ Add Account</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card" style="margin-top: 12px">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="accountsTbody">
+              <!-- rows will be injected -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">Can not get data from <code>accounts.json</code></div>
+      </main>
+    </div>
+
+    <script>
+      // --- Helper functions ---
+      function safeLower(s) {
+        return (s || "").toString().toLowerCase();
+      }
+
+      // Draw simple pie chart in SVG by providing values and colors
+      function drawPie(svgEl, values, colors) {
+        // clear
+        while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+        const size = Math.min(svgEl.clientWidth, svgEl.clientHeight) || 260;
+        const cx = size / 2,
+          cy = size / 2,
+          r = size / 2 - 4;
+        const total = values.reduce((a, b) => a + b, 0) || 1;
+        let angle = -90; // start at top
+        values.forEach((v, i) => {
+          const slice = (v / total) * 360;
+          const large = slice > 180 ? 1 : 0;
+          const start = polarToCartesian(cx, cy, r, angle);
+          const end = polarToCartesian(cx, cy, r, angle + slice);
+          const d = [
+            `M ${cx} ${cy}`,
+            `L ${start.x} ${start.y}`,
+            `A ${r} ${r} 0 ${large} 1 ${end.x} ${end.y}`,
+            "Z",
+          ].join(" ");
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          path.setAttribute("d", d);
+          path.setAttribute("fill", colors[i] || "#ccc");
+          path.setAttribute("stroke", "#fff");
+          path.setAttribute("stroke-width", "1");
+          svgEl.appendChild(path);
+          angle += slice;
+        });
+
+        // center circle for donut look
+        const inner = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle"
+        );
+        inner.setAttribute("cx", cx);
+        inner.setAttribute("cy", cy);
+        inner.setAttribute("r", r * 0.6);
+        inner.setAttribute("fill", "#fff");
+        svgEl.appendChild(inner);
+
+        // label total in center
+        const text = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        text.setAttribute("x", cx);
+        text.setAttribute("y", cy + 6);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", "18");
+        text.setAttribute("font-weight", "700");
+        text.setAttribute("fill", "#0f172a");
+        text.textContent = total;
+        svgEl.appendChild(text);
+      }
+
+      function polarToCartesian(cx, cy, r, angleDeg) {
+        const rad = (angleDeg * Math.PI) / 180.0;
+        return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+      }
+
+      // --- Main state & rendering ---
+      let accounts = [];
+
+      async function loadAccounts() {
+  try {
+    const response = await fetch('../../dataset/accounts.json', { cache: "no-store" });
+    if (!response.ok) throw new Error("Không thể tải accounts.json: " + response.status);
+    const json = await response.json();
+
+    // Kiểm tra dữ liệu profile tồn tại
+    if (Array.isArray(json.profile)) {
+      // Chuyển đổi các trường để phù hợp với cấu trúc cũ
+      accounts = json.profile.map((p, idx) => ({
+        id: p.profile_id || p.id || idx + 1,
+        name: p.fullname || p.name || "No Name",
+        email: p.email || "",
+        password: p.password || "",
+        role: p.role || "customer",
+      }));
+    } else {
+      accounts = [];
+    }
+
+    renderAll();
+  } catch (err) {
+    console.error(err);
+    alert("Lỗi khi tải dữ liệu tài khoản: " + err.message);
+  }
+}
+
+      function computeStats(list) {
+        const total = list.length;
+        const admins = list.filter((a) => a.role === "administrator").length;
+        const customers = list.filter((a) => a.role === "customer").length;
+        return { total, admins, customers };
+      }
+
+      function renderAll() {
+        const { total, admins, customers } = computeStats(accounts);
+        document.getElementById("totalAccounts").textContent = total;
+        document.getElementById("totalAdmins").textContent = admins;
+        document.getElementById("totalCustomers").textContent = customers;
+        document.getElementById("adminPercent").textContent = total
+          ? Math.round((admins / total) * 100) + "%"
+          : "0%";
+        document.getElementById("customerPercent").textContent = total
+          ? Math.round((customers / total) * 100) + "%"
+          : "0%";
+
+        document.getElementById("legendAdmin").textContent = "Admin: " + admins;
+        document.getElementById("legendAdminPct").textContent =
+          "(" + (total ? Math.round((admins / total) * 100) : 0) + "%)";
+        document.getElementById("legendCustomer").textContent =
+          "Customer: " + customers;
+        document.getElementById("legendCustomerPct").textContent =
+          "(" + (total ? Math.round((customers / total) * 100) : 0) + "%)";
+
+        const svg = document.getElementById("pieChart");
+        drawPie(svg, [admins, customers], ["#3B82F6", "#10B981"]);
+
+        renderTable();
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("accountsTbody");
+        tbody.innerHTML = "";
+
+        const search = safeLower(document.getElementById("searchInput").value);
+        const role = document.getElementById("roleFilter").value;
+
+        const filtered = accounts.filter((acc) => {
+          const matchSearch =
+            safeLower(acc.name).includes(search) ||
+            safeLower(acc.email).includes(search);
+          const matchRole = role === "all" || acc.role === role;
+          return matchSearch && matchRole;
+        });
+
+        if (filtered.length === 0) {
+          const tr = document.createElement("tr");
+          const td = document.createElement("td");
+          td.colSpan = 5;
+          td.style.textAlign = "center";
+          td.style.padding = "30px 16px";
+          td.style.color = "#6b7280";
+          td.textContent = "Không tìm thấy người dùng nào.";
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+          return;
+        }
+
+        filtered.forEach((acc) => {
+          const tr = document.createElement("tr");
+
+          const tdId = document.createElement("td");
+          tdId.textContent = "#" + acc.id;
+          tr.appendChild(tdId);
+
+          const tdName = document.createElement("td");
+          const wrapper = document.createElement("div");
+          wrapper.style.display = "flex";
+          wrapper.style.gap = "12px";
+          wrapper.style.alignItems = "center";
+          const avatar = document.createElement("div");
+          avatar.className = "avatar";
+          avatar.style.background =
+            acc.role === "administrator"
+              ? "linear-gradient(135deg,#8b5cf6,#6366f1)"
+              : "linear-gradient(135deg,#10b981,#34d399)";
+          avatar.textContent = (acc.name || "?").charAt(0).toUpperCase();
+          const spanName = document.createElement("span");
+          spanName.style.fontWeight = "600";
+          spanName.textContent = acc.name;
+          wrapper.appendChild(avatar);
+          wrapper.appendChild(spanName);
+          tdName.appendChild(wrapper);
+          tr.appendChild(tdName);
+
+          const tdEmail = document.createElement("td");
+          tdEmail.textContent = acc.email;
+          tr.appendChild(tdEmail);
+
+          const tdRole = document.createElement("td");
+          const badge = document.createElement("span");
+          badge.className =
+            "badge " + (acc.role === "administrator" ? "admin" : "customer");
+          badge.textContent =
+            acc.role === "administrator" ? "Administrator" : "Customer";
+          tdRole.appendChild(badge);
+          tr.appendChild(tdRole);
+
+          const tdActions = document.createElement("td");
+          tdActions.className = "actions";
+          const btnEdit = document.createElement("button");
+          btnEdit.title = "Chỉnh sửa";
+          btnEdit.className = "edit";
+          btnEdit.innerHTML = "✎";
+          btnEdit.onclick = () =>
+            alert("Chức năng chỉnh sửa chưa được triển khai trong demo.");
+          const btnDelete = document.createElement("button");
+          btnDelete.title = "Xóa";
+          btnDelete.className = "delete";
+          btnDelete.innerHTML = "🗑";
+          btnDelete.onclick = () => {
+            if (
+              confirm(
+                'Bạn có chắc muốn xóa tài khoản "' +
+                  acc.name +
+                  '"? (demo - dữ liệu không được ghi vào file)'
+              )
+            ) {
+              // demo: remove from local state and re-render
+              accounts = accounts.filter((a) => a.id !== acc.id);
+              renderAll();
+            }
+          };
+          tdActions.appendChild(btnEdit);
+          tdActions.appendChild(btnDelete);
+          tr.appendChild(tdActions);
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      // --- Event bindings ---
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", renderTable);
+      document
+        .getElementById("roleFilter")
+        .addEventListener("change", renderTable);
+      document.getElementById("addBtn").addEventListener("click", () => {
+        alert(
+          "Thêm tài khoản: chức năng demo chưa lưu vào file. Bạn có thể mở devtools để chỉnh mã thêm."
+        );
+      });
+
+      // Load on start
+      loadAccounts();
+
+      // Make chart responsive on resize
+      window.addEventListener("resize", () => {
+        const svg = document.getElementById("pieChart");
+        drawPie(
+          svg,
+          [
+            accounts.filter((a) => a.role === "administrator").length,
+            accounts.filter((a) => a.role === "customer").length,
+          ],
+          ["#3B82F6", "#10B981"]
+        );
+      });
+    </script>
+  </body>
+</html>

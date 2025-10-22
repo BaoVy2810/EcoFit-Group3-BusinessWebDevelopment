@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Recharts via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!--cụm logo-->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+        <div class="logo">
+            <img src="../images/EcoFit_logo_white.png" width="30"/>
+        </div>
+        <div>
+            <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
+            <p style="margin: 0; font-size: 16px;">Admin Panel</p>
+        </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="nav-menu">
+          <button class="menu-item active" data-menu="Dashboard">
+            <i data-lucide="bar-chart-3"></i>
+            <span>Dashboard</span>
+          </button>
+
+        <button class="menu-item" data-menu="Accounts" name="accounts" onclick="location.href='accounts.html'; target='_self'">
+            <i data-lucide="square-user-round"></i>
+            <label for="accounts">Accounts</label>
+          </button>
+
+          <button class="menu-item" data-menu="Products" name="products" onclick="location.href='products.html'; target='_self'">
+            <i data-lucide="package"></i>
+            <span>Products</span>
+          </button>
+
+          <button class="menu-item" data-menu="Order Lists">
+            <i data-lucide="list"></i>
+            <span>Order Lists</span>
+          </button>
+
+          <button class="menu-item" data-menu="Inbox">
+            <i data-lucide="inbox"></i>
+            <span>Inbox</span>
+          </button>
+
+          <!-- Pages Divider -->
+
+          <div class="pages-divider">
+            <p>PAGES</p>
+          </div>
+
+          <button class="menu-item" data-menu="Pricing">
+            <i data-lucide="gift"></i>
+            <span>Promotions</span>
+          </button>
+
+          <button class="menu-item" data-menu="Calendar">
+            <i data-lucide="calendar"></i>
+            <span>Blogs</span>
+          </button>
+
+          <button class="menu-item" data-menu="To-Do">
+            <i data-lucide="check-square"></i>
+            <span>To-Do</span>
+          </button>
+          <button class="menu-item" data-menu="Contact">
+            <i data-lucide="message-circle"></i>
+            <span>Contact</span>
+          </button>
+          <button class="menu-item" data-menu="Invoice">
+            <i data-lucide="file-text"></i>
+            <span>Invoice</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+          <div class="header-left">
+            <button class="menu-toggle">
+              <i data-lucide="menu"></i>
+            </button>
+
+            <div class="search-box">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Search" />
+            </div>
+
+          </div>
+
+          <div class="header-right">
+
+            <button class="notification-btn">
+              <i data-lucide="bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+
+            <div class="user-profile">
+              <div class="user-info">
+                <p class="user-name">Moni Roy</p>
+                <p class="user-role">Admin</p>
+              </div>
+              <img
+                src="../images/admin.png"
+                alt="Admin"
+              />
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="content">
+          <h2 class="page-title">Dashboard</h2>
+
+          <!-- Stats Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-header">
+      <div class="stat-info">
+        <p class="stat-label">Total User</p>
+        <h3 class="stat-value" id="total-user">--</h3>
+      </div>
+      <div class="stat-icon blue-icon">
+        <i data-lucide="users"></i>
+      </div>
+    </div>
+    <div class="stat-growth positive">
+      <i data-lucide="trending-up"></i>
+      <span class="growth-value" id="user-growth">0%</span>
+      <span class="growth-text">Up from yesterday</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <div class="stat-info">
+        <p class="stat-label">Total Order</p>
+        <h3 class="stat-value" id="total-order">--</h3>
+      </div>
+      <div class="stat-icon yellow-icon">
+        <i data-lucide="package"></i>
+      </div>
+    </div>
+    <div class="stat-growth positive">
+      <i data-lucide="trending-up"></i>
+      <span class="growth-value" id="order-growth">0%</span>
+      <span class="growth-text">Up from past week</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <div class="stat-info">
+        <p class="stat-label">Total Sales</p>
+        <h3 class="stat-value" id="total-sales">--</h3>
+      </div>
+      <div class="stat-icon green-icon">
+        <i data-lucide="dollar-sign"></i>
+      </div>
+    </div>
+    <div class="stat-growth negative">
+      <i data-lucide="trending-down"></i>
+      <span class="growth-value" id="sales-growth">0%</span>
+      <span class="growth-text">Down from yesterday</span>
+    </div>
+  </div>
+</div>
+
+
+          <!-- Sales Chart -->
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Sales Details</h3>
+              <select id="monthSelect" class="month-select">
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+              </select>
+            </div>
+
+            <div class="chart-wrapper">
+              <canvas id="salesChart"></canvas>
+              <!-- Product Icons -->
+              <div class="product-icons">
+                <div class="product-icon small">
+                  <i data-lucide="shopping-cart"></i>
+                </div>
+                <div class="product-icon medium">
+                  <i data-lucide="package"></i>
+                </div>
+                <div class="product-icon medium">
+                  <i data-lucide="box"></i>
+                </div>
+                <div class="product-icon large">
+                  <i data-lucide="file-text"></i>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+<script>
+  
+// lấy đường dẫn đến dataset
+const profileURL = "../../dataset/accounts.json";
+const ordersURL = "../../dataset/orders.json";
+const productURL = "../../dataset/products.json";
+
+async function loadDashboardData() {
+  try {
+    // Đọc dữ liệu JSON song song
+    const [profileRes, orderRes, productRes] = await Promise.all([
+      fetch(profileURL),
+      fetch(ordersURL),
+      fetch(productURL)
+    ]);
+
+    const profiles = await profileRes.json();
+    const orders = await orderRes.json();
+    const products = await productRes.json();
+
+    // ---- Tính toán dữ liệu cơ bản ----
+    const totalUsers = profiles.profile ? profiles.profile.length : 0;
+    const totalOrders = orders.orders ? orders.orders.length : 0;
+
+    // ---- Tính tổng doanh thu (tự động tính lại theo công thức) ----
+    const totalSales = orders.orders
+      ? orders.orders.reduce((sum, order) => {
+          const itemTotal = order.items
+            ? order.items.reduce((acc, item) => acc + item.quantity * item.unit_price, 0)
+            : 0;
+          const discount = order.discount || 0;
+          const shippingFee = 30000; // fix cứng theo yêu cầu
+          const total = itemTotal - discount + shippingFee;
+          return sum + total;
+        }, 0)
+      : 0;
+
+    // ---- Cập nhật vào giao diện ----
+    document.getElementById("total-user").textContent = totalUsers.toLocaleString();
+    document.getElementById("total-order").textContent = totalOrders.toLocaleString();
+    document.getElementById("total-sales").textContent = "$" + totalSales.toLocaleString();
+
+    // ---- Tính tỉ lệ tăng trưởng giả lập (demo) ----
+    const userGrowth = (Math.random() * 5 + 1).toFixed(1);
+    const orderGrowth = (Math.random() * 4 + 1).toFixed(1);
+    const salesGrowth = (Math.random() * 3 - 1.5).toFixed(1); // có thể âm
+
+    document.getElementById("user-growth").textContent = `${userGrowth}%`;
+    document.getElementById("order-growth").textContent = `${orderGrowth}%`;
+    document.getElementById("sales-growth").textContent = `${salesGrowth}%`;
+
+  } catch (error) {
+    console.error("Error loading dashboard data:", error);
+  }
+}
+
+// Gọi hàm khi load trang
+document.addEventListener("DOMContentLoaded", loadDashboardData);
+
+</script>
+
+</script>
+    <script src="script.js"></script>
+  </body>
+</html>
