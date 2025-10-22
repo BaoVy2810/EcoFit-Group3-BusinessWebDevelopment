@@ -1,0 +1,16 @@
+{
+    "accounts": [
+        {
+            "email": "admin@gmail.com",
+            "name": "Admin",
+            "password": "admin123",
+            "role": "administrator"
+        },
+        {
+            "email": "dieubh@gmail.com",
+            "name": "Hoang Dieu",
+            "password": "123",
+            "role": "customer"
+        }
+    ]
+}
