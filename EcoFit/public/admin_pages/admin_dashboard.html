@@ -533,35 +533,31 @@
       let accounts = [];
 
       async function loadAccounts() {
-        try {
-          const res = await fetch("./accounts.json", { cache: "no-store" });
-          if (!res.ok)
-            throw new Error("Không thể tải accounts.json: " + res.status);
-          const json = await res.json();
-          accounts = Array.isArray(json.accounts) ? json.accounts : [];
-          renderAll();
-        } catch (err) {
-          console.error(err);
-          // Fallback: show sample if file missing
-          accounts = [
-            {
-              id: 1,
-              email: "admin@gmail.com",
-              name: "Admin",
-              password: "admin123",
-              role: "administrator",
-            },
-            {
-              id: 2,
-              email: "dieubh@gmail.com",
-              name: "Hoang Dieu",
-              password: "123",
-              role: "customer",
-            },
-          ];
-          renderAll();
-        }
-      }
+  try {
+    const response = await fetch('../../dataset/adminsystem.json', { cache: "no-store" });
+    if (!response.ok) throw new Error("Không thể tải adminsystem.json: " + response.status);
+    const json = await response.json();
+
+    // Kiểm tra dữ liệu profile tồn tại
+    if (Array.isArray(json.profile)) {
+      // Chuyển đổi các trường để phù hợp với cấu trúc cũ
+      accounts = json.profile.map((p, idx) => ({
+        id: p.profile_id || p.id || idx + 1,
+        name: p.fullname || p.name || "No Name",
+        email: p.email || "",
+        password: p.password || "",
+        role: p.role || "customer",
+      }));
+    } else {
+      accounts = [];
+    }
+
+    renderAll();
+  } catch (err) {
+    console.error(err);
+    alert("Lỗi khi tải dữ liệu tài khoản: " + err.message);
+  }
+}
 
       function computeStats(list) {
         const total = list.length;

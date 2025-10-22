@@ -1,0 +1,12 @@
+{
+  "cart": [
+    { "cart_id": "CA001", "user_id": "U001" },
+    { "cart_id": "CA002", "user_id": "U002" }
+  ],
+
+  "cart_item": [
+    { "cart_id": "CA001", "product_id": "P001", "quantity": 2 },
+    { "cart_id": "CA001", "product_id": "P005", "quantity": 1 },
+    { "cart_id": "CA002", "product_id": "P010", "quantity": 1 }
+  ]
+}
