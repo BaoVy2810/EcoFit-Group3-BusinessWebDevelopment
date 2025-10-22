@@ -52,53 +52,5 @@
       "status": "inactive",
       "role": "customer"
     }
-  ],
-
- 
-
-
-
-  
-  "payment": [
-    {
-      "payment_id": "PAY001",
-      "payment_method": "via qr code",
-      "payment_status": "success",
-      "transaction_date": "2024-10-10 15:25:00",
-      "order_id": "O001"
-    },
-    {
-      "payment_id": "PAY002",
-      "payment_method": "via momo",
-      "payment_status": "pending",
-      "transaction_date": "2024-10-15 09:50:00",
-      "order_id": "O002"
-    }
-  ],
-
-  "promotion": [
-    {
-      "promotion_id": "PR001",
-      "promo_description": "10% off all eco-friendly shirts this week!",
-      "promo_code": "ECO10",
-      "discount_rate": 10.0
-    },
-    {
-      "promotion_id": "PR002",
-      "promo_description": "15% discount on orders over 500,000đ",
-      "promo_code": "SAVE15",
-      "discount_rate": 15.0
-    }
-  ],
-
-  "order_item": [
-    { "order_id": "O001", "product_id": "P001", "quantity": 2, "unit_price": 150000 },
-    { "order_id": "O001", "product_id": "P005", "quantity": 1, "unit_price": 350000 },
-    { "order_id": "O002", "product_id": "P010", "quantity": 1, "unit_price": 450000 }
-  ],
-
-  "green_point": [
-    { "green_point_id": "GP001", "order_id": "O001", "user_id": "U001", "points": 120 },
-    { "green_point_id": "GP002", "order_id": "O002", "user_id": "U002", "points": 90 }
   ]
 }

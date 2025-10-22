@@ -1,0 +1,22 @@
+{
+  "order_item": [
+    {
+      "order_id": "O001",
+      "product_id": "P001",
+      "quantity": 2,
+      "unit_price": 150000
+    },
+    {
+      "order_id": "O001",
+      "product_id": "P005",
+      "quantity": 1,
+      "unit_price": 350000
+    },
+    {
+      "order_id": "O002",
+      "product_id": "P010",
+      "quantity": 1,
+      "unit_price": 450000
+    }
+  ]
+}
