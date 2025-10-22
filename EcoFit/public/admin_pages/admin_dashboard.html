@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Account Management Dashboard</title>
+    <style>
+      /* --- Reset & base --- */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f3f4f6;
+        color: #0f172a;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* --- Container --- */
+      .container {
+        max-width: 1200px;
+        margin: 24px auto;
+        padding: 20px;
+      }
+
+      /* --- Header --- */
+      header {
+        background: #fff;
+        border-radius: 12px;
+        padding: 18px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 4px rgba(2, 6, 23, 0.06);
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        color: #fff;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .brand p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 12px;
+      }
+
+      .user-area {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .user-card {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        background: #eef2ff;
+        padding: 8px 12px;
+        border-radius: 10px;
+      }
+      .user-name {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .btn-logout {
+        background: #ef4444;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* --- Stats grid --- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 16px;
+        margin-top: 20px;
+      }
+      @media (min-width: 800px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .card {
+        background: #fff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(2, 6, 23, 0.04);
+        border-left: 6px solid #e5e7eb;
+      }
+      .card .title {
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      .card .value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .card .meta {
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        color: #10b981;
+        font-size: 13px;
+      }
+
+      .card.admin {
+        border-left-color: #8b5cf6;
+      }
+      .card.total {
+        border-left-color: #3b82f6;
+      }
+      .card.customer {
+        border-left-color: #10b981;
+      }
+
+      /* --- Chart area --- */
+      .chart-card {
+        margin-top: 18px;
+        background: #fff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 1px 6px rgba(2, 6, 23, 0.04);
+      }
+      .chart-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        padding: 12px 0;
+        flex-wrap: wrap;
+      }
+
+      /* --- Controls --- */
+      .controls {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+        align-items: center;
+      }
+      .search {
+        flex: 1;
+        position: relative;
+      }
+      .search input {
+        width: 100%;
+        padding: 10px 14px 10px 38px;
+        border-radius: 10px;
+        border: 1px solid #e6e9ef;
+      }
+      .search .icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+      }
+
+      select {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6e9ef;
+      }
+
+      .add-btn {
+        background: #2563eb;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* --- Table --- */
+      .table-card {
+        margin-top: 14px;
+        background: #fff;
+        border-radius: 12px;
+        overflow: auto;
+        box-shadow: 0 1px 6px rgba(2, 6, 23, 0.04);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+      th,
+      td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 14px;
+        color: #0f172a;
+      }
+      thead th {
+        color: #6b7280;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      tr:hover td {
+        background: #f8fafc;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+      }
+      .actions button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 8px;
+      }
+      .actions .edit:hover {
+        background: #eef2ff;
+        color: #2563eb;
+      }
+      .actions .delete:hover {
+        background: #fff1f2;
+        color: #ef4444;
+      }
+
+      /* small helper */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+      .badge.admin {
+        background: #f3e8ff;
+        color: #6d28d9;
+      }
+      .badge.customer {
+        background: #ecfdf5;
+        color: #065f46;
+      }
+
+      /* footer note */
+      .note {
+        margin-top: 10px;
+        color: #6b7280;
+        font-size: 13px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">
+          <div class="logo">DS</div>
+          <div>
+            <h1>Dash<span style="color: #3b82f6">Stack</span></h1>
+            <p>Admin Panel</p>
+          </div>
+        </div>
+
+        <div class="user-area">
+          <div class="user-card">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              style="opacity: 0.95"
+            >
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 20c0-3.31 2.69-6 6-6s6 2.69 6 6"
+                stroke="#4f46e5"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div>
+              <div class="user-name">Admin</div>
+              <div style="font-size: 12px; color: #2563eb">Administrator</div>
+            </div>
+          </div>
+          <button class="btn-logout">Đăng xuất</button>
+        </div>
+      </header>
+
+      <!-- Main -->
+      <main>
+        <!-- Stats -->
+        <div class="grid">
+          <div class="card total">
+            <div class="title">Tổng tài khoản</div>
+            <div class="value" id="totalAccounts">0</div>
+            <div class="meta"><span>▲</span><span>100%</span></div>
+          </div>
+
+          <div class="card admin">
+            <div class="title">Quản trị viên</div>
+            <div class="value" id="totalAdmins">0</div>
+            <div class="meta">
+              <span>🛡</span><span id="adminPercent">0%</span>
+            </div>
+          </div>
+
+          <div class="card customer">
+            <div class="title">Khách hàng</div>
+            <div class="value" id="totalCustomers">0</div>
+            <div class="meta">
+              <span>✔</span><span id="customerPercent">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-card">
+          <h3 style="margin: 0 0 12px 0; font-size: 16px">Phân bố vai trò</h3>
+          <div class="chart-wrap">
+            <svg
+              id="pieChart"
+              width="260"
+              height="260"
+              viewBox="0 0 260 260"
+              aria-hidden
+            ></svg>
+
+            <div style="min-width: 160px">
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-bottom: 8px;
+                "
+              >
+                <span
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #3b82f6;
+                    border-radius: 3px;
+                    display: inline-block;
+                  "
+                ></span>
+                <div>
+                  <div style="font-weight: 700" id="legendAdmin">Admin: 0</div>
+                  <div
+                    style="color: #6b7280; font-size: 13px"
+                    id="legendAdminPct"
+                  >
+                    (0%)
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <span
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #10b981;
+                    border-radius: 3px;
+                    display: inline-block;
+                  "
+                ></span>
+                <div>
+                  <div style="font-weight: 700" id="legendCustomer">
+                    Customer: 0
+                  </div>
+                  <div
+                    style="color: #6b7280; font-size: 13px"
+                    id="legendCustomerPct"
+                  >
+                    (0%)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; display: flex; gap: 12px">
+            <div class="search">
+              <span class="icon">🔎</span>
+              <input
+                id="searchInput"
+                placeholder="Tìm kiếm theo tên hoặc email..."
+              />
+            </div>
+            <select id="roleFilter">
+              <option value="all">Tất cả vai trò</option>
+              <option value="administrator">Administrator</option>
+              <option value="customer">Customer</option>
+            </select>
+          </div>
+
+          <button class="add-btn" id="addBtn">＋ Thêm tài khoản</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card" style="margin-top: 12px">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>Vai trò</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="accountsTbody">
+              <!-- rows will be injected -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note">Dữ liệu lấy từ file <code>accounts.json</code></div>
+      </main>
+    </div>
+
+    <script>
+      // --- Helper functions ---
+      function safeLower(s) {
+        return (s || "").toString().toLowerCase();
+      }
+
+      // Draw simple pie chart in SVG by providing values and colors
+      function drawPie(svgEl, values, colors) {
+        // clear
+        while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+        const size = Math.min(svgEl.clientWidth, svgEl.clientHeight) || 260;
+        const cx = size / 2,
+          cy = size / 2,
+          r = size / 2 - 4;
+        const total = values.reduce((a, b) => a + b, 0) || 1;
+        let angle = -90; // start at top
+        values.forEach((v, i) => {
+          const slice = (v / total) * 360;
+          const large = slice > 180 ? 1 : 0;
+          const start = polarToCartesian(cx, cy, r, angle);
+          const end = polarToCartesian(cx, cy, r, angle + slice);
+          const d = [
+            `M ${cx} ${cy}`,
+            `L ${start.x} ${start.y}`,
+            `A ${r} ${r} 0 ${large} 1 ${end.x} ${end.y}`,
+            "Z",
+          ].join(" ");
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          path.setAttribute("d", d);
+          path.setAttribute("fill", colors[i] || "#ccc");
+          path.setAttribute("stroke", "#fff");
+          path.setAttribute("stroke-width", "1");
+          svgEl.appendChild(path);
+          angle += slice;
+        });
+
+        // center circle for donut look
+        const inner = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle"
+        );
+        inner.setAttribute("cx", cx);
+        inner.setAttribute("cy", cy);
+        inner.setAttribute("r", r * 0.6);
+        inner.setAttribute("fill", "#fff");
+        svgEl.appendChild(inner);
+
+        // label total in center
+        const text = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        text.setAttribute("x", cx);
+        text.setAttribute("y", cy + 6);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", "18");
+        text.setAttribute("font-weight", "700");
+        text.setAttribute("fill", "#0f172a");
+        text.textContent = total;
+        svgEl.appendChild(text);
+      }
+
+      function polarToCartesian(cx, cy, r, angleDeg) {
+        const rad = (angleDeg * Math.PI) / 180.0;
+        return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+      }
+
+      // --- Main state & rendering ---
+      let accounts = [];
+
+      async function loadAccounts() {
+        try {
+          const res = await fetch("./accounts.json", { cache: "no-store" });
+          if (!res.ok)
+            throw new Error("Không thể tải accounts.json: " + res.status);
+          const json = await res.json();
+          accounts = Array.isArray(json.accounts) ? json.accounts : [];
+          renderAll();
+        } catch (err) {
+          console.error(err);
+          // Fallback: show sample if file missing
+          accounts = [
+            {
+              id: 1,
+              email: "admin@gmail.com",
+              name: "Admin",
+              password: "admin123",
+              role: "administrator",
+            },
+            {
+              id: 2,
+              email: "dieubh@gmail.com",
+              name: "Hoang Dieu",
+              password: "123",
+              role: "customer",
+            },
+          ];
+          renderAll();
+        }
+      }
+
+      function computeStats(list) {
+        const total = list.length;
+        const admins = list.filter((a) => a.role === "administrator").length;
+        const customers = list.filter((a) => a.role === "customer").length;
+        return { total, admins, customers };
+      }
+
+      function renderAll() {
+        const { total, admins, customers } = computeStats(accounts);
+        document.getElementById("totalAccounts").textContent = total;
+        document.getElementById("totalAdmins").textContent = admins;
+        document.getElementById("totalCustomers").textContent = customers;
+        document.getElementById("adminPercent").textContent = total
+          ? Math.round((admins / total) * 100) + "%"
+          : "0%";
+        document.getElementById("customerPercent").textContent = total
+          ? Math.round((customers / total) * 100) + "%"
+          : "0%";
+
+        document.getElementById("legendAdmin").textContent = "Admin: " + admins;
+        document.getElementById("legendAdminPct").textContent =
+          "(" + (total ? Math.round((admins / total) * 100) : 0) + "%)";
+        document.getElementById("legendCustomer").textContent =
+          "Customer: " + customers;
+        document.getElementById("legendCustomerPct").textContent =
+          "(" + (total ? Math.round((customers / total) * 100) : 0) + "%)";
+
+        const svg = document.getElementById("pieChart");
+        drawPie(svg, [admins, customers], ["#3B82F6", "#10B981"]);
+
+        renderTable();
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("accountsTbody");
+        tbody.innerHTML = "";
+
+        const search = safeLower(document.getElementById("searchInput").value);
+        const role = document.getElementById("roleFilter").value;
+
+        const filtered = accounts.filter((acc) => {
+          const matchSearch =
+            safeLower(acc.name).includes(search) ||
+            safeLower(acc.email).includes(search);
+          const matchRole = role === "all" || acc.role === role;
+          return matchSearch && matchRole;
+        });
+
+        if (filtered.length === 0) {
+          const tr = document.createElement("tr");
+          const td = document.createElement("td");
+          td.colSpan = 5;
+          td.style.textAlign = "center";
+          td.style.padding = "30px 16px";
+          td.style.color = "#6b7280";
+          td.textContent = "Không tìm thấy người dùng nào.";
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+          return;
+        }
+
+        filtered.forEach((acc) => {
+          const tr = document.createElement("tr");
+
+          const tdId = document.createElement("td");
+          tdId.textContent = "#" + acc.id;
+          tr.appendChild(tdId);
+
+          const tdName = document.createElement("td");
+          const wrapper = document.createElement("div");
+          wrapper.style.display = "flex";
+          wrapper.style.gap = "12px";
+          wrapper.style.alignItems = "center";
+          const avatar = document.createElement("div");
+          avatar.className = "avatar";
+          avatar.style.background =
+            acc.role === "administrator"
+              ? "linear-gradient(135deg,#8b5cf6,#6366f1)"
+              : "linear-gradient(135deg,#10b981,#34d399)";
+          avatar.textContent = (acc.name || "?").charAt(0).toUpperCase();
+          const spanName = document.createElement("span");
+          spanName.style.fontWeight = "600";
+          spanName.textContent = acc.name;
+          wrapper.appendChild(avatar);
+          wrapper.appendChild(spanName);
+          tdName.appendChild(wrapper);
+          tr.appendChild(tdName);
+
+          const tdEmail = document.createElement("td");
+          tdEmail.textContent = acc.email;
+          tr.appendChild(tdEmail);
+
+          const tdRole = document.createElement("td");
+          const badge = document.createElement("span");
+          badge.className =
+            "badge " + (acc.role === "administrator" ? "admin" : "customer");
+          badge.textContent =
+            acc.role === "administrator" ? "Administrator" : "Customer";
+          tdRole.appendChild(badge);
+          tr.appendChild(tdRole);
+
+          const tdActions = document.createElement("td");
+          tdActions.className = "actions";
+          const btnEdit = document.createElement("button");
+          btnEdit.title = "Chỉnh sửa";
+          btnEdit.className = "edit";
+          btnEdit.innerHTML = "✎";
+          btnEdit.onclick = () =>
+            alert("Chức năng chỉnh sửa chưa được triển khai trong demo.");
+          const btnDelete = document.createElement("button");
+          btnDelete.title = "Xóa";
+          btnDelete.className = "delete";
+          btnDelete.innerHTML = "🗑";
+          btnDelete.onclick = () => {
+            if (
+              confirm(
+                'Bạn có chắc muốn xóa tài khoản "' +
+                  acc.name +
+                  '"? (demo - dữ liệu không được ghi vào file)'
+              )
+            ) {
+              // demo: remove from local state and re-render
+              accounts = accounts.filter((a) => a.id !== acc.id);
+              renderAll();
+            }
+          };
+          tdActions.appendChild(btnEdit);
+          tdActions.appendChild(btnDelete);
+          tr.appendChild(tdActions);
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      // --- Event bindings ---
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", renderTable);
+      document
+        .getElementById("roleFilter")
+        .addEventListener("change", renderTable);
+      document.getElementById("addBtn").addEventListener("click", () => {
+        alert(
+          "Thêm tài khoản: chức năng demo chưa lưu vào file. Bạn có thể mở devtools để chỉnh mã thêm."
+        );
+      });
+
+      // Load on start
+      loadAccounts();
+
+      // Make chart responsive on resize
+      window.addEventListener("resize", () => {
+        const svg = document.getElementById("pieChart");
+        drawPie(
+          svg,
+          [
+            accounts.filter((a) => a.role === "administrator").length,
+            accounts.filter((a) => a.role === "customer").length,
+          ],
+          ["#3B82F6", "#10B981"]
+        );
+      });
+    </script>
+  </body>
+</html>

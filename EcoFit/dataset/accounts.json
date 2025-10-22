@@ -1,16 +1,36 @@
 {
     "accounts": [
         {
+            "account_id": 1,
             "email": "admin@gmail.com",
             "name": "Admin",
             "password": "admin123",
-            "role": "administrator"
+            "role": "administrator",
+            "created-at": "2024-06-15T10:00:00Z"
         },
         {
+            "account_id": 2,
             "email": "dieubh@gmail.com",
             "name": "Hoang Dieu",
             "password": "123",
-            "role": "customer"
+            "role": "customer",
+            "created-at": "2024-06-16T14:30:00Z"
+        },
+        {
+            "account_id": 3,
+            "email": "john.doe@gmail.com",
+            "name": "John Doe",
+            "password": "password123",
+            "role": "customer",
+            "created-at": "2024-06-17T09:15:00Z"
+        },
+        {
+            "account_id": 4,
+            "email": "jane.doe@gmail.com",
+            "name": "Jane Doe",
+            "password": "securepass",
+            "role": "customer", 
+            "created-at": "2024-06-18T11:45:00Z"
         }
     ]
 }
