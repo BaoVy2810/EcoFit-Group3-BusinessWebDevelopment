@@ -2,8 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Product Categories</title>
-        <link rel="stylesheet" href="../css/header_footer.css">
-        <link rel="stylesheet" type="text/css" href="../css/mainstyle.css">
+        <link rel="stylesheet" type="text/css" href="../css/USER_MAINSTYLE.css">
         <link rel="stylesheet" type="text/css" href="../css/style_category.css">
         <style>
         
@@ -43,7 +42,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* Để ảnh bên trong không tràn ra ngoài */
+            overflow: hidden; 
             border: 1px solid #eee;
         }
 
@@ -71,7 +70,15 @@
         </style>
     </head>
     <body style="background-color: #fff;">
-        <div id="header"></div>
+        <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+            const header = document.getElementById("header-frame");
+            header.onload = () => {
+                header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+            };
+            });
+        </script>
         <!--Promotion Banner Section-->
         <section class="shop-banner">
             <div class="shop-banner__content">
@@ -88,25 +95,25 @@
             <div class="categories-list">
                 <div class="category-item">
                     <div class="category-image-placeholder">
-                        <a href="#shirts"><img src="../images/shirt.jpg" alt="Shirt"></a>
+                        <a href="#shirts"><img src="../images/Product_images/shirt.jpg" alt="Shirt"></a>
                     </div>
                     <p>Shirts</p>
                 </div>
                 <div class="category-item">
                     <div class="category-image-placeholder">
-                        <a href="#pants"><img src="../images/pants1.jpg" alt="Pants"></a>
+                        <a href="#pants"><img src="../images/Product_images/pants1.jpg" alt="Pants"></a>
                     </div>
                     <p>Pants</p>
                 </div>
                 <div class="category-item">
                     <div class="category-image-placeholder">
-                        <a href="#dresses"><img src="../images/dresses1.jpg" alt="Dresses"></a>
+                        <a href="#dresses"><img src="../images/Product_images/dresses1.jpg" alt="Dresses"></a>
                     </div>
                     <p>Dresses</p>
                 </div>
                 <div class="category-item">
                     <div class="category-image-placeholder">
-                        <a href="#accessories"><img src="../images/bag1.jpg" alt="Accessories"></a>
+                        <a href="#accessories"><img src="../images/Product_images/bag1.jpg" alt="Accessories"></a>
                     </div>
                     <p>Accessories</p>
                 </div>
@@ -690,27 +697,6 @@
                 </div>
             </section>
         </main>
-        <div id="footer"></div>
-    <script>
-        const currentPage= 'payment1';
-
-        fetch('../template/header.html')
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-                const links = document.querySelectorAll('.nav-link');
-                links.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').includes('payment1.html')) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-
-        fetch('../template/footer.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('footer').innerHTML = data);
-    </script>
-
+        <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     </body>
 </html>

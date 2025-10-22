@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EcoFit Blog</title>
-    <link rel="stylesheet" href="blog.css" />
+    <link rel="stylesheet" href="../css/blog.css" />
   </head>
   <body>
     <!-- HEADER -->
@@ -13,7 +13,7 @@
       window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
         header.onload = () => {
-          header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+          header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
         };
       });
     </script>
@@ -192,7 +192,7 @@
     <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
 
     <!-- MAIN SCRIPT -->
-    <script src="script.js"></script>
+    <script src="../js/script.js"></script>
 
     <!-- ✅ ADDITIONAL FIX: Navigate to detail page -->
     <script>
