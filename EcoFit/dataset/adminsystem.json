@@ -1,0 +1,271 @@
+{
+  "User": [
+    {
+      "UserID": "U001",
+      "UserName": "Nguyen Van A",
+      "Email": "vana@example.com",
+      "Phone": "0912345678",
+      "Password": "123",
+      "Gender": "Male",
+      "DOB": "1999-05-12",
+      "Address": "123 Nguyen Trai, Hanoi",
+      "CreatedAt": "2024-10-01 09:20:00",
+      "Status": "Active"
+    },
+    {
+      "UserID": "U002",
+      "UserName": "Tran Thi B",
+      "Email": "thib@example.com",
+      "Phone": "0987654321",
+      "Password": "456",
+      "Gender": "Female",
+      "DOB": "2001-03-25",
+      "Address": "45 Le Loi, Ho Chi Minh City",
+      "CreatedAt": "2024-10-03 14:10:00",
+      "Status": "Active"
+    },
+    {
+      "UserID": "U003",
+      "UserName": "Le Minh C",
+      "Email": "minhc@example.com",
+      "Phone": "0978123456",
+      "Password": "789",
+      "Gender": "Other",
+      "DOB": "2000-12-05",
+      "Address": "12 Tran Hung Dao, Da Nang",
+      "CreatedAt": "2024-10-05 10:30:00",
+      "Status": "Inactive"
+    }
+  ],
+
+  "Category": [
+    { "CategoryID": "C001", "CategoryName": "Shirts" },
+    { "CategoryID": "C002", "CategoryName": "Pants" },
+    { "CategoryID": "C003", "CategoryName": "Dresses" },
+    { "CategoryID": "C004", "CategoryName": "Accessories" }
+  ],
+
+  "Product": [
+    {
+      "ProductID": "P001",
+      "ProductName": "Organic Cotton Tee",
+      "Description": "Soft, breathable T-shirt made from 100% GOTS-certified organic cotton.",
+      "Price": 150000,
+      "QuantityAvailable": 50,
+      "GreenScore": 95,
+      "CategoryID": "C001"
+    },
+    {
+      "ProductID": "P002",
+      "ProductName": "Bamboo Daily Shirt",
+      "Description": "Naturally antibacterial and moisture-wicking, ideal for everyday wear.",
+      "Price": 180000,
+      "QuantityAvailable": 60,
+      "GreenScore": 90,
+      "CategoryID": "C001"
+    },
+    {
+      "ProductID": "P003",
+      "ProductName": "Recycled Fiber Polo",
+      "Description": "Made from blended recycled polyester for a crisp yet eco-friendly look.",
+      "Price": 200000,
+      "QuantityAvailable": 40,
+      "GreenScore": 85,
+      "CategoryID": "C001"
+    },
+    {
+      "ProductID": "P004",
+      "ProductName": "Hemp Oversized Tee",
+      "Description": "Lightweight hemp fabric with a relaxed fit — sustainable and stylish.",
+      "Price": 190000,
+      "QuantityAvailable": 35,
+      "GreenScore": 88,
+      "CategoryID": "C001"
+    },
+    {
+      "ProductID": "P005",
+      "ProductName": "Organic Linen Pants",
+      "Description": "Breathable linen with a soft texture, ethically produced and biodegradable.",
+      "Price": 350000,
+      "QuantityAvailable": 30,
+      "GreenScore": 92,
+      "CategoryID": "C002"
+    },
+    {
+      "ProductID": "P006",
+      "ProductName": "Recycled Denim Jeans",
+      "Description": "Crafted from 60% recycled denim, durable with a minimal carbon footprint.",
+      "Price": 420000,
+      "QuantityAvailable": 45,
+      "GreenScore": 87,
+      "CategoryID": "C002"
+    },
+    {
+      "ProductID": "P007",
+      "ProductName": "Bamboo Lounge Pants",
+      "Description": "Ultra-soft bamboo viscose with natural stretch and comfort.",
+      "Price": 310000,
+      "QuantityAvailable": 25,
+      "GreenScore": 90,
+      "CategoryID": "C002"
+    },
+    {
+      "ProductID": "P008",
+      "ProductName": "Tencel Culottes",
+      "Description": "Made from Tencel™ Lyocell fibers — smooth, drapey, and planet-friendly.",
+      "Price": 370000,
+      "QuantityAvailable": 40,
+      "GreenScore": 89,
+      "CategoryID": "C002"
+    },
+    {
+      "ProductID": "P009",
+      "ProductName": "Eco Linen Midi Dress",
+      "Description": "Timeless silhouette with a clean design — biodegradable linen, breathable fit.",
+      "Price": 480000,
+      "QuantityAvailable": 20,
+      "GreenScore": 94,
+      "CategoryID": "C003"
+    },
+    {
+      "ProductID": "P010",
+      "ProductName": "Organic Cotton Wrap Dress",
+      "Description": "Flowy, versatile, and made from certified organic cotton.",
+      "Price": 450000,
+      "QuantityAvailable": 30,
+      "GreenScore": 91,
+      "CategoryID": "C003"
+    },
+    {
+      "ProductID": "P011",
+      "ProductName": "Recycled Satin Slip Dress",
+      "Description": "Elegant sheen from upcycled satin blends, perfect for any occasion.",
+      "Price": 500000,
+      "QuantityAvailable": 25,
+      "GreenScore": 85,
+      "CategoryID": "C003"
+    },
+    {
+      "ProductID": "P012",
+      "ProductName": "Bamboo Ribbed Dress",
+      "Description": "Stretchy, soft, and temperature-regulating for effortless comfort.",
+      "Price": 460000,
+      "QuantityAvailable": 25,
+      "GreenScore": 90,
+      "CategoryID": "C003"
+    },
+    {
+      "ProductID": "P013",
+      "ProductName": "Upcycled Tote Bag",
+      "Description": "Each tote is made from repurposed textile scraps — unique and waste-free.",
+      "Price": 220000,
+      "QuantityAvailable": 80,
+      "GreenScore": 95,
+      "CategoryID": "C004"
+    },
+    {
+      "ProductID": "P014",
+      "ProductName": "Cork Leather Wallet",
+      "Description": "Vegan-friendly cork leather wallet with minimalist design and durability.",
+      "Price": 280000,
+      "QuantityAvailable": 70,
+      "GreenScore": 88,
+      "CategoryID": "C004"
+    },
+    {
+      "ProductID": "P015",
+      "ProductName": "Organic Cotton Cap",
+      "Description": "Lightweight, breathable cap made from natural cotton canvas.",
+      "Price": 180000,
+      "QuantityAvailable": 50,
+      "GreenScore": 86,
+      "CategoryID": "C004"
+    },
+    {
+      "ProductID": "P016",
+      "ProductName": "Recycled Plastic Sunglasses",
+      "Description": "Fashion meets sustainability — frames made from ocean-recycled plastic.",
+      "Price": 320000,
+      "QuantityAvailable": 60,
+      "GreenScore": 89,
+      "CategoryID": "C004"
+    }
+  ],
+
+  "Cart": [
+    { "CartID": "CA001", "UserID": "U001" },
+    { "CartID": "CA002", "UserID": "U002" }
+  ],
+
+  "CartItem": [
+    { "CartID": "CA001", "ProductID": "P001", "Quantity": 2 },
+    { "CartID": "CA001", "ProductID": "P005", "Quantity": 1 },
+    { "CartID": "CA002", "ProductID": "P010", "Quantity": 1 }
+  ],
+
+  "Order": [
+    {
+      "OrderID": "O001",
+      "OrderDate": "2024-10-10 15:20:00",
+      "OrderStatus": "Delivered",
+      "ShippingAddress": "123 Nguyen Trai, Hanoi",
+      "ShippingMethod": "Home Delivery",
+      "DiscountCode": "ECO10",
+      "UserID": "U001",
+      "PromoCode": "PR001"
+    },
+    {
+      "OrderID": "O002",
+      "OrderDate": "2024-10-15 09:45:00",
+      "OrderStatus": "Processing",
+      "ShippingAddress": "45 Le Loi, Ho Chi Minh City",
+      "ShippingMethod": "Home Delivery",
+      "DiscountCode": null,
+      "UserID": "U002",
+      "PromoCode": "PR002"
+    }
+  ],
+
+  "Payment": [
+    {
+      "PaymentID": "PAY001",
+      "PaymentMethod": "Via QR code",
+      "PaymentStatus": "Success",
+      "TransactionDate": "2024-10-10 15:25:00",
+      "OrderID": "O001"
+    },
+    {
+      "PaymentID": "PAY002",
+      "PaymentMethod": "Via Momo",
+      "PaymentStatus": "Pending",
+      "TransactionDate": "2024-10-15 09:50:00",
+      "OrderID": "O002"
+    }
+  ],
+
+  "Promotion": [
+    {
+      "PromotionID": "PR001",
+      "PromoDescription": "10% off all eco-friendly shirts this week!",
+      "PromoCode": "ECO10",
+      "DiscountRate": 10.00
+    },
+    {
+      "PromotionID": "PR002",
+      "PromoDescription": "15% discount on orders over 500,000đ",
+      "PromoCode": "SAVE15",
+      "DiscountRate": 15.00
+    }
+  ],
+
+  "OrderItem": [
+    { "OrderID": "O001", "ProductID": "P001", "Quantity": 2, "UnitPrice": 150000 },
+    { "OrderID": "O001", "ProductID": "P005", "Quantity": 1, "UnitPrice": 350000 },
+    { "OrderID": "O002", "ProductID": "P010", "Quantity": 1, "UnitPrice": 450000 }
+  ],
+
+  "GreenPoint": [
+    { "GreenPointID": "GP001", "OrderID": "O001", "UserID": "U001", "Points": 120 },
+    { "GreenPointID": "GP002", "OrderID": "O002", "UserID": "U002", "Points": 90 }
+  ]
+}
