@@ -1,632 +1,695 @@
 <html lang="vi">
-  <head>
-      <meta charset="UTF-8">
-      <title>Product Categories</title>
-      <link rel="stylesheet" type="text/css" href="../css/style_category.css">
-      <link rel="stylesheet" href="../css/header_footer.css">
-  </head>
-  <body>
-      <div id="header"></div>
-      <!-- BANNER -->
-      <header class="hero-section">
-        <div class="hero-content">
-            <p class="special-offer-text">Special Offer</p>
-            <h1>25% OFF</h1>
-            <a href="#" class="btn-get-it">GET IT</a>
-        </div>
-      </header>
-      
-      <!-- CATEGORIES -->
-      <section class="shop-by-category">
-          <h2>Shop by category</h2>
-          <div class="categories-list">
-              <div class="category-item">
-                  <div class="category-image-placeholder">
-                      <a href="#shirts"><img src="../images/shirt.jpg" alt="Shirt"></a>
-                  </div>
-                  <p>Shirts</p>
-              </div>
-              <div class="category-item">
-                  <div class="category-image-placeholder">
-                      <a href="#pants"><img src="../images/pants1.jpg" alt="Pants"></a>
-                  </div>
-                  <p>Pants</p>
-              </div>
-              <div class="category-item">
-                  <div class="category-image-placeholder">
-                      <a href="#dresses"><img src="../images/dresses1.jpg" alt="Dresses"></a>
-                  </div>
-                  <p>Dresses</p>
-              </div>
-              <div class="category-item">
-                  <div class="category-image-placeholder">
-                      <a href="#accessories"><img src="../images/bag1.jpg" alt="Accessories"></a>
-                  </div>
-                  <p>Accessories</p>
-              </div>
-          </div>
-          <div class="pagination-dots">
-              <span class="dot active"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
-          </div>
-      </section>
-      <main>
-        <!-- BEST SELLERS -->
-          <section class="best-sellers">
-              <div class="best-sellers-header">
-                  <h2>Best Sellers</h2>
-                  <a href="#" class="view-all">View all products</a>
-              </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Product Categories</title>
+        <link rel="stylesheet" href="../css/header_footer.css">
+        <link rel="stylesheet" type="text/css" href="../css/mainstyle.css">
+        <link rel="stylesheet" type="text/css" href="../css/style_category.css">
+        <style>
+        
+        /* Shop by Category Section */
+        .shop-by-category {
+            padding: 40px 0; /* Giữ padding trên/dưới. Không có padding ngang (trái/phải) */
+            text-align: center;
+            width: 100%;
+            height: 300px;
+        }
 
-              <div class="products-grid">
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Organic Cotton Tee</p>
-                          <div class="category-bought-row">
+        .shop-by-category h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .categories-list {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .category-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .category-image-placeholder {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Để ảnh bên trong không tràn ra ngoài */
+            border: 1px solid #eee;
+        }
+
+        .category-image-placeholder:hover {
+            filter: brightness(0.9);
+            transition: filter 0.3s ease;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-image-placeholder img {
+            width: 140px;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            object-position: center;
+        }
+
+        .category-item p {
+            font-weight: 600;
+            color: #333;
+        }
+        </style>
+    </head>
+    <body style="background-color: #fff;">
+        <div id="header"></div>
+        <!--Promotion Banner Section-->
+        <section class="shop-banner">
+            <div class="shop-banner__content">
+                <p>Special Offer</p>
+                <h1>25% OFF</h1>
+                <button id="getVoucherBtn" class="shop-banner__btn">GET IT</button>
+                <img src="../images/page_control.png"/>
+            </div>
+        </section>
+
+        <!-- CATEGORIES -->
+        <section class="shop-by-category">
+            <h2>Shop by category</h2>
+            <div class="categories-list">
+                <div class="category-item">
+                    <div class="category-image-placeholder">
+                        <a href="#shirts"><img src="../images/shirt.jpg" alt="Shirt"></a>
+                    </div>
+                    <p>Shirts</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-image-placeholder">
+                        <a href="#pants"><img src="../images/pants1.jpg" alt="Pants"></a>
+                    </div>
+                    <p>Pants</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-image-placeholder">
+                        <a href="#dresses"><img src="../images/dresses1.jpg" alt="Dresses"></a>
+                    </div>
+                    <p>Dresses</p>
+                </div>
+                <div class="category-item">
+                    <div class="category-image-placeholder">
+                        <a href="#accessories"><img src="../images/bag1.jpg" alt="Accessories"></a>
+                    </div>
+                    <p>Accessories</p>
+                </div>
+            </div>
+            <div class="pagination-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </section>
+        <main>
+    </section>
+        <!-- BEST SELLERS -->
+            <section class="best-sellers">
+                <div class="best-sellers-header">
+                    <h2>Best Sellers</h2>
+                    <a href="#" class="view-all">View all products</a>
+                </div>
+
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Organic Cotton Tee</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Shirts</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Product Name</p>
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Product Name</p>
 
-                          <div class="category-bought-row">
+                            <div class="category-bought-row">
                             <p class="product-category">Pants</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Product Name</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Product Name</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Dresses</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Product Name</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Product Name</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Accessories</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <div class="pagination-dots">
-                  <span class="dot active"></span>
-                  <span class="dot"></span>
-              </div>
-          </section>
-          <!-- SHIRTS -->
-          <section class="best-sellers">
-              <div class="best-sellers-header">
-                  <h2 id="shirts">Shirts</h2>
-                  <a href="#" class="view-all">View all products</a>
-              </div>
+                <div class="pagination-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </section>
+            <!-- SHIRTS -->
+            <section class="best-sellers">
+                <div class="best-sellers-header">
+                    <h2 id="shirts">Shirts</h2>
+                    <a href="#" class="view-all">View all products</a>
+                </div>
 
-              <div class="products-grid">
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">135,000 đ</span>
-                              <span class="price-old">150,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Organic Cotton Tee</p>
-                          <div class="category-bought-row">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">135,000 đ</span>
+                                <span class="price-old">150,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Organic Cotton Tee</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Shirts</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">172,000 đ</span>
-                              <span class="price-old">180,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 4.9</span>
-                          </div>
-                          <p class="product-name">Bamboo Daily Shirt</p>
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">172,000 đ</span>
+                                <span class="price-old">180,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 4.9</span>
+                            </div>
+                            <p class="product-name">Bamboo Daily Shirt</p>
 
-                          <div class="category-bought-row">
+                            <div class="category-bought-row">
                             <p class="product-category">Shirts</p>
                             <span class="bought-count">350+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">180,000 đ</span>
-                              <span class="price-old">200,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 4.8</span>
-                          </div>
-                          <p class="product-name">Recycled Fiber Polo</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">180,000 đ</span>
+                                <span class="price-old">200,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 4.8</span>
+                            </div>
+                            <p class="product-name">Recycled Fiber Polo</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Shirts</p>
                             <span class="bought-count">420+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">181,000 đ</span>
-                              <span class="price-old">190,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Hemp Oversized Tee</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">181,000 đ</span>
+                                <span class="price-old">190,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Hemp Oversized Tee</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Shirts</p>
                             <span class="bought-count">300+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <div class="pagination-dots">
-                  <span class="dot active"></span>
-                  <span class="dot"></span>
-              </div>
-          </section>
-          <!-- PANTS -->
-          <section class="best-sellers">
-              <div class="best-sellers-header">
-                  <h2 id="pants">Pants</h2>
-                  <a href="#" class="view-all">View all products</a>
-              </div>
+                <div class="pagination-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </section>
+            <!-- PANTS -->
+            <section class="best-sellers">
+                <div class="best-sellers-header">
+                    <h2 id="pants">Pants</h2>
+                    <a href="#" class="view-all">View all products</a>
+                </div>
 
-              <div class="products-grid">
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">315,000 đ</span>
-                              <span class="price-old">350,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Organic Linen Pants</p>
-                          <div class="category-bought-row">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">315,000 đ</span>
+                                <span class="price-old">350,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Organic Linen Pants</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Pants</p>
                             <span class="bought-count">400+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">378,000 đ</span>
-                              <span class="price-old">420,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 4.9</span>
-                          </div>
-                          <p class="product-name">Recycled Denim Jeans</p>
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">378,000 đ</span>
+                                <span class="price-old">420,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 4.9</span>
+                            </div>
+                            <p class="product-name">Recycled Denim Jeans</p>
 
-                          <div class="category-bought-row">
+                            <div class="category-bought-row">
                             <p class="product-category">Pants</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">279,000 đ</span>
-                              <span class="price-old">310,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Bamboo Lounge Pants</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">279,000 đ</span>
+                                <span class="price-old">310,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Bamboo Lounge Pants</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Pants</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">333,000 đ</span>
-                              <span class="price-old">370,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 4.9</span>
-                          </div>
-                          <p class="product-name">Tencel Culottes</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">333,000 đ</span>
+                                <span class="price-old">370,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 4.9</span>
+                            </div>
+                            <p class="product-name">Tencel Culottes</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Pants</p>
                             <span class="bought-count">270+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <div class="pagination-dots">
-                  <span class="dot active"></span>
-                  <span class="dot"></span>
-              </div>
-          </section>
-          <!-- DRESSES -->
-          <section class="best-sellers">
-              <div class="best-sellers-header">
-                  <h2 id="dresses">Dresses</h2>
-                  <a href="#" class="view-all">View all products</a>
-              </div>
+                <div class="pagination-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </section>
+            <!-- DRESSES -->
+            <section class="best-sellers">
+                <div class="best-sellers-header">
+                    <h2 id="dresses">Dresses</h2>
+                    <a href="#" class="view-all">View all products</a>
+                </div>
 
-              <div class="products-grid">
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Eco Linen Midi Dress</p>
-                          <div class="category-bought-row">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Eco Linen Midi Dress</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Dresses</p>
                             <span class="bought-count">650+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Organic Cotton Wrap Dress</p>
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Organic Cotton Wrap Dress</p>
 
-                          <div class="category-bought-row">
+                            <div class="category-bought-row">
                             <p class="product-category">Dresses</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Recycled Satin Slip Dress</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Recycled Satin Slip Dress</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Dresses</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Bamboo Ribbed Dress</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Bamboo Ribbed Dress</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Dresses</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <div class="pagination-dots">
-                  <span class="dot active"></span>
-                  <span class="dot"></span>
-              </div>
-          </section>
-          <!-- ACCESSORIES -->
-          <section class="best-sellers">
-              <div class="best-sellers-header">
-                  <h2 id="accessories">Accessories</h2>
-                  <a href="#" class="view-all">View all products</a>
-              </div>
+                <div class="pagination-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </section>
+            <!-- ACCESSORIES -->
+            <section class="best-sellers">
+                <div class="best-sellers-header">
+                    <h2 id="accessories">Accessories</h2>
+                    <a href="#" class="view-all">View all products</a>
+                </div>
 
-              <div class="products-grid">
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Upcycled Tote Bag</p>
-                          <div class="category-bought-row">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Upcycled Tote Bag</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Accessories</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Cork Leather Wallet</p>
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Cork Leather Wallet</p>
 
-                          <div class="category-bought-row">
+                            <div class="category-bought-row">
                             <p class="product-category">Accessories</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Organic Cotton Cap</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Organic Cotton Cap</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Accessories</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                          </div>
-                      </div>
-                  </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                            </div>
+                        </div>
+                    </div>
 
-                  <div class="product-card">
-                      <div class="discount-badge">10% off</div>
-                      <div class="product-image-placeholder">
-                          <i class="fas fa-image"></i>
-                      </div>
-                      <div class="product-info">
-                          <div class="price-rating">
-                              <span class="price-current">100,000 đ</span>
-                              <span class="price-old">100,000 đ</span>
-                              <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
-                          </div>
-                          <p class="product-name">Recycled Plastic Sunglasses</p>
-                          <div class="category-bought-row">
+                    <div class="product-card">
+                        <div class="discount-badge">10% off</div>
+                        <div class="product-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="price-rating">
+                                <span class="price-current">100,000 đ</span>
+                                <span class="price-old">100,000 đ</span>
+                                <span class="rating"><img src="../images/ratingstar.png"/> 5.0</span>
+                            </div>
+                            <p class="product-name">Recycled Plastic Sunglasses</p>
+                            <div class="category-bought-row">
                             <p class="product-category">Accessories</p>
                             <span class="bought-count">500+ bought</span>
-                          </div>
-                          
-                          <div class="product-actions">
-                              <button class="btn-add-to-cart">Add to cart</button>
-                              <button class="btn-buy-now">Buy now</button>
-                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn-add-to-cart">Add to cart</button>
+                                <button class="btn-buy-now">Buy now</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-              <div class="pagination-dots">
-                  <span class="dot active"></span>
-                  <span class="dot"></span>
-              </div>
-          </section>
-      </main>
-      <div id="footer"></div>
+                <div class="pagination-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </section>
+        </main>
+        <div id="footer"></div>
     <script>
         const currentPage= 'payment1';
-    
+
         fetch('../template/header.html')
             .then(res => res.text())
             .then(data => {
@@ -645,5 +708,5 @@
             .then(data => document.getElementById('footer').innerHTML = data);
     </script>
 
-  </body>
+    </body>
 </html>
