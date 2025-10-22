@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions - EcoFit</title>
+    <link rel="stylesheet" href="../css/header_footer.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .stylebody {
+            font-family: 'Outfit' !important;
+            background-color: #F9FCF8;
+            color: #333;
+            line-height: 1.6;
+            text-align: justify;
+            scroll-padding-top: 90px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            
+        }
+
+        .term_head {
+            text-align: center;
+            margin-bottom: 50px;
+            
+        }
+
+        .term_head h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .term_head h1 span {
+            color: #5a9e5a;
+        }
+
+        .term_head p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .content-wrapper {
+            display: flex;
+            gap: 60px;
+            position: relative;
+        }
+
+        .content-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 280px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: #ddd;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            padding-right: 40px;
+            position: sticky;
+            top: 120px;
+            align-self: flex-start;
+            height: fit-content;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .sidebar nav ul li a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            display: block;
+        }
+
+        .sidebar nav ul li a:hover,
+        .sidebar nav ul li a.current-section {
+            color: #5a9e5a; /* Đổi màu nổi bật */
+            font-weight: 700; /* In đậm hơn */
+            font-size: 1.06rem; /* Phóng to nhẹ chữ */
+            transform: scale(1.05); /* Tùy chọn: Nhấn mạnh thêm chút nữa */
+            display: inline-block; /* Cần có để transform: scale() hoạt động */
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            text-align: justify;
+            margin-right: 45px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .section p {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 15px;
+        }
+
+        .section ul li {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        .section ul li::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+            color: #5a9e5a;
+            font-weight: bold;
+        }
+
+        .section ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .section ol li {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .section ol li strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 40px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 15px;
+            }
+
+            .term_head h1 {
+                font-size: 2rem;
+            }
+
+            .section h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body class="stylebody">
+    <div id="header"></div>
+    <div class="container">
+        <div class="term_head">
+            <h1>Terms and <span>Conditions</span></h1>
+            <p>Last updated: October 4<sup>th</sup>, 2025</p>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav>
+                    <ul>
+                        <li><a href="#general">General Principles & Terms</a></li>
+                        <li><a href="#process">Process</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <section class="section" id="general">
+                    <h2>General Principles & Terms</h2>
+                    
+                    <h3>Definitions</h3>
+                    <p>Throughout this website (SITE), EcoFit is committed to transparency while providing our eco-friendly products. The brand was created to bridge the gap between the growing demand for green consumption and the lack of a sustainable online shopping option in Vietnam.</p>
+                    <ul>
+                        <li><strong>Website</strong> refers to the official website of www.ecofit.com where customers can browse information, place orders, and use online services.</li>
+                        <li><strong>Products</strong> includes sustainable or organically-labeled clothing, footwear, and accessories showcased on the website.</li>
+                        <li><strong>Products</strong> includes all items available for sale on the website, such as eco-friendly goods, sustainable consumer products, and/or eco-friendly items, even household products, and/or organic items featured by EcoFit.</li>
+                        <li><strong>Order</strong> is a purchase request authorized by a customer through EcoFit's online ordering system.</li>
+                        <li><strong>Distribution</strong> is via Vietnam online EcoFit that relies product transactions and commercial handbooks, considering regulations, credit, monetary use, flexibilities, and production process.</li>
+                    </ul>
+
+                    <h3>General Regulation</h3>
+                    <p>All products sold are entirely safe for human use on the skin and origin. EcoFit strictly prohibits counterfeit, substandard, or banned goods.</p>
+                    <p>All transactions are conducted transparently and fairly to ensure consumer protection and a healthy e-commerce ecosystem.</p>
+                    <p>By accessing and using the website, customers are deemed to have read, understood, and agreed to these Terms & Conditions. EcoFit reserves the right to update or revise the terms, with changes publicly announced at least 30 days in advance. Customers are advised to review updates to stay aware of the applied terms.</p>
+                    <p>Customers confirm that (i) they are at least 18 years old or capable of entering valid contracts, and (ii) have full civil capacity (parent/main transactions under Vietnamese laws).</p>
+                </section>
+                <hr style="border-top: 1px solid "/>
+                <section class="section" id="process">
+                    <h2>Process</h2>
+
+                    <h3>1. Placing an Order</h3>
+                    <p>EcoFit reserves the right to decline or cancel orders showing signs of incorrect information, suspected fraud, or irregular payment conditions. Any cancellation will be promptly notified to the customer.</p>
+                    <p>During periods of promotions, when limited quantities are available, EcoFit prioritizes orders based on receiving time, when placing a valid transaction.</p>
+                    <p>EcoFit is not responsible for issues arising from incorrect or missing information.</p>
+                    <p>Orders placed outside business hours will be processed the next working day, with response times in the official promotion.</p>
+
+                    <h3>2. Shopping Process</h3>
+                    <p><strong>Step 1:</strong> Visit the EcoFit website and search for products using the search bar or filters (category, brand, price, or eco-friendly choice).</p>
+                    <p><strong>Step 2:</strong> Select the desired product and click "Add to Cart".</p>
+                    <p><strong>Step 3:</strong> Enter the cart, verify shipping price, quantities, and product details. Click "Checkout" to proceed.</p>
+                    <p><strong>Step 4:</strong> Enter shipping information, choose delivery and payment methods, and apply discount codes (if any).</p>
+                    <p><strong>Step 5:</strong> Click the item "I have read and agree to the Terms & Conditions".</p>
+                    <p><strong>Step 6:</strong> "Complete the order". The system will send an email confirmation with your order ID.</p>
+
+                    <h3>3. Payment Policy</h3>
+                    <p><strong>Step 1:</strong> Customers confirm order information and choose a preferable payment method.</p>
+                    <p><strong>Step 2:</strong> EcoFit supports the following payment methods:</p>
+                    <ul>
+                        <li>Online payment via bank cards (domestic ATM, Visa, MasterCard)</li>
+                        <li>Online payment via e-wallets (MoMo, ZaloPay)</li>
+                        <li>Cash on Delivery (COD)</li>
+                    </ul>
+                    <p>Currency applied: All transactions are conducted in Vietnamese Dong (VND).</p>
+                    <p>International credit, exchange rate differences or processing fees may apply depending on the issuing bank's policy.</p>
+
+                    <h3>4. Delivery</h3>
+                    <p>Delivery Commitment: EcoFit cooperates with reputable shipping partners to ensure goods are delivered safely and on time.</p>
+                    <p>Note that: The system automatically calculates and displays the realistic cost of checkout. Some road/flight-free regions may incur fees from shipping order EcoFit's promotional programs.</p>
+                    <p><strong>Free Shipping:</strong> Available for frequent EcoFit members with high "Year Pass" points.</p>
+                    <p><strong>Standard Estimated Delivery Time:</strong></p>
+                    <ul>
+                        <li>Inner city: 1-3 business days.</li>
+                        <li>Suburban or nearby provinces: 2-5 business days.</li>
+                        <li>Remote areas or islands: 5-7 business days.</li>
+                    </ul>
+                    <p>In cases of force majeure (weather, natural disasters, epidemics, etc.), delivery time may vary, and EcoFit will inform customers in advance.</p>
+
+                    <h3>5. Confirmation of Goods Receipt</h3>
+                    <p>After successful delivery, the system will send a confirmation notice to the customer. Buyers are encouraged to check their product carefully upon delivery arrival.</p>
+                    <p>If damage, missing items, or incorrect products are found, customers should refuse to accept the order and notify EcoFit within 24 hours.</p>
+
+                    <h3>6. Return and Exchange Policy</h3>
+                    <p>EcoFit accepts returns or exchanges in the following cases:</p>
+                    <ul>
+                        <li>Products are defective or damaged during transportation.</li>
+                        <li>Products differ from descriptions, models, or size ordered.</li>
+                        <li>Products remain unused, with original tags and packaging, and the return request is made within 7 days of receipt.</li>
+                    </ul>
+                    <p><strong>Return and Exchange Process:</strong></p>
+                    <ul>
+                        <li><strong>Step 1:</strong> Customers contact the customer service department via hotline or email.</li>
+                        <li><strong>Step 2:</strong> Provide order details and photos showing specific faults.</li>
+                        <li><strong>Step 3:</strong> EcoFit reviews and guides customers to send the product back to the warehouse.</li>
+                        <li><strong>Step 4:</strong> After receiving the returned product, EcoFit issues a replacement or refund within 3-5 working days.</li>
+                    </ul>
+
+                    <h3>7. Refund Policy</h3>
+                    <p>For online payment orders: Refunds will be credited to the original payment account within 5-7 business days after confirmation.</p>
+                    <p>For COD orders: Refunds will be made via bank transfer based on the customer's registered bank information.</p>
+                    <p>If customers cancel an order before shipment, the full amount will be refunded 100%.</p>
+
+                    <h3>8. Price and Customer Benefits</h3>
+                    <p>Displayed prices on the EcoFit website always include VAT.</p>
+                    <p>Promotions, discount codes, and "Green Points" rewards are applied according to EcoFit's current policies.</p>
+                    <p>Customers connecting Green Points while purchasing, which can be redeemed for future purchases that support EcoFit's "Virtual Tree Planting Fund."</p>
+
+                    <h3>9. Greenaway</h3>
+                    <p>EcoFit is committed to running an eco-friendly website where EcoFit that measures environmental friendliness based on factors such as raw material usage, environmental certification, manufacturing process, and recyclability. This score is for reference purposes only, intended to assist customers in making eco-conscious purchasing decisions. It does not serve as a legal guarantee or warranty from EcoFit.</p>
+                    <hr style="border-top: 1px solid; margin-top: 40px; "/>
+                </section>
+            </main>
+        </div>
+    </div>
+    <div id="footer"></div>
+    <script>
+        fetch('../template/header.html')
+            .then(res => res.text())
+            .then(data => document.getElementById('header').innerHTML = data);
+
+        fetch('../template/footer.html')
+            .then(res => res.text())
+            .then(data => document.getElementById('footer').innerHTML = data);
+    </script>
+    <script>
+        const sections = document.querySelectorAll('.main-content .section[id]');
+        const navLinks = document.querySelectorAll('.sidebar nav ul li a');
+
+        // Cấu hình Intersection Observer
+        const options = {
+            root: null,
+            rootMargin: '-120px 0px 0px 0px', 
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                const targetLink = document.querySelector(`.sidebar nav ul li a[href="#${id}"]`);
+
+                if (entry.isIntersecting) {
+                    // 1. Xóa class active khỏi TẤT CẢ các link
+                    navLinks.forEach(link => {
+                        link.classList.remove('current-section');
+                    });
+                    
+                    // 2. Thêm class active vào link TƯƠNG ỨNG
+                    if (targetLink) {
+                        targetLink.classList.add('current-section');
+                    }
+                }
+            });
+        }, options);
+
+        // Bắt đầu quan sát các section
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Tùy chọn: Xử lý cho section đầu tiên khi trang vừa load (tránh trường hợp chưa cuộn mà chưa có link nào active)
+        if (sections.length > 0) {
+            const firstLinkId = sections[0].getAttribute('id');
+            const firstLink = document.querySelector(`.sidebar nav ul li a[href="#${firstLinkId}"]`);
+            if (firstLink) {
+                firstLink.classList.add('current-section');
+            }
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>
