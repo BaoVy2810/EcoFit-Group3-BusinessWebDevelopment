@@ -1,36 +1,56 @@
 {
-    "accounts": [
-        {
-            "account_id": 1,
-            "email": "admin@gmail.com",
-            "name": "Admin",
-            "password": "admin123",
-            "role": "administrator",
-            "created-at": "2024-06-15T10:00:00Z"
-        },
-        {
-            "account_id": 2,
-            "email": "dieubh@gmail.com",
-            "name": "Hoang Dieu",
-            "password": "123",
-            "role": "customer",
-            "created-at": "2024-06-16T14:30:00Z"
-        },
-        {
-            "account_id": 3,
-            "email": "john.doe@gmail.com",
-            "name": "John Doe",
-            "password": "password123",
-            "role": "customer",
-            "created-at": "2024-06-17T09:15:00Z"
-        },
-        {
-            "account_id": 4,
-            "email": "jane.doe@gmail.com",
-            "name": "Jane Doe",
-            "password": "securepass",
-            "role": "customer", 
-            "created-at": "2024-06-18T11:45:00Z"
-        }
-    ]
+  "profile": [
+    {
+      "profile_id": "1",
+      "fullname": "Bui Hoang Dieu",
+      "email": "admin@gmail.com",
+      "phone": "",
+      "password": "password123",
+      "gender": "female",
+      "dob": "",
+      "address": "",
+      "created_at": "2025-08-04 02:20:00",
+      "status": "active",
+      "role": "administrator"
+    },
+    {
+      "id": "2",
+      "fullname": "Tran Ngoc Bao Vy",
+      "email": "vy@gmail.com",
+      "phone": "0912345678",
+      "password": "123",
+      "gender": "male",
+      "dob": "1999-05-12",
+      "address": "123 Nguyen Trai, Hanoi",
+      "created_at": "2024-10-01 09:20:00",
+      "status": "active",
+      "role": "customer"
+    },
+    {
+      "id": "3",
+      "fullname": "Truong Nguyet Ha",
+      "email": "ha@gmail.com",
+      "phone": "0987654321",
+      "password": "456",
+      "gender": "female",
+      "dob": "2001-03-25",
+      "address": "45 Le Loi, Ho Chi Minh City",
+      "created_at": "2024-10-03 14:10:00",
+      "status": "active",
+      "role": "customer"
+    },
+    {
+      "id": "4",
+      "fullname": "Nguyen Duong Thu Uyen",
+      "email": "minhc@example.com",
+      "phone": "0378123456",
+      "password": "789",
+      "gender": "other",
+      "dob": "2004-12-05",
+      "address": "12 Tran Hung Dao, Da Nang",
+      "created_at": "2024-10-05 10:30:00",
+      "status": "inactive",
+      "role": "customer"
+    }
+  ]
 }

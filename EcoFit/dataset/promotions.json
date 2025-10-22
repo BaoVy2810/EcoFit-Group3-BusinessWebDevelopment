@@ -1,0 +1,16 @@
+{
+  "promotion": [
+    {
+      "promotion_id": "PR001",
+      "promo_description": "10% off all eco-friendly shirts this week!",
+      "promo_code": "ECO10",
+      "discount_rate": 10.0
+    },
+    {
+      "promotion_id": "PR002",
+      "promo_description": "15% discount on orders over 500,000đ",
+      "promo_code": "SAVE15",
+      "discount_rate": 15.0
+    }
+  ]
+}

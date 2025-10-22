@@ -1,0 +1,16 @@
+{
+  "green_point": [
+    {
+      "green_point_id": "GP001",
+      "order_id": "O001",
+      "user_id": "U001",
+      "points": 120
+    },
+    {
+      "green_point_id": "GP002",
+      "order_id": "O002",
+      "user_id": "U002",
+      "points": 90
+    }
+  ]
+}
