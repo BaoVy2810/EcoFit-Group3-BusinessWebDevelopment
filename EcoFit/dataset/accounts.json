@@ -51,6 +51,19 @@
       "created_at": "2024-10-05 10:30:00",
       "status": "inactive",
       "role": "customer"
+    },
+    {
+      "id": "4",
+      "fullname": "Jessica",
+      "email": "jessica@example.com",
+      "phone": "0378123456",
+      "password": "789",
+      "gender": "other",
+      "dob": "",
+      "address": "",
+      "created_at": "2024-10-05 10:30:00",
+      "status": "active",
+      "role": "administrator"
     }
   ]
 }
