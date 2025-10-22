@@ -14,7 +14,7 @@
       "role": "administrator"
     },
     {
-      "id": "2",
+      "profile_id": "2",
       "fullname": "Tran Ngoc Bao Vy",
       "email": "vy@gmail.com",
       "phone": "0912345678",
@@ -27,7 +27,7 @@
       "role": "customer"
     },
     {
-      "id": "3",
+      "profile_id": "3",
       "fullname": "Truong Nguyet Ha",
       "email": "ha@gmail.com",
       "phone": "0987654321",
@@ -40,7 +40,7 @@
       "role": "customer"
     },
     {
-      "id": "4",
+      "profile_id": "4",
       "fullname": "Nguyen Duong Thu Uyen",
       "email": "uyen@example.com",
       "phone": "0378123456",
