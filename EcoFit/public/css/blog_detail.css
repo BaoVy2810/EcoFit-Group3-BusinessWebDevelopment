@@ -1,0 +1,212 @@
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #2e7d32;
+}
+
+.nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav a.active {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-bar {
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 6px 15px;
+  outline: none;
+}
+
+.icon {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Hero */
+.blog-hero img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+/* Blog Detail Content */
+.blog-detailed {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.blog-detailed h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #222;
+}
+
+.blog-detailed p#blog-date {
+  text-align: center;
+  color: #777;
+  margin-bottom: 40px;
+}
+
+.blog-detailed h2 {
+  margin-top: 40px;
+  color: #2e7d32;
+}
+
+.blog-detailed p {
+  text-align: justify;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+
+/* Footer */
+.footer {
+  background-color: #e8f5e9;
+  padding: 50px 80px 20px;
+  margin-top: 60px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  width: 30%;
+}
+
+.footer-links, .footer-contact {
+  width: 30%;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.footer-bottom {
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.footer-policy a {
+  text-decoration: none;
+  color: #2e7d32;
+  margin-left: 20px;
+}
+
+/* --- FIX HEADER ALIGNMENT --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+/* Đảm bảo các phần không rớt dòng */
+.logo,
+.nav,
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  gap: 25px;
+}
+
+.actions {
+  gap: 20px;
+  align-items: center;
+}
+
+/* Search box gọn lại */
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 150px;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Ẩn đường viền khi focus */
+.search-input:focus {
+  outline: none;
+}
+
+/* Căn chỉnh icon đều nhau */
+.notification-container,
+.cart-container,
+.user-avatar {
+  display: flex;
+  align-items: center;
+}
+
+.cart-btn,
+.user-btn,
+.bell-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
