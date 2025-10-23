@@ -328,13 +328,13 @@
         }
       }
     </style>
-  <script src="../js/login.js"></script>
+    <script src="../js/login.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="image-section"></div>
 
-      <div class="form-section" >
+      <div class="form-section">
         <div class="form-content">
           <h1>Welcome back to EcoFit!</h1>
           <p class="subtitle">
@@ -345,7 +345,12 @@
           <form onsubmit="return false;" name="my_form">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="sample@gmail.com" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="sample@gmail.com"
+              />
             </div>
 
             <div class="form-group">
@@ -368,14 +373,16 @@
               </div>
             </div>
 
-            <button type="button" class="btn-login" onclick="process_login()">Log in</button>
+            <button type="button" class="btn-login" onclick="process_login()">
+              Log in
+            </button>
 
             <div class="divider">
               <span>OR</span>
             </div>
 
             <button type="button" class="btn-google">
-              <img src="../images/google_logo.png" width="24px"/>
+              <img src="../images/google_logo.png" width="24px" />
               Continue with Google
             </button>
 
@@ -385,6 +392,6 @@
           </form>
         </div>
       </div>
-    </div> 
+    </div>
   </body>
 </html>

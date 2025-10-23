@@ -20,12 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("blog-title").textContent = blog.title;
       document.getElementById("blog-date").textContent = blog.date;
 
-      // 🖼️ Cập nhật hình ảnh blog (nếu có trong data)
+      // 🖼️ Cập nhật hình ảnh blog
       const img = document.getElementById("blog-image");
-      if (blog.image) {
-        img.src = `../../../src/${blog.image}`;
-        img.alt = blog.title;
-      }
+      // Sử dụng blog_banner.png mặc định vì tất cả blog đều dùng chung banner
+      img.src = `../../../src/blog_banner.png`;
+      img.alt = blog.title;
 
       // 🧾 Hiển thị nội dung blog
       const contentContainer = document.getElementById("blog-content");
