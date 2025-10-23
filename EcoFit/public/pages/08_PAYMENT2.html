@@ -1,215 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="utf-8" />
-    <title>Payment2</title>
-    <link rel="stylesheet" href="../css/style_payment1.css" />
-    <link rel="stylesheet" href="../css/header_footer.css">
-    <style>
-        :root {
-        --accent-green: #5f8d4e;
-        --line-bg: #e0e0e0;
-        --muted: #888;
-        --circle-size: 40px;
-        --card-border: #e5e7eb;
-        }
-
-        /* Tiêu đề */
-        h1 span {
-        color: var(--accent-green);
-        }
-
-        /* Progress bar tổng thể */
-        .order-progress {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 100%;
-        margin: 20px 0;
-        }
-
-        /* Đường kẻ nền */
-        .order-progress::before {
-        content: "";
-        position: absolute;
-        top: 20px; /* căn giữa theo chiều dọc của circle */
-        left: calc(var(--circle-size) / 2);
-        right: calc(var(--circle-size) / 2);
-        height: 6px;
-        background: var(--line-bg);
-        border-radius: 4px;
-        z-index: 0;
-        }
-
-        /* Đường kẻ tiến trình */
-        .order-progress::after {
-        content: "";
-        position: absolute;
-        top: 20px;
-        left: calc(var(--circle-size) / 2);
-        height: 6px;
-        background: var(--accent-green);
-        border-radius: 4px;
-        z-index: 0;
-        width: 0%;
-        transition: width 0.4s ease;
-        }
-
-        /* Chiều dài tùy step */
-        .order-progress[data-step="1"]::after { width: 0%; }
-        .order-progress[data-step="2"]::after { width: 25%; }
-        .order-progress[data-step="3"]::after { width: 50%; }
-        .order-progress[data-step="4"]::after { width: 75%; }
-        .order-progress[data-step="5"]::after { width: 100%; }
-
-        /* Từng step */
-        .step {
-        position: relative;
-        z-index: 1;
-        flex: 1;
-        text-align: center;
-        font-weight: 600;
-        color: var(--muted);
-        }
-
-        /* Circle */
-        .circle {
-        width: var(--circle-size);
-        height: var(--circle-size);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #bdbdbd;
-        color: #fff;
-        font-weight: 700;
-        margin: 0 auto;
-        position: relative;
-        z-index: 2;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Label (tên step) */
-        .label {
-        margin-top: 10px;
-        font-size: 12px;
-        color: #bdbdbd;
-        }
-
-        /* Trạng thái */
-        .step.done .circle {
-        background: var(--accent-green);
-        }
-        .step.done .label {
-        color: var(--accent-green);
-        }
-        .step.active .circle {
-        background: #f7e79c;
-        color: #333;
-        }
-        .step.active .label {
-        color: #000;
-        }
-
-        /* Responsive */
-        @media (max-width: 520px) {
-        .progress {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .progress::before,
-        .progress::after {
-            top: auto;
-            left: 20px;
-            width: 6px;
-            height: calc(100% - 40px);
-        }
-        .step {
-            flex-direction: row;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        }
-
-        .sectiontracking {
-        border: 1px solid var(--card-border);
-        border-radius: 10px;
-        padding: 18px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .shipping-info {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 10px;
-        }
-
-        .map-box {
-        border: 1px solid var(--card-border);
-        border-radius: 12px;
-        padding: 0; /* bỏ padding để map tràn full khung */
-        margin-top: 20px;
-        overflow-y: hidden; /* ẩn thanh cuộn */
-        background: #fff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
-
-        .map-box iframe {
-        width: 100%;
-        height: 730px; /* hoặc 600px tuỳ chiều cao map của bạn */
-        border: none;
-        display: block;
-        overflow: hidden; /* ngăn cuộn bên trong iframe */
-        }
-    </style>
-    </head>
-
-    <body class="bodypayment">
-        <div id="header"></div>
-        <main class="checkout-container">
-            <!-- LEFT -->
-            <section class="checkout-left">
+    <title>08_PAYMENT2</title>
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+</head>
+<body class="bodypayment">
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("header-frame");
+        header.onload = () => {
+            header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+        };
+        });
+        document.addEventListener("click", e => {
+        if (e.target.type === "radio") {
+            if (e.target.wasChecked) {
+            e.target.checked = false;
+            }
+            e.target.wasChecked = e.target.checked;
+        };
+        });
+    </script>
+    <main class="checkout-container">
+        <!-- LEFT -->
+        <section class="checkout-left">
             <div class="container">
-                <h1 class="page-title">TRACKING ORDER <span>#1056</span></h1>
-
+                <h2 class="page-title">TRACKING ORDER 
+                    <span>#1056</span>
+                </h2>
                 <div class="sectiontracking">
-                <h2 class="title">Arrives at 17 November</h2>
-                <div class="order-progress" data-step="2" aria-label="Order progress">
-                    <div class="step done">
-                    <div class="circle">&#10003;</div>
-                    <div class="label">ORDER PLACED</div>
+                    <h2 class="title">Arrives at 17 November</h2>
+                    <div class="order-progress" data-step="2" aria-label="Order progress">
+                        <div class="step done">
+                            <div class="circle">&#10003;</div>
+                            <div class="label">ORDER PLACED</div>
+                        </div>
+                        <div class="step active">
+                            <div class="circle">2</div>
+                            <div class="label">PROCESSING</div>
+                        </div>
+                        <div class="step">
+                            <div class="circle">3</div>
+                            <div class="label">PACKING</div>
+                        </div>
+                        <div class="step">
+                            <div class="circle">4</div>
+                            <div class="label">SHIPPING</div>
+                        </div>
+                        <div class="step">
+                            <div class="circle">5</div>
+                            <div class="label">DELIVERED</div>
+                        </div>
                     </div>
-                    <div class="step active">
-                    <div class="circle">2</div>
-                    <div class="label">PROCESSING</div>
+                    <h2 class="title">Shipping Service</h2>
+                    <div class="shipping-info">
+                        <img src="../images/logo-viettle.jpg" alt="Viettel Post" style="width: 100px; height: auto;"/>
+                        <div>
+                            <strong>Viettel Post</strong><br>
+                            <small>#JHSDH-ADF65-SDKF5</small>
+                        </div>
                     </div>
-                    <div class="step">
-                    <div class="circle">3</div>
-                    <div class="label">PACKING</div>
-                    </div>
-                    <div class="step">
-                    <div class="circle">4</div>
-                    <div class="label">SHIPPING</div>
-                    </div>
-                    <div class="step">
-                    <div class="circle">5</div>
-                    <div class="label">DELIVERED</div>
-                    </div>
-                </div>
-
-                <h2 class="title">Shipping Service</h2>
-                <div class="shipping-info">
-                    <img src="../images/logo-viettle.jpg" alt="Viettel Post" style="width: 100px; height: auto;"/>
-                    <div>
-                    <strong>Viettel Post</strong><br>
-                    <small>#JHSDH-ADF65-SDKF5</small>
-                    </div>
-                </div>
                 </div>
                 <!-- DELIVERY BOX (separate) -->
                 <div class="delivery-box">
@@ -221,75 +73,58 @@
                 </div>
                 <div class="map-box">
                     <iframe 
-                        src="tracking.html">
+                        src="tracking.html" scrolling="no">
                     </iframe>
                 </div>
-
             </div>
-            </section>
-
-            <!-- RIGHT -->
-            <aside class="checkout-right">
+        </section>
+        <!--RIGHT-->
+        <div class="checkout-right">
             <div class="order-detail">
-                <h3>ORDER DETAIL</h3>
-
+                <h3 class="order-detail__title">ORDER DETAIL</h3>
                 <div class="order-item">
-                <img src="https://via.placeholder.com/60" alt="">
-                <div class="order-item-info">
-                    <h4>Organic Cotton T-Shirt</h4>
-                    <p>Color: White | Size: XXL</p>
-                    <span class="order-item-price">50.000</span>
+                    <img src="../images/Product_images/organic_cotton_tee.png" alt="">
+                    <div class="order-item-info">
+                        <h4>Organic Cotton T-Shirt</h4>
+                        <p>Color: White | Size: XXL</p>
+                        <span class="order-item-price">50.000</span>
+                    </div>
+                    <span class="order-item-qty">x1</span>
                 </div>
-                <span class="order-item-qty">x1</span>
-                </div>
-
-                <hr />
-
+                <hr/>
                 <div class="order-item">
-                <img src="https://via.placeholder.com/60" alt="">
-                <div class="order-item-info">
-                    <h4>Recycled PET Sneakers</h4>
-                    <p>Color: Beige | Size: 43</p>
-                    <span class="order-item-price">150.000</span>
-                </div>
-                <span class="order-item-qty">x1</span>
+                    <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
+                    <div class="order-item-info">
+                        <h4>Recycled PET Sneakers</h4>
+                        <p>Color: Beige | Size: 43</p>
+                        <span class="order-item-price">150.000</span>
+                    </div>
+                    <span class="order-item-qty">x1</span>
                 </div>
             </div>
-
-            <div class="order-summary">
-                <h3>ORDER SUMMARY</h3>
-                <div class="summary-item"><span>Subtotal Product</span><span>150.000</span></div>
-                <div class="summary-item"><span>Shipping Cost</span><span>30.000</span></div>
-                <div class="summary-item"><span>Discount</span><span>-15.000</span></div>
-
-                <hr />
-                <div class="total">
-                <span>Total</span>
-                <span>165.000</span>
+            <br/>
+            <div class="checkout-right">
+                <div class="order-summary">
+                    <h2 class="order-summary__title">ORDER SUMMARY</h2>
+                    <div class="order-summary__row">
+                        <span>Subtotal Product</span>
+                        <span class="order-summary__value">150.000</span>
+                    </div>
+                    <div class="order-summary__row">
+                        <span>Shipping Cost</span>
+                        <span class="order-summary__value">30.000</span>
+                    </div>
+                    <div class="order-summary__row">
+                        <span>Discount</span>
+                        <span class="order-summary__value discount">-15.000</span>
+                    </div>
+                    <div class="order-summary__total">
+                        <span>Total</span>
+                        <span class="total-value">165.000</span>
+                    </div>
                 </div>
             </div>
-            </aside>
-        </main>
-        <div id="footer"></div>
-        <script>
-            const currentPage= 'payment2';
-        
-            fetch('../template/header.html')
-                .then(res => res.text())
-                .then(data => {
-                    document.getElementById('header').innerHTML = data;
-                    const links = document.querySelectorAll('.nav-link');
-                    links.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href').includes('payment2.html')) {
-                            link.classList.add('active');
-                        }
-                    });
-                });
-
-            fetch('../template/footer.html')
-                .then(res => res.text())
-                .then(data => document.getElementById('footer').innerHTML = data);
-        </script>
-    </body>
+        </div>
+    </main>
+</body>
 </html>
