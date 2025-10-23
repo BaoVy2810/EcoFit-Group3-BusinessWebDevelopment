@@ -3369,7 +3369,7 @@ h1 span {
 .team-member {
     text-align: center;
 }
-..member-image {
+.member-image {
   width: 100%;
   height: 300px;
   border-radius: 30px;
