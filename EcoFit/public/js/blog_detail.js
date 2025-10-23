@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const blogId = parseInt(params.get("id")) || 1;
 
-  fetch("blogs.json")
+  fetch("../../dataset/blogs.json")
     .then((response) => {
       if (!response.ok) throw new Error("Không thể load file Blogs.json");
       return response.json();
@@ -20,11 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("blog-title").textContent = blog.title;
       document.getElementById("blog-date").textContent = blog.date;
 
-      // 🖼️ Cập nhật hình ảnh blog
+      // 🖼️ Cập nhật hình ảnh blog (nếu có trong data)
       const img = document.getElementById("blog-image");
-      img.src = blog.image;
-      img.alt = blog.title;
-      img.onerror = () => console.warn("⚠️ Ảnh không tìm thấy:", img.src);
+      if (blog.image) {
+        img.src = `../../../src/${blog.image}`;
+        img.alt = blog.title;
+      }
 
       // 🧾 Hiển thị nội dung blog
       const contentContainer = document.getElementById("blog-content");

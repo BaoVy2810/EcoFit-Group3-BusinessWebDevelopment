@@ -1,53 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoFit Blog Detail</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoFit Blog Detail</title>
 
-  <!-- ✅ Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+    <!-- ✅ Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- ✅ Custom CSS -->
-  <link rel="stylesheet" href="../css/blog_detail.css" />
-</head>
-<body>
-  <!-- Header -->
-    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <!-- ✅ Custom CSS -->
+    <link rel="stylesheet" href="../css/blog_detail.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <iframe
+      src="../template/header.html"
+      id="header-frame"
+      class="header-frame"
+    ></iframe>
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
+      window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
         header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
+          header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
         };
-        });
+      });
     </script>
 
-  <!-- Hero Image -->
-  <section class="blog-hero">
-    <img id="blog-image" alt="Blog banner" class="w-100" style="max-height:400px;object-fit:cover;" />
-  </section>
+    <!-- Hero Image -->
+    <section class="blog-hero">
+      <img
+        src="../../../src/blog_banner.png"
+        id="blog-image"
+        alt="Blog banner"
+        class="w-100"
+        style="max-height: 350px; object-fit: cover"
+      />
+    </section>
 
-  <!-- Blog Content -->
-  <main class="blog-detailed container py-5">
-    <h1 id="blog-title" class="fw-bold text-center"></h1>
-    <p id="blog-date" class="text-center text-muted mb-5"></p>
-    <div id="blog-content"></div>
-  </main>
+    <!-- Blog Content -->
+    <main class="blog-detailed container py-5">
+      <h1 id="blog-title" class="fw-bold text-center"></h1>
+      <p id="blog-date" class="text-center text-muted mb-5"></p>
+      <div id="blog-content"></div>
+    </main>
 
-  <!-- Footer -->
+    <!-- Footer -->
 
-<iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+    <iframe
+      src="../template/footer.html"
+      id="footer-frame"
+      class="footer-frame"
+    ></iframe>
 
+    <!-- ✅ Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-
-  <!-- ✅ Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- ✅ Blog JS -->
-  <script src="../js/blog_detail.js"></script>
-</body>
+    <!-- ✅ Blog JS -->
+    <script src="../js/blog_detail.js"></script>
+  </body>
 </html>
