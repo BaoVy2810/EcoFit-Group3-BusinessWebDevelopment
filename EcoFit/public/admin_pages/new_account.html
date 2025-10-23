@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Account - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body style="background: #f9fafb;">
+  <div class="form-container">
+    <div class="form-card">
+      <div class="form-header">
+        <button class="back-btn" onclick="goBack()">
+          <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+        </button>
+        <h2>Add New Account</h2>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <form id="addAccountForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullname">Full Name<span class="required">*</span></label>
+            <input type="text" id="fullname" name="fullname" required placeholder="Enter full name" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email<span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="Enter email address" />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password<span class="required">*</span></label>
+            <input type="password" id="password" name="password" required placeholder="Enter password" />
+          </div>
+
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" />
+          </div>
+
+          <div class="form-group">
+            <label for="role">Role<span class="required">*</span></label>
+            <select id="role" name="role" required>
+              <option value="">Select role</option>
+              <option value="customer">Customer</option>
+              <option value="administrator">Administrator</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status<span class="required">*</span></label>
+            <select id="status" name="status" required>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" placeholder="Enter full address"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="goBack()">
+            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+            Save Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Go back to accounts page
+    function goBack() {
+      window.location.href = 'accounts.html';
+    }
+
+    // Show error message
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('show');
+      setTimeout(() => {
+        errorDiv.classList.remove('show');
+      }, 5000);
+    }
+
+    // Show success message
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = message;
+      successDiv.classList.add('show');
+      setTimeout(() => {
+        successDiv.classList.remove('show');
+        goBack();
+      }, 2000);
+    }
+
+    // Generate new ID
+    async function generateNewId() {
+      try {
+        const response = await fetch('../../dataset/accounts.json');
+        const data = await response.json();
+        const accounts = data.profile;
+        
+        if (accounts.length === 0) return "1";
+        
+        const maxId = Math.max(...accounts.map(acc => parseInt(acc.id || acc.profile_id)));
+        return (maxId + 1).toString();
+      } catch (error) {
+        console.error('Error generating ID:', error);
+        return Date.now().toString();
+      }
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Handle form submission
+    document.getElementById('addAccountForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(e.target);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      // Validate email
+      if (!isValidEmail(email)) {
+        showError('Please enter a valid email address');
+        return;
+      }
+
+      // Validate password
+      if (password.length < 6) {
+        showError('Password must be at least 6 characters long');
+        return;
+      }
+
+      try {
+        // Load existing accounts
+        const response = await fetch('../../dataset/accounts.json');
+        const data = await response.json();
+        const accounts = data.profile;
+
+        // Check if email already exists
+        const emailExists = accounts.some(acc => acc.email === email);
+        if (emailExists) {
+          showError('This email is already registered');
+          return;
+        }
+
+        // Generate new ID
+        const newId = await generateNewId();
+
+        // Create new account object
+        const newAccount = {
+          id: newId,
+          fullname: formData.get('fullname'),
+          email: email,
+          phone: formData.get('phone') || "",
+          password: password,
+          gender: formData.get('gender') || "",
+          dob: formData.get('dob') || "",
+          address: formData.get('address') || "",
+          created_at: new Date().toISOString().replace('T', ' ').substring(0, 19),
+          status: formData.get('status'),
+          role: formData.get('role')
+        };
+
+        // Add new account to array
+        accounts.push(newAccount);
+
+        // Create updated JSON structure
+        const updatedData = {
+          profile: accounts
+        };
+
+        // Save to localStorage for demo purposes
+        // In production, this should be sent to a server
+        localStorage.setItem('accounts', JSON.stringify(updatedData));
+
+        console.log('New account created:', newAccount);
+        console.log('Updated accounts data:', updatedData);
+
+        showSuccess('Account created successfully!');
+
+      } catch (error) {
+        console.error('Error saving account:', error);
+        showError('Failed to create account. Please try again.');
+      }
+    });
+
+    // Set default status to active
+    document.getElementById('status').value = 'active';
+  </script>
+</body>
+</html>

@@ -44,6 +44,15 @@
       "category_id": "C001"
     },
     {
+      "product_id": "P017",
+      "product_name": "Tencel Button-Up Shirt",
+      "description": "Eco-responsible Tencel™ shirt with a clean design and breathable comfort.",
+      "price": 210000,
+      "quantity_available": 30,
+      "green_score": 92,
+      "category_id": "C001"
+    },
+    {
       "product_id": "P005",
       "product_name": "Organic Linen Pants",
       "description": "Breathable linen with a soft texture, ethically produced and biodegradable.",
@@ -77,6 +86,15 @@
       "price": 370000,
       "quantity_available": 40,
       "green_score": 89,
+      "category_id": "C002"
+    },
+    {
+      "product_id": "P018",
+      "product_name": "Upcycled Cargo Pants",
+      "description": "Stylish and functional cargo pants made from repurposed textile waste.",
+      "price": 390000,
+      "quantity_available": 35,
+      "green_score": 91,
       "category_id": "C002"
     },
     {
@@ -116,6 +134,15 @@
       "category_id": "C003"
     },
     {
+      "product_id": "P019",
+      "product_name": "Upcycled Silk Maxi Dress",
+      "description": "Made from reclaimed silk fabric — luxurious feel, low environmental impact.",
+      "price": 520000,
+      "quantity_available": 18,
+      "green_score": 93,
+      "category_id": "C003"
+    },
+    {
       "product_id": "P013",
       "product_name": "Upcycled Tote Bag",
       "description": "Each tote is made from repurposed textile scraps — unique and waste-free.",
@@ -149,6 +176,51 @@
       "price": 320000,
       "quantity_available": 60,
       "green_score": 89,
+      "category_id": "C004"
+    },
+    {
+      "product_id": "P020",
+      "product_name": "Hemp Crossbody Bag",
+      "description": "Durable hemp fabric bag with adjustable strap and minimal waste design.",
+      "price": 250000,
+      "quantity_available": 40,
+      "green_score": 92,
+      "category_id": "C004"
+    },
+    {
+      "product_id": "P021",
+      "product_name": "Bamboo Sunglasses Case",
+      "description": "Eco-friendly bamboo case designed to protect your eyewear sustainably.",
+      "price": 150000,
+      "quantity_available": 70,
+      "green_score": 90,
+      "category_id": "C004"
+    },
+    {
+      "product_id": "P022",
+      "product_name": "Recycled Fabric Scarf",
+      "description": "Soft and breathable scarf made entirely from recycled fibers.",
+      "price": 190000,
+      "quantity_available": 55,
+      "green_score": 91,
+      "category_id": "C004"
+    },
+    {
+      "product_id": "P023",
+      "product_name": "Organic Cotton Socks",
+      "description": "Comfortable and breathable everyday socks made from organic cotton yarn.",
+      "price": 120000,
+      "quantity_available": 100,
+      "green_score": 93,
+      "category_id": "C004"
+    },
+    {
+      "product_id": "P024",
+      "product_name": "Recycled Plastic Hair Clip",
+      "description": "Stylish and sturdy clip crafted from 100% recycled ocean plastics.",
+      "price": 90000,
+      "quantity_available": 90,
+      "green_score": 88,
       "category_id": "C004"
     }
   ]
