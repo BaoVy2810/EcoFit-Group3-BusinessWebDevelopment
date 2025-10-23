@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EcoFit Blog</title>
+    <title>14_BLOG_GENERAL</title>
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
     <style>
       body {
@@ -251,22 +251,15 @@
   </head>
   <body>
     <!-- HEADER -->
-    <iframe
-      src="../template/header.html"
-      id="header-frame"
-      class="header-frame"
-      style="width: 100%; border: none; overflow: hidden"
-    ></iframe>
-
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
     <script>
-      window.addEventListener("DOMContentLoaded", () => {
+        window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
         header.onload = () => {
-          header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
+            header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
         };
-      });
+        });
     </script>
-
     <!-- MAIN BLOG SECTION -->
     <main class="main">
       <div class="container">
@@ -518,13 +511,7 @@
     </div>
 
     <!-- FOOTER -->
-    <iframe
-      src="../template/footer.html"
-      id="footer-frame"
-      class="footer-frame"
-      style="width: 100%; border: none; overflow: hidden"
-    ></iframe>
-
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <!-- MAIN SCRIPT -->
     <script src="../js/script.js"></script>
 
