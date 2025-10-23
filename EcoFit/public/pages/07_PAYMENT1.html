@@ -40,7 +40,7 @@
   <main class="checkout-container">
     <!-- LEFT -->
     <section class="checkout-left">
-      <h1 class="page-title">PAYMENT</h1>
+      <h2 class="page-title">PAYMENT</h2>
       <div class="status-box">
         <div class="status-icon">
           <img src="../images/ic_payment.png"/>
@@ -48,104 +48,104 @@
         <div class="status-text">
           <div class="status-title">Awaiting Payment</div>
           <div class="status-sub">Order #1056</div>
-      </div>
-    </div>
-    <!--BIG PAYMENT BOX-->
-    <div class="payment-box">
-      <!-- Payment Detail -->
-      <div class="section payment-detail">
-        <h2 class="title">Payment Detail</h2>
-        <div class="pd-list">
-          <div class="pd-row">
-            <div class="pd-label">Total order amount</div>
-            <div class="pd-value">165.000</div>
-          </div>
-          <div class="pd-row">
-            <div class="pd-label">Amount due</div>
-            <div class="pd-value">165.000</div>
-          </div>
-          <div class="pd-row">
-            <div class="pd-label">Payment method</div>
-            <div class="pd-value small">Transfer via QR code</div>
-          </div>
-        </div>
-        <div class="pay-wrap">
-          <a href="../pages/08_PAYMENT2.html">
-            <button class="btn-pay">PAY NOW →</button>
-          </a>
         </div>
       </div>
-      <div class="divider"></div>
-      <!-- Transfer Description + QR -->
-      <div class="section transfer-section">
-        <div class="transfer-left">
-          <div class="transfer-card">
-            <div class="transfer-title">Transfer Description</div>
-            <div class="tr-row">
-              <div class="tr-label">Account</div>
-              <div class="tr-value">ECOFIT</div>
+      <!--BIG PAYMENT BOX-->
+      <div class="payment-box">
+        <!-- Payment Detail -->
+        <div class="section payment-detail">
+          <h2 class="title">Payment Detail</h2>
+          <div class="pd-list">
+            <div class="pd-row">
+              <div class="pd-label">Total order amount</div>
+              <div class="pd-value">165.000</div>
             </div>
-            <div class="tr-row">
-              <div class="tr-label">Receiving Bank</div>
-              <div class="tr-value">Vietcombank</div>
+            <div class="pd-row">
+              <div class="pd-label">Amount due</div>
+              <div class="pd-value">165.000</div>
             </div>
-            <div class="tr-row">
-              <div class="tr-label">Account Number</div>
-              <div class="tr-value">
-                <span id="acc">0339667803</span>
-                <button class="copy" data-target="acc" title="Copy">
-                  <img src="../images/ic_copy.png"/>
-                </button>
+            <div class="pd-row">
+              <div class="pd-label">Payment method</div>
+              <div class="pd-value small">Transfer via QR code</div>
+            </div>
+          </div>
+          <div class="pay-wrap">
+            <a href="../pages/08_PAYMENT2.html">
+              <button class="btn-pay">PAY NOW →</button>
+            </a>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <!-- Transfer Description + QR -->
+        <div class="transfer-section">
+          <div class="transfer-left">
+            <div class="transfer-card">
+              <div class="transfer-title">Transfer Description</div>
+              <div class="tr-row">
+                <div class="tr-label">Account</div>
+                <div class="tr-value">ECOFIT</div>
+              </div>
+              <div class="tr-row">
+                <div class="tr-label">Receiving Bank</div>
+                <div class="tr-value">Vietcombank</div>
+              </div>
+              <div class="tr-row">
+                <div class="tr-label">Account Number</div>
+                <div class="tr-value">
+                  <span id="acc">0339667803</span>
+                  <button class="copy" data-target="acc" title="Copy">
+                    <img src="../images/ic_copy.png"/>
+                  </button>
+                </div>
+              </div>
+              <div class="tr-row">
+                <div class="tr-label">Transfer Note</div>
+                <div class="tr-value">
+                  <span id="note">ORDER_1056</span>
+                  <button class="copy" data-target="note" title="Copy">
+                    <img src="../images/ic_copy.png"/>
+                  </button>
+                </div>
+              </div>
+              <div class="tr-row last">
+                <div class="tr-label">Transfer Amount</div>
+                <div class="tr-value">
+                  <strong id="amt">165.000</strong>
+                  <button class="copy" data-target="amt" title="Copy">
+                    <img src="../images/ic_copy.png"/>
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="tr-row">
-              <div class="tr-label">Transfer Note</div>
-              <div class="tr-value">
-                <span id="note">ORDER_1056</span>
-                <button class="copy" data-target="note" title="Copy">
-                  <img src="../images/ic_copy.png"/>
-                </button>
-              </div>
-            </div>
-            <div class="tr-row last">
-              <div class="tr-label">Transfer Amount</div>
-              <div class="tr-value">
-                <strong id="amt">165.000</strong>
-                <button class="copy" data-target="amt" title="Copy">
-                  <img src="../images/ic_copy.png"/>
-                </button>
-              </div>
+          </div>
+          <div class="transfer-right">
+            <div class="qr-card">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?data=EcoFitPayment&size=160x160" alt="QR Code" style="width:140px;height:140px;object-fit:cover;border-radius:6px">
+              <img src="../images/Logo-Napas.jpg" width="70px" style="margin-top: 8px;"/>
             </div>
           </div>
         </div>
-        <div class="transfer-right">
-          <div class="qr-card">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?data=EcoFitPayment&size=160x160" alt="QR Code" style="width:140px;height:140px;object-fit:cover;border-radius:6px">
-            <img src="../images/Logo-Napas.jpg" width="70px" style="margin-top: 8px;"/>
+        <div class="divider"></div>
+        <!-- Proof of Transfer -->
+        <h2 class="title">Proof of Transfer</h2>
+        <div class="section proof-section">
+          <p class="proof-text">Kindly upload your proof to transfer to help us verify your payment faster</p>
+          <div class="proof-action">
+            <label class="upload-btn">
+              <img src="../images/ic_upload.png" width="15px" height="15px"/> Upload
+              <input type="file" hidden>
+            </label>
           </div>
         </div>
       </div>
-      <div class="divider"></div>
-      <!-- Proof of Transfer -->
-      <h2 class="title">Proof of Transfer</h2>
-      <div class="section proof-section">
-        <p class="proof-text">Kindly upload your proof to transfer to help us verify your payment faster</p>
-        <div class="proof-action">
-          <label class="upload-btn">
-            <img src="../images/ic_upload.png" width="15px" height="15px"/> Upload
-            <input type="file" hidden>
-          </label>
-        </div>
+      <!-- DELIVERY BOX (separate) -->
+      <div class="delivery-box">
+        <h2 class="title">Delivery address</h2>
+        <p class="delivery-text">
+        Bui Hoang Dieu | 0775499598<br>
+        KTX Khu B-ĐHQG, Thu Duc, HCMC
+        </p>
       </div>
-    </div>
-    <!-- DELIVERY BOX (separate) -->
-    <div class="delivery-box">
-      <h2 class="title">Delivery address</h2>
-      <p class="delivery-text">
-      Bui Hoang Dieu | 0775499598<br>
-      KTX Khu B-ĐHQG, Thu Duc, HCMC
-      </p>
-    </div>
     </section>
     <!-- RIGHT -->
     <div class="checkout-right">
@@ -170,8 +170,9 @@
                 </div>
                 <span class="order-item-qty">x1</span>
             </div>
-        </div>
-        <div class="cart-right">
+          </div>
+        <br/>
+        <div class="checkout-right">
             <div class="order-summary">
                 <h2 class="order-summary__title">ORDER SUMMARY</h2>
                 <div class="order-summary__row">
@@ -186,17 +187,10 @@
                     <span>Discount</span>
                     <span class="order-summary__value discount">-15.000</span>
                 </div>
-                <div class="order-summary__discount">
-                    <input type="text" placeholder="Enter your discount code" class="discount-input">
-                    <button class="apply-btn">APPLY</button>
-                </div>
                 <div class="order-summary__total">
                     <span>Total</span>
                     <span class="total-value">165.000</span>
                 </div>
-                <a href="../pages/07_PAYMENT1.html" target="_self">
-                    <button class="place-order">PLACE ORDER →</button>
-                </a>
             </div>
         </div>
     </div>
