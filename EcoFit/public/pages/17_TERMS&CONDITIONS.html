@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms and Conditions - EcoFit</title>
-    <link rel="stylesheet" href="../css/header_footer.css">
+    <title>17_TERMS&CONDITIONS</title>
     <link rel="stylesheet" href="../css/term_policy.css">
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">
 </head>
 <body class="stylebody">
-    <div id="header"></div>
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
     <div class="container">
         <div class="term_head">
             <h1>Terms and <span>Conditions</span></h1>
@@ -124,16 +124,7 @@
             </main>
         </div>
     </div>
-    <div id="footer"></div>
-    <script>
-        fetch('../template/header.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('header').innerHTML = data);
-
-        fetch('../template/footer.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('footer').innerHTML = data);
-    </script>
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <script>
         const sections = document.querySelectorAll('.main-content .section[id]');
         const navLinks = document.querySelectorAll('.sidebar nav ul li a');
