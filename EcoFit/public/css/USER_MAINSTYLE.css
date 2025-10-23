@@ -2289,7 +2289,7 @@ section.hero::after {
   left: 14px;
   top: 14px;
   color: black;
-  font-size: 14px;
+  font-size: 18px;
   background-color: #fff;
   padding: 0 5px;
   pointer-events: none;
@@ -2299,7 +2299,7 @@ section.hero::after {
 .floating-label input:not(:placeholder-shown) + label {
   top: -7px;
   left: 10px;
-  font-size: 12px;
+  font-size: 18px;
   color: #3DA547;
 }
 .custom-radio {
@@ -2318,6 +2318,7 @@ section.hero::after {
   border-radius: 50%;
   position: relative;
   transition: all 0.2s ease-in-out;
+  font-size: 18px;
 }
 .custom-radio input:checked + .radio-mark {
   border-color: #3DA547;
@@ -2835,6 +2836,7 @@ h1 span {
 .map-box iframe::-webkit-scrollbar {
   display: none;
 }
+
 /*09_PROFILE*/
 .personal_info_container,.password-container {
     padding-top: 80px;
