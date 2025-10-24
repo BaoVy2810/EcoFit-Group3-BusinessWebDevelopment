@@ -1183,20 +1183,8 @@ function shareProduct(platform) {
         case 'facebook':
             shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
             break;
-        case 'twitter':
+        case 'instagram':
             shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(productName)}`;
-            break;
-        case 'pinterest':
-            const imageUrl = currentProduct.review_images && currentProduct.review_images.length > 0 
-                ? currentProduct.review_images[0] 
-                : '';
-            shareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(productUrl)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(productDesc)}`;
-            break;
-        case 'whatsapp':
-            shareUrl = `https://wa.me/?text=${encodeURIComponent(productName + ' - ' + productUrl)}`;
-            break;
-        case 'email':
-            shareUrl = `mailto:?subject=${encodeURIComponent(productName)}&body=${encodeURIComponent(productDesc + '\n\n' + productUrl)}`;
             break;
     }
     
