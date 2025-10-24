@@ -17,9 +17,8 @@ function generate_user_id(json_accounts) {
     return maxId + 1;
 }
 
-// Hàm xử lý đăng ký - logic tương tự process_login
+// Hàm xử lý đăng ký
 function process_signup() {
-    // Lấy các element - với kiểm tra an toàn
     const nameEl = document.getElementById("name");
     const genderEl = document.getElementById("gender");
     const birthdayEl = document.getElementById("birthday");
@@ -28,23 +27,11 @@ function process_signup() {
     const passwordEl = document.getElementById("password");
     const confirmEl = document.getElementById("confirm_password");
 
-    // Kiểm tra xem các element có tồn tại không
     if (!nameEl || !genderEl || !birthdayEl || !phoneEl || !emailEl || !passwordEl || !confirmEl) {
-        console.error("Missing form elements. Please check your HTML IDs:");
-        console.log({
-            name: !!nameEl,
-            gender: !!genderEl,
-            birthday: !!birthdayEl,
-            phone: !!phoneEl,
-            email: !!emailEl,
-            password: !!passwordEl,
-            confirm: !!confirmEl
-        });
-        alert("Form error: Missing required fields. Check console for details.");
+        alert("Form error: Missing required fields.");
         return;
     }
 
-    // Lấy giá trị
     const name = nameEl.value.trim();
     const gender = genderEl.value;
     const birthday = birthdayEl.value;
@@ -53,19 +40,16 @@ function process_signup() {
     const password = passwordEl.value.trim();
     const confirm = confirmEl.value.trim();
 
-    // Kiểm tra trống
     if (!name || !gender || !birthday || !phone || !email || !password || !confirm) {
         alert("Please fill out all fields.");
         return;
     }
 
-    // Kiểm tra khớp mật khẩu
     if (password !== confirm) {
         alert("Passwords do not match!");
         return;
     }
 
-    // Đọc file accounts.json - tương tự process_login
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "../../dataset/accounts.json", true);
     xhr.send();
@@ -73,16 +57,13 @@ function process_signup() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             let json_accounts = JSON.parse(xhr.responseText);
 
-            // Kiểm tra email trùng
             if (check_email_exists(json_accounts, email)) {
                 alert("This email is already registered!");
                 return;
             }
 
-            // Tạo ID mới
             const newUserId = generate_user_id(json_accounts);
 
-            // Tạo tài khoản mới cho accounts.json
             let new_account = {
                 id: newUserId.toString(),
                 email: email,
@@ -90,11 +71,10 @@ function process_signup() {
                 role: "user"
             };
 
-            // Cập nhật accounts.json (giả lập bằng localStorage)
+            // ✅ Giả lập cập nhật vào localStorage
             json_accounts.accounts.push(new_account);
             localStorage.setItem("accounts", JSON.stringify(json_accounts));
 
-            // Tạo profile mới cho profiles.json
             let new_profile = {
                 id: newUserId.toString(),
                 name: name,
@@ -108,25 +88,24 @@ function process_signup() {
                 role: "user"
             };
 
-            // Đọc profiles hiện có từ localStorage hoặc tạo mới
             let profiles_data = JSON.parse(localStorage.getItem("profiles")) || { profiles: [] };
-            
-            // Đảm bảo có mảng profiles
-            if (!profiles_data.profiles) {
-                profiles_data = { profiles: [] };
-            }
-
-            // Thêm profile mới vào mảng
+            if (!profiles_data.profiles) profiles_data = { profiles: [] };
             profiles_data.profiles.push(new_profile);
-
-            // Lưu vào localStorage (giả lập lưu file profiles.json)
             localStorage.setItem("profiles", JSON.stringify(profiles_data));
 
-            // Thông báo thành công và chuyển hướng
-            alert("Sign up successful! Redirecting to login page...");
-            window.location.href = "00_LOGIN.html";
-        }
-        else if (xhr.readyState == 4 && xhr.status != 200) {
+            // ✅ Lưu trạng thái đăng nhập + gửi tín hiệu
+            localStorage.setItem("login_infor", JSON.stringify(new_account));
+            localStorage.setItem("isLoggedIn", "true");
+
+            // ✅ Gửi tín hiệu sang trang cha (home.js)
+            window.parent.postMessage({ action: "loginSuccess" }, "*");
+
+            // ✅ Nếu mở riêng, chuyển trực tiếp
+            if (window.top === window.self) {
+                alert("Sign up successful! Redirecting to homepage...");
+                window.open("../pages/01_HOMEPAGE.html", "_self");
+            }
+        } else if (xhr.readyState == 4 && xhr.status != 200) {
             alert("Cannot access accounts.json (Check your path)");
         }
     };
@@ -134,14 +113,5 @@ function process_signup() {
 
 // Debug: In ra các ID element khi trang load
 window.addEventListener('DOMContentLoaded', function() {
-    console.log("Checking form elements:");
-    console.log("name:", document.getElementById("name"));
-    console.log("gender:", document.getElementById("gender"));
-    console.log("gender_select:", document.getElementById("gender_select"));
-    console.log("birthday:", document.getElementById("birthday"));
-    console.log("phone:", document.getElementById("phone"));
-    console.log("email:", document.getElementById("email"));
-    console.log("password:", document.getElementById("password"));
-    console.log("confirm-password:", document.getElementById("confirm_password"));
-    console.log("confirm_password:", document.getElementById("confirm_password"));
+    console.log("Signup form loaded and ready.");
 });

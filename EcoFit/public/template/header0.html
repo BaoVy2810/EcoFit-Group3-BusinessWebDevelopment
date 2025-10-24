@@ -95,46 +95,44 @@
         </div>
     </nav>
     <script>
-    window.addEventListener("message", (event) => {
-    const { activeNav } = event.data;
-    if (!activeNav) return;
+        window.addEventListener("message", (event) => {
+        const { activeNav } = event.data;
+        if (!activeNav) return;
 
-    document.querySelectorAll(".nav-link").forEach(link => {
-        link.classList.remove("active");
-    });
+        document.querySelectorAll(".nav-link").forEach(link => {
+            link.classList.remove("active");
+        });
 
-    const activeLink = document.getElementById(activeNav);
-    if (activeLink) {
-        activeLink.classList.add("active");
-    }
-    });
-
-    window.addEventListener("DOMContentLoaded", () => {
-    // Highlight tab đang active
-    const currentPage = window.location.pathname.split("/").pop().toLowerCase();
-    document.querySelectorAll(".nav-link").forEach(link => {
-        const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
-        if (currentPage === targetPage) {
-        link.classList.add("active");
+        const activeLink = document.getElementById(activeNav);
+        if (activeLink) {
+            activeLink.classList.add("active");
         }
-    });
-
-    // ✅ Gửi tín hiệu ra ngoài iframe để trang cha điều hướng
-    const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
-
-    if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-        window.parent.postMessage({ action: "goToLogin" }, "*");
         });
-    }
 
-    if (signupBtn) {
-        signupBtn.addEventListener("click", () => {
-        window.parent.postMessage({ action: "goToSignup" }, "*");
+        window.addEventListener("DOMContentLoaded", () => {
+        const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+        document.querySelectorAll(".nav-link").forEach(link => {
+            const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
+            if (currentPage === targetPage) {
+            link.classList.add("active");
+            }
         });
-    }
-    });
+
+        const loginBtn = document.getElementById("loginBtn");
+        const signupBtn = document.getElementById("signupBtn");
+
+        if (loginBtn) {
+            loginBtn.addEventListener("click", () => {
+            window.parent.postMessage({ action: "goToLogin" }, "*");
+            });
+        }
+
+        if (signupBtn) {
+            signupBtn.addEventListener("click", () => {
+            window.parent.postMessage({ action: "goToSignup" }, "*");
+            });
+        }
+        });
     </script>
 </body>
 </html>

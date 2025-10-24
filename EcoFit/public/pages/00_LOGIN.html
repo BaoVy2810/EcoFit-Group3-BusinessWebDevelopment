@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EcoFit - Sign In</title>
+    <title>00_LOGIN</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -414,7 +414,7 @@
       if (email && password) {
         localStorage.setItem("isLoggedIn", "true");
         if (window.parent) {
-          window.parent.postMessage({ action: "loggedIn" }, "*");
+          window.parent.postMessage({ action: "loginSuccess" }, "*");
         }
         window.location.href = "../pages/01_HOMEPAGE.html";
       } else {
