@@ -11,217 +11,1025 @@
       "product_id": "P001",
       "product_name": "Organic Cotton Tee",
       "description": "Soft, breathable T-shirt made from 100% GOTS-certified organic cotton.",
-      "price": 150000,
+      "price_original": 150000,
+      "promotion_code": "ECO10",
       "quantity_available": 50,
-      "green_score": 95,
-      "category_id": "C001"
+      "number_bought": "320+ bought",
+      "green_score": { "value": 95, "image": "../images/80-100greenscore.png" },
+      "category_id": "C001",
+      "attributes": {
+        "Material": "Organic Cotton",
+        "Fit": "Unisex Regular",
+        "Weight": "180 gr.",
+        "Size": "XS - XXL",
+        "Technique": "Screen Printing",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "A breathable and soft T-shirt made from certified organic cotton. Perfect for everyday wear while supporting sustainable farming.",
+        "key_features": [
+          "100% GOTS-certified organic cotton",
+          "Lightweight & soft texture",
+          "Ethically made"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/organic_cotton_tee_front.png",
+        "../../dataset/product_images/organic_cotton_tee_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Linh",
+          "rating": 5,
+          "text": "Super soft and comfortable. Love the eco touch!",
+          "date": "2 Oct, 2025",
+          "likes": 8
+        },
+        {
+          "user": "David",
+          "rating": 4,
+          "text": "Fits nicely and breathable. Worth it.",
+          "date": "20 Sep, 2025",
+          "likes": 5
+        }
+      ]
     },
     {
       "product_id": "P002",
       "product_name": "Bamboo Daily Shirt",
       "description": "Naturally antibacterial and moisture-wicking, ideal for everyday wear.",
-      "price": 180000,
+      "price_original": 180000,
+      "promotion_code": "ECO10",
       "quantity_available": 60,
-      "green_score": 90,
-      "category_id": "C001"
+      "number_bought": "410+ bought",
+      "green_score": { "value": 90, "image": "../images/80-100greenscore.png" },
+      "category_id": "C001",
+      "attributes": {
+        "Material": "Bamboo viscose",
+        "Fit": "Regular Fit",
+        "Weight": "190 gr.",
+        "Size": "XS - XXL",
+        "Technique": "Knitting",
+        "Delivery time": "5 - 7 working days",
+        "Eco-certification": "GOTS-certified"
+      },
+      "additional_info": {
+        "description_text": "This lightweight unisex shirt keeps you cool, fresh, and comfortable all day long.",
+        "key_features": [
+          "Made from 100% bamboo viscose",
+          "Naturally antibacterial and breathable",
+          "Moisture-wicking for active comfort"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/bamboo_daily_shirt_frontview.png",
+        "../../dataset/product_images/bamboo_daily_shirt_backview.png"
+      ],
+      "reviews": [
+        {
+          "user": "Jungkook",
+          "rating": 5,
+          "text": "This is amazing product I have.",
+          "date": "2 Oct, 2025",
+          "likes": 4
+        },
+        {
+          "user": "Yoongi",
+          "rating": 5,
+          "text": "High-quality shirt with a great fit. Lightweight and comfortable.",
+          "date": "2 Sep, 2025",
+          "likes": 24
+        }
+      ]
     },
     {
       "product_id": "P003",
       "product_name": "Recycled Fiber Polo",
       "description": "Made from blended recycled polyester for a crisp yet eco-friendly look.",
-      "price": 200000,
+      "price_original": 200000,
+      "promotion_code": "ECO10",
       "quantity_available": 40,
-      "green_score": 85,
-      "category_id": "C001"
+      "number_bought": "280+ bought",
+      "green_score": { "value": 85, "image": "../images/60-80greenscore.png" },
+      "category_id": "C001",
+      "attributes": {
+        "Material": "Recycled polyester blend",
+        "Fit": "Slim Fit",
+        "Weight": "200 gr.",
+        "Size": "S - XL",
+        "Technique": "Embroidery",
+        "Delivery time": "6 - 8 working days"
+      },
+      "additional_info": {
+        "description_text": "Smart-casual polo made from recycled fibers for comfort and sustainability.",
+        "key_features": [
+          "Recycled materials reduce waste",
+          "Comfortable fit",
+          "Ideal for corporate wear"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/recycled_fiber_polo_front.png",
+        "../../dataset/product_images/recycled_fiber_polo_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Nam",
+          "rating": 5,
+          "text": "Great for workdays, love the eco feel.",
+          "date": "5 Oct, 2025",
+          "likes": 7
+        },
+        {
+          "user": "Sophie",
+          "rating": 4,
+          "text": "Nice quality, fits well. Would recommend!",
+          "date": "28 Sep, 2025",
+          "likes": 3
+        }
+      ]
     },
     {
       "product_id": "P004",
       "product_name": "Hemp Oversized Tee",
       "description": "Lightweight hemp fabric with a relaxed fit — sustainable and stylish.",
-      "price": 190000,
+      "price_original": 190000,
+      "promotion_code": "ECO10",
       "quantity_available": 35,
-      "green_score": 88,
-      "category_id": "C001"
+      "number_bought": "360+ bought",
+      "green_score": { "value": 88, "image": "../images/80-100greenscore.png" },
+      "category_id": "C001",
+      "attributes": {
+        "Material": "Hemp",
+        "Fit": "Oversized",
+        "Weight": "175 gr.",
+        "Size": "S - XL",
+        "Technique": "Digital Printing",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "A relaxed-fit tee made from sustainable hemp fibers.",
+        "key_features": [
+          "Made from renewable hemp",
+          "Soft feel and breathable",
+          "Naturally UV-resistant"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/hemp_oversized_tee_front.png",
+        "../../dataset/product_images/hemp_oversized_tee_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Hà",
+          "rating": 5,
+          "text": "Super comfy and airy. My new go-to!",
+          "date": "1 Oct, 2025",
+          "likes": 9
+        }
+      ]
     },
     {
       "product_id": "P017",
       "product_name": "Tencel Button-Up Shirt",
       "description": "Eco-responsible Tencel™ shirt with a clean design and breathable comfort.",
-      "price": 210000,
+      "price_original": 210000,
+      "promotion_code": "ECO10",
       "quantity_available": 30,
-      "green_score": 92,
-      "category_id": "C001"
+      "number_bought": "250+ bought",
+      "green_score": { "value": 92, "image": "../images/80-100greenscore.png" },
+      "category_id": "C001",
+      "attributes": {
+        "Material": "Tencel™ Lyocell",
+        "Fit": "Classic Fit",
+        "Weight": "200 gr.",
+        "Size": "XS - XXL",
+        "Technique": "Plain weave",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "Lightweight and breathable Tencel™ fabric ensures softness and elegance.",
+        "key_features": [
+          "Eco-responsible Tencel™",
+          "Smooth texture",
+          "Durable & biodegradable"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/tencel_buttonup_front.png",
+        "../../dataset/product_images/tencel_buttonup_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Lara",
+          "rating": 5,
+          "text": "Love the flow and fabric feel. Very premium.",
+          "date": "10 Oct, 2025",
+          "likes": 12
+        }
+      ]
     },
     {
       "product_id": "P005",
       "product_name": "Organic Linen Pants",
       "description": "Breathable linen with a soft texture, ethically produced and biodegradable.",
-      "price": 350000,
+      "price_original": 350000,
+      "promotion_code": "GREEN20",
       "quantity_available": 30,
-      "green_score": 92,
-      "category_id": "C002"
+      "number_bought": "310+ bought",
+      "green_score": { "value": 92, "image": "../images/80-100greenscore.png" },
+      "category_id": "C002",
+      "attributes": {
+        "Material": "Organic linen",
+        "Fit": "Relaxed",
+        "Weight": "210 gr.",
+        "Size": "XS - XXL",
+        "Technique": "Woven",
+        "Delivery time": "7 working days"
+      },
+      "additional_info": {
+        "description_text": "Classic linen pants with a soft drape and eco-friendly fabric.",
+        "key_features": [
+          "100% biodegradable fibers",
+          "Cool and breathable",
+          "Minimal water use"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/linen_pants_front.png",
+        "../../dataset/product_images/linen_pants_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Mai",
+          "rating": 5,
+          "text": "Feels luxurious and cool even on hot days.",
+          "date": "6 Oct, 2025",
+          "likes": 6
+        }
+      ]
     },
     {
       "product_id": "P006",
       "product_name": "Recycled Denim Jeans",
       "description": "Crafted from 60% recycled denim, durable with a minimal carbon footprint.",
-      "price": 420000,
+      "price_original": 420000,
+      "promotion_code": "GREEN20",
       "quantity_available": 45,
-      "green_score": 87,
-      "category_id": "C002"
-    },
-    {
-      "product_id": "P007",
-      "product_name": "Bamboo Lounge Pants",
-      "description": "Ultra-soft bamboo viscose with natural stretch and comfort.",
-      "price": 310000,
-      "quantity_available": 25,
-      "green_score": 90,
-      "category_id": "C002"
-    },
-    {
-      "product_id": "P008",
-      "product_name": "Tencel Culottes",
-      "description": "Made from Tencel™ Lyocell fibers — smooth, drapey, and planet-friendly.",
-      "price": 370000,
-      "quantity_available": 40,
-      "green_score": 89,
-      "category_id": "C002"
-    },
-    {
-      "product_id": "P018",
-      "product_name": "Upcycled Cargo Pants",
-      "description": "Stylish and functional cargo pants made from repurposed textile waste.",
-      "price": 390000,
-      "quantity_available": 35,
-      "green_score": 91,
-      "category_id": "C002"
-    },
-    {
-      "product_id": "P009",
-      "product_name": "Eco Linen Midi Dress",
-      "description": "Timeless silhouette with a clean design — biodegradable linen, breathable fit.",
-      "price": 480000,
-      "quantity_available": 20,
-      "green_score": 94,
-      "category_id": "C003"
-    },
-    {
-      "product_id": "P010",
-      "product_name": "Organic Cotton Wrap Dress",
-      "description": "Flowy, versatile, and made from certified organic cotton.",
-      "price": 450000,
-      "quantity_available": 30,
-      "green_score": 91,
-      "category_id": "C003"
-    },
-    {
-      "product_id": "P011",
-      "product_name": "Recycled Satin Slip Dress",
-      "description": "Elegant sheen from upcycled satin blends, perfect for any occasion.",
-      "price": 500000,
-      "quantity_available": 25,
-      "green_score": 85,
-      "category_id": "C003"
-    },
-    {
-      "product_id": "P012",
-      "product_name": "Bamboo Ribbed Dress",
-      "description": "Stretchy, soft, and temperature-regulating for effortless comfort.",
-      "price": 460000,
-      "quantity_available": 25,
-      "green_score": 90,
-      "category_id": "C003"
-    },
-    {
-      "product_id": "P019",
-      "product_name": "Upcycled Silk Maxi Dress",
-      "description": "Made from reclaimed silk fabric — luxurious feel, low environmental impact.",
-      "price": 520000,
-      "quantity_available": 18,
-      "green_score": 93,
-      "category_id": "C003"
-    },
-    {
-      "product_id": "P013",
-      "product_name": "Upcycled Tote Bag",
-      "description": "Each tote is made from repurposed textile scraps — unique and waste-free.",
-      "price": 220000,
-      "quantity_available": 80,
-      "green_score": 95,
-      "category_id": "C004"
-    },
-    {
-      "product_id": "P014",
-      "product_name": "Cork Leather Wallet",
-      "description": "Vegan-friendly cork leather wallet with minimalist design and durability.",
-      "price": 280000,
-      "quantity_available": 70,
-      "green_score": 88,
-      "category_id": "C004"
-    },
-    {
-      "product_id": "P015",
-      "product_name": "Organic Cotton Cap",
-      "description": "Lightweight, breathable cap made from natural cotton canvas.",
-      "price": 180000,
-      "quantity_available": 50,
-      "green_score": 86,
-      "category_id": "C004"
+      "number_bought": "390+ bought",
+      "green_score": { "value": 87, "image": "../images/80-100greenscore.png" },
+      "category_id": "C002",
+      "attributes": {
+        "Material": "60% Recycled denim",
+        "Fit": "Slim Fit",
+        "Weight": "340 gr.",
+        "Size": "26 - 36",
+        "Technique": "Stone wash",
+        "Delivery time": "7 - 9 working days"
+      },
+      "additional_info": {
+        "description_text": "Durable jeans made from recycled denim with classic design and comfort.",
+        "key_features": [
+          "60% recycled content",
+          "Reduces water usage",
+          "Long-lasting quality"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/recycled_denim_front.png",
+        "../../dataset/product_images/recycled_denim_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Tuấn",
+          "rating": 5,
+          "text": "Perfect fit and feels great. Love that it's eco-friendly!",
+          "date": "8 Oct, 2025",
+          "likes": 7
+        }
+      ]
     },
     {
       "product_id": "P016",
       "product_name": "Recycled Plastic Sunglasses",
       "description": "Fashion meets sustainability — frames made from ocean-recycled plastic.",
-      "price": 320000,
+      "price_original": 320000,
+      "promotion_code": "ACC5",
       "quantity_available": 60,
-      "green_score": 89,
-      "category_id": "C004"
+      "number_bought": "420+ bought",
+      "green_score": { "value": 89, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Ocean-recycled plastic",
+        "Lens type": "UV400 polarized",
+        "Weight": "28 gr.",
+        "Frame size": "Medium",
+        "Technique": "Injection molding",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "Stylish sunglasses made from plastic recovered from ocean waste.",
+        "key_features": [
+          "Made from ocean plastics",
+          "UV400 protection",
+          "Lightweight and durable"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/sunglasses_front.png",
+        "../../dataset/product_images/sunglasses_side.png"
+      ],
+      "reviews": [
+        {
+          "user": "Sarah",
+          "rating": 5,
+          "text": "Love these! Stylish and sustainable.",
+          "date": "12 Oct, 2025",
+          "likes": 19
+        },
+        {
+          "user": "Tom",
+          "rating": 4,
+          "text": "Great quality and fits perfectly.",
+          "date": "3 Oct, 2025",
+          "likes": 8
+        }
+      ]
     },
     {
       "product_id": "P020",
       "product_name": "Hemp Crossbody Bag",
       "description": "Durable hemp fabric bag with adjustable strap and minimal waste design.",
-      "price": 250000,
+      "price_original": 250000,
+      "promotion_code": "ACC5",
       "quantity_available": 40,
-      "green_score": 92,
-      "category_id": "C004"
+      "number_bought": "285+ bought",
+      "green_score": { "value": 92, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Hemp canvas",
+        "Dimensions": "22 x 18 x 6 cm",
+        "Weight": "180 gr.",
+        "Strap": "Adjustable",
+        "Technique": "Hand-stitched",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "Versatile crossbody bag made from sustainable hemp with practical design.",
+        "key_features": [
+          "Made from durable hemp",
+          "Adjustable strap",
+          "Multiple compartments"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/hemp_bag_front.png",
+        "../../dataset/product_images/hemp_bag_wearing.png"
+      ],
+      "reviews": [
+        {
+          "user": "An",
+          "rating": 5,
+          "text": "Perfect size for daily essentials. Love the quality!",
+          "date": "11 Oct, 2025",
+          "likes": 14
+        }
+      ]
     },
     {
       "product_id": "P021",
       "product_name": "Bamboo Sunglasses Case",
       "description": "Eco-friendly bamboo case designed to protect your eyewear sustainably.",
-      "price": 150000,
+      "price_original": 150000,
+      "promotion_code": "ACC5",
       "quantity_available": 70,
-      "green_score": 90,
-      "category_id": "C004"
+      "number_bought": "340+ bought",
+      "green_score": { "value": 90, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Natural bamboo",
+        "Dimensions": "16 x 6 x 4 cm",
+        "Weight": "50 gr.",
+        "Interior": "Soft microfiber",
+        "Technique": "Handcrafted",
+        "Delivery time": "4 - 6 working days"
+      },
+      "additional_info": {
+        "description_text": "Protective case made from natural bamboo with soft interior lining.",
+        "key_features": [
+          "Made from sustainable bamboo",
+          "Soft microfiber lining",
+          "Lightweight and durable"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/bamboo_case_closed.png",
+        "../../dataset/product_images/bamboo_case_open.png"
+      ],
+      "reviews": [
+        {
+          "user": "Hương",
+          "rating": 5,
+          "text": "Beautiful case! Perfect for my sunglasses.",
+          "date": "9 Oct, 2025",
+          "likes": 10
+        }
+      ]
     },
     {
       "product_id": "P022",
       "product_name": "Recycled Fabric Scarf",
       "description": "Soft and breathable scarf made entirely from recycled fibers.",
-      "price": 190000,
+      "price_original": 190000,
+      "promotion_code": "ACC5",
       "quantity_available": 55,
-      "green_score": 91,
-      "category_id": "C004"
+      "number_bought": "295+ bought",
+      "green_score": { "value": 91, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Recycled polyester blend",
+        "Dimensions": "180 x 70 cm",
+        "Weight": "85 gr.",
+        "Pattern": "Various",
+        "Technique": "Digital print",
+        "Delivery time": "4 - 6 working days"
+      },
+      "additional_info": {
+        "description_text": "Lightweight scarf made from recycled materials with vibrant patterns.",
+        "key_features": [
+          "100% recycled fibers",
+          "Soft and breathable",
+          "Versatile styling"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/scarf_folded.png",
+        "../../dataset/product_images/scarf_wearing.png"
+      ],
+      "reviews": [
+        {
+          "user": "Elena",
+          "rating": 4,
+          "text": "Nice scarf with beautiful colors. Very soft!",
+          "date": "7 Oct, 2025",
+          "likes": 12
+        }
+      ]
     },
     {
       "product_id": "P023",
       "product_name": "Organic Cotton Socks",
       "description": "Comfortable and breathable everyday socks made from organic cotton yarn.",
-      "price": 120000,
+      "price_original": 120000,
+      "promotion_code": "ACC5",
       "quantity_available": 100,
-      "green_score": 93,
-      "category_id": "C004"
+      "number_bought": "580+ bought",
+      "green_score": { "value": 93, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Organic cotton yarn",
+        "Size": "35-45 EU",
+        "Weight": "40 gr. per pair",
+        "Pack": "3 pairs",
+        "Technique": "Knitted",
+        "Delivery time": "3 - 5 working days"
+      },
+      "additional_info": {
+        "description_text": "Everyday comfort socks made from certified organic cotton.",
+        "key_features": [
+          "Made from organic cotton",
+          "Breathable and soft",
+          "Pack of 3 pairs"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/cotton_socks_pack.png",
+        "../../dataset/product_images/cotton_socks_detail.png"
+      ],
+      "reviews": [
+        {
+          "user": "Đức",
+          "rating": 5,
+          "text": "Best socks ever! So comfortable.",
+          "date": "14 Oct, 2025",
+          "likes": 22
+        },
+        {
+          "user": "Lisa",
+          "rating": 5,
+          "text": "Great quality and value. Will buy again!",
+          "date": "5 Oct, 2025",
+          "likes": 15
+        }
+      ]
     },
     {
       "product_id": "P024",
       "product_name": "Recycled Plastic Hair Clip",
       "description": "Stylish and sturdy clip crafted from 100% recycled ocean plastics.",
-      "price": 90000,
+      "price_original": 90000,
+      "promotion_code": "ACC5",
       "quantity_available": 90,
-      "green_score": 88,
-      "category_id": "C004"
+      "number_bought": "460+ bought",
+      "green_score": { "value": 88, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "100% recycled ocean plastic",
+        "Size": "Medium (8 cm)",
+        "Weight": "15 gr.",
+        "Colors": "Various",
+        "Technique": "Injection molding",
+        "Delivery time": "3 - 5 working days"
+      },
+      "additional_info": {
+        "description_text": "Fashionable hair clip made from ocean-recovered plastic waste.",
+        "key_features": [
+          "Made from ocean plastics",
+          "Sturdy hold",
+          "Available in multiple colors"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/hair_clip_colors.png",
+        "../../dataset/product_images/hair_clip_wearing.png"
+      ],
+      "reviews": [
+        {
+          "user": "Trang",
+          "rating": 5,
+          "text": "Cute and holds hair well. Love the eco aspect!",
+          "date": "13 Oct, 2025",
+          "likes": 18
+        },
+        {
+          "user": "Maya",
+          "rating": 4,
+          "text": "Nice clip, good quality for the price.",
+          "date": "1 Oct, 2025",
+          "likes": 11
+        },
+        {
+          "user": "Emma",
+          "rating": 4,
+          "text": "Good quality denim. Slightly stiff at first but softens up.",
+          "date": "1 Oct, 2025",
+          "likes": 6
+        }
+      ]
+    },
+    {
+      "product_id": "P007",
+      "product_name": "Bamboo Lounge Pants",
+      "description": "Ultra-soft bamboo viscose with natural stretch and comfort.",
+      "price_original": 310000,
+      "promotion_code": "GREEN20",
+      "quantity_available": 25,
+      "number_bought": "270+ bought",
+      "green_score": { "value": 90, "image": "../images/80-100greenscore.png" },
+      "category_id": "C002",
+      "attributes": {
+        "Material": "Bamboo viscose",
+        "Fit": "Loose Fit",
+        "Weight": "220 gr.",
+        "Size": "S - XXL",
+        "Technique": "Jersey knit",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "Perfect for lounging or sleeping, made from silky-soft bamboo fabric.",
+        "key_features": [
+          "Ultra-soft texture",
+          "Natural stretch",
+          "Breathable and moisture-wicking"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/bamboo_lounge_front.png",
+        "../../dataset/product_images/bamboo_lounge_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Phương",
+          "rating": 5,
+          "text": "So soft! Best loungewear I've ever owned.",
+          "date": "12 Oct, 2025",
+          "likes": 15
+        }
+      ]
+    },
+    {
+      "product_id": "P008",
+      "product_name": "Tencel Culottes",
+      "description": "Made from Tencel™ Lyocell fibers — smooth, drapey, and planet-friendly.",
+      "price_original": 370000,
+      "promotion_code": "GREEN20",
+      "quantity_available": 40,
+      "number_bought": "295+ bought",
+      "green_score": { "value": 89, "image": "../images/80-100greenscore.png" },
+      "category_id": "C002",
+      "attributes": {
+        "Material": "Tencel™ Lyocell",
+        "Fit": "Wide Leg",
+        "Weight": "230 gr.",
+        "Size": "XS - XL",
+        "Technique": "Twill weave",
+        "Delivery time": "6 - 8 working days"
+      },
+      "additional_info": {
+        "description_text": "Elegant culottes with a flowing silhouette and sustainable fabric.",
+        "key_features": [
+          "Made from eco-friendly Tencel™",
+          "Soft and drapey",
+          "Versatile styling options"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/tencel_culottes_front.png",
+        "../../dataset/product_images/tencel_culottes_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Ana",
+          "rating": 5,
+          "text": "Beautiful drape and so comfortable for work!",
+          "date": "7 Oct, 2025",
+          "likes": 8
+        }
+      ]
+    },
+    {
+      "product_id": "P018",
+      "product_name": "Upcycled Cargo Pants",
+      "description": "Stylish and functional cargo pants made from repurposed textile waste.",
+      "price_original": 390000,
+      "promotion_code": "GREEN20",
+      "quantity_available": 35,
+      "number_bought": "225+ bought",
+      "green_score": { "value": 91, "image": "../images/80-100greenscore.png" },
+      "category_id": "C002",
+      "attributes": {
+        "Material": "Upcycled cotton blend",
+        "Fit": "Utility Fit",
+        "Weight": "280 gr.",
+        "Size": "S - XL",
+        "Technique": "Reinforced stitching",
+        "Delivery time": "7 - 9 working days"
+      },
+      "additional_info": {
+        "description_text": "Functional cargo pants with multiple pockets, made from textile waste.",
+        "key_features": [
+          "Made from repurposed materials",
+          "Multiple cargo pockets",
+          "Durable construction"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/cargo_pants_front.png",
+        "../../dataset/product_images/cargo_pants_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Max",
+          "rating": 4,
+          "text": "Great pockets and fit. Very practical!",
+          "date": "3 Oct, 2025",
+          "likes": 10
+        }
+      ]
+    },
+    {
+      "product_id": "P009",
+      "product_name": "Eco Linen Midi Dress",
+      "description": "Timeless silhouette with a clean design — biodegradable linen, breathable fit.",
+      "price_original": 480000,
+      "promotion_code": "STYLE15",
+      "quantity_available": 20,
+      "number_bought": "185+ bought",
+      "green_score": { "value": 94, "image": "../images/80-100greenscore.png" },
+      "category_id": "C003",
+      "attributes": {
+        "Material": "100% Linen",
+        "Fit": "A-line",
+        "Weight": "240 gr.",
+        "Size": "XS - XL",
+        "Technique": "Natural dye",
+        "Delivery time": "7 - 10 working days"
+      },
+      "additional_info": {
+        "description_text": "Elegant midi dress perfect for warm weather and special occasions.",
+        "key_features": [
+          "100% biodegradable linen",
+          "Breathable and lightweight",
+          "Timeless design"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/linen_midi_dress_front.png",
+        "../../dataset/product_images/linen_midi_dress_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Thảo",
+          "rating": 5,
+          "text": "Absolutely love this dress! Perfect for summer.",
+          "date": "14 Oct, 2025",
+          "likes": 18
+        },
+        {
+          "user": "Claire",
+          "rating": 5,
+          "text": "Beautiful fabric and fits like a dream.",
+          "date": "5 Oct, 2025",
+          "likes": 12
+        }
+      ]
+    },
+    {
+      "product_id": "P010",
+      "product_name": "Organic Cotton Wrap Dress",
+      "description": "Flowy, versatile, and made from certified organic cotton.",
+      "price_original": 450000,
+      "promotion_code": "STYLE15",
+      "quantity_available": 30,
+      "number_bought": "215+ bought",
+      "green_score": { "value": 91, "image": "../images/80-100greenscore.png" },
+      "category_id": "C003",
+      "attributes": {
+        "Material": "Organic cotton",
+        "Fit": "Wrap style",
+        "Weight": "210 gr.",
+        "Size": "XS - XXL",
+        "Technique": "Screen printing",
+        "Delivery time": "6 - 8 working days"
+      },
+      "additional_info": {
+        "description_text": "Versatile wrap dress that flatters every body type.",
+        "key_features": [
+          "GOTS-certified organic cotton",
+          "Adjustable wrap fit",
+          "Easy to style"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/wrap_dress_front.png",
+        "../../dataset/product_images/wrap_dress_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Nina",
+          "rating": 5,
+          "text": "So flattering and comfortable. Highly recommend!",
+          "date": "11 Oct, 2025",
+          "likes": 14
+        }
+      ]
+    },
+    {
+      "product_id": "P011",
+      "product_name": "Recycled Satin Slip Dress",
+      "description": "Elegant sheen from upcycled satin blends, perfect for any occasion.",
+      "price_original": 500000,
+      "promotion_code": "STYLE15",
+      "quantity_available": 25,
+      "number_bought": "170+ bought",
+      "green_score": { "value": 85, "image": "../images/60-80greenscore.png" },
+      "category_id": "C003",
+      "attributes": {
+        "Material": "Recycled satin blend",
+        "Fit": "Slip style",
+        "Weight": "150 gr.",
+        "Size": "XS - L",
+        "Technique": "Bias cut",
+        "Delivery time": "7 - 9 working days"
+      },
+      "additional_info": {
+        "description_text": "Luxurious slip dress made from recycled materials with elegant drape.",
+        "key_features": [
+          "Made from upcycled satin",
+          "Elegant and versatile",
+          "Perfect for evening wear"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/satin_slip_front.png",
+        "../../dataset/product_images/satin_slip_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Isabella",
+          "rating": 5,
+          "text": "Gorgeous dress! Feels luxurious and looks amazing.",
+          "date": "9 Oct, 2025",
+          "likes": 20
+        }
+      ]
+    },
+    {
+      "product_id": "P012",
+      "product_name": "Bamboo Ribbed Dress",
+      "description": "Stretchy, soft, and temperature-regulating for effortless comfort.",
+      "price_original": 460000,
+      "promotion_code": "STYLE15",
+      "quantity_available": 25,
+      "number_bought": "200+ bought",
+      "green_score": { "value": 90, "image": "../images/80-100greenscore.png" },
+      "category_id": "C003",
+      "attributes": {
+        "Material": "Bamboo viscose",
+        "Fit": "Bodycon",
+        "Weight": "195 gr.",
+        "Size": "XS - XL",
+        "Technique": "Ribbed knit",
+        "Delivery time": "5 - 7 working days"
+      },
+      "additional_info": {
+        "description_text": "Form-fitting ribbed dress with natural stretch and comfort.",
+        "key_features": [
+          "Made from bamboo viscose",
+          "Temperature-regulating",
+          "Stretchy and comfortable"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/bamboo_ribbed_front.png",
+        "../../dataset/product_images/bamboo_ribbed_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Lan",
+          "rating": 4,
+          "text": "Great fit and very comfortable. Love the fabric!",
+          "date": "4 Oct, 2025",
+          "likes": 9
+        }
+      ]
+    },
+    {
+      "product_id": "P019",
+      "product_name": "Upcycled Silk Maxi Dress",
+      "description": "Made from reclaimed silk fabric — luxurious feel, low environmental impact.",
+      "price_original": 520000,
+      "promotion_code": "STYLE15",
+      "quantity_available": 18,
+      "number_bought": "155+ bought",
+      "green_score": { "value": 93, "image": "../images/80-100greenscore.png" },
+      "category_id": "C003",
+      "attributes": {
+        "Material": "Upcycled silk",
+        "Fit": "Maxi length",
+        "Weight": "180 gr.",
+        "Size": "XS - L",
+        "Technique": "Hand-finished",
+        "Delivery time": "8 - 10 working days"
+      },
+      "additional_info": {
+        "description_text": "Luxurious maxi dress made from reclaimed silk with elegant flow.",
+        "key_features": [
+          "Made from reclaimed silk",
+          "Luxurious feel",
+          "Unique and sustainable"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/silk_maxi_front.png",
+        "../../dataset/product_images/silk_maxi_back.png"
+      ],
+      "reviews": [
+        {
+          "user": "Victoria",
+          "rating": 5,
+          "text": "Absolutely stunning! Worth every penny.",
+          "date": "15 Oct, 2025",
+          "likes": 25
+        }
+      ]
+    },
+    {
+      "product_id": "P013",
+      "product_name": "Upcycled Tote Bag",
+      "description": "Each tote is made from repurposed textile scraps — unique and waste-free.",
+      "price_original": 220000,
+      "promotion_code": "ACC5",
+      "quantity_available": 80,
+      "number_bought": "520+ bought",
+      "green_score": { "value": 95, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Upcycled textile scraps",
+        "Dimensions": "38 x 42 cm",
+        "Weight": "120 gr.",
+        "Capacity": "15 liters",
+        "Technique": "Patchwork",
+        "Delivery time": "3 - 5 working days"
+      },
+      "additional_info": {
+        "description_text": "Durable and spacious tote bag made from textile waste.",
+        "key_features": [
+          "Each bag is unique",
+          "Zero waste production",
+          "Strong and durable"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/tote_bag_view1.png",
+        "../../dataset/product_images/tote_bag_view2.png"
+      ],
+      "reviews": [
+        {
+          "user": "Kim",
+          "rating": 5,
+          "text": "Love that each one is unique! Great quality.",
+          "date": "13 Oct, 2025",
+          "likes": 16
+        },
+        {
+          "user": "Oliver",
+          "rating": 5,
+          "text": "Perfect size and very sturdy. Great purchase!",
+          "date": "6 Oct, 2025",
+          "likes": 11
+        }
+      ]
+    },
+    {
+      "product_id": "P014",
+      "product_name": "Cork Leather Wallet",
+      "description": "Vegan-friendly cork leather wallet with minimalist design and durability.",
+      "price_original": 280000,
+      "promotion_code": "ACC5",
+      "quantity_available": 70,
+      "number_bought": "380+ bought",
+      "green_score": { "value": 88, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Cork leather",
+        "Dimensions": "11 x 9 cm",
+        "Weight": "45 gr.",
+        "Card slots": "6",
+        "Technique": "Laser cut",
+        "Delivery time": "4 - 6 working days"
+      },
+      "additional_info": {
+        "description_text": "Sustainable wallet made from natural cork with vegan-friendly design.",
+        "key_features": [
+          "100% vegan cork leather",
+          "Water-resistant",
+          "Minimalist design"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/cork_wallet_closed.png",
+        "../../dataset/product_images/cork_wallet_open.png"
+      ],
+      "reviews": [
+        {
+          "user": "Minh",
+          "rating": 5,
+          "text": "Excellent quality and looks great!",
+          "date": "10 Oct, 2025",
+          "likes": 13
+        }
+      ]
+    },
+    {
+      "product_id": "P015",
+      "product_name": "Organic Cotton Cap",
+      "description": "Lightweight, breathable cap made from natural cotton canvas.",
+      "price_original": 180000,
+      "promotion_code": "ACC5",
+      "quantity_available": 50,
+      "number_bought": "310+ bought",
+      "green_score": { "value": 86, "image": "../images/80-100greenscore.png" },
+      "category_id": "C004",
+      "attributes": {
+        "Material": "Organic cotton canvas",
+        "Size": "Adjustable",
+        "Weight": "60 gr.",
+        "Style": "Baseball cap",
+        "Technique": "Embroidery",
+        "Delivery time": "3 - 5 working days"
+      },
+      "additional_info": {
+        "description_text": "Classic cap made from organic cotton, perfect for everyday wear.",
+        "key_features": [
+          "100% organic cotton",
+          "Adjustable strap",
+          "Breathable and lightweight"
+        ]
+      },
+      "review_images": [
+        "../../dataset/product_images/cotton_cap_front.png",
+        "../../dataset/product_images/cotton_cap_side.png"
+      ],
+      "reviews": [
+        {
+          "user": "Jake",
+          "rating": 4,
+          "text": "Good quality cap, fits well.",
+          "date": "8 Oct, 2025",
+          "likes": 19
+        }
+      ]
     }
   ]
 }
