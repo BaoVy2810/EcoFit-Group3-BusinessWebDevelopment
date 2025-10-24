@@ -15,7 +15,7 @@
             : "../template/header0.html";
 
         header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-home" }, "*");
+            header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
         };
         });
 
@@ -71,7 +71,7 @@
     <main class="checkout-container">
       <!-- LEFT -->
       <section class="checkout-left">
-        <h1 class="page-title">PAYMENT</h1>
+        <h2 class="page-title">PAYMENT</h2>
         <div class="status-box">
           <div class="status-icon">
             <img src="../images/ic_payment.png"/>
@@ -162,8 +162,9 @@
           <div class="proof-action">
             <label class="upload-btn">
               <img src="../images/ic_upload.png" width="15px" height="15px"/> Upload
-              <input type="file" hidden>
+              <input type="file" hidden id="proofImage">
             </label>
+            <span id="fileName" style="margin-left:10px; margin-top: 15px; font-size:13px; color:#555;"></span>
           </div>
         </div>
       </div>
