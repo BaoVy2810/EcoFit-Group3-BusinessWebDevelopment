@@ -2406,6 +2406,13 @@ a {
   padding: 0 80px; 
   gap: 50px;
 }
+.page-title span{
+  background: linear-gradient(135deg, #5AA165 0%, #307B37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
 /* LEFT - Delivery & Payment */
 .floating-label {
   position: relative;
@@ -3539,7 +3546,7 @@ section.visible {
     font-weight: 700;
     margin-bottom: 30px;
 }
-.term_head h1 span {
+.term_head h1 span{
   background: linear-gradient(135deg, #5AA165 0%, #307B37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
