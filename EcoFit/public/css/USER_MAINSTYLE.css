@@ -274,7 +274,7 @@ section.hero::after {
 }
 .card.active::before {
   background: radial-gradient(
-      rgba(169,220,176,0.5) 00%, 
+      rgba(169,220,176,0.5) 0%, 
       rgba(255,255,255,0) 100%);
   filter: blur(80px); 
 }
@@ -2406,6 +2406,8 @@ a {
   padding: 0 80px; 
   gap: 50px;
 }
+<<<<<<< HEAD
+=======
 .page-title span{
   background: linear-gradient(135deg, #5AA165 0%, #307B37 100%);
   -webkit-background-clip: text;
@@ -2413,6 +2415,7 @@ a {
   background-clip: text;
   color: transparent;
 }
+>>>>>>> db8a8ebd8e1b6ded2a83a4f4f3ded62cb915f51e
 /* LEFT - Delivery & Payment */
 .floating-label {
   position: relative;
@@ -2892,6 +2895,7 @@ h1 span {
     display: block;
     padding: 4px 0;
     transition: color 0.2s ease;
+    white-space: nowrap;
 }
 .sidebar nav ul li a:hover {
     color: #000;
@@ -3038,6 +3042,143 @@ h1 span {
     transform: scale(0.98);
 }
 
+/*10_NOTIFICATIONS*/
+.notifications-content {
+  max-width: 900px;
+}
+
+.notification-section {
+  margin-bottom: 50px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+}
+
+.toggle-all {
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.toggle-all:hover {
+  color: #3DA547;
+  text-decoration: underline;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.notification-item {
+  margin-bottom: 25px;
+}
+
+.notification-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.notification-checkbox {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 2px solid #3DA547;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+  margin-top: 2px;
+  background-color: white;
+}
+
+.notification-checkbox:checked + .checkbox-custom {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  border: none;
+}
+
+.notification-checkbox:checked + .checkbox-custom::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-text strong {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.notification-text p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.update-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.update-notifications-btn {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.update-notifications-btn:hover {
+  background: #33773E;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+}
+
+.update-notifications-btn:active {
+  transform: translateY(0);
+}
+
 /*11_PASSWORD*/
 .password-form-container {
     max-width: 900px;
@@ -3082,6 +3223,137 @@ h1 span {
 .save-password-button:active {
     transform: scale(0.98);
 }
+
+/*12_MYPLANT&DAILYGREENSTREAK*/
+.myplant-main-content {
+  flex: 1;
+  border-radius: 20px;
+  padding: 60px 80px;
+  margin-left: 40px;
+  margin-right: 40px;
+  min-height: 700px;
+}
+
+/* Căn giữa hình cây */
+.plant-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 50px;
+  background: white;
+  border-radius: 20px;
+  padding: 50px 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.plant-display img {
+  width: 180px;
+  height: 280px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.plant-info {
+  font-size: 16px;
+  text-align: center;
+  color: #333;
+  font-family: 'Outfit';
+}
+
+.plant-info p {
+  margin: 8px 0;
+  font-family: 'Outfit';
+}
+
+/* Lịch */
+.myplant-calendar {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 550px;
+  margin: 0 auto;
+  font-family: 'Outfit';
+}
+
+/* Calendar styles */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.day-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5f2e5;
+  border-radius: 10px;
+  height: 40px;
+  cursor: pointer;
+  font-weight: 500;
+  user-select: none;
+  font-family: 'Outfit';
+  font-size: 16px;
+}
+
+.day-cell.today {
+  background-color: #69bd76;
+  color: white;
+  font-weight: 700;
+}
+
+.day-cell.claimed {
+  background-color: #a3d9a5;
+  color: white;
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: 'Outfit';
+}
+
+.month-title {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Outfit';
+}
+
+.arrow {
+  cursor: pointer;
+  font-size: 24px;
+  font-family: 'Outfit';
+}
+
+/* Nút Claim Reward */
+.reward-btn {
+  background-color: #69bd76;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Outfit';
+  transition: all 0.3s ease;
+}
+
+.reward-btn:hover {
+  background-color: #5aa165;
+  transform: translateY(-2px);
+}
+<<<<<<< HEAD
+=======
 
 /*13_ABOUT_US*/
 :root {
@@ -3670,3 +3942,4 @@ strong {
     color: #333;
     font-weight: 600;
 }
+>>>>>>> db8a8ebd8e1b6ded2a83a4f4f3ded62cb915f51e

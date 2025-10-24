@@ -26,10 +26,18 @@ function process_login() {
                 let string_json = JSON.stringify(ac);
                 localStorage.setItem("login_infor", string_json);
                 localStorage.setItem("save_infor", my_form.save_infor.checked);
-                if (ac.role == "administrator") {
-                    window.open("../public/admin_pages/admin_dashboard.html", "_self");
-                } else {
-                    window.open("../pages/01_HOMEPAGE.html", "_self");
+                localStorage.setItem("isLoggedIn", "true"); // ✅ lưu trạng thái đăng nhập
+
+                // ✅ Gửi tín hiệu login thành công sang trang cha (home.js sẽ nhận)
+                window.parent.postMessage({ action: "loginSuccess" }, "*");
+
+                // ✅ Chuyển hướng nếu không chạy trong iframe (khi test trực tiếp)
+                if (window.top === window.self) {
+                    if (ac.role == "administrator") {
+                        window.open("../public/admin_pages/admin_dashboard.html", "_self");
+                    } else {
+                        window.open("../pages/01_HOMEPAGE.html", "_self");
+                    }
                 }
             }
         }
@@ -40,7 +48,7 @@ function load_login_infor() {
     let json_string = localStorage.getItem("login_infor");
     let json_object = JSON.parse(json_string);
     let save = localStorage.getItem("save_infor");
-    if (save == 'true') {
+    if (save == 'true' && json_object) {
         my_form.email.value = json_object.email;
         my_form.password.value = json_object.password;
         my_form.save_infor.checked = true;

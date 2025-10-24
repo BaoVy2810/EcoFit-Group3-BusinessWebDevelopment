@@ -1,65 +1,106 @@
-fetch("../../dataset/notification.json")
-  .then((res) => res.json())
-  .then((data) => renderSections(data))
-  .catch((err) => console.error(err));
+document.addEventListener('DOMContentLoaded', function() {
 
-function renderSections(data) {
-  const container = document.getElementById("notificationContainer");
-  data.sections.forEach((section) => {
-    const div = document.createElement("div");
-    div.className = "section-card";
-    div.innerHTML = `
-      <div class="section-head">
-        <h5>${section.title}</h5>
-        <a href="#" class="text-success small toggle-all" data-id="${
-          section.id
-        }">Toggle all</a>
-      </div>
-      <p class="text-muted mb-2">${section.subtitle || ""}</p>
-      <div>
-        ${section.items
-          .map(
-            (item) => `
-          <div class="form-check">
-            <input class="form-check-input notif-item" type="checkbox" id="${item.id}">
-            <label class="form-check-label fw-semibold" for="${item.id}">${item.name}</label>
-            <div class="desc">${item.desc}</div>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
-    `;
-    container.appendChild(div);
-  });
-
-  // Save bar
-  const save = document.createElement("div");
-  save.className = "save-bar";
-  save.innerHTML = `<button class="save-btn" id="saveBtn">Update Email Notifications</button>`;
-  container.appendChild(save);
-
-  // Toggle all
-  document.querySelectorAll(".toggle-all").forEach((link) => {
-    link.addEventListener("click", (e) => {
+  const toggleAllLinks = document.querySelectorAll('.toggle-all');
+  
+  toggleAllLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
       e.preventDefault();
-      const id = e.target.dataset.id;
-      const group = document.querySelectorAll(
-        `#notificationContainer [data-id="${id}"] ~ div .notif-item`
-      );
-      const allChecked = [...group].every((cb) => cb.checked);
-      group.forEach((cb) => (cb.checked = !allChecked));
+      
+      const section = this.closest('.notification-section');
+      const checkboxes = section.querySelectorAll('.notification-checkbox');
+      
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = !allChecked;
+      });
     });
   });
 
-  // Save
-  document.getElementById("saveBtn").addEventListener("click", () => {
-    const checked = [...document.querySelectorAll(".notif-item")]
-      .filter((cb) => cb.checked)
-      .map((cb) => cb.id);
-    alert(
-      "Saved!\n" +
-        (checked.length ? checked.join("\n") : "No notifications selected")
-    );
+  const updateBtn = document.querySelector('.update-notifications-btn');
+  
+  updateBtn.addEventListener('click', function() {
+    const settings = {
+      alerts: [],
+      accountActivity: [],
+      newsletters: []
+    };
+
+    const sections = document.querySelectorAll('.notification-section');
+    
+    sections.forEach((section, index) => {
+      const checkboxes = section.querySelectorAll('.notification-checkbox');
+      const sectionSettings = [];
+      
+      checkboxes.forEach(checkbox => {
+        const label = checkbox.closest('.notification-label');
+        const text = label.querySelector('.notification-title').textContent;
+        sectionSettings.push({
+          name: text,
+          enabled: checkbox.checked
+        });
+      });
+
+      if (index === 0) settings.alerts = sectionSettings;
+      else if (index === 1) settings.accountActivity = sectionSettings;
+      else if (index === 2) settings.newsletters = sectionSettings;
+    });
+
+    console.log('Updated notification settings:', settings);
+
+    showSuccessMessage();
   });
-}
+
+  function showSuccessMessage() {
+    const message = document.createElement('div');
+    message.className = 'success-message';
+    message.innerHTML = '✓ Notification preferences updated successfully!';
+    message.style.cssText = `
+      position: fixed;
+      top: 100px;
+      right: 30px;
+      background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+      z-index: 9999;
+      animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(message);
+
+    setTimeout(() => {
+      message.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => message.remove(), 300);
+    }, 3000);
+  }
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+});
