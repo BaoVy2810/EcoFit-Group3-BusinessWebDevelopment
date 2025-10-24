@@ -209,26 +209,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderOrderSummary(subtotal, shipping, discount, total) {
     const summaryEl = document.querySelector('.order-summary');
     if (!summaryEl) return;
+    
     summaryEl.innerHTML = `
-      <h3>ORDER SUMMARY</h3>
-      <div class="summary-item"><span>Subtotal Product</span><span>${formatNumber(subtotal)}</span></div>
-      <div class="summary-item"><span>Shipping Cost</span><span>${formatNumber(shipping)}</span></div>
-      <div class="summary-item"><span>Discount</span><span>-${formatNumber(discount)}</span></div>
-      <hr/>
-      <div class="total"><span>Total</span><span>${formatNumber(total)}</span></div>
+        <h2 class="order-summary__title">ORDER SUMMARY</h2>
+        <div class="order-summary__row">
+            <span>Subtotal Product</span>
+            <span class="order-summary__value">${formatNumber(subtotal)}</span>
+        </div>
+        <div class="order-summary__row">
+            <span>Shipping Cost</span>
+            <span class="order-summary__value">${formatNumber(shipping)}</span>
+        </div>
+        <div class="order-summary__row">
+            <span>Discount</span>
+            <span class="order-summary__value discount">-${formatNumber(discount)}</span>
+        </div>
+        <div class="order-summary__total">
+            <span>Total</span>
+            <span class="total-value">${formatNumber(total)}</span>
+        </div>
     `;
-    // also update small payment detail left side (pd-list)
-    const pdRows = document.querySelectorAll('.pd-row');
-    pdRows.forEach(row => {
-      const label = row.querySelector('.pd-label')?.textContent?.trim().toLowerCase();
-      if (!label) return;
-      if (label.includes('total order amount')) row.querySelector('.pd-value').textContent = formatNumber(subtotal);
-      if (label.includes('amount due')) row.querySelector('.pd-value').textContent = formatNumber(total);
-      if (label.includes('payment method')) {
-        // don't change here
-      }
-    });
-  }
+}
 
   function fillPaymentDetail(subtotal, total, paymentMethodText) {
     // small payment detail block on left
