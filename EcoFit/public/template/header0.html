@@ -20,7 +20,6 @@
                     style="height:40px; 
                             margin: 15px 40px 0 50px;"/>
             </a>
-
             <!--Navigation-->
             <div class="collapse navbar-collapse" 
                 id="navbarNav" 
@@ -45,7 +44,6 @@
                     </li>
                 </ul>
             </div>
-            
             <!--Search Box-->
             <div class="positive-relative"
                 style="
@@ -68,91 +66,74 @@
                                 padding-left: 45px;
                                 font-size: 16px;"/>
             </div>
+            <!-- RIGHT BUTTONS: LOGIN / SIGNUP -->
+            <div class="d-flex align-items-center" style="gap: 20px; margin:10px 50px 0 0">
+                <button id="loginBtn" 
+                        style="background-color: transparent;
+                                border: 2px solid #3DA547;
+                                color: #3DA547;
+                                border-radius: 30px;
+                                padding: 8px 22px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;">
+                    Login
+                </button>
 
-            <!--Notifications, Cart, User-->
-            <div class="d-flex align-items-center" 
-                    style="gap: 15px; 
-                        margin:10px 50px 0 0">
-                <!-- Notification -->
-                <button type="button" class="position-relative" 
-                    style="background-color: #F7F1D8; 
-                            border-radius: 50%; 
-                            width: 40px; 
-                            height: 40px; 
-                            display: flex; 
-                            justify-content: center; 
-                            align-items: center;
-                            border:none;
-                            outline:none;
-                            box-shadow:none;"">
-                    <img src="../images/Bell_icon.png" alt="bell" style="width:30px; height:30px;">
-                    <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" 
-                        style="font-size: 10px">
-                        1
-                    </span>
+                <button id="signupBtn" 
+                        style=" background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+                                border: none;
+                                color: white;
+                                border-radius: 30px;
+                                padding: 8px 22px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;">
+                    Sign Up
                 </button>
-                <!-- Cart -->
-                <button type="button"  class="position-relative" 
-                    style="background-color: #69BD76; 
-                            border-radius: 50%; 
-                            width: 40px; 
-                            height: 40px; 
-                            display: flex; 
-                            justify-content: center; 
-                            align-items: center;
-                            border:none;
-                            outline:none;
-                            box-shadow:none;">
-                    <img src="../images/Cart_icon.png" alt="cart" 
-                            style="width: 30px; 
-                                    height:30px;">
-                    <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" 
-                        style="font-size: 10px">
-                        8
-                    </span>
-                </button>
-                <!-- User -->
-                <button type="button" style="background-color: #D9D9D9; 
-                                            border-radius: 50%; 
-                                            width: 40px; 
-                                            height: 40px; 
-                                            display: flex; 
-                                            justify-content: center; 
-                                            align-items: center;
-                                            border:none;
-                                            outline:none;
-                                            box-shadow:none;">
-                    <img src="../images/Profile_icon.png" alt="user" 
-                            style="width:30px; 
-                                height:30px;">
-                </div>
             </div>
         </div>
     </nav>
-
     <script>
     window.addEventListener("message", (event) => {
-        const { activeNav } = event.data;
-        if (!activeNav) return;
+    const { activeNav } = event.data;
+    if (!activeNav) return;
 
-        document.querySelectorAll(".nav-link").forEach(link => {
+    document.querySelectorAll(".nav-link").forEach(link => {
         link.classList.remove("active");
-        });
+    });
 
-        const activeLink = document.getElementById(activeNav);
-        if (activeLink) {
+    const activeLink = document.getElementById(activeNav);
+    if (activeLink) {
         activeLink.classList.add("active");
-        }
+    }
     });
 
     window.addEventListener("DOMContentLoaded", () => {
-        const currentPage = window.location.pathname.split("/").pop().toLowerCase();
-        document.querySelectorAll(".nav-link").forEach(link => {
+    // Highlight tab đang active
+    const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+    document.querySelectorAll(".nav-link").forEach(link => {
         const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
         if (currentPage === targetPage) {
-            link.classList.add("active");
+        link.classList.add("active");
         }
+    });
+
+    // ✅ Gửi tín hiệu ra ngoài iframe để trang cha điều hướng
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+
+    if (loginBtn) {
+        loginBtn.addEventListener("click", () => {
+        window.parent.postMessage({ action: "goToLogin" }, "*");
         });
+    }
+
+    if (signupBtn) {
+        signupBtn.addEventListener("click", () => {
+        window.parent.postMessage({ action: "goToSignup" }, "*");
+        });
+    }
     });
     </script>
 </body>
