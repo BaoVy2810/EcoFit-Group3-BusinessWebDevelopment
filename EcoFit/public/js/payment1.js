@@ -1,4 +1,3 @@
-// payment1.js
 document.addEventListener('DOMContentLoaded', () => {
   // Try to read order data from multiple possible keys (be robust)
   const checkoutOrder = tryParse(localStorage.getItem('checkoutOrder'));

@@ -1,116 +1,157 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const paymentInfo = getData("paymentInfo");
+document.addEventListener('DOMContentLoaded', () => {
+  // ---------------- đọc dữ liệu từ localStorage ----------------
+  const paymentInfo = tryParse(localStorage.getItem('paymentInfo'));
+  const checkoutOrder = tryParse(localStorage.getItem('checkoutOrder'));
+  const checkoutCart = tryParse(localStorage.getItem('checkoutCart'));
+  const checkoutSummary = tryParse(localStorage.getItem('checkoutSummary'));
 
   if (!paymentInfo) {
-    alert("Không tìm thấy thông tin đơn hàng. Vui lòng quay lại trang thanh toán.");
+    alert("⚠️ Không tìm thấy dữ liệu thanh toán. Quay lại Payment 1 nhé!");
     window.location.href = "../pages/07_PAYMENT1.html";
     return;
   }
 
-  // 1️⃣ Mã đơn hàng
-  const orderTitle = document.querySelector(".page-title span");
-  if (orderTitle) {
-    orderTitle.textContent = `#${paymentInfo.orderId || "0000"}`;
+  // ---------------- chuẩn bị dữ liệu ----------------
+  const items = paymentInfo.cart || [];
+  const customer = (checkoutOrder && checkoutOrder.customer) || {};
+  const subtotal = safeNumber(paymentInfo.subtotal) || calcSubtotal(items);
+  const shipping = safeNumber(paymentInfo.shipping || 30000);
+  const discount = safeNumber(paymentInfo.discount || 0);
+  const total = safeNumber(paymentInfo.total) || subtotal + shipping - discount;
+  const orderId = paymentInfo.orderId || generateOrderId();
+
+  // ---------------- hiển thị thông tin đơn hàng ----------------
+  // Mã đơn hàng
+  const orderSpan = document.querySelector(".page-title span");
+  if (orderSpan) orderSpan.textContent = `#${orderId}`;
+
+  // Hiển thị địa chỉ giao hàng
+  const deliveryBox = document.querySelector(".delivery-box .delivery-text");
+  if (deliveryBox) {
+    const addressText = composeAddress(customer);
+    deliveryBox.innerHTML = addressText || 'No delivery address';
   }
 
-  // 2️⃣ Địa chỉ giao hàng
-  const deliveryText = document.querySelector(".delivery-text");
-  if (deliveryText) {
-    deliveryText.innerHTML =
-      paymentInfo.userInfo?.address ||
-      "No address information. Please enter in Checkout page.";
-  }
+  // Hiển thị danh sách sản phẩm
+  renderOrderItems(items);
 
-  // 3️⃣ Danh sách sản phẩm
-  const orderDetail = document.querySelector(".order-detail");
-  if (orderDetail && paymentInfo.cart && paymentInfo.cart.length > 0) {
-    const itemsHTML = paymentInfo.cart
-      .map((item) => `
-          <div class="order-item">
-            <img src="${item.image || "../images/Product_images/organic_cotton_tee.png"}" alt="">
-            <div class="order-item-info">
-              <h4>${item.name}</h4>
-              <p>Color: ${item.color || "-"} | Size: ${item.size || "-"}</p>
-              <span class="order-item-price">${formatNumber(item.price)}</span>
-            </div>
-            <span class="order-item-qty">x${item.qty}</span>
-          </div>
-        `)
-      .join("");
+  // Hiển thị tóm tắt đơn hàng
+  renderOrderSummary(subtotal, shipping, discount, total);
 
-    orderDetail.innerHTML = `<h3>ORDER DETAIL</h3>${itemsHTML}<hr />`;
-  } else {
-    orderDetail.innerHTML = "<p>Không có sản phẩm nào trong đơn hàng.</p>";
-  }
-
-  // 4️⃣ Tóm tắt đơn hàng
-  const summary = document.querySelector(".order-summary");
-  if (summary) {
-    summary.innerHTML = `
-      <h3>ORDER SUMMARY</h3>
-      <div class="summary-item"><span>Subtotal Product</span><span>${formatNumber(paymentInfo.subtotal || 0)}</span></div>
-      <div class="summary-item"><span>Shipping Cost</span><span>${formatNumber(paymentInfo.shipping || 0)}</span></div>
-      <div class="summary-item"><span>Discount</span><span>-${formatNumber(paymentInfo.discount || 0)}</span></div>
-      <hr />
-      <div class="total"><span>Total</span><span>${formatNumber(paymentInfo.total || 0)}</span></div>
-    `;
-  }
-
-  // 5️⃣ Thanh tiến trình
-  const progress = document.querySelector(".order-progress");
-  if (progress) {
-    progress.setAttribute("data-step", "2");
-  }
-
-  // 6️⃣ Lưu lịch sử đơn hàng
-  saveOrderHistory(paymentInfo);
-
-  // 7️⃣ Hiển thị ảnh minh chứng thanh toán
-  const proofContainer = document.querySelector(".payment-proof");
-  if (proofContainer && paymentInfo.proofImage) {
-    proofContainer.innerHTML = `
-      <h3>PAYMENT PROOF</h3>
-      <img src="${paymentInfo.proofImage}" alt="Payment proof" class="proof-img" style="max-width:200px; border-radius:8px; margin-top:8px;">
-    `;
-  }
-
-  // Xoá paymentInfo sau khi lưu để tránh trùng đơn
-  localStorage.removeItem("paymentInfo");
+  // ---------------- lưu vào lịch sử đơn hàng ----------------
+  pushOrderHistory({
+    orderId,
+    total,
+    cart: items,
+    address: composeAddress(customer),
+  });
 });
 
-// -------------------------------
-// 🔧 Hàm hỗ trợ
-// -------------------------------
-function getData(key) {
-  try {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
-  } catch (e) {
-    console.error("Lỗi đọc localStorage:", e);
-    return null;
-  }
+
+// ---------------- helper functions ----------------
+function tryParse(str) {
+  try { return str ? JSON.parse(str) : null; }
+  catch(e) { return null; }
+}
+
+function safeNumber(v) {
+  if (v == null) return 0;
+  if (typeof v === 'number') return v;
+  const s = String(v).replace(/[^\d\-]/g, '');
+  return s === '' ? 0 : Number(s);
+}
+
+function calcSubtotal(cart) {
+  return (cart || []).reduce((s, it) => s + safeNumber(it.price) * (Number(it.qty ?? it.quantity ?? 1)), 0);
 }
 
 function formatNumber(num) {
-  return Number(num || 0).toLocaleString("vi-VN");
+  return (Number(num) || 0).toLocaleString('vi-VN');
 }
 
-function saveOrderHistory(order) {
+function escapeHtml(str) {
+  if (!str && str !== 0) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function composeAddress(customerObj) {
+  if (!customerObj) return '-';
+  if (customerObj.address && customerObj.detail) {
+    return `${customerObj.fullname ? customerObj.fullname + ' | ' : ''}${customerObj.phone ? customerObj.phone + '<br/>' : ''}${customerObj.detail}, ${customerObj.address}`;
+  }
+  if (customerObj.address)
+    return `${customerObj.fullname ? customerObj.fullname + ' | ' : ''}${customerObj.address}`;
+  return `${customerObj.fullname || '-'}${customerObj.phone ? ' | ' + customerObj.phone : ''}`;
+}
+
+function renderOrderItems(list) {
+  const rd = document.querySelector('.order-detail');
+  if (!rd) return;
+  const normalized = list.map(normalizeItem);
+  if (!normalized.length) {
+    rd.innerHTML = '<p>No items</p>';
+    return;
+  }
+  const html = normalized.map(item => `
+    <div class="order-item">
+      <img src="${item.image}" alt="">
+      <div class="order-item-info">
+        <h4>${escapeHtml(item.name)}</h4>
+        <p>Color: ${escapeHtml(item.color)} | Size: ${escapeHtml(item.size)}</p>
+        <span class="order-item-price">${formatNumber(item.price)}</span>
+      </div>
+      <span class="order-item-qty">x${item.qty}</span>
+    </div>
+  `).join('');
+  rd.innerHTML = `<h3>ORDER DETAIL</h3>${html}<hr/>`;
+}
+
+function renderOrderSummary(subtotal, shipping, discount, total) {
+  const summaryEl = document.querySelector('.order-summary');
+  if (!summaryEl) return;
+  summaryEl.innerHTML = `
+    <h3>ORDER SUMMARY</h3>
+    <div class="summary-item"><span>Subtotal Product</span><span>${formatNumber(subtotal)}</span></div>
+    <div class="summary-item"><span>Shipping Cost</span><span>${formatNumber(shipping)}</span></div>
+    <div class="summary-item"><span>Discount</span><span>-${formatNumber(discount)}</span></div>
+    <hr/>
+    <div class="total"><span>Total</span><span>${formatNumber(total)}</span></div>
+  `;
+}
+
+function normalizeItem(it) {
+  const qty = Number(it.qty ?? it.quantity ?? 1);
+  const price = safeNumber(it.price ?? 0);
+  return {
+    name: it.name || "Unknown",
+    qty,
+    price,
+    color: it.color || "",
+    size: it.size || "",
+    image: it.image || "../images/Product_images/default.png"
+  };
+}
+
+function generateOrderId() {
+  return 'ORDER_' + Math.floor(1000 + Math.random() * 9000);
+}
+
+function pushOrderHistory(paymentData) {
   try {
-    const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    const exists = allOrders.some((o) => o.orderId === order.orderId);
-    if (!exists) {
-      allOrders.push({
-        orderId: order.orderId,
-        date: new Date().toLocaleString("vi-VN"),
-        total: order.total,
-        address: order.userInfo?.address || "",
-        items: order.cart,
-        status: "Confirmed",
-      });
-      localStorage.setItem("orders", JSON.stringify(allOrders));
-    }
+    const hist = tryParse(localStorage.getItem('orders')) || [];
+    hist.push({
+      orderId: paymentData.orderId,
+      total: paymentData.total,
+      items: paymentData.cart,
+      address: paymentData.address,
+      paidAt: new Date().toISOString()
+    });
+    localStorage.setItem('orders', JSON.stringify(hist));
   } catch (e) {
-    console.warn("Không thể lưu lịch sử đơn hàng:", e);
+    console.warn(e);
   }
 }
