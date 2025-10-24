@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy</title>
-    <link rel="stylesheet" href="../css/header_footer.css">
+    <title>18_POLICY</title>
     <link rel="stylesheet" href="../css/term_policy.css">
-    
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">    
 </head>
 <body class="stylebody">
-    <div id="header"></div>
-    <div class="container">
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <div class="policy-container">
         <div class="term_head">
             <h1>Privacy <span>Policy</span></h1>
             <p>Thanks for choosing EcoFit! We care about your privacy and are committed to protecting your data. By using our services, you agree to these terms.</p>
         </div>
 
-        <div class="content-wrapper">
+        <div class="content-wrapper-policy">
             <!-- Sidebar Navigation -->
-            <aside class="sidebar">
+            <aside class="sidebar-policy">
                 <nav>
                     <ul>
                         <li><a href="#collect">Collecting and Using Your Personal Data</a></li>
@@ -32,8 +31,8 @@
             </aside>
 
             <!-- Main Content -->
-            <main class="main-content">
-                <section class="section" id="collect">
+            <main class="main-content-policy">
+                <section class="section-policy" id="collect">
                     <h2>Collecting and Using Your Personal Data</h2>
                     
                     <h3>Types of Data Collected</h3>
@@ -92,7 +91,7 @@
                 </section>
 
                 <hr style="border-top: 1px solid "/>
-                <section class="section" id="disclosure">
+                <section class="section-policy" id="disclosure">
                     <h2>Disclosure of Your Personal Data</h2>
 
                     <h3>Business Transactions</h3>
@@ -145,16 +144,7 @@
             </main>
         </div>
     </div>
-    <div id="footer"></div>
-    <script>
-        fetch('../template/header.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('header').innerHTML = data);
-
-        fetch('../template/footer.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('footer').innerHTML = data);
-    </script>
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <script>
         const sections = document.querySelectorAll('.main-content .section[id]');
         const navLinks = document.querySelectorAll('.sidebar nav ul li a');

@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms and Conditions - EcoFit</title>
-    <link rel="stylesheet" href="../css/header_footer.css">
-    <link rel="stylesheet" href="../css/term_policy.css">
+    <title>17_TERMS&CONDITIONS</title>
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">
 </head>
 <body class="stylebody">
-    <div id="header"></div>
-    <div class="container">
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <div class="policy-container">
         <div class="term_head">
             <h1>Terms and <span>Conditions</span></h1>
             <p>Last updated: October 4<sup>th</sup>, 2025</p>
         </div>
 
-        <div class="content-wrapper">
+        <div class="content-wrapper-policy">
             <!-- Sidebar Navigation -->
-            <aside class="sidebar">
+            <aside class="sidebar-policy">
                 <nav>
                     <ul>
                         <li><a href="#general">General Principles & Terms</a></li>
@@ -27,7 +26,7 @@
             </aside>
 
             <!-- Main Content -->
-            <main class="main-content">
+            <main class="main-content-policy">
                 <section class="section" id="general">
                     <h2>General Principles & Terms</h2>
                     
@@ -48,7 +47,7 @@
                     <p>Customers confirm that (i) they are at least 18 years old or capable of entering valid contracts, and (ii) have full civil capacity (parent/main transactions under Vietnamese laws).</p>
                 </section>
                 <hr style="border-top: 1px solid "/>
-                <section class="section" id="process">
+                <section class="section-policy" id="process">
                     <h2>Process</h2>
 
                     <h3>1. Placing an Order</h3>
@@ -124,16 +123,7 @@
             </main>
         </div>
     </div>
-    <div id="footer"></div>
-    <script>
-        fetch('../template/header.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('header').innerHTML = data);
-
-        fetch('../template/footer.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('footer').innerHTML = data);
-    </script>
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <script>
         const sections = document.querySelectorAll('.main-content .section[id]');
         const navLinks = document.querySelectorAll('.sidebar nav ul li a');
