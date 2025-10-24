@@ -1,54 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>10_NOTIFICATION</title>
+    <title>EcoFit - Notifications</title>
+
+    <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="../css/notification.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
   </head>
+
   <body>
-    <!-- HEADER -->
+    <!-- Header -->
     <iframe
-      src="/EcoFit/public/template/header.html"
+      src="../template/header.html"
       id="header-frame"
       class="header-frame"
       style="width: 100%; border: none; overflow: hidden"
     ></iframe>
-    <div class="container-fluid py-4">
-      <div class="row">
-        <!-- Sidebar -->
-        <aside class="col-12 col-md-3 col-lg-2 sidebar">
-          <h5 class="sidebar-title">My Account</h5>
-          <ul>
-            <li><a href="#">My Plant & Daily Green Streak</a></li>
-            <li class="active"><a href="#">Notifications</a></li>
-            <li><a href="#">Orders</a></li>
-          </ul>
-          <h5 class="sidebar-title mt-4">Settings</h5>
-          <ul>
-            <li><a href="#">Personal Info</a></li>
-            <li><a href="#">Password</a></li>
-          </ul>
-        </aside>
 
-        <!-- Main Content -->
-        <main class="col-12 col-md-9 col-lg-10 content">
-          <h3 class="fw-bold mb-4">Notifications</h3>
-          <div id="notificationContainer"></div>
-        </main>
+    <!-- Main Content -->
+    <div class="personal_info_container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="menu-section">
+          <h1>My Account</h1>
+          <nav>
+            <ul>
+              <li><a href="12_MYPLANT&DAILYGREENSTREAK.html">My Plant & Daily Green Streak</a></li>
+              <li class="active"><a href="10_NOTIFICATIONS.html">Notifications</a></li>
+              <li><a href="#">Orders</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="menu-section">
+          <h1>Settings</h1>
+          <nav>
+            <ul>
+              <li><a href="09_PERSONAL_INFO.html">Personal Info</a></li>
+              <li><a href="11_PASSWORD.html">Password</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="content">
+        <h2><b>Notifications</b></h2>
+        
+        <div class="notifications-content">
+          <!-- Alerts & Notifications Section -->
+          <div class="notification-section">
+            <div class="section-header">
+              <h3>Alerts & Notifications</h3>
+              <a href="#" class="toggle-all">Toggle all</a>
+            </div>
+            <p class="section-subtitle">Send me:</p>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">EcoFit Announcements</span>
+                  <p>Get updates about new eco-friendly products, events, and community activities.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Order & Delivery Updates</span>
+                  <p>Receive notifications about your order status, shipping, and delivery confirmations.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Green Program Progress</span>
+                  <p>Get notified when your Green Score increases or your tree grows to the next level.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Promotions & Eco Deals</span>
+                  <p>Stay informed about exclusive green discounts and sustainable shopping campaigns.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">EcoFit Partner News</span>
+                  <p>Updates about new collaborations with sustainable brands and organizations.</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Account Activity Section -->
+          <div class="notification-section">
+            <div class="section-header">
+              <h3>Account Activity</h3>
+              <a href="#" class="toggle-all">Toggle all</a>
+            </div>
+            <p class="section-subtitle">Email me when:</p>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Someone reacts to my review or comment</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">My order has been confirmed or shipped</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">I earn new Green Points from purchases</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">My membership level is upgraded (Seed → Sprout → Tree → Guardian)</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">My refund request or feedback has been processed</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">I receive a sustainability challenge invitation</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Weekly Newsletters Section -->
+          <div class="notification-section">
+            <div class="section-header">
+              <h3>Weekly Newsletters</h3>
+              <a href="#" class="toggle-all">Toggle all</a>
+            </div>
+            <p class="section-subtitle">Subscribe me to:</p>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Eco Living Tips</span>
+                  <p>Weekly green habits, lifestyle inspirations, and product recommendations.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Sustainable Product Spotlight</span>
+                  <p>Discover featured eco-friendly items from verified sellers.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">Green Community Highlights</span>
+                  <p>Read stories of users making an impact through sustainable shopping.</p>
+                </div>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <label class="notification-label">
+                <input type="checkbox" class="notification-checkbox" />
+                <span class="checkbox-custom"></span>
+                <div class="notification-text">
+                  <span class="notification-title">EcoFit Challenges & Rewards</span>
+                  <p>Stay up-to-date with gamified activities, streaks, and reward programs.</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Update Button -->
+          <div class="update-btn-container">
+            <button class="update-notifications-btn">Update Email Notifications</button>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- FOOTER -->
+
+    <!-- Footer -->
     <iframe
       src="../template/footer.html"
-      id="footer-frame"
       class="footer-frame"
       style="width: 100%; border: none; overflow: hidden"
     ></iframe>
+
     <script src="../js/notification.js"></script>
   </body>
 </html>

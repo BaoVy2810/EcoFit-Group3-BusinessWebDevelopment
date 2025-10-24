@@ -1,53 +1,52 @@
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>07_PAYMENT1</title>
-  <link rel="stylesheet" href="../css/USER_MAINSTYLE.css"/>  
-  <link rel="stylesheet" href="../css/style_payment1.css">
-</head>
-<body class="bodypayment">
-  <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const header = document.getElementById("header-frame");
-      header.onload = () => {
-        header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
-      };
+  <head>
+    <meta charset="utf-8" />
+    <title>07_PAYMENT1</title>
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css"/> 
+  </head>
+  <body class="bodypayment">
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("header-frame");
+        header.onload = () => {
+          header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+        };
 
-      document.querySelectorAll('.copy').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-target');
-          const text = document.getElementById(id).textContent.trim();
-          
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(text).then(() => {
-              // Hiện dấu check
-              btn.innerHTML = '✓';
-              // Đổi lại icon copy sau 900ms
-              setTimeout(() => {
-                btn.innerHTML = '<img src="../images/ic_copy.png" />';
-              }, 900);
-            }).catch(() => {
-              alert('Copy failed');
-            });
-          } else {
-            alert('Copy not supported');
-          }
+        document.querySelectorAll('.copy').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-target');
+            const text = document.getElementById(id).textContent.trim();
+            
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(text).then(() => {
+                // Hiện dấu check
+                btn.innerHTML = '✓';
+                // Đổi lại icon copy sau 900ms
+                setTimeout(() => {
+                  btn.innerHTML = '<img src="../images/ic_copy.png" />';
+                }, 900);
+              }).catch(() => {
+                alert('Copy failed');
+              });
+            } else {
+              alert('Copy not supported');
+            }
+          });
         });
       });
-    });
-  </script>
-  <main class="checkout-container">
-    <!-- LEFT -->
-    <section class="checkout-left">
-      <h2 class="page-title">PAYMENT</h2>
-      <div class="status-box">
-        <div class="status-icon">
-          <img src="../images/ic_payment.png"/>
-        </div>
-        <div class="status-text">
-          <div class="status-title">Awaiting Payment</div>
-          <div class="status-sub">Order #1056</div>
+    </script>
+    <main class="checkout-container">
+      <!-- LEFT -->
+      <section class="checkout-left">
+        <h1 class="page-title">PAYMENT</h1>
+        <div class="status-box">
+          <div class="status-icon">
+            <img src="../images/ic_payment.png"/>
+          </div>
+          <div class="status-text">
+            <div class="status-title">Awaiting Payment</div>
+            <div class="status-sub">Order #1056</div>
         </div>
       </div>
       <!--BIG PAYMENT BOX-->
@@ -70,14 +69,12 @@
             </div>
           </div>
           <div class="pay-wrap">
-            <a href="../pages/08_PAYMENT2.html">
-              <button class="btn-pay">PAY NOW →</button>
-            </a>
+          <button class="btn-pay">PAY NOW →</button>
           </div>
         </div>
         <div class="divider"></div>
         <!-- Transfer Description + QR -->
-        <div class="transfer-section">
+        <div class="section transfer-section">
           <div class="transfer-left">
             <div class="transfer-card">
               <div class="transfer-title">Transfer Description</div>
@@ -142,59 +139,62 @@
       <div class="delivery-box">
         <h2 class="title">Delivery address</h2>
         <p class="delivery-text">
-        Bui Hoang Dieu | 0775499598<br>
-        KTX Khu B-ĐHQG, Thu Duc, HCMC
+        - | - <br>
+        -
         </p>
       </div>
-    </section>
-    <!--RIGHT-->
-    <div class="checkout-right">
-        <div class="order-detail">
-            <h3 class="order-detail__title">ORDER DETAIL</h3>
-            <div class="order-item">
-                <img src="../images/Product_images/organic_cotton_tee.png" alt="">
-                <div class="order-item-info">
-                    <h4>Organic Cotton T-Shirt</h4>
-                    <p>Color: White | Size: XXL</p>
-                    <span class="order-item-price">50.000</span>
-                </div>
-                <span class="order-item-qty">x1</span>
+      </section>
+      <!-- RIGHT -->
+      <div class="checkout-right">
+          <div class="order-detail">
+              <h3 class="order-detail__title">ORDER DETAIL</h3>
+              <div class="order-item">
+                  <img src="../images/Product_images/organic_cotton_tee.png" alt="">
+                  <div class="order-item-info">
+                      <h4>Organic Cotton T-Shirt</h4>
+                      <p>Color: White | Size: XXL</p>
+                      <span class="order-item-price">50.000</span>
+                  </div>
+                  <span class="order-item-qty">x1</span>
+              </div>
+              <hr/>
+              <div class="order-item">
+                  <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
+                  <div class="order-item-info">
+                      <h4>Recycled PET Sneakers</h4>
+                      <p>Color: Beige | Size: 43</p>
+                      <span class="order-item-price">150.000</span>
+                  </div>
+                  <span class="order-item-qty">x1</span>
+              </div>
             </div>
-            <hr/>
-            <div class="order-item">
-                <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
-                <div class="order-item-info">
-                    <h4>Recycled PET Sneakers</h4>
-                    <p>Color: Beige | Size: 43</p>
-                    <span class="order-item-price">150.000</span>
-                </div>
-                <span class="order-item-qty">x1</span>
-            </div>
-        </div>
-        <br/>
-        <div class="checkout-right">
-            <div class="order-summary">
-                <h2 class="order-summary__title">ORDER SUMMARY</h2>
-                <div class="order-summary__row">
-                    <span>Subtotal Product</span>
-                    <span class="order-summary__value">150.000</span>
-                </div>
-                <div class="order-summary__row">
-                    <span>Shipping Cost</span>
-                    <span class="order-summary__value">30.000</span>
-                </div>
-                <div class="order-summary__row">
-                    <span>Discount</span>
-                    <span class="order-summary__value discount">-15.000</span>
-                </div>
-                <div class="order-summary__total">
-                    <span>Total</span>
-                    <span class="total-value">165.000</span>
-                </div>
-            </div>
-        </div>
-    </div>
-  </main>
-  <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
-</body>
+          <br/>
+          <div class="checkout-right">
+              <div class="order-summary">
+                  <h2 class="order-summary__title">ORDER SUMMARY</h2>
+                  <div class="order-summary__row">
+                      <span>Subtotal Product</span>
+                      <span class="order-summary__value">150.000</span>
+                  </div>
+                  <div class="order-summary__row">
+                      <span>Shipping Cost</span>
+                      <span class="order-summary__value">30.000</span>
+                  </div>
+                  <div class="order-summary__row">
+                      <span>Discount</span>
+                      <span class="order-summary__value discount">-15.000</span>
+                  </div>
+                  
+                  <div class="order-summary__total">
+                      <span>Total</span>
+                      <span class="total-value">165.000</span>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+    </main>
+    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+    <script src="../js/payment1.js"></script>
+  </body>
 </html>

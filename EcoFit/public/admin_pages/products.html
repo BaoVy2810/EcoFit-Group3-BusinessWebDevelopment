@@ -302,40 +302,49 @@
         }
 
         // Load dữ liệu products
-        async function loadProductsData() {
-            try {
-                const response = await fetch("../../dataset/products.json");
-                const data = await response.json();
+       async function loadProductsData() {
+  try {
+    const storedData = localStorage.getItem('products');
+    if (storedData) {
+      const data = JSON.parse(storedData);
+      products = data.product;
+      categories = data.category;
+    } else {
+      const response = await fetch("../../dataset/products.json");
+      const data = await response.json();
+      products = data.product;
+      categories = data.category;
 
-                products = data.product;
-                categories = data.category;
+      // Save to localStorage
+      localStorage.setItem('products', JSON.stringify(data));
+    }
 
-                // Cập nhật stats
-                document.getElementById("total-products").textContent = products.length;
-                document.getElementById("total-categories").textContent = categories.length;
+    // ✅ LUÔN LUÔN CẬP NHẬT UI DƯỚI ĐÂY
+    document.getElementById("total-products").textContent = products.length;
+    document.getElementById("total-categories").textContent = categories.length;
 
-                // Tính average green score
-                const avgScore = (products.reduce((sum, p) => sum + p.green_score, 0) / products.length).toFixed(1);
-                document.getElementById("avg-green-score").textContent = avgScore;
+    const avgScore = (
+      products.reduce((sum, p) => sum + p.green_score, 0) / products.length
+    ).toFixed(1);
+    document.getElementById("avg-green-score").textContent = avgScore;
 
-                // Đếm sản phẩm low stock (≤30)
-                const lowStock = products.filter(p => p.quantity_available <= 30).length;
-                document.getElementById("low-stock").textContent = lowStock;
+    const lowStock = products.filter(p => p.quantity_available <= 30).length;
+    document.getElementById("low-stock").textContent = lowStock;
 
-                // Load categories vào select filter
-                const categoryFilter = document.getElementById("categoryFilter");
-                categories.forEach(cat => {
-                    const option = document.createElement("option");
-                    option.value = cat.category_id;
-                    option.textContent = cat.category_name;
-                    categoryFilter.appendChild(option);
-                });
+    const categoryFilter = document.getElementById("categoryFilter");
+    categories.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat.category_id;
+      option.textContent = cat.category_name;
+      categoryFilter.appendChild(option);
+    });
 
-            } catch (error) {
-                console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
-            }
-        }
+  } catch (error) {
+    console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
+  }
+}
 
+    
         // Load và render bảng products
         async function loadProducts() {
             try {
