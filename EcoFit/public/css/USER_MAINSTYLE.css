@@ -1082,6 +1082,7 @@ section.hero::after {
   margin-right:-38px;
 }
 .product-card {
+  position: relative;
   background: white;
   border-radius: 30px;
   overflow: hidden;
@@ -2406,8 +2407,6 @@ a {
   padding: 0 80px; 
   gap: 50px;
 }
-<<<<<<< HEAD
-=======
 .page-title span{
   background: linear-gradient(135deg, #5AA165 0%, #307B37 100%);
   -webkit-background-clip: text;
@@ -2415,7 +2414,6 @@ a {
   background-clip: text;
   color: transparent;
 }
->>>>>>> db8a8ebd8e1b6ded2a83a4f4f3ded62cb915f51e
 /* LEFT - Delivery & Payment */
 .floating-label {
   position: relative;
@@ -3215,8 +3213,6 @@ h1 span {
   background-color: #5aa165;
   transform: translateY(-2px);
 }
-<<<<<<< HEAD
-=======
 
 /*13_ABOUT_US*/
 :root {
@@ -3805,4 +3801,3 @@ strong {
     color: #333;
     font-weight: 600;
 }
->>>>>>> db8a8ebd8e1b6ded2a83a4f4f3ded62cb915f51e
