@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Management - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar - giữ nguyên -->
+    <aside class="sidebar">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+        <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
+        <div>
+          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
+          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="menu-item" onclick="location.href='dashboard.html'">
+          <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
+        </button>
+        <button class="menu-item" onclick="location.href='accounts.html'">
+          <i data-lucide="square-user-round"></i><span>Accounts</span>
+        </button>
+        <button class="menu-item" onclick="location.href='products.html'">
+          <i data-lucide="package"></i><span>Products</span>
+        </button>
+        <button class="menu-item active">
+          <i data-lucide="list"></i><span>Order Lists</span>
+        </button>
+        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
+
+        <div class="pages-divider"><p>PAGES</p></div>
+
+        <button class="menu-item"><i data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item"><i data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
+        <button class="menu-item"><i data-lucide="message-circle"></i><span>Contact</span></button>
+        <button class="menu-item"><i data-lucide="file-text"></i><span>Invoice</span></button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header - giữ nguyên -->
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle"><i data-lucide="menu"></i></button>
+        </div>
+
+        <div class="header-right">
+          <button class="notification-btn">
+            <i data-lucide="bell"></i><span class="notification-dot"></span>
+          </button>
+          <div class="user-profile">
+            <div class="user-info">
+              <p class="user-name">Moni Roy</p>
+              <p class="user-role">Admin</p>
+            </div>
+            <img src="../images/admin.png" alt="Admin" />
+          </div>
+        </div>
+      </header>
+
+      <!-- Order Management Content -->
+      <main class="content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+          <h2 class="page-title" style="margin-bottom: 0;">Order Management</h2>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" style="margin-bottom: 32px;">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total Orders</p>
+                <h3 class="stat-value" id="total-orders">--</h3>
+              </div>
+              <div class="stat-icon blue-icon"><i data-lucide="shopping-cart"></i></div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value" id="orders-growth">0%</span>
+              <span class="growth-text"> from last month</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Completed</p>
+                <h3 class="stat-value" id="completed-orders">--</h3>
+              </div>
+              <div class="stat-icon green-icon"><i data-lucide="check-circle"></i></div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value" id="completed-growth">0%</span>
+              <span class="growth-text"> from last month</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Processing</p>
+                <h3 class="stat-value" id="processing-orders">--</h3>
+              </div>
+              <div class="stat-icon yellow-icon"><i data-lucide="clock"></i></div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="move-right"></i>
+              <span class="growth-value">0%</span>
+              <span class="growth-text"> pending action</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total Revenue</p>
+                <h3 class="stat-value" id="total-revenue">--</h3>
+              </div>
+              <div class="stat-icon green-icon"><i data-lucide="dollar-sign"></i></div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value" id="revenue-growth">0%</span>
+              <span class="growth-text"> from last month</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+          
+          <!-- Order Status Distribution -->
+          <div class="chart-container" style="padding: 24px;">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">Order Status Distribution</h3>
+            <canvas id="statusChart" style="max-height: 280px;"></canvas>
+          </div>
+
+          <!-- Revenue Trend (Last 6 Months) -->
+          <div class="chart-container" style="padding: 24px;">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">Revenue Trend (Last 6 Months)</h3>
+            <canvas id="revenueChart" style="max-height: 280px;"></canvas>
+          </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="chart-container" style="padding: 24px;">
+          <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Orders</h3>
+
+          <div style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+            <div style="flex: 1; display: flex; gap: 12px;">
+              <div class="search-box">
+                <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                <input id="searchInput" placeholder="Search by order ID or customer" />
+              </div>
+              
+              <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="Completed">Completed</option>
+                <option value="Processing">Processing</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+
+              <select id="monthFilter">
+                <option value="all">All Months</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="max-height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 16px;" name="order-id"></td>
+                  <td style="padding: 16px;" name="order-date"></td>
+                  <td style="padding: 16px;">
+                    <div>
+                      <div style="font-weight: 600; color: #111827;" name="customer-id"></div>
+                      <div style="font-size: 12px; color: #6b7280; margin-top: 4px;" name="shipping-address"></div>
+                    </div>
+                  </td>
+                  <td style="padding: 16px;" name="items-count"></td>
+                  <td style="padding: 16px; font-weight: 600; color: #22c55e;" name="total-amount"></td>
+                  <td style="padding: 16px;"><span name="status"></span></td>
+                  <td style="padding: 16px;">
+                    <button class="view-detail-btn" style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;">
+                      <i data-lucide="eye"></i>
+                    </button>
+                    <button class="edit-status-btn" style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #f59e0b;">
+                      <i data-lucide="edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal View Order Detail -->
+  <div id="viewOrderModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Order Details</h3>
+        <button class="close-modal" onclick="closeViewModal()">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="order-detail-row">
+          <span class="order-detail-label">Order ID:</span>
+          <span class="order-detail-value" id="modal-order-id"></span>
+        </div>
+        <div class="order-detail-row">
+          <span class="order-detail-label">Order Date:</span>
+          <span class="order-detail-value" id="modal-order-date"></span>
+        </div>
+        <div class="order-detail-row">
+          <span class="order-detail-label">Customer ID:</span>
+          <span class="order-detail-value" id="modal-customer-id"></span>
+        </div>
+        <div class="order-detail-row">
+          <span class="order-detail-label">Shipping Address:</span>
+          <span class="order-detail-value" id="modal-shipping-address"></span>
+        </div>
+        <div class="order-detail-row">
+          <span class="order-detail-label">Status:</span>
+          <span class="order-detail-value" id="modal-status"></span>
+        </div>
+        
+        <div style="margin-top: 20px;">
+          <div style="font-weight: 600; color: #111827; margin-bottom: 12px;">Order Items:</div>
+          <div class="order-items-list" id="modal-items-list"></div>
+        </div>
+
+        <div class="order-detail-row" style="margin-top: 16px;">
+          <span class="order-detail-label">Discount:</span>
+          <span class="order-detail-value" id="modal-discount"></span>
+        </div>
+        <div class="order-detail-row">
+          <span class="order-detail-label">Shipping Fee:</span>
+          <span class="order-detail-value" id="modal-shipping-fee"></span>
+        </div>
+        <div class="order-detail-row" style="border-top: 2px solid #e5e7eb; padding-top: 16px;">
+          <span class="order-detail-label" style="font-size: 16px; font-weight: 700;">Total Amount:</span>
+          <span class="order-detail-value" style="font-size: 18px; color: #22c55e;" id="modal-total-amount"></span>
+        </div>
+
+        <div class="order-detail-row" id="modal-note-row" style="display: none;">
+          <span class="order-detail-label">Note:</span>
+          <span class="order-detail-value" id="modal-note" style="font-style: italic;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit Status -->
+  <div id="editStatusModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Update Order Status</h3>
+        <button class="close-modal" onclick="closeEditModal()">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 16px;">
+          <div style="font-weight: 600; color: #111827; margin-bottom: 8px;">Order ID: <span id="edit-order-id"></span></div>
+          <div style="font-size: 14px; color: #6b7280;">Current Status: <span id="edit-current-status"></span></div>
+        </div>
+        
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px;">New Status:</label>
+          <select id="newStatusSelect" class="status-select">
+            <option value="Pending">Pending</option>
+            <option value="Processing">Processing</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-save" onclick="saveStatusChange()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+let orders = [];
+let currentEditOrderId = null;
+let statusChart = null;
+let revenueChart = null;
+let accounts = []; // will load accounts.json to map customer names
+
+// Format tiền VND
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('vi-VN', { 
+    style: 'currency', 
+    currency: 'VND' 
+  }).format(amount);
+}
+
+// Format date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('vi-VN');
+}
+
+// Load dữ liệu orders
+async function loadOrdersData() {
+  try {
+    const storedData = localStorage.getItem('orders');
+    if (storedData) {
+      const data = JSON.parse(storedData);
+      orders = data.orders;
+    } else {
+      const response = await fetch("../../dataset/orders.json");
+      const data = await response.json();
+      orders = data.orders;
+      localStorage.setItem('orders', JSON.stringify(data));
+    }
+
+    // Update stats
+    document.getElementById("total-orders").textContent = orders.length;
+    
+    const completedOrders = orders.filter(o => o.status === "Completed");
+    document.getElementById("completed-orders").textContent = completedOrders.length;
+    
+    const processingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
+    document.getElementById("processing-orders").textContent = processingOrders.length;
+    
+    const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total_amount, 0);
+    document.getElementById("total-revenue").textContent = formatCurrency(totalRevenue);
+
+    // Apply growth calculations
+    if (typeof applyMonthlyGrowth === "function") {
+      applyMonthlyGrowth("orders", orders, "order_date");
+      applyMonthlyGrowth("completed", completedOrders, "order_date");
+      
+      // Custom growth calculation for revenue
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+      const currentYear = now.getFullYear();
+      
+      const currentRevenue = completedOrders
+        .filter(o => {
+          const d = new Date(o.order_date);
+          return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+        })
+        .reduce((sum, o) => sum + o.total_amount, 0);
+      
+      const previousRevenue = completedOrders
+        .filter(o => {
+          const d = new Date(o.order_date);
+          const prevYear = previousMonth === 11 ? currentYear - 1 : currentYear;
+          return d.getMonth() === previousMonth && d.getFullYear() === prevYear;
+        })
+        .reduce((sum, o) => sum + o.total_amount, 0);
+      
+      let revenueGrowth = 0;
+      if (previousRevenue === 0) {
+        revenueGrowth = currentRevenue === 0 ? 0 : 100;
+      } else {
+        revenueGrowth = Math.abs(((currentRevenue - previousRevenue) / previousRevenue * 100).toFixed(1));
+      }
+      
+      const revenueGrowthEl = document.getElementById("revenue-growth");
+      if (revenueGrowthEl) {
+        revenueGrowthEl.textContent = `${revenueGrowth}%`;
+      }
+    }
+
+    // Load month filter options
+    loadMonthFilter();
+    
+    // Load charts
+    loadStatusChart();
+    loadRevenueChart();
+
+    // Try to load accounts so we can show customer names (optional)
+    try {
+      const resp = await fetch("../../dataset/accounts.json");
+      const accData = await resp.json();
+      accounts = Array.isArray(accData.profile) ? accData.profile : [];
+    } catch (e) {
+      console.warn('Could not load accounts.json for customer names:', e);
+      accounts = [];
+    }
+
+  } catch (error) {
+    console.error("Error loading orders data:", error);
+  }
+}
+
+// Load month filter
+function loadMonthFilter() {
+  const monthFilter = document.getElementById("monthFilter");
+  const months = new Set();
+  
+  orders.forEach(order => {
+    const date = new Date(order.order_date);
+    const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    months.add(monthYear);
+  });
+
+  Array.from(months).sort().reverse().forEach(monthYear => {
+    const [year, month] = monthYear.split('-');
+    const date = new Date(year, month - 1);
+    const monthName = date.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
+    
+    const option = document.createElement("option");
+    option.value = monthYear;
+    option.textContent = monthName;
+    monthFilter.appendChild(option);
+  });
+}
+
+// Load Status Chart
+function loadStatusChart() {
+  const statusCount = {
+    Completed: 0,
+    Processing: 0,
+    Pending: 0,
+    Cancelled: 0
+  };
+
+  orders.forEach(order => {
+    if (statusCount[order.status] !== undefined) {
+      statusCount[order.status]++;
+    }
+  });
+
+  const ctx = document.getElementById('statusChart').getContext('2d');
+  
+  if (statusChart) statusChart.destroy();
+
+  statusChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Completed', 'Processing', 'Pending', 'Cancelled'],
+      datasets: [{
+        data: [statusCount.Completed, statusCount.Processing, statusCount.Pending, statusCount.Cancelled],
+        backgroundColor: ['#22c55e', '#f59e0b', '#3b82f6', '#ef4444'],
+        borderWidth: 0,
+        borderRadius: 8,
+        spacing: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 20,
+            font: { size: 14, family: 'Outfit' },
+            usePointStyle: true,
+            pointStyle: 'circle'
+          }
+        },
+        tooltip: {
+          backgroundColor: '#111827',
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            label: function(context) {
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((context.parsed / total) * 100).toFixed(1);
+              return ` ${context.parsed} orders (${percentage}%)`;
+            }
+          }
+        }
+      },
+      cutout: '70%'
+    }
+  });
+}
+
+// Load Revenue Chart (Last 6 months)
+// --- Hoàn thiện hàm loadRevenueChart ---
+function loadRevenueChart() {
+  const now = new Date();
+  const last6Months = [];
+
+  // Lấy 6 tháng gần nhất
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    last6Months.push({
+      monthYear,
+      label: date.toLocaleDateString("vi-VN", { month: "short", year: "numeric" }),
+      revenue: 0
+    });
+  }
+
+  // Cộng doanh thu theo từng tháng (chỉ tính Completed)
+  orders.forEach(order => {
+    if (order.status === "Completed") {
+      const date = new Date(order.order_date);
+      const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      const monthData = last6Months.find(m => m.monthYear === monthYear);
+      if (monthData) monthData.revenue += order.total_amount;
+    }
+  });
+
+  const ctx = document.getElementById("revenueChart").getContext("2d");
+  if (revenueChart) revenueChart.destroy();
+
+  revenueChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: last6Months.map(m => m.label),
+      datasets: [
+        {
+          label: "Revenue (VND)",
+          data: last6Months.map(m => m.revenue),
+          borderColor: "#3DA547",
+          backgroundColor: "rgba(61,165,71,0.15)",
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 5,
+          pointBackgroundColor: "#3DA547"
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (value) => formatCurrency(value).replace("₫", ""),
+            font: { family: "Outfit" }
+          },
+          grid: { color: "#f3f4f6" }
+        },
+        x: {
+          ticks: { font: { family: "Outfit" } },
+          grid: { display: false }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            font: { size: 13, family: "Outfit" },
+            color: "#374151"
+          }
+        },
+        tooltip: {
+          backgroundColor: "#111827",
+          titleFont: { family: "Outfit", size: 14 },
+          bodyFont: { family: "Outfit", size: 13 },
+          cornerRadius: 8,
+          padding: 12,
+          callbacks: {
+            label: (ctx) => ` ${formatCurrency(ctx.parsed.y)}`
+          }
+        }
+      }
+    }
+  });
+}
+</script>
+
+<!-- TIẾP TỤC phần script trong orders.html -->
+<script>
+/* ==========================
+   TIẾP TỤC SCRIPT HOÀN THIỆN
+========================== */
+
+// --- Render bảng Orders ---
+function renderOrdersTable() {
+  renderTable(orders, "table tbody", "table tbody tr.template", (row, order) => {
+    row.querySelector('[name="order-id"]').textContent = order.order_id;
+    row.querySelector('[name="order-date"]').textContent = formatDate(order.order_date);
+    row.querySelector('[name="customer-id"]').textContent = getCustomerName(order.customer_id);
+    row.querySelector('[name="shipping-address"]').textContent = order.shipping_address;
+    row.querySelector('[name="items-count"]').textContent = order.items.length;
+    row.querySelector('[name="total-amount"]').textContent = formatCurrency(order.total_amount);
+
+    const statusSpan = row.querySelector('[name="status"]');
+    statusSpan.textContent = order.status;
+    statusSpan.style.cssText = `
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: ${
+        order.status === "Completed"
+          ? "#f0fdf4"
+          : order.status === "Processing"
+          ? "#fefce8"
+          : order.status === "Pending"
+          ? "#eff6ff"
+          : "#fef2f2"
+      };
+      color: ${
+        order.status === "Completed"
+          ? "#16a34a"
+          : order.status === "Processing"
+          ? "#eab308"
+          : order.status === "Pending"
+          ? "#3b82f6"
+          : "#ef4444"
+      };
+    `;
+
+    // Gắn sự kiện cho nút xem chi tiết
+    const viewBtn = row.querySelector(".view-detail-btn");
+    viewBtn.addEventListener("click", () => openViewModal(order));
+
+    // Gắn sự kiện cho nút chỉnh sửa trạng thái
+    const editBtn = row.querySelector(".edit-status-btn");
+    editBtn.addEventListener("click", () => openEditModal(order.order_id));
+  });
+}
+
+// --- Hiển thị modal chi tiết đơn hàng ---
+function openViewModal(order) {
+  document.getElementById("modal-order-id").textContent = order.order_id;
+  document.getElementById("modal-order-date").textContent = formatDate(order.order_date);
+  document.getElementById("modal-customer-id").textContent = `${getCustomerName(order.customer_id)} (ID ${order.customer_id})`;
+  document.getElementById("modal-shipping-address").textContent = order.shipping_address;
+  document.getElementById("modal-status").textContent = order.status;
+  document.getElementById("modal-discount").textContent = formatCurrency(order.discount);
+  document.getElementById("modal-shipping-fee").textContent = formatCurrency(order.shipping_fee);
+  document.getElementById("modal-total-amount").textContent = formatCurrency(order.total_amount);
+
+  const noteRow = document.getElementById("modal-note-row");
+  if (order.note && order.note.trim() !== "") {
+    noteRow.style.display = "flex";
+    document.getElementById("modal-note").textContent = order.note;
+  } else {
+    noteRow.style.display = "none";
+  }
+
+  const itemsList = document.getElementById("modal-items-list");
+  itemsList.innerHTML = "";
+  order.items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "order-item";
+    div.innerHTML = `
+      <div class="order-item-info">
+        <div class="order-item-name">${item.product_name}</div>
+        <div class="order-item-quantity">x${item.quantity}</div>
+      </div>
+      <div class="order-item-price">${formatCurrency(item.unit_price * item.quantity)}</div>
+    `;
+    itemsList.appendChild(div);
+  });
+
+  document.getElementById("viewOrderModal").classList.add("show");
+}
+
+function closeViewModal() {
+  document.getElementById("viewOrderModal").classList.remove("show");
+}
+
+// --- Modal chỉnh sửa trạng thái ---
+function openEditModal(orderId) {
+  currentEditOrderId = orderId;
+  const order = orders.find(o => o.order_id === orderId);
+  if (!order) return;
+
+  document.getElementById("edit-order-id").textContent = order.order_id;
+  document.getElementById("edit-current-status").textContent = order.status;
+  document.getElementById("newStatusSelect").value = order.status;
+  document.getElementById("editStatusModal").classList.add("show");
+}
+
+function closeEditModal() {
+  document.getElementById("editStatusModal").classList.remove("show");
+}
+
+// --- Lưu thay đổi trạng thái ---
+function saveStatusChange() {
+  if (!currentEditOrderId) return;
+  const newStatus = document.getElementById("newStatusSelect").value;
+  const orderIndex = orders.findIndex(o => o.order_id === currentEditOrderId);
+  if (orderIndex === -1) return;
+
+  orders[orderIndex].status = newStatus;
+  localStorage.setItem("orders", JSON.stringify({ orders }));
+
+  // Cập nhật lại bảng và biểu đồ
+  renderOrdersTable();
+  loadStatusChart();
+  loadRevenueChart();
+
+  closeEditModal();
+}
+
+// --- Lọc & tìm kiếm ---
+function handleOrderFilter() {
+  const searchValue = safeLower(document.getElementById("searchInput").value);
+  const statusValue = document.getElementById("statusFilter").value;
+  const monthValue = document.getElementById("monthFilter").value;
+
+  const filtered = orders.filter(order => {
+    const customerName = getCustomerName(order.customer_id);
+    const matchSearch =
+      searchValue === "" ||
+      order.order_id.toLowerCase().includes(searchValue) ||
+      (order.customer_id && order.customer_id.toString().toLowerCase().includes(searchValue)) ||
+      safeLower(customerName).includes(searchValue);
+    const matchStatus = statusValue === "all" || order.status === statusValue;
+    const matchMonth =
+      monthValue === "all" ||
+      (() => {
+        const d = new Date(order.order_date);
+        const monthYear = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+        return monthYear === monthValue;
+      })();
+
+    return matchSearch && matchStatus && matchMonth;
+  });
+
+  renderTable(filtered, "table tbody", "table tbody tr.template", (row, o) => {
+    row.querySelector('[name="order-id"]').textContent = o.order_id;
+    row.querySelector('[name="order-date"]').textContent = formatDate(o.order_date);
+    row.querySelector('[name="customer-id"]').textContent = getCustomerName(o.customer_id);
+    row.querySelector('[name="shipping-address"]').textContent = o.shipping_address;
+    row.querySelector('[name="items-count"]').textContent = o.items.length;
+    row.querySelector('[name="total-amount"]').textContent = formatCurrency(o.total_amount);
+    const statusSpan = row.querySelector('[name="status"]');
+    statusSpan.textContent = o.status;
+  });
+}
+
+// Helper: get customer fullname by id (falls back to "Customer #id" if not found)
+function getCustomerName(customerId) {
+  if (!accounts || accounts.length === 0) return `Customer #${customerId}`;
+  const idStr = customerId != null ? customerId.toString() : "";
+  const acc = accounts.find(a => (a.id && a.id.toString() === idStr) || (a.profile_id && a.profile_id.toString() === idStr));
+  return acc ? (acc.fullname || acc.name || `Customer #${customerId}`) : `Customer #${customerId}`;
+}
+
+// --- Khởi tạo khi load trang ---
+document.addEventListener("DOMContentLoaded", () => {
+  lucide.createIcons();
+  loadOrdersData().then(() => {
+    renderOrdersTable();
+    document.getElementById("searchInput").addEventListener("input", handleOrderFilter);
+    document.getElementById("statusFilter").addEventListener("change", handleOrderFilter);
+    document.getElementById("monthFilter").addEventListener("change", handleOrderFilter);
+  });
+});
+</script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

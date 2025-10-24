@@ -4,6 +4,10 @@
       <meta charset="utf-8" />
       <title>Demo Tracking</title>
       <meta name="viewport" content="width=device-width,initial-scale=1" />
+<<<<<<< HEAD
+=======
+      <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
       <!-- Leaflet CSS -->
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
       <!-- Leaflet JS -->
@@ -11,6 +15,7 @@
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
       </script>
       <style>
+<<<<<<< HEAD
         body { font-family: Arial, sans-serif; font-size: 13px; margin: 24px; background:#f4f6f7; color:#222; display:flex; justify-content:center; }
         h2 {
         font-size:17px;
@@ -25,10 +30,72 @@
         input[type=range] { width:140px; }
         small { color:#666; display:block; margin-top:6px; }
         .legend { font-size:13px; color:#444; }
+=======
+        body { 
+          font-family: Outfit, sans-serif; 
+          background-color: white;
+          margin:0;
+          padding:0;
+        }
+        .card { 
+          width: 100%; 
+          max-width: 980px; 
+          background: white; 
+          border-radius: 20px; 
+        }
+        #map { 
+          height:420px; 
+          border-radius:8px; 
+          overflow: hidden;
+        }
+        .info { 
+          display:flex; 
+          gap:12px; 
+           align-items:center; 
+           flex-wrap:wrap; 
+          }
+        .info .box { 
+          background:white; 
+          padding:10px 12px; 
+          border-radius:8px; 
+          min-width:150px; 
+          margin-top:20px;
+          align-items: center;
+        }
+        .controls { 
+          margin-right:auto; 
+          display:flex; 
+          gap:8px; 
+          align-items:center; 
+        }
+        button { 
+          padding:8px 12px; 
+          border-radius:6px; 
+          border:none; 
+          color:white;
+          background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+          cursor:pointer; 
+          font-size: 16px;
+        }
+        input[type=range] { 
+          width:140px; 
+          accent-color: #3DA547;
+        }
+        small { 
+          color:#666; 
+          display:block; 
+          margin-top:6px; 
+        }
+        .legend {
+          font-size:12px; 
+        }
+
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
       </style>
     </head>
     <body>
       <div class="card">
+<<<<<<< HEAD
         <h2>Tracking Orders</h2>
 
         <div id="map"></div>
@@ -38,13 +105,47 @@
           <div class="box"><strong>Status:</strong> <div id="status">—</div></div>
           <div class="box"><strong>Coordinates:</strong> <div id="coords">—</div></div>
           <div class="box"><strong>ETA:</strong> <div id="eta">—</div></div>
+=======
+        <h2 style="margin-bottom:20px;">Tracking Orders</h2>
+        <div id="map"></div>
+        <div class="info">
+          <div class="box">
+            <strong>Shipper:</strong>
+            <div id="shipperName">
+              Nguyễn Văn A
+            </div>
+          </div>
+          <div class="box">
+            <strong>Status:</strong>
+            <div id="status">—</div>
+          </div>
+          <div class="box">
+            <strong>Coordinates:</strong>
+            <div id="coords">—</div>
+          </div>
+          <div class="box">
+            <strong>ETA:</strong>
+            <div id="eta">—</div>
+          </div>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
 
           <div class="controls">
             <button id="btn-start">Start</button>
             <button id="btn-stop">Stop</button>
+<<<<<<< HEAD
             <div style="display:flex;flex-direction:column;align-items:flex-start;">
               <label style="font-size:13px;">Speed (ms/step)</label>
               <input id="speed" type="range" min="200" max="3000" step="100" value="800">
+=======
+            <div style="display:flex;
+                        flex-direction:column;
+                        align-items:flex-start;">
+              <label style="font-size:16px;
+                            margin-bottom:4px;">
+                Speed (ms/step)
+              </label>
+              <input id="speed" type="range" min="200" max="3000" step="100" value="800" style="color:#3DA547">
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
           </div>
         </div>

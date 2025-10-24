@@ -1,6 +1,7 @@
 {
   "profile": [
     {
+<<<<<<< HEAD
       "profile_id": "1",
       "fullname": "Bui Hoang Dieu",
       "email": "admin@gmail.com",
@@ -12,10 +13,25 @@
       "created_at": "2025-08-04 02:20:00",
       "status": "active",
       "role": "administrator"
+=======
+      "id": "1",
+      "fullname": "Bui Hoang Dieu",
+      "email": "dieu.bui@ecofit.vn",
+      "phone": "0905002233",
+      "password": "dieu2025",
+      "gender": "female",
+      "dob": "1999-04-19",
+      "address": "12 Le Thanh Ton, Ho Chi Minh City",
+      "created_at": "2025-10-10 08:45:00",
+      "status": "active",
+      "role": "administrator",
+      "green_score": ""
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     },
     {
       "id": "2",
       "fullname": "Tran Ngoc Bao Vy",
+<<<<<<< HEAD
       "email": "vy@gmail.com",
       "phone": "0912345678",
       "password": "123",
@@ -25,10 +41,23 @@
       "created_at": "2024-10-01 09:20:00",
       "status": "active",
       "role": "customer"
+=======
+      "email": "baovy.tran@gmail.com",
+      "phone": "0938115566",
+      "password": "vytran@123",
+      "gender": "female",
+      "dob": "2001-03-15",
+      "address": "45 Nguyen Van Linh, Da Nang",
+      "created_at": "2025-09-25 13:00:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 87
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     },
     {
       "id": "3",
       "fullname": "Truong Nguyet Ha",
+<<<<<<< HEAD
       "email": "ha@gmail.com",
       "phone": "0987654321",
       "password": "456",
@@ -38,10 +67,23 @@
       "created_at": "2024-10-03 14:10:00",
       "status": "active",
       "role": "customer"
+=======
+      "email": "nguyetha.truong@gmail.com",
+      "phone": "0917558899",
+      "password": "truongha@456",
+      "gender": "female",
+      "dob": "1998-12-07",
+      "address": "22 Ly Thuong Kiet, Hanoi",
+      "created_at": "2025-09-18 10:30:00",
+      "status": "inactive",
+      "role": "customer",
+      "green_score": 72
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     },
     {
       "id": "4",
       "fullname": "Nguyen Duong Thu Uyen",
+<<<<<<< HEAD
       "email": "minhc@example.com",
       "phone": "0378123456",
       "password": "789",
@@ -91,6 +133,228 @@
       "created_at": "2024-10-05 10:30:00",
       "status": "active",
       "role": "administrator"
+=======
+      "email": "thuyen.nguyen@gmail.com",
+      "phone": "0968114455",
+      "password": "uyen@2025",
+      "gender": "female",
+      "dob": "2000-08-10",
+      "address": "67 Tran Phu, Ho Chi Minh City",
+      "created_at": "2025-10-03 09:20:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 90
+    },
+    {
+      "id": "5",
+      "fullname": "Le Thi My Hoa",
+      "email": "myhoa.le@outlook.com",
+      "phone": "0977883322",
+      "password": "hoa@123",
+      "gender": "female",
+      "dob": "1997-11-14",
+      "address": "33 Phan Dinh Phung, Da Nang",
+      "created_at": "2025-09-29 15:15:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 85
+    },
+    {
+      "id": "6",
+      "fullname": "Nguyen Minh Khang",
+      "email": "khang.nguyen@ecofit.vn",
+      "phone": "0912456789",
+      "password": "password123",
+      "gender": "male",
+      "dob": "1998-02-21",
+      "address": "15 Pham Van Dong, Ho Chi Minh City",
+      "created_at": "2025-10-03 09:40:00",
+      "status": "active",
+      "role": "administrator",
+      "green_score": ""
+    },
+    {
+      "id": "7",
+      "fullname": "Tran Bao Nghi",
+      "email": "nghi.tran@gmail.com",
+      "phone": "0935678123",
+      "password": "nghi@123",
+      "gender": "female",
+      "dob": "2000-09-09",
+      "address": "120 Nguyen Van Cu, Can Tho",
+      "created_at": "2025-09-28 14:10:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 82
+    },
+    {
+      "id": "8",
+      "fullname": "Le Hoang Phuc",
+      "email": "phuc.le@gmail.com",
+      "phone": "0903344556",
+      "password": "phuc456",
+      "gender": "male",
+      "dob": "1997-04-15",
+      "address": "78 Tran Hung Dao, Da Nang",
+      "created_at": "2025-09-22 08:30:00",
+      "status": "inactive",
+      "role": "customer",
+      "green_score": 75
+    },
+    {
+      "id": "9",
+      "fullname": "Vu Thi My Duyen",
+      "email": "duyen.vu@outlook.com",
+      "phone": "0986123456",
+      "password": "duyen@789",
+      "gender": "female",
+      "dob": "1999-11-10",
+      "address": "23 Tran Phu, Hanoi",
+      "created_at": "2025-09-18 13:45:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 91
+    },
+    {
+      "id": "10",
+      "fullname": "Pham Quoc Tuan",
+      "email": "tuan.pham@yahoo.com",
+      "phone": "0977123456",
+      "password": "tuanpass",
+      "gender": "male",
+      "dob": "1995-03-05",
+      "address": "42 Nguyen Thi Minh Khai, Ho Chi Minh City",
+      "created_at": "2025-10-05 11:25:00",
+      "status": "inactive",
+      "role": "customer",
+      "green_score": 67
+    },
+    {
+      "id": "11",
+      "fullname": "Do Ngoc Linh",
+      "email": "linh.do@gmail.com",
+      "phone": "0968123987",
+      "password": "linh2025",
+      "gender": "female",
+      "dob": "1998-07-20",
+      "address": "90 Le Loi, Hue",
+      "created_at": "2025-09-12 16:00:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 88
+    },
+    {
+      "id": "12",
+      "fullname": "Ho Tien Dat",
+      "email": "dat.ho@ecofit.vn",
+      "phone": "0909123344",
+      "password": "dat456",
+      "gender": "male",
+      "dob": "1996-06-06",
+      "address": "66 Hai Ba Trung, Da Nang",
+      "created_at": "2025-09-07 10:10:00",
+      "status": "inactive",
+      "role": "customer",
+      "green_score": 79
+    },
+    {
+      "id": "13",
+      "fullname": "Nguyen Thi Hong Anh",
+      "email": "honganh.nguyen@gmail.com",
+      "phone": "0944332211",
+      "password": "honganh@123",
+      "gender": "female",
+      "dob": "1999-01-18",
+      "address": "32 Bach Dang, Ho Chi Minh City",
+      "created_at": "2025-10-01 09:00:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 93
+    },
+    {
+      "id": "14",
+      "fullname": "Tran Duy Kien",
+      "email": "kien.tran@gmail.com",
+      "phone": "0934005566",
+      "password": "kienpass",
+      "gender": "male",
+      "dob": "1994-09-14",
+      "address": "88 Le Loi, Hanoi",
+      "created_at": "2025-10-10 10:45:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 85
+    },
+    {
+      "id": "15",
+      "fullname": "Bui Thi Lan Anh",
+      "email": "lananh.bui@gmail.com",
+      "phone": "0911223344",
+      "password": "lananh@456",
+      "gender": "female",
+      "dob": "1996-05-30",
+      "address": "101 Nguyen Dinh Chieu, Da Nang",
+      "created_at": "2025-09-26 09:25:00",
+      "status": "inactive",
+      "role": "customer",
+      "green_score": 73
+    },
+    {
+      "id": "16",
+      "fullname": "Nguyen Van Long",
+      "email": "long.nguyen@ecofit.vn",
+      "phone": "0908112233",
+      "password": "long@2025",
+      "gender": "male",
+      "dob": "1995-12-11",
+      "address": "55 Tran Quang Khai, Ho Chi Minh City",
+      "created_at": "2025-09-09 08:50:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 80
+    },
+    {
+      "id": "17",
+      "fullname": "Le Mai Chi",
+      "email": "maichi.le@gmail.com",
+      "phone": "0977889900",
+      "password": "maichi@321",
+      "gender": "female",
+      "dob": "1998-10-02",
+      "address": "36 Phan Dinh Phung, Hanoi",
+      "created_at": "2025-10-02 12:15:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 90
+    },
+    {
+      "id": "18",
+      "fullname": "Pham Thanh Trung",
+      "email": "trung.pham@gmail.com",
+      "phone": "0919003344",
+      "password": "trung123",
+      "gender": "male",
+      "dob": "1997-03-19",
+      "address": "75 Nguyen Hue, Da Nang",
+      "created_at": "2025-10-06 15:30:00",
+      "status": "inactive",
+      "role": "customer",
+      "green_score": 71
+    },
+    {
+      "id": "19",
+      "fullname": "Truong Quynh Nhu",
+      "email": "nhu.truong@gmail.com",
+      "phone": "0935110044",
+      "password": "nhuquynh",
+      "gender": "female",
+      "dob": "2000-02-22",
+      "address": "29 Tran Nhan Tong, Hue",
+      "created_at": "2025-10-04 17:10:00",
+      "status": "active",
+      "role": "customer",
+      "green_score": 86
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     }
   ]
 }

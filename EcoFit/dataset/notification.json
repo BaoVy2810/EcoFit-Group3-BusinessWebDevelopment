@@ -1,0 +1,40 @@
+{
+  "sections": [
+    {
+      "id": "alerts",
+      "title": "Alerts & Notifications",
+      "subtitle": "Send me:",
+      "items": [
+        { "id": "eco-ann", "name": "EcoFit Announcements", "desc": "Get updates about new eco-friendly products, events, and community activities." },
+        { "id": "eco-order", "name": "Order & Delivery Updates", "desc": "Receive notifications about your order status, shipping, and delivery confirmations." },
+        { "id": "eco-green", "name": "Green Program Progress", "desc": "Get notified when your Green Score increases or your tree grows to the next level." },
+        { "id": "eco-promo", "name": "Promotions & Eco Deals", "desc": "Stay informed about exclusive green discounts and sustainable shopping campaigns." },
+        { "id": "eco-partner", "name": "EcoFit Partner News", "desc": "Updates about new collaborations with sustainable brands and organizations." }
+      ]
+    },
+    {
+      "id": "account",
+      "title": "Account Activity",
+      "subtitle": "Email me when:",
+      "items": [
+        { "id": "eco-react", "name": "Someone reacts to my review or comment", "desc": "" },
+        { "id": "eco-confirm", "name": "My order has been confirmed or shipped", "desc": "" },
+        { "id": "eco-points", "name": "I earn new Green Points from purchases", "desc": "" },
+        { "id": "eco-upgrade", "name": "My membership level is upgraded (Seed → Sprout → Tree → Guardian)", "desc": "" },
+        { "id": "eco-refund", "name": "My refund request or feedback has been processed", "desc": "" },
+        { "id": "eco-challenge", "name": "I receive a sustainability challenge invitation", "desc": "" }
+      ]
+    },
+    {
+      "id": "weekly",
+      "title": "Weekly Newsletters",
+      "subtitle": "Subscribe me to:",
+      "items": [
+        { "id": "eco-tips", "name": "Eco Living Tips", "desc": "Weekly green habits, lifestyle inspirations, and product recommendations." },
+        { "id": "eco-spotlight", "name": "Sustainable Product Spotlight", "desc": "Discover featured eco-friendly items from verified sellers." },
+        { "id": "eco-community", "name": "Green Community Highlights", "desc": "Read stories of users making an impact through sustainable shopping." },
+        { "id": "eco-rewards", "name": "EcoFit Challenges & Rewards", "desc": "Stay up-to-date with gamified activities, streaks, and reward programs." }
+      ]
+    }
+  ]
+}

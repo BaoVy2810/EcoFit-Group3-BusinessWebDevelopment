@@ -3,13 +3,262 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
     <title>EcoFit Blog</title>
     <link rel="stylesheet" href="../css/blog.css" />
+=======
+    <title>14_BLOG_GENERAL</title>
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+    <style>
+      body {
+        padding-top: 80px;
+      }
+      .main {
+        padding: 50px 0;
+        background: #fafafa;
+      }
+      .footer-frame {
+        margin-top: 60px;
+      }
+      /* Blog specific styles */
+      .blog-header {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .blog-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: black;
+        margin-bottom: 15px;
+      }
+      .blog-date {
+        color: black;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .blog-filters {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .filter-buttons {
+        display: flex;
+        gap: 15px;
+      }
+      .filter-btn {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        padding: 8px 20px;
+        cursor: pointer;
+        color: #666;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: #2f7d32;
+        color: white;
+        border-color: #2f7d32;
+      }
+      .sort-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sort-dropdown label {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .sort-select {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        color: #333;
+        cursor: pointer;
+      }
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 50px;
+      }
+      .blog-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+      .card-image {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+      }
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+      .blog-card:hover .card-image img {
+        transform: scale(1.05);
+      }
+      .card-content {
+        padding: 20px;
+      }
+      .card-date {
+        color: #2f7d32;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+      .card-excerpt {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+      .read-more-btn {
+        background: #2f7d32;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .read-more-btn:hover {
+        background: #1b5e20;
+      }
+      .footer-pagination {
+        background: #e8f5e9;
+        padding: 30px 0 20px 0;
+        border-bottom: 1px solid #c8e6c9;
+      }
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin: 30px 0;
+        padding: 15px 0;
+        flex-wrap: wrap;
+      }
+      .pagination-btn {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 8px 15px;
+        cursor: pointer;
+        color: #666;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 40px;
+        height: 40px;
+      }
+      .pagination-btn:hover:not(:disabled) {
+        background: #f5f5f5;
+        border-color: #2f7d32;
+        color: #2f7d32;
+      }
+      .pagination-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .pagination-numbers {
+        display: flex;
+        gap: 8px;
+      }
+      .pagination-number {
+        background: none;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+        color: #666;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        min-width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pagination-number:hover {
+        background: #f5f5f5;
+        border-color: #2f7d32;
+        color: #2f7d32;
+      }
+      .pagination-number.active {
+        background: #2f7d32;
+        color: white;
+        border-color: #2f7d32;
+      }
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .blog-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 25px;
+        }
+      }
+      @media (max-width: 768px) {
+        .blog-title {
+          font-size: 2rem;
+        }
+        .blog-filters {
+          flex-direction: column;
+          gap: 20px;
+          align-items: stretch;
+        }
+        .filter-buttons {
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        .sort-dropdown {
+          justify-content: center;
+        }
+        .blog-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+      }
+    </style>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
   </head>
   <body>
     <!-- HEADER -->
     <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
     <script>
+<<<<<<< HEAD
       window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
         header.onload = () => {
@@ -18,6 +267,15 @@
       });
     </script>
 
+=======
+        window.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("header-frame");
+        header.onload = () => {
+            header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
+        };
+        });
+    </script>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     <!-- MAIN BLOG SECTION -->
     <main class="main">
       <div class="container">
@@ -25,7 +283,13 @@
         <section class="blog-header">
           <h1 class="blog-title">Blog</h1>
           <div class="blog-date">
+<<<<<<< HEAD
             The EcoFit Blog shares stories, tips, and sustainability insights to help you shop smarter, live greener, and build a more sustainable future together.
+=======
+            The EcoFit Blog shares stories, tips, and sustainability insights to
+            help you shop smarter, live greener, and build a more sustainable
+            future together.
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
           </div>
         </section>
 
@@ -53,7 +317,14 @@
         <section class="blog-grid">
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/e8f5e9/2f7d32?text=Green+Routine" alt="Green Routine" />
+=======
+              <img
+                src="https://placehold.co/400x250/e8f5e9/2f7d32?text=Green+Routine"
+                alt="Green Routine"
+              />
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
@@ -65,96 +336,226 @@
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/6fbf73/white?text=Sustainable+Living" alt="Sustainable Living" />
+=======
+              <img
+                src="https://placehold.co/400x250/6fbf73/white?text=Sustainable+Living"
+                alt="Sustainable Living"
+              />
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">How to Choose Eco-Friendly Products</h3>
+<<<<<<< HEAD
               <p class="card-excerpt">What to look for when shopping sustainably.</p>
+=======
+              <p class="card-excerpt">
+                What to look for when shopping sustainably.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="2">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/4caf50/white?text=Eco+Friendly" alt="Eco Friendly Tips" />
+=======
+              <img
+                src="https://placehold.co/400x250/4caf50/white?text=Eco+Friendly"
+                alt="Eco Friendly Tips"
+              />
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">Meet Our Green Partners</h3>
+<<<<<<< HEAD
               <p class="card-excerpt">Learn how our suppliers are reducing waste and emissions.</p>
+=======
+              <p class="card-excerpt">
+                Learn how our suppliers are reducing waste and emissions.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="3">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/81c784/white?text=Environmental" alt="Environmental Care" />
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">The Green Routine: Everyday Habits for a Cleaner Planet</h3>
               <p class="card-excerpt">Simple daily habits can make a big impact. Choose eco products, save energy, and live cleaner every day.</p>
+=======
+              <img
+                src="https://placehold.co/400x250/81c784/white?text=Environmental"
+                alt="Environmental Care"
+              />
+            </div>
+            <div class="card-content">
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Green Routine: Everyday Habits for a Cleaner Planet
+              </h3>
+              <p class="card-excerpt">
+                Simple daily habits can make a big impact. Choose eco products,
+                save energy, and live cleaner every day.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="4">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/66bb6a/white?text=Nature" alt="Nature Protection" />
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">The Truth About Greenwashing: How to Spot Fake “Eco” Claims</h3>
               <p class="card-excerpt">Learn how to spot fake “eco” labels and choose truly sustainable products with confidence.</p>
+=======
+              <img
+                src="https://placehold.co/400x250/66bb6a/white?text=Nature"
+                alt="Nature Protection"
+              />
+            </div>
+            <div class="card-content">
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Truth About Greenwashing: How to Spot Fake “Eco” Claims
+              </h3>
+              <p class="card-excerpt">
+                Learn how to spot fake “eco” labels and choose truly sustainable
+                products with confidence.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="5">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips" alt="Green Tips" />
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">Sustainable Fashion: Why Material Matters</h3>
               <p class="card-excerpt">Discover how fabric choices impact the planet - and how to build a wardrobe that’s stylish, ethical, and eco-friendly.</p>
+=======
+              <img
+                src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
+                alt="Green Tips"
+              />
+            </div>
+            <div class="card-content">
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                Sustainable Fashion: Why Material Matters
+              </h3>
+              <p class="card-excerpt">
+                Discover how fabric choices impact the planet - and how to build
+                a wardrobe that’s stylish, ethical, and eco-friendly.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="6">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips" alt="Green Tips" />
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">Zero-Waste Living: Start Small, Think Big</h3>
               <p class="card-excerpt">Learn how small, everyday changes can dramatically cut waste and help you live a more sustainable, zero-waste lifestyle.</p>
+=======
+              <img
+                src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
+                alt="Green Tips"
+              />
+            </div>
+            <div class="card-content">
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                Zero-Waste Living: Start Small, Think Big
+              </h3>
+              <p class="card-excerpt">
+                Learn how small, everyday changes can dramatically cut waste and
+                help you live a more sustainable, zero-waste lifestyle.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="7">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips" alt="Green Tips" />
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">The Power of Local: Why Buying Nearby Is Greener</h3>
               <p class="card-excerpt">Discover how choosing local products reduces carbon emissions, supports communities, and builds a more sustainable, resilient economy.</p>
+=======
+              <img
+                src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
+                alt="Green Tips"
+              />
+            </div>
+            <div class="card-content">
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Power of Local: Why Buying Nearby Is Greener
+              </h3>
+              <p class="card-excerpt">
+                Discover how choosing local products reduces carbon emissions,
+                supports communities, and builds a more sustainable, resilient
+                economy.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="8">Read more</button>
             </div>
           </div>
 
           <div class="blog-card">
             <div class="card-image">
+<<<<<<< HEAD
               <img src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips" alt="Green Tips" />
             </div>
             <div class="card-content">
               <div class="card-date">1 Jan 2025</div>
               <h3 class="card-title">The Future of Sustainable Tech: AI for a Greener World</h3>
               <p class="card-excerpt">Explore how artificial intelligence is transforming sustainability - from optimizing energy use to fighting climate change - while tackling its own environmental footprint.</p>
+=======
+              <img
+                src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
+                alt="Green Tips"
+              />
+            </div>
+            <div class="card-content">
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Future of Sustainable Tech: AI for a Greener World
+              </h3>
+              <p class="card-excerpt">
+                Explore how artificial intelligence is transforming
+                sustainability - from optimizing energy use to fighting climate
+                change - while tackling its own environmental footprint.
+              </p>
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               <button class="read-more-btn" data-id="9">Read more</button>
             </div>
           </div>
@@ -166,7 +567,18 @@
     <div class="footer-pagination">
       <div class="pagination">
         <button class="pagination-btn prev" disabled>
+<<<<<<< HEAD
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+=======
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             <polyline points="15,18 9,12 15,6"></polyline>
           </svg>
         </button>
@@ -181,7 +593,19 @@
 
         <button class="pagination-btn next">
           <span>Next</span>
+<<<<<<< HEAD
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+=======
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            style="width: 100%; border: none; overflow: hidden"
+          >
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             <polyline points="9,18 15,12 9,6"></polyline>
           </svg>
         </button>
@@ -190,20 +614,41 @@
 
     <!-- FOOTER -->
     <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     <!-- MAIN SCRIPT -->
     <script src="../js/script.js"></script>
 
     <!-- ✅ ADDITIONAL FIX: Navigate to detail page -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+<<<<<<< HEAD
         const buttons = document.querySelectorAll(".read-more-btn");
         buttons.forEach((btn) => {
+=======
+        // Handle navigation to detail page
+        document.querySelectorAll(".read-more-btn").forEach((btn) => {
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
           btn.addEventListener("click", () => {
             const id = btn.getAttribute("data-id");
             window.location.href = `15_BLOG_DETAIL.html?id=${id}`;
           });
         });
+<<<<<<< HEAD
+=======
+
+        // Handle filter buttons
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document
+              .querySelectorAll(".filter-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+          });
+        });
+>>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
       });
     </script>
   </body>
