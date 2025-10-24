@@ -1564,22 +1564,22 @@ section.hero::after {
   transform: translateY(-5px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
-.related_products .section-header-relatedproducts{
+.related_products .section-header {
   margin-bottom: 40px;
 }
-.related_products .section-subtitle-relatedproducts {
+.related_products .section-subtitle {
   font-size: 20px;
   color: #989898;
   font-weight: 400;
   margin-bottom: 8px;
 }
-.related_products .section-title-relatedproducts{
+.related_products .section-title {
   font-size: 40px;
   font-weight: 700;
   margin: 0;
 }
 .related_products .bold-green {
-  background: linear-gradient(135deg, #5aa165 0%, #307b37 100%);
+  background: linear-gradient(135deg, #5AA165 0%, #307B37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -3925,6 +3925,10 @@ h1 span {
         font-size: 0.85rem;
         font-weight: 500;
         text-decoration: none;
+        border: none;
+        outline: none;
+        background: transparent; 
+        cursor: pointer;
       }
       .card-title {
         font-size: 1.15rem;
