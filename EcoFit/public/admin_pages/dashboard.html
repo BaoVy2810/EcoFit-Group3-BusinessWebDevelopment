@@ -21,114 +21,6 @@
 
 <body>
   <div class="dashboard-container">
-<<<<<<< HEAD
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <!--cụm logo-->
-      <div
-        style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
-        <div class="logo">
-          <img src="../images/EcoFit_logo_white.png" width="30" />
-        </div>
-        <div>
-          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
-          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
-        </div>
-      </div>
-
-      <!-- Navigation Menu -->
-      <nav class="nav-menu">
-        <button class="menu-item active" data-menu="Dashboard">
-          <i data-lucide="bar-chart-3"></i>
-          <span>Dashboard</span>
-        </button>
-
-        <button class="menu-item" data-menu="Accounts" name="accounts"
-          onclick="location.href='accounts.html'; target='_self'">
-          <i data-lucide="square-user-round"></i>
-          <span>Accounts</span>
-        </button>
-
-        <button class="menu-item" data-menu="Products" name="products"
-          onclick="location.href='products.html'; target='_self'">
-          <i data-lucide="package"></i>
-          <span>Products</span>
-        </button>
-
-        <button class="menu-item" data-menu="Order Lists">
-          <i data-lucide="list"></i>
-          <span>Order Lists</span>
-        </button>
-
-        <button class="menu-item" data-menu="Inbox">
-          <i data-lucide="inbox"></i>
-          <span>Inbox</span>
-        </button>
-
-        <!-- Pages Divider -->
-
-        <div class="pages-divider">
-          <p>PAGES</p>
-        </div>
-
-        <button class="menu-item" data-menu="Pricing">
-          <i data-lucide="gift"></i>
-          <span>Promotions</span>
-        </button>
-
-        <button class="menu-item" data-menu="Calendar">
-          <i data-lucide="calendar"></i>
-          <span>Blogs</span>
-        </button>
-
-        <button class="menu-item" data-menu="To-Do">
-          <i data-lucide="check-square"></i>
-          <span>To-Do</span>
-        </button>
-        <button class="menu-item" data-menu="Contact">
-          <i data-lucide="message-circle"></i>
-          <span>Contact</span>
-        </button>
-        <button class="menu-item" data-menu="Invoice">
-          <i data-lucide="file-text"></i>
-          <span>Invoice</span>
-        </button>
-      </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Header -->
-      <header class="header">
-        <div class="header-left">
-          <button class="menu-toggle">
-            <i data-lucide="menu"></i>
-          </button>
-
-          <div class="search-box">
-            <i data-lucide="search"></i>
-            <input type="text" placeholder="Search" />
-          </div>
-
-        </div>
-
-        <div class="header-right">
-
-          <button class="notification-btn">
-            <i data-lucide="bell"></i>
-            <span class="notification-dot"></span>
-          </button>
-
-          <div class="user-profile">
-            <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
-            </div>
-            <img src="../images/admin.png" alt="Admin" />
-          </div>
-        </div>
-      </header>
-=======
         <aside class="sidebar">
             <div
                 style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
@@ -187,7 +79,6 @@
                     </div>
                 </div>
             </header>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
 
       <!-- Dashboard Content -->
       <main class="content">
@@ -225,11 +116,7 @@
             <div class="stat-growth positive">
               <i data-lucide="trending-up"></i>
               <span class="growth-value" id="order-growth">0%</span>
-<<<<<<< HEAD
-              <span class="growth-text">Up from past week</span>
-=======
               <span class="growth-text">from last month</span>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
           </div>
 
@@ -246,11 +133,7 @@
             <div class="stat-growth negative">
               <i data-lucide="trending-down"></i>
               <span class="growth-value" id="sales-growth">0%</span>
-<<<<<<< HEAD
-              <span class="growth-text">Down from yesterday</span>
-=======
               <span class="growth-text"> from last month</span>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
           </div>
         </div>
@@ -291,124 +174,15 @@
     </main>
   </div>
   </div>
-<<<<<<< HEAD
-  <script>
-
-=======
 
     <script>
 async function loadDashboardData() {
   try {
     
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     // lấy đường dẫn đến dataset
     const profileURL = "../../dataset/accounts.json";
     const ordersURL = "../../dataset/orders.json";
 
-<<<<<<< HEAD
-
-    async function loadDashboardData() {
-      try {
-        // Đọc dữ liệu JSON song song
-        const [profileRes, orderRes, productRes] = await Promise.all([
-          fetch(profileURL),
-          fetch(ordersURL),
-
-        ]);
-
-        const profiles = await profileRes.json();
-        const orders = await orderRes.json();
-
-
-        // ---- Tính toán dữ liệu cơ bản ----
-        const totalUsers = profiles.profile ? profiles.profile.length : 0;
-        const totalOrders = orders.orders ? orders.orders.length : 0;
-
-        // ---- Tính tổng doanh thu theo giá bán hàng hóa (không gồm giảm giá & phí ship) ----
-        const totalSales = orders.orders
-          ? orders.orders.reduce((sum, order) => {
-            if (order.status === "Completed") {
-              const itemTotal = order.items
-                ? order.items.reduce((acc, item) => acc + item.quantity * item.unit_price, 0)
-                : 0;
-              return sum + itemTotal;
-            }
-            return sum;
-          }, 0)
-          : 0;
-
-
-        // ---- Cập nhật vào giao diện ----
-        document.getElementById("total-user").textContent = totalUsers.toLocaleString();
-        document.getElementById("total-order").textContent = totalOrders.toLocaleString();
-        document.getElementById("total-sales").textContent = "$" + totalSales.toLocaleString();
-
-        // ---- Tính tăng trưởng thực tế ----
-
-        /// 1️⃣ Xác định ngày hiện tại và chia mốc tuần
-        const now = new Date();
-        const getWeekNumber = (date) => {
-          const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-          const pastDays = (date - firstDayOfYear) / 86400000;
-          return Math.ceil((pastDays + firstDayOfYear.getDay() + 1) / 7);
-        };
-
-        const currentWeek = getWeekNumber(now);
-        const previousWeek = currentWeek - 1;
-
-        // 2️⃣ Lọc đơn hàng theo tuần
-        const completedOrders = orders.orders.filter(o => o.status === "Completed");
-
-        const currentWeekOrders = completedOrders.filter(
-          o => getWeekNumber(new Date(o.order_date)) === currentWeek
-        );
-        const previousWeekOrders = completedOrders.filter(
-          o => getWeekNumber(new Date(o.order_date)) === previousWeek
-        );
-
-        // 3️⃣ Tính số đơn hàng
-        const currentOrderCount = currentWeekOrders.length;
-        const previousOrderCount = previousWeekOrders.length;
-
-        // 4️⃣ Tính doanh thu (chỉ hàng hóa, không gồm phí ship & giảm giá)
-        const calcSales = (list) =>
-          list.reduce((sum, order) => {
-            const items = order.items || [];
-            const itemTotal = items.reduce((acc, i) => acc + i.quantity * i.unit_price, 0);
-            return sum + itemTotal;
-          }, 0);
-
-        const currentSales = calcSales(currentWeekOrders);
-        const previousSales = calcSales(previousWeekOrders);
-
-        // Tính tỉ lệ tăng trưởng (giữ nguyên 1 số thập phân)
-        const orderGrowth =
-          previousOrderCount > 0
-            ? ((currentOrderCount - previousOrderCount) / previousOrderCount * 100).toFixed(1)
-            : 0;
-
-        const salesGrowth =
-          previousSales > 0
-            ? ((currentSales - previousSales) / previousSales * 100).toFixed(1)
-            : 0;
-
-
-        // Gọi hàm cập nhật
-        updateGrowthDisplay("order", orderGrowth, "Số đơn hàng");
-        updateGrowthDisplay("sales", salesGrowth, "Doanh thu");
-
-      } catch (error) {
-        console.error("Error loading dashboard data:", error);
-      }
-    }
-
-    // Gọi hàm khi load trang
-    document.addEventListener("DOMContentLoaded", () => {
-      loadDashboardData();
-      lucide.createIcons(); // vẽ lại icon 
-    });
-
-=======
     // Đọc dữ liệu JSON song song
     const [profileRes, orderRes] = await Promise.all([
       fetch(profileURL),
@@ -483,7 +257,6 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof lucide !== "undefined" && lucide.createIcons) lucide.createIcons(); // vẽ lại icon 
 });
 </script>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> /*Load thư viện vẽ Chart của JS*/
