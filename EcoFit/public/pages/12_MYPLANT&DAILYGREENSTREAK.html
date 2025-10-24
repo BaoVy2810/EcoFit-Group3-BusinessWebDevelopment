@@ -12,7 +12,10 @@
     />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
@@ -20,44 +23,12 @@
 
   <body>
     <!-- Header -->
-    <iframe id="header-frame" class="header-frame"></iframe>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-        const header = document.getElementById("header-frame");
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        header.src = isLoggedIn 
-            ? "../template/header.html" 
-            : "../template/header0.html";
-        });
-
-        // 🔹 BỔ SUNG ĐOẠN NÀY ĐỂ NHẬN TÍN HIỆU TỪ HEADER VÀ XỬ LÝ LOGIN/LOGOUT
-        window.addEventListener("message", (e) => {
-        if (!e.data || !e.data.action) return;
-
-        // Bấm nút Login trong header0
-        if (e.data.action === "goToLogin") {
-            window.location.href = "00_LOGIN.html";
-        }
-
-        // Bấm nút Sign Up trong header0
-        if (e.data.action === "goToSignup") {
-            window.location.href = "00_SIGNUP.html";
-        }
-
-        // Khi đăng nhập thành công (từ login.js hoặc login form)
-        if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
-            localStorage.setItem("isLoggedIn", "true");
-            document.getElementById("header-frame").src = "../template/header.html";
-        }
-
-        // Khi người dùng logout từ header.html
-        if (e.data.action === "logout") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-            document.getElementById("header-frame").src = "../template/header0.html";
-        }
-        });
-    </script>
+    <iframe
+      src="../template/header.html"
+      id="header-frame"
+      class="header-frame"
+      style="width: 100%; border: none; overflow: hidden"
+    ></iframe>
 
     <!-- Main Content -->
     <div class="personal_info_container">
@@ -67,7 +38,11 @@
           <h1>My Account</h1>
           <nav>
             <ul>
-              <li class="active"><a href="12_MYPLANT&DAILYGREENSTREAK.html">My Plant & Daily Green Streak</a></li>
+              <li class="active">
+                <a href="12_MYPLANT&DAILYGREENSTREAK.html"
+                  >My Plant & Daily Green Streak</a
+                >
+              </li>
               <li><a href="#">Notifications</a></li>
               <li><a href="#">Orders</a></li>
             </ul>
@@ -86,49 +61,111 @@
 
       <!-- Main Content Area -->
       <div class="content">
-        <h2><b>My Plant & Daily Green Streak</b></h2>
-        
         <div class="myplant-main-content">
+          <h2 class="page-title">My Plant & Daily Green Streak</h2>
+
           <div class="plant-card">
             <div class="plant-display">
-              <img
-                id="plant-img"
-                src="../images/hat.png"
-                alt="Plant Stage"
-              />
+              <img id="plant-img" src="../images/hat.png" alt="Plant Stage" />
             </div>
 
-            <div class="plant-info">
-              <p>
-                <span style="color: #666">Current Period:</span>
-                <b id="period" style="color: #69bd76; font-size: 18px">Seed 🌱</b>
-              </p>
-              <p>
-                <span style="color: #666">Green Score (Year):</span>
-                <b id="green-score" style="color: #69bd76; font-size: 18px">0</b>
-              </p>
+            <div class="plant-info-wrapper">
+              <div class="plant-info-left">
+                <div class="info-item">
+                  <span class="info-label">Current Period:</span>
+                  <span class="info-value" id="period">Seed</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Green Score:</span>
+                  <span class="info-value" id="green-score">0%</span>
+                </div>
+              </div>
+
+              <!-- Circular Progress Chart -->
+              <div class="progress-circle">
+                <svg
+                  width="100"
+                  height="100"
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!-- Background circle -->
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="42"
+                    fill="none"
+                    stroke="#e5e5e5"
+                    stroke-width="6"
+                  />
+                  <!-- Progress circle -->
+                  <circle
+                    id="progress-ring"
+                    cx="50"
+                    cy="50"
+                    r="42"
+                    fill="none"
+                    stroke="#69bd76"
+                    stroke-width="6"
+                    stroke-linecap="round"
+                    stroke-dasharray="263.894"
+                    stroke-dashoffset="263.894"
+                    transform="rotate(-90 50 50)"
+                    style="transition: stroke-dashoffset 0.6s ease-in-out"
+                  />
+                </svg>
+                <div class="progress-text">
+                  <span id="progress-percent">0</span>%
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="myplant-calendar">
             <div class="month-header">
               <span class="arrow" id="prev-month">←</span>
-              <span class="month-title" id="month-title">October 2025</span>
+              <span class="month-title" id="month-title">Oct 2025</span>
               <span class="arrow" id="next-month">→</span>
+            </div>
+
+            <!-- Day headers -->
+            <div class="days-header">
+              <span>Sun</span>
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
             </div>
 
             <div class="days-grid" id="days-container"></div>
 
             <!-- Claim Reward -->
-            <div style="display: flex; justify-content: center">
-              <button id="reward-btn" class="reward-btn">
-                Claim Reward
-              </button>
+            <div
+              style="display: flex; justify-content: center; margin-top: 25px"
+            >
+              <button id="reward-btn" class="reward-btn">Claim Reward</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Reward Modal -->
+    <div id="streak-modal" class="streak-modal hidden">
+      <div class="streak-modal-box">
+        <h3 id="streak-modal-title">Congratulations!</h3>
+        <p id="streak-modal-message">You reached a new streak milestone.</p>
+        <div class="streak-modal-actions">
+          <button id="streak-step-1" class="reward-btn">1</button>
+          <button id="streak-step-2" class="reward-btn" disabled>2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <!-- Footer -->
     <iframe

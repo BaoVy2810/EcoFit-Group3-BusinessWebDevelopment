@@ -87,88 +87,81 @@ document.addEventListener("DOMContentLoaded", () => {
     heading.style.cursor = "pointer";
   });
 
-  // Pagination functionality
-  const paginationNumbers = document.querySelectorAll(".pagination-number");
+  // Pagination: show 3 numbers, then ... , then last page
+  const numbersContainer = document.querySelector(".pagination-numbers");
   const prevBtn = document.querySelector(".pagination-btn.prev");
   const nextBtn = document.querySelector(".pagination-btn.next");
 
   let currentPage = 1;
   const totalPages = 30;
+  const windowSize = 3;
 
-  // Update pagination buttons
+  function buildNumberButton(page, isActive = false) {
+    const btn = document.createElement("button");
+    btn.className = "pagination-number" + (isActive ? " active" : "");
+    btn.textContent = String(page);
+    btn.dataset.page = String(page);
+    return btn;
+  }
+
   function updatePagination() {
-    // Calculate which group of 5 pages to show
-    const groupSize = 5;
-    const currentGroup = Math.floor((currentPage - 1) / groupSize);
-    const startPage = currentGroup * groupSize + 1;
-    const endPage = Math.min(totalPages, startPage + 4);
+    if (!numbersContainer) return;
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
 
-    // Set pagination numbers for current group
-    paginationNumbers.forEach((btn, index) => {
-      const pageNum = startPage + index;
-      if (pageNum <= totalPages) {
-        btn.textContent = pageNum.toString();
-        btn.style.display = "flex";
-        btn.classList.remove("active");
-      } else {
-        btn.style.display = "none";
+    numbersContainer.innerHTML = "";
+    const start = currentPage;
+    const end = Math.min(totalPages, start + windowSize - 1);
+
+    for (let p = start; p <= end; p++) {
+      numbersContainer.appendChild(buildNumberButton(p, p === start));
+    }
+
+    if (end < totalPages - 1) {
+      const dots = document.createElement("span");
+      dots.className = "pagination-dots";
+      dots.textContent = "...";
+      numbersContainer.appendChild(dots);
+      numbersContainer.appendChild(buildNumberButton(totalPages));
+    } else if (end === totalPages - 1) {
+      numbersContainer.appendChild(buildNumberButton(totalPages));
+    }
+
+    prevBtn && (prevBtn.disabled = currentPage === 1);
+    nextBtn && (nextBtn.disabled = currentPage === totalPages);
+  }
+
+  numbersContainer &&
+    numbersContainer.addEventListener("click", (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (target.classList.contains("pagination-number")) {
+        const page = Number(target.dataset.page || target.textContent || "1");
+        if (!Number.isNaN(page)) {
+          currentPage = page;
+          updatePagination();
+          simulatePageLoad(currentPage);
+        }
       }
     });
 
-    // Set active page
-    const activeIndex = currentPage - startPage;
-    if (
-      paginationNumbers[activeIndex] &&
-      paginationNumbers[activeIndex].style.display !== "none"
-    ) {
-      paginationNumbers[activeIndex].classList.add("active");
-    }
-
-    // Update prev/next buttons
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage === totalPages;
-  }
-
-  // Handle pagination number clicks
-  paginationNumbers.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      // Calculate the actual page number based on current group and button index
-      const groupSize = 5;
-      const currentGroup = Math.floor((currentPage - 1) / groupSize);
-      const startPage = currentGroup * groupSize + 1;
-      const pageNum = startPage + index;
-
-      if (pageNum <= totalPages) {
-        currentPage = pageNum;
-
+  prevBtn &&
+    prevBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage -= 1;
         updatePagination();
-        console.log(`Page ${currentPage} selected`);
-
-        // Simulate page loading
         simulatePageLoad(currentPage);
       }
     });
-  });
 
-  // Handle prev button
-  prevBtn.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      updatePagination();
-      console.log(`Previous page: ${currentPage}`);
-      simulatePageLoad(currentPage);
-    }
-  });
-
-  // Handle next button
-  nextBtn.addEventListener("click", () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      updatePagination();
-      console.log(`Next page: ${currentPage}`);
-      simulatePageLoad(currentPage);
-    }
-  });
+  nextBtn &&
+    nextBtn.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage += 1;
+        updatePagination();
+        simulatePageLoad(currentPage);
+      }
+    });
 
   // Simulate page loading for different pages
   function simulatePageLoad(page) {
@@ -364,5 +357,3 @@ document.querySelectorAll(".read-more-btn").forEach((btn) => {
     window.location.href = `Blog_detail.html?id=${id}`;
   });
 });
-
-
