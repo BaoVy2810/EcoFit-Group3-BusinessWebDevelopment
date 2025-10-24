@@ -130,17 +130,30 @@
         gap: 0.8vw;
         flex-shrink: 0;
       }
-
       .remember-me input[type="checkbox"] {
-        width: clamp(18px, 1.3vw, 20px);
-        height: clamp(18px, 1.3vw, 20px);
-        cursor: pointer;
-        accent-color: #5cb85c;
-        border: 2px solid #d0d0d0;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #3da547;
         border-radius: 4px;
-        flex-shrink: 0;
+        cursor: pointer;
+        position: relative;
+        transition: 0.3s;
+        margin-block: 10px;
       }
-
+      .remember-me input[type="checkbox"]:checked {
+        background: linear-gradient(135deg, #69bd76 0%, #3da547 100%);
+        border: none;
+      }
+      .remember-me input[type="checkbox"]:checked::after {
+        content: "✓";
+        position: absolute;
+        top: 0;
+        left: 3px;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+      }
       .remember-me label {
         margin: 0;
         font-size: clamp(14px, 1vw, 16px);
@@ -174,7 +187,7 @@
         width: 70%;
         max-width: 400px;
         padding: 1.8vh 0;
-        background: linear-gradient(180deg, #69bd76 0%, #3da547 100%);
+        background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
         color: white;
         border: none;
         border-radius: 50px;
@@ -328,21 +341,13 @@
         }
       }
     </style>
-<<<<<<< HEAD
-  <script src="../js/login.js"></script>
-=======
     <script src="../js/login.js"></script>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
   </head>
   <body>
     <div class="container">
       <div class="image-section"></div>
 
-<<<<<<< HEAD
-      <div class="form-section" >
-=======
       <div class="form-section">
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
         <div class="form-content">
           <h1>Welcome back to EcoFit!</h1>
           <p class="subtitle">
@@ -353,16 +358,12 @@
           <form onsubmit="return false;" name="my_form">
             <div class="form-group">
               <label for="email">Email</label>
-<<<<<<< HEAD
-              <input type="email" id="email" name="email" placeholder="sample@gmail.com" />
-=======
               <input
                 type="email"
                 id="email"
                 name="email"
                 placeholder="sample@gmail.com"
               />
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
             </div>
 
             <div class="form-group">
@@ -385,24 +386,16 @@
               </div>
             </div>
 
-<<<<<<< HEAD
-            <button type="button" class="btn-login" onclick="process_login()">Log in</button>
-=======
             <button type="button" class="btn-login" onclick="process_login()">
               Log in
             </button>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
 
             <div class="divider">
               <span>OR</span>
             </div>
 
             <button type="button" class="btn-google">
-<<<<<<< HEAD
-              <img src="../images/google_logo.png" width="24px"/>
-=======
               <img src="../images/google_logo.png" width="24px" />
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
               Continue with Google
             </button>
 
@@ -412,10 +405,22 @@
           </form>
         </div>
       </div>
-<<<<<<< HEAD
-    </div> 
-=======
     </div>
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
+  <script>
+    function process_login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (email && password) {
+        localStorage.setItem("isLoggedIn", "true");
+        if (window.parent) {
+          window.parent.postMessage({ action: "loggedIn" }, "*");
+        }
+        window.location.href = "../pages/01_HOMEPAGE.html";
+      } else {
+        alert("Please enter both email and password!");
+      }
+    }
+  </script>
   </body>
 </html>
