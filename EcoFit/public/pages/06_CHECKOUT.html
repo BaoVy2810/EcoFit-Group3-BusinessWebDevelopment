@@ -1,145 +1,134 @@
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>06_CHECKOUT</title>
-    <link rel="stylesheet" type="text/css" href="../css/style_checkout.css"/>
-    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">    
-</head>
-<body>
-    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-        const header = document.getElementById("header-frame");
-        header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
-        };
-        });
-        document.addEventListener("click", e => {
-        if (e.target.type === "radio") {
-            if (e.target.wasChecked) {
-            e.target.checked = false;
-            }
-            e.target.wasChecked = e.target.checked;
-        };
-        });
-    </script>
-<<<<<<< HEAD
+    <head>
+        <meta charset="UTF-8">
+        <title>06_CHECKOUT</title>
+        <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">    
+    </head>
+    <body>
+        <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+            const header = document.getElementById("header-frame");
+            header.onload = () => {
+                header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+            };
+            });
+            document.addEventListener("click", e => {
+            if (e.target.type === "radio") {
+                if (e.target.wasChecked) {
+                e.target.checked = false;
+                }
+                e.target.wasChecked = e.target.checked;
+            };
+            });
+        </script>
+        <div class="checkout-container">
+            <!-- LEFT -->
+            <div class="checkout-left">
+                <h2 class="checkout-left__title">DELIVERY INFORMATION</h2>
+                <div class="form-group floating-label">
+                    <input type="text" id="fullname" required placeholder=" ">
+                    <label for="fullname">Full Name</label>
+                </div>
 
-=======
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
-    <div class="checkout-container">
-        <!-- LEFT -->
-        <div class="checkout-left">
-            <h2 class="checkout-left__title">DELIVERY INFORMATION</h2>
-            <div class="form-group floating-label">
-                <input type="text" id="fullname" required placeholder=" ">
-                <label for="fullname">Full Name</label>
-            </div>
+                <div class="form-group floating-label">
+                    <input type="tel" id="phone" required placeholder=" ">
+                    <label for="phone">Phone Number</label>
+                </div>
 
-            <div class="form-group floating-label">
-                <input type="tel" id="phone" required placeholder=" ">
-                <label for="phone">Phone Number</label>
-            </div>
+                <div class="form-group floating-label">
+                    <input type="text" id="address" required placeholder=" ">
+                    <label for="address">Address (District/Province/City)</label>
+                </div>
 
-            <div class="form-group floating-label">
-                <input type="text" id="address" required placeholder=" ">
-                <label for="address">Address (District/Province/City)</label>
-            </div>
-
-            <div class="form-group floating-label">
-                <input type="text" id="detail" required placeholder=" ">
-                <label for="detail">Detail Address</label>
-            </div>
-            <hr/>
-
-            <h2 class="checkout-left__title">DELIVERY METHOD</h2>
-            <div class="option-box">
-                <label class="custom-radio">
-                    <input type="radio" name="delivery"/>
-                    <span class="radio-mark"></span>
-                    Home delivery
-                </label>
-                <span>30.000</span>
-            </div>
-            <hr/>
-
-            <h2 class="checkout-left__title">PAYMENT METHOD</h2>
-            <div class="option-box">
-                <label class="custom-radio">
-                    <input type="radio" name="payment"/>
-                    <span class="radio-mark"></span>
-                    Transfer via QR code 
-                    <img src="../images/qr.png" width="20px" style="vertical-align: bottom;" />
-                </label>
-            </div>
-            <div class="option-box">
-                <label class="custom-radio">
-                    <input type="radio" name="payment"/>
-                    <span class="radio-mark"></span>
-                    Transfer via Momo 
-                    <img src="../images/momo.svg" width="20px" style="vertical-align: bottom;" />
-                </label>
-            </div>
-        </div>
-        <!-- RIGHT -->
-        <div class="checkout-right">
-            <div class="order-detail">
-                <h3 class="order-detail__title">ORDER DETAIL</h3>
-                <div class="order-item">
-                    <img src="../images/Product_images/organic_cotton_tee.png" alt="">
-                    <div class="order-item-info">
-                        <h4>Organic Cotton T-Shirt</h4>
-                        <p>Color: White | Size: XXL</p>
-                        <span class="order-item-price">50.000</span>
-                    </div>
-                    <span class="order-item-qty">x1</span>
+                <div class="form-group floating-label">
+                    <input type="text" id="detail" required placeholder=" ">
+                    <label for="detail">Detail Address</label>
                 </div>
                 <hr/>
-                <div class="order-item">
-                    <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
-                    <div class="order-item-info">
-                        <h4>Recycled PET Sneakers</h4>
-                        <p>Color: Beige | Size: 43</p>
-                        <span class="order-item-price">150.000</span>
-                    </div>
-                    <span class="order-item-qty">x1</span>
+                <h2 class="checkout-left__title">DELIVERY METHOD</h2>
+                <div class="option-box">
+                    <label class="custom-radio">
+                        <input type="radio" name="delivery"/>
+                        <span class="radio-mark"></span>
+                        Home delivery
+                    </label>
+                    <span>30.000</span>
+                </div>
+                <hr/>
+                <h2 class="checkout-left__title">PAYMENT METHOD</h2>
+                <div class="option-box">
+                    <label class="custom-radio">
+                        <input type="radio" name="payment"/>
+                        <span class="radio-mark"></span>
+                        Transfer via QR code 
+                        <img src="../images/qr.png" width="20px" style="vertical-align: bottom;" />
+                    </label>
+                </div>
+                <div class="option-box">
+                    <label class="custom-radio">
+                        <input type="radio" name="payment"/>
+                        <span class="radio-mark"></span>
+                        Transfer via Momo 
+                        <img src="../images/momo.svg" width="20px" style="vertical-align: bottom;" />
+                    </label>
                 </div>
             </div>
-<<<<<<< HEAD
-            <div class="cart-right">
-=======
-            <br/>
+            <!-- RIGHT -->
             <div class="checkout-right">
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
-                <div class="order-summary">
-                    <h2 class="order-summary__title">ORDER SUMMARY</h2>
-                    <div class="order-summary__row">
-                        <span>Subtotal Product</span>
-                        <span class="order-summary__value">150.000</span>
+                <div class="order-detail">
+                    <h3 class="order-detail__title">ORDER DETAIL</h3>
+                    <div class="order-item">
+                        <img src="../images/Product_images/organic_cotton_tee.png" alt="">
+                        <div class="order-item-info">
+                            <h4>Organic Cotton T-Shirt</h4>
+                            <p>Color: White | Size: XXL</p>
+                            <span class="order-item-price">50.000</span>
+                        </div>
+                        <span class="order-item-qty">x1</span>
                     </div>
-                    <div class="order-summary__row">
-                        <span>Shipping Cost</span>
-                        <span class="order-summary__value">30.000</span>
+                    <hr/>
+                    <div class="order-item">
+                        <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
+                        <div class="order-item-info">
+                            <h4>Recycled PET Sneakers</h4>
+                            <p>Color: Beige | Size: 43</p>
+                            <span class="order-item-price">150.000</span>
+                        </div>
+                        <span class="order-item-qty">x1</span>
                     </div>
-                    <div class="order-summary__row">
-                        <span>Discount</span>
-                        <span class="order-summary__value discount">-15.000</span>
-                    </div>
-                    <div class="order-summary__discount">
-                        <input type="text" placeholder="Enter your discount code" class="discount-input">
-                        <button class="apply-btn">APPLY</button>
-                    </div>
-                    <div class="order-summary__total">
-                        <span>Total</span>
-                        <span class="total-value">165.000</span>
-                    </div>
-                    <a href="../pages/07_PAYMENT1.html" target="_self">
+                </div>
+                <br/>
+                <div class="checkout-right">
+                    <div class="order-summary">
+                        <h2 class="order-summary__title">ORDER SUMMARY</h2>
+                        <div class="order-summary__row">
+                            <span>Subtotal Product</span>
+                            <span class="order-summary__value">150.000</span>
+                        </div>
+                        <div class="order-summary__row">
+                            <span>Shipping Cost</span>
+                            <span class="order-summary__value">30.000</span>
+                        </div>
+                        <div class="order-summary__row">
+                            <span>Discount</span>
+                            <span class="order-summary__value discount">-15.000</span>
+                        </div>
+                        <div class="order-summary__discount">
+                            <input type="text" placeholder="Enter your discount code" class="discount-input">
+                            <button class="apply-btn">APPLY</button>
+                        </div>
+                        <div class="order-summary__total">
+                            <span>Total</span>
+                            <span class="total-value">165.000</span>
+                        </div>
                         <button class="place-order">PLACE ORDER →</button>
-                    </a>
+                        
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
-</body>
+        <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+        <script src="../js/checkout.js"></script>
+    </body>
 </html>
