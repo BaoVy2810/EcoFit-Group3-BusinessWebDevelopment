@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!paymentInfo) {
     alert("Không tìm thấy thông tin đơn hàng. Vui lòng quay lại trang thanh toán.");
-    window.location.href = "payment1.html";
+    window.location.href = "../pages/07_PAYMENT1.html";
     return;
   }
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (deliveryText) {
     deliveryText.innerHTML =
       paymentInfo.userInfo?.address ||
-      "Chưa có địa chỉ giao hàng. Vui lòng nhập lại ở bước Checkout.";
+      "No address information. Please enter in Checkout page.";
   }
 
   // 3️⃣ Danh sách sản phẩm

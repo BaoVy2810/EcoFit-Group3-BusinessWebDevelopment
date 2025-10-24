@@ -1,130 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>08_PAYMENT2</title>
-    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
-</head>
-<body class="bodypayment">
-    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-        const header = document.getElementById("header-frame");
-        header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
-        };
-        });
-        document.addEventListener("click", e => {
-        if (e.target.type === "radio") {
-            if (e.target.wasChecked) {
-            e.target.checked = false;
-            }
-            e.target.wasChecked = e.target.checked;
-        };
-        });
-    </script>
-    <main class="checkout-container">
-        <!-- LEFT -->
-        <section class="checkout-left">
-            <div class="container">
-                <h2 class="page-title">TRACKING ORDER 
-                    <span>#1056</span>
-                </h2>
-                <div class="sectiontracking">
-                    <h2 class="title">Arrives at 17 November</h2>
-                    <div class="order-progress" data-step="2" aria-label="Order progress">
-                        <div class="step done">
-                            <div class="circle">&#10003;</div>
-                            <div class="label">ORDER PLACED</div>
+    <head>
+        <meta charset="utf-8" />
+        <title>08_PAYMENT2</title>
+        <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+    </head>
+    <body class="bodypayment">
+        <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+            const header = document.getElementById("header-frame");
+            header.onload = () => {
+                header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+            };
+            });
+            document.addEventListener("click", e => {
+            if (e.target.type === "radio") {
+                if (e.target.wasChecked) {
+                e.target.checked = false;
+                }
+                e.target.wasChecked = e.target.checked;
+            };
+            });
+        </script>
+        <main class="checkout-container">
+            <!-- LEFT -->
+            <section class="checkout-left">
+                <div class="container">
+                    <h2 class="page-title">TRACKING ORDER 
+                        <span>#1056</span>
+                    </h2>
+                    <div class="sectiontracking">
+                        <h2 class="title">Arrives at 17 November</h2>
+                        <div class="order-progress" data-step="2" aria-label="Order progress">
+                            <div class="step done">
+                                <div class="circle">&#10003;</div>
+                                <div class="label">ORDER PLACED</div>
+                            </div>
+                            <div class="step active">
+                                <div class="circle">2</div>
+                                <div class="label">PROCESSING</div>
+                            </div>
+                            <div class="step">
+                                <div class="circle">3</div>
+                                <div class="label">PACKING</div>
+                            </div>
+                            <div class="step">
+                                <div class="circle">4</div>
+                                <div class="label">SHIPPING</div>
+                            </div>
+                            <div class="step">
+                                <div class="circle">5</div>
+                                <div class="label">DELIVERED</div>
+                            </div>
                         </div>
-                        <div class="step active">
-                            <div class="circle">2</div>
-                            <div class="label">PROCESSING</div>
-                        </div>
-                        <div class="step">
-                            <div class="circle">3</div>
-                            <div class="label">PACKING</div>
-                        </div>
-                        <div class="step">
-                            <div class="circle">4</div>
-                            <div class="label">SHIPPING</div>
-                        </div>
-                        <div class="step">
-                            <div class="circle">5</div>
-                            <div class="label">DELIVERED</div>
+                        <h2 class="title">Shipping Service</h2>
+                        <div class="shipping-info">
+                            <img src="../images/logo-viettle.jpg" alt="Viettel Post" style="width: 100px; height: auto;"/>
+                            <div>
+                                <strong>Viettel Post</strong><br>
+                                <small>#JHSDH-ADF65-SDKF5</small>
+                            </div>
                         </div>
                     </div>
-                    <h2 class="title">Shipping Service</h2>
-                    <div class="shipping-info">
-                        <img src="../images/logo-viettle.jpg" alt="Viettel Post" style="width: 100px; height: auto;"/>
-                        <div>
-                            <strong>Viettel Post</strong><br>
-                            <small>#JHSDH-ADF65-SDKF5</small>
-                        </div>
+                    <!-- DELIVERY BOX (separate) -->
+                    <div class="delivery-box">
+                        <h2 class="title">Delivery address</h2>
+                        <p class="delivery-text">
+                            - | -<br>
+                            -
+                        </p>
+                    </div>
+                    <div class="map-box">
+                        <iframe 
+                            src="tracking.html" scrolling="no">
+                        </iframe>
                     </div>
                 </div>
-                <!-- DELIVERY BOX (separate) -->
-                <div class="delivery-box">
-                    <h2 class="title">Delivery address</h2>
-                    <p class="delivery-text">
-                        Bui Hoang Dieu | 0775499598<br>
-                        KTX Khu B - ĐHQG, Thu Duc, HCMC
-                    </p>
-                </div>
-                <div class="map-box">
-                    <iframe 
-                        src="tracking.html" scrolling="no">
-                    </iframe>
-                </div>
-            </div>
-        </section>
-        <!--RIGHT-->
-        <div class="checkout-right">
-            <div class="order-detail">
-                <h3 class="order-detail__title">ORDER DETAIL</h3>
-                <div class="order-item">
-                    <img src="../images/Product_images/organic_cotton_tee.png" alt="">
-                    <div class="order-item-info">
-                        <h4>Organic Cotton T-Shirt</h4>
-                        <p>Color: White | Size: XXL</p>
-                        <span class="order-item-price">50.000</span>
-                    </div>
-                    <span class="order-item-qty">x1</span>
-                </div>
-                <hr/>
-                <div class="order-item">
-                    <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
-                    <div class="order-item-info">
-                        <h4>Recycled PET Sneakers</h4>
-                        <p>Color: Beige | Size: 43</p>
-                        <span class="order-item-price">150.000</span>
-                    </div>
-                    <span class="order-item-qty">x1</span>
-                </div>
-            </div>
-            <br/>
+            </section>
+            <!--RIGHT-->
             <div class="checkout-right">
-                <div class="order-summary">
-                    <h2 class="order-summary__title">ORDER SUMMARY</h2>
-                    <div class="order-summary__row">
-                        <span>Subtotal Product</span>
-                        <span class="order-summary__value">150.000</span>
+                <div class="order-detail">
+                    <h3 class="order-detail__title">ORDER DETAIL</h3>
+                    <div class="order-item">
+                        <img src="../images/Product_images/organic_cotton_tee.png" alt="">
+                        <div class="order-item-info">
+                            <h4>Organic Cotton T-Shirt</h4>
+                            <p>Color: White | Size: XXL</p>
+                            <span class="order-item-price">50.000</span>
+                        </div>
+                        <span class="order-item-qty">x1</span>
                     </div>
-                    <div class="order-summary__row">
-                        <span>Shipping Cost</span>
-                        <span class="order-summary__value">30.000</span>
+                    <hr/>
+                    <div class="order-item">
+                        <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
+                        <div class="order-item-info">
+                            <h4>Recycled PET Sneakers</h4>
+                            <p>Color: Beige | Size: 43</p>
+                            <span class="order-item-price">150.000</span>
+                        </div>
+                        <span class="order-item-qty">x1</span>
                     </div>
-                    <div class="order-summary__row">
-                        <span>Discount</span>
-                        <span class="order-summary__value discount">-15.000</span>
-                    </div>
-                    <div class="order-summary__total">
-                        <span>Total</span>
-                        <span class="total-value">165.000</span>
+                </div>
+                <br/>
+                <div class="checkout-right">
+                    <div class="order-summary">
+                        <h2 class="order-summary__title">ORDER SUMMARY</h2>
+                        <div class="order-summary__row">
+                            <span>Subtotal Product</span>
+                            <span class="order-summary__value">-</span>
+                        </div>
+                        <div class="order-summary__row">
+                            <span>Shipping Cost</span>
+                            <span class="order-summary__value">-</span>
+                        </div>
+                        <div class="order-summary__row">
+                            <span>Discount</span>
+                            <span class="order-summary__value discount">-</span>
+                        </div>
+                        <div class="order-summary__total">
+                            <span>Total</span>
+                            <span class="total-value">-</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-</body>
+        </main>
+        <script src="../js/payment2.js"></script>
+    </body>
 </html>
