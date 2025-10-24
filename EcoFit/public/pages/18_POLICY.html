@@ -8,44 +8,7 @@
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">    
 </head>
 <body class="stylebody">
-    <iframe id="header-frame" class="header-frame"></iframe>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-        const header = document.getElementById("header-frame");
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        header.src = isLoggedIn 
-            ? "../template/header.html" 
-            : "../template/header0.html";
-        });
-
-        // 🔹 BỔ SUNG ĐOẠN NÀY ĐỂ NHẬN TÍN HIỆU TỪ HEADER VÀ XỬ LÝ LOGIN/LOGOUT
-        window.addEventListener("message", (e) => {
-        if (!e.data || !e.data.action) return;
-
-        // Bấm nút Login trong header0
-        if (e.data.action === "goToLogin") {
-            window.location.href = "00_LOGIN.html";
-        }
-
-        // Bấm nút Sign Up trong header0
-        if (e.data.action === "goToSignup") {
-            window.location.href = "00_SIGNUP.html";
-        }
-
-        // Khi đăng nhập thành công (từ login.js hoặc login form)
-        if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
-            localStorage.setItem("isLoggedIn", "true");
-            document.getElementById("header-frame").src = "../template/header.html";
-        }
-
-        // Khi người dùng logout từ header.html
-        if (e.data.action === "logout") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-            document.getElementById("header-frame").src = "../template/header0.html";
-        }
-        });
-    </script>
+    <iframe src="../template/header.html" id="header-frame" class="header-frame"></iframe>
     <div class="policy-container">
         <div class="term_head">
             <h1>Privacy <span>Policy</span></h1>

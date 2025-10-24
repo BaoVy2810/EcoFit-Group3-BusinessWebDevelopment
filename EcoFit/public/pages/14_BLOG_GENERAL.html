@@ -1,99 +1,81 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog - EcoFit</title>
+    <title>14_BLOG_GENERAL</title>
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+    <link rel="stylesheet" href="../css/blog.css" />
   </head>
   <body>
-    <iframe id="header-frame" class="header-frame"></iframe>
-    
+    <!-- HEADER -->
+    <iframe
+      src="../template/header.html"
+      id="header-frame"
+      class="header-frame"
+    ></iframe>
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        header.src = isLoggedIn 
-            ? "../template/header.html" 
-            : "../template/header0.html";
-
         header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
+          header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
         };
       });
-
-      window.addEventListener("message", (e) => {
-        if (!e.data || !e.data.action) return;
-
-        if (e.data.action === "goToLogin") {
-            window.location.href = "00_LOGIN.html";
-        }
-
-        if (e.data.action === "goToSignup") {
-            window.location.href = "00_SIGNUP.html";
-        }
-
-        if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
-            localStorage.setItem("isLoggedIn", "true");
-            document.getElementById("header-frame").src = "../template/header.html";
-        }
-
-        if (e.data.action === "logout") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-            document.getElementById("header-frame").src = "../template/header0.html";
-        }
-      });
     </script>
-
-    <!-- HERO BLOG SECTION -->
+    <!-- HERO BANNER -->
     <section class="hero-blog">
-      <div class="hero-overlay">
+      <img src="/src/blog_banner.png" alt="Blog Hero" />
+      <div class="overlay">
         <div class="hero-content">
           <span class="blog-type">Blog Type</span>
-          <h1 class="hero-title">The Green Routine: Everyday Habits for a Cleaner Planet</h1>
-          <p class="hero-desc">Simple daily habits can make a big impact. Choose eco products, save energy, and live cleaner every day.</p>
-          <button class="hero-btn" onclick="window.location.href='15_BLOG_DETAIL.html?id=4'">Read full blog</button>
+          <h2 class="hero-title">
+            The Green Routine: Everyday Habits for a Cleaner Planet
+          </h2>
+          <p class="hero-desc">
+            Simple daily habits can make a big impact. Choose eco products, save
+            energy, and live cleaner every day.
+          </p>
         </div>
+        <a href="#" class="hero-btn-right">Read full blog</a>
       </div>
     </section>
 
     <!-- MAIN BLOG SECTION -->
-    <main class="blog-main">
-      <div class="blog-container">
+    <main class="main">
+      <div class="container">
         <!-- BLOG HEADER -->
         <section class="blog-header">
           <h1 class="blog-title">Blog</h1>
-          <p class="blog-subtitle">
-            The EcoFit Blog shares stories, tips, and sustainability insights to help you shop smarter, live greener, and build a more sustainable future together.
-          </p>
+          <div class="blog-date">
+            The EcoFit Blog shares stories, tips, and sustainability insights to
+            help you shop smarter, live greener, and build a more sustainable
+            future together.
+          </div>
         </section>
 
         <!-- FILTERS -->
         <section class="blog-filters">
           <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="eco-habits">Eco Habits</button>
-            <button class="filter-btn" data-filter="smart-shopping">Smart Shopping</button>
-            <button class="filter-btn" data-filter="community">Community & Local</button>
-            <button class="filter-btn" data-filter="fashion">Sustainable Fashion</button>
-            <button class="filter-btn" data-filter="greentech">Greentech</button>
+            <button class="filter-btn active">All Tags</button>
+            <button class="filter-btn">Eco Habits</button>
+            <button class="filter-btn">Smart Shopping</button>
+            <button class="filter-btn">Community & Local</button>
+            <button class="filter-btn">Sustainable Fashion</button>
+            <button class="filter-btn">Greentech</button>
           </div>
           <div class="sort-dropdown">
             <label>Sort by:</label>
             <select class="sort-select">
-              <option value="latest">Select sorting option</option>
-              <option value="popular">Popular</option>
-              <option value="oldest">Oldest</option>
+              <option>Latest</option>
+              <option>Popular</option>
+              <option>Oldest</option>
             </select>
           </div>
         </section>
 
         <!-- BLOG GRID -->
         <section class="blog-grid">
-          <div class="blog-card" data-category="eco-habits">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/e8f5e9/2f7d32?text=Green+Routine"
@@ -101,17 +83,14 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">5 Easy Ways to Go Plastic-Free at Home</h3>
+              <p class="card-excerpt">Small changes that make a difference.</p>
+              <button class="read-more-btn" data-id="1">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="smart-shopping">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/6fbf73/white?text=Sustainable+Living"
@@ -119,17 +98,16 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">How to Choose Eco-Friendly Products</h3>
+              <p class="card-excerpt">
+                What to look for when shopping sustainably.
+              </p>
+              <button class="read-more-btn" data-id="2">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="community">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/4caf50/white?text=Eco+Friendly"
@@ -137,17 +115,16 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">Meet Our Green Partners</h3>
+              <p class="card-excerpt">
+                Learn how our suppliers are reducing waste and emissions.
+              </p>
+              <button class="read-more-btn" data-id="3">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="eco-habits">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/81c784/white?text=Environmental"
@@ -155,17 +132,19 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Green Routine: Everyday Habits for a Cleaner Planet
+              </h3>
+              <p class="card-excerpt">
+                Simple daily habits can make a big impact. Choose eco products,
+                save energy, and live cleaner every day.
+              </p>
+              <button class="read-more-btn" data-id="4">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="smart-shopping">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/66bb6a/white?text=Nature"
@@ -173,17 +152,19 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Truth About Greenwashing: How to Spot Fake “Eco” Claims
+              </h3>
+              <p class="card-excerpt">
+                Learn how to spot fake “eco” labels and choose truly sustainable
+                products with confidence.
+              </p>
+              <button class="read-more-btn" data-id="5">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="fashion">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
@@ -191,17 +172,19 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                Sustainable Fashion: Why Material Matters
+              </h3>
+              <p class="card-excerpt">
+                Discover how fabric choices impact the planet - and how to build
+                a wardrobe that’s stylish, ethical, and eco-friendly.
+              </p>
+              <button class="read-more-btn" data-id="6">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="eco-habits">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
@@ -209,17 +192,19 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                Zero-Waste Living: Start Small, Think Big
+              </h3>
+              <p class="card-excerpt">
+                Learn how small, everyday changes can dramatically cut waste and
+                help you live a more sustainable, zero-waste lifestyle.
+              </p>
+              <button class="read-more-btn" data-id="7">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="community">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
@@ -227,17 +212,20 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Power of Local: Why Buying Nearby Is Greener
+              </h3>
+              <p class="card-excerpt">
+                Discover how choosing local products reduces carbon emissions,
+                supports communities, and builds a more sustainable, resilient
+                economy.
+              </p>
+              <button class="read-more-btn" data-id="8">Read more</button>
             </div>
           </div>
 
-          <div class="blog-card" data-category="greentech">
-            <span class="blog-tag">Blog Type</span>
+          <div class="blog-card">
             <div class="card-image">
               <img
                 src="https://placehold.co/400x250/5cb85c/white?text=Green+Tips"
@@ -245,42 +233,93 @@
               />
             </div>
             <div class="card-content">
-              <div class="card-meta">
-                <span class="card-date">1 Jan 2025</span>
-                <span class="card-link">Read full blog</span>
-              </div>
-              <h3 class="card-title">Blog Title</h3>
-              <p class="card-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              <div class="card-date">1 Jan 2025</div>
+              <h3 class="card-title">
+                The Future of Sustainable Tech: AI for a Greener World
+              </h3>
+              <p class="card-excerpt">
+                Explore how artificial intelligence is transforming
+                sustainability - from optimizing energy use to fighting climate
+                change - while tackling its own environmental footprint.
+              </p>
+              <button class="read-more-btn" data-id="9">Read more</button>
             </div>
-          </div>
-        </section>
-
-        <!-- PAGINATION -->
-        <section class="pagination-wrapper">
-          <div class="pagination">
-            <button class="pagination-btn prev" disabled>
-              <span>← Previous</span>
-            </button>
-
-            <div class="pagination-numbers">
-              <button class="pagination-number active">1</button>
-              <button class="pagination-number">2</button>
-              <button class="pagination-number">3</button>
-              <span class="pagination-dots">...</span>
-              <button class="pagination-number">29</button>
-              <button class="pagination-number">30</button>
-            </div>
-
-            <button class="pagination-btn next">
-              <span>Next →</span>
-            </button>
           </div>
         </section>
       </div>
     </main>
 
-    <!-- FOOTER -->
-    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+    <!-- PAGINATION -->
+    <div class="footer-pagination">
+      <div class="pagination">
+        <button class="pagination-btn prev" disabled>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="15,18 9,12 15,6"></polyline>
+          </svg>
+        </button>
 
+        <div class="pagination-numbers">
+          <button class="pagination-number active">1</button>
+          <button class="pagination-number">2</button>
+          <button class="pagination-number">3</button>
+          <button class="pagination-number">4</button>
+          <button class="pagination-number">5</button>
+        </div>
+
+        <button class="pagination-btn next">
+          <span>Next</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            style="width: 100%; border: none; overflow: hidden"
+          >
+            <polyline points="9,18 15,12 9,6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <iframe
+      src="../template/footer.html"
+      id="footer-frame"
+      class="footer-frame"
+    ></iframe>
+    <!-- MAIN SCRIPT -->
+    <script src="../js/script.js"></script>
+
+    <!-- ✅ ADDITIONAL FIX: Navigate to detail page -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Handle navigation to detail page
+        document.querySelectorAll(".read-more-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            window.location.href = `15_BLOG_DETAIL.html?id=${id}`;
+          });
+        });
+
+        // Handle filter buttons
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document
+              .querySelectorAll(".filter-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+          });
+        });
+      });
+    </script>
   </body>
 </html>
