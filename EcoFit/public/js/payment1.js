@@ -111,6 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Pay Now button handler
   const payBtn = document.querySelector(".btn-pay");
   const proofInput = document.getElementById("proofImage");
+  const fileNameDisplay = document.getElementById("fileName");
+
+  // Khi người dùng chọn ảnh
+  proofInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      fileNameDisplay.textContent = file.name;
+    } else {
+      fileNameDisplay.textContent = "";
+    }
+  });
+
 
   payBtn.addEventListener("click", (e) => {
     e.preventDefault(); // chặn nhảy trang
@@ -126,18 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const proofBase64 = event.target.result;
 
       const paymentData = {
-        cart,
+        cart: items,
         subtotal,
         shipping,
         discount,
         total,
-        userInfo,
+        userInfo: customer, 
         proofImage: proofBase64,
         orderId: "ORDER_" + Math.floor(Math.random() * 10000),
       };
 
       localStorage.setItem("paymentInfo", JSON.stringify(paymentData));
-      window.location.href = "../08_PAYMENT2.html";
+      alert("✅ Payment proof uploaded successfully! Redirecting...");
+      window.location.href = "../pages/08_PAYMENT2.html";
     };
     reader.readAsDataURL(proofInput.files[0]);
   });

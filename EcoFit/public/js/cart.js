@@ -1,15 +1,12 @@
 // Shopping Cart Functionality
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Get all quantity controls
+    // === 1. Handle quantity control ===
     const quantityControls = document.querySelectorAll('.quantity-control');
-    
     quantityControls.forEach(control => {
         const minusBtn = control.querySelector('.minus');
         const plusBtn = control.querySelector('.plus');
         const input = control.querySelector('.qty-input');
         
-        // Decrease quantity
         minusBtn.addEventListener('click', () => {
             let value = parseInt(input.value);
             if (value > 1) {
@@ -17,24 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateCartTotal();
             }
         });
-        
-        // Increase quantity
+
         plusBtn.addEventListener('click', () => {
             let value = parseInt(input.value);
             input.value = value + 1;
             updateCartTotal();
         });
-        
-        // Handle manual input
+
         input.addEventListener('change', () => {
-            if (input.value < 1) {
-                input.value = 1;
-            }
+            if (input.value < 1) input.value = 1;
             updateCartTotal();
         });
     });
-    
-    // Remove item functionality
+
+    // === 2. Remove item functionality ===
     const removeButtons = document.querySelectorAll('.remove-btn');
     removeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -45,61 +38,63 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 cartItem.remove();
                 updateCartTotal();
-                
-                // Check if cart is empty
+
                 const remainingItems = document.querySelectorAll('.cart-item');
-                if (remainingItems.length === 0) {
-                    showEmptyCart();
-                }
+                if (remainingItems.length === 0) showEmptyCart();
             }, 300);
         });
     });
-    
-    // Checkbox functionality
+
+    // === 3. Checkbox select/deselect ===
     const checkboxes = document.querySelectorAll('.cart-checkbox');
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateCartTotal);
     });
-    
-    // Apply discount code
-    const applyBtn = document.querySelector('.apply-btn');
-    const discountInput = document.querySelector('.discount-input');
-    
-    applyBtn.addEventListener('click', () => {
-        const code = discountInput.value.trim().toUpperCase();
-        
-        if (code === 'ECOFIT10') {
-            alert('✓ Discount code applied successfully!');
-            updateCartTotal(10000); // 10,000 VND discount
-        } else if (code === 'GREEN15') {
-            alert('✓ Discount code applied successfully!');
-            updateCartTotal(15000); // 15,000 VND discount
-        } else if (code === '') {
-            alert('⚠ Please enter a discount code');
-        } else {
-            alert('✗ Invalid discount code');
-        }
-    });
-    
-    // Checkout button
+
+    // === 4. Checkout button ===
     const checkoutBtn = document.querySelector('.checkout-btn');
     checkoutBtn.addEventListener('click', () => {
         const checkedItems = document.querySelectorAll('.cart-checkbox:checked');
         
         if (checkedItems.length === 0) {
             alert('⚠ Please select at least one item to checkout');
-        } else {
-            // Redirect to checkout page (you can change this URL)
-            window.location.href = 'checkout.html';
+            return;
         }
+
+        // Tạo mảng cartData chứa các item đã chọn
+        const cartData = [];
+        checkedItems.forEach(checkbox => {
+            const item = checkbox.closest('.cart-item');
+            const name = item.querySelector('.cart-item__name').textContent;
+            const color = item.querySelectorAll('.cart-item__detail')[0].textContent.split(': ')[1];
+            const size = item.querySelectorAll('.cart-item__detail')[1].textContent.split(': ')[1];
+            const quantity = parseInt(item.querySelector('.qty-input').value);
+            const priceText = item.querySelector('.cart-item__subtotal .price').textContent;
+            const price = parseInt(priceText.replace(/\./g, ''));
+            const image = item.querySelector('img').src;
+
+            cartData.push({
+                name,
+                color,
+                size,
+                quantity,
+                price,
+                image
+            });
+        });
+
+        // Lưu sang localStorage để checkout đọc
+        localStorage.setItem('checkoutCart', JSON.stringify(cartData));
+
+        // Chuyển sang trang checkout
+        window.location.href = '06_CHECKOUT.html';
     });
-    
-    // Update cart total
-    function updateCartTotal(discountAmount = 15000) {
+
+    // === 5. Cập nhật tổng tiền ===
+    function updateCartTotal() {
         let subtotal = 0;
         const shippingCost = 30000;
-        
-        // Calculate subtotal from checked items
+
         const cartItems = document.querySelectorAll('.cart-item');
         cartItems.forEach(item => {
             const checkbox = item.querySelector('.cart-checkbox');
@@ -110,24 +105,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 subtotal += (price * quantity);
             }
         });
-        
-        const total = subtotal + shippingCost - discountAmount;
-        
-        // Update display
-        document.querySelectorAll('.order-summary__row')[0].querySelector('.order-summary__value').textContent = 
-            formatPrice(subtotal);
-        document.querySelector('.order-summary__value.discount').textContent = 
-            '-' + formatPrice(discountAmount);
-        document.querySelector('.total-value').textContent = 
-            formatPrice(total);
+
+        const total = subtotal + shippingCost;
+
+        // Cập nhật hiển thị
+        document.querySelectorAll('.order-summary__row')[0]
+            .querySelector('.order-summary__value').textContent = formatPrice(subtotal);
+        document.querySelector('.total-value').textContent = formatPrice(total);
     }
-    
-    // Format price with thousand separator
+
+    // === 6. Format giá tiền ===
     function formatPrice(price) {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-    
-    // Show empty cart message
+
+    // === 7. Khi giỏ trống ===
     function showEmptyCart() {
         const cartTable = document.querySelector('.cart-table');
         cartTable.innerHTML = `
@@ -137,13 +129,11 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
-});
 
-// Add smooth transition styles
-const style = document.createElement('style');
-style.textContent = `
-    .cart-item {
-        transition: all 0.3s ease;
-    }
-`;
-document.head.appendChild(style);
+    // === 8. Style animation ===
+    const style = document.createElement('style');
+    style.textContent = `
+        .cart-item { transition: all 0.3s ease; }
+    `;
+    document.head.appendChild(style);
+});
