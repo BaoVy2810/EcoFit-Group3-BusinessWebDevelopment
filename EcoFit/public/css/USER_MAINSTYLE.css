@@ -1563,16 +1563,16 @@ section.hero::after {
   transform: translateY(-5px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
-.related_products .section-header {
+.related_products .section-header-relatedproducts{
   margin-bottom: 40px;
 }
-.related_products .section-subtitle {
+.related_products .section-subtitle-relatedproducts {
   font-size: 20px;
   color: #989898;
   font-weight: 400;
   margin-bottom: 8px;
 }
-.related_products .section-title {
+.related_products .section-title-relatedproducts{
   font-size: 40px;
   font-weight: 700;
   margin: 0;
@@ -2100,6 +2100,7 @@ section.hero::after {
     position: sticky;
     top: 100px;
     height:max-content;
+    display: flex;
     align-items: flex-start;
     width:380px;
 }
