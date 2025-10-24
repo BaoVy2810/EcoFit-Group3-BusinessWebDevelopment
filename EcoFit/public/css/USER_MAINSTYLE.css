@@ -3042,6 +3042,143 @@ h1 span {
     transform: scale(0.98);
 }
 
+/*10_NOTIFICATIONS*/
+.notifications-content {
+  max-width: 900px;
+}
+
+.notification-section {
+  margin-bottom: 50px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+}
+
+.toggle-all {
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.toggle-all:hover {
+  color: #3DA547;
+  text-decoration: underline;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.notification-item {
+  margin-bottom: 25px;
+}
+
+.notification-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.notification-checkbox {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 2px solid #3DA547;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+  margin-top: 2px;
+  background-color: white;
+}
+
+.notification-checkbox:checked + .checkbox-custom {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  border: none;
+}
+
+.notification-checkbox:checked + .checkbox-custom::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-text strong {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.notification-text p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.update-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.update-notifications-btn {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.update-notifications-btn:hover {
+  background: #33773E;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+}
+
+.update-notifications-btn:active {
+  transform: translateY(0);
+}
+
 /*11_PASSWORD*/
 .password-form-container {
     max-width: 900px;
