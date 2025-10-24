@@ -44,8 +44,6 @@
       "category_id": "C001"
     },
     {
-<<<<<<< HEAD
-=======
       "product_id": "P017",
       "product_name": "Tencel Button-Up Shirt",
       "description": "Eco-responsible Tencel™ shirt with a clean design and breathable comfort.",
@@ -55,7 +53,6 @@
       "category_id": "C001"
     },
     {
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
       "product_id": "P005",
       "product_name": "Organic Linen Pants",
       "description": "Breathable linen with a soft texture, ethically produced and biodegradable.",
@@ -92,8 +89,6 @@
       "category_id": "C002"
     },
     {
-<<<<<<< HEAD
-=======
       "product_id": "P018",
       "product_name": "Upcycled Cargo Pants",
       "description": "Stylish and functional cargo pants made from repurposed textile waste.",
@@ -103,7 +98,6 @@
       "category_id": "C002"
     },
     {
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
       "product_id": "P009",
       "product_name": "Eco Linen Midi Dress",
       "description": "Timeless silhouette with a clean design — biodegradable linen, breathable fit.",
@@ -140,8 +134,6 @@
       "category_id": "C003"
     },
     {
-<<<<<<< HEAD
-=======
       "product_id": "P019",
       "product_name": "Upcycled Silk Maxi Dress",
       "description": "Made from reclaimed silk fabric — luxurious feel, low environmental impact.",
@@ -151,7 +143,6 @@
       "category_id": "C003"
     },
     {
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
       "product_id": "P013",
       "product_name": "Upcycled Tote Bag",
       "description": "Each tote is made from repurposed textile scraps — unique and waste-free.",
@@ -186,8 +177,6 @@
       "quantity_available": 60,
       "green_score": 89,
       "category_id": "C004"
-<<<<<<< HEAD
-=======
     },
     {
       "product_id": "P020",
@@ -233,7 +222,6 @@
       "quantity_available": 90,
       "green_score": 88,
       "category_id": "C004"
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     }
   ]
 }

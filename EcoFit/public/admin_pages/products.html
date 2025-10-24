@@ -304,12 +304,20 @@
         // Load dữ liệu products
         async function loadProductsData() {
             try {
+                const storedData = localStorage.getItem('products');
+    if (storedData) {
+      const data = JSON.parse(storedData);
+                      products = data.product;
+                categories = data.category;
+    } else {
                 const response = await fetch("../../dataset/products.json");
                 const data = await response.json();
 
                 products = data.product;
                 categories = data.category;
-
+                      // Save to localStorage for future use
+      localStorage.setItem('products', JSON.stringify(data));
+            
                 // Cập nhật stats
                 document.getElementById("total-products").textContent = products.length;
                 document.getElementById("total-categories").textContent = categories.length;
@@ -330,12 +338,12 @@
                     option.textContent = cat.category_name;
                     categoryFilter.appendChild(option);
                 });
-
+            }
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
             }
         }
-
+    
         // Load và render bảng products
         async function loadProducts() {
             try {
