@@ -1,84 +1,86 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>07_PAYMENT1</title>
-    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css"/> 
-  </head>
-  <body class="bodypayment">
-    <iframe id="header-frame" class="header-frame"></iframe>
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-        const header = document.getElementById("header-frame");
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        header.src = isLoggedIn 
-            ? "../template/header.html" 
-            : "../template/header0.html";
 
-        header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-home" }, "*");
-        };
-        });
+<head>
+  <meta charset="utf-8" />
+  <title>07_PAYMENT1</title>
+  <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+</head>
 
-        // 🔹 BỔ SUNG ĐOẠN NÀY ĐỂ NHẬN TÍN HIỆU TỪ HEADER VÀ XỬ LÝ LOGIN/LOGOUT
-        window.addEventListener("message", (e) => {
-        if (!e.data || !e.data.action) return;
+<body class="bodypayment">
+  <iframe id="header-frame" class="header-frame"></iframe>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const header = document.getElementById("header-frame");
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      header.src = isLoggedIn
+        ? "../template/header.html"
+        : "../template/header0.html";
 
-        // Bấm nút Login trong header0
-        if (e.data.action === "goToLogin") {
-            window.location.href = "00_LOGIN.html";
-        }
+      header.onload = () => {
+        header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+      };
+    });
 
-        // Bấm nút Sign Up trong header0
-        if (e.data.action === "goToSignup") {
-            window.location.href = "00_SIGNUP.html";
-        }
+    // 🔹 BỔ SUNG ĐOẠN NÀY ĐỂ NHẬN TÍN HIỆU TỪ HEADER VÀ XỬ LÝ LOGIN/LOGOUT
+    window.addEventListener("message", (e) => {
+      if (!e.data || !e.data.action) return;
 
-        // Khi đăng nhập thành công (từ login.js hoặc login form)
-        if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
-            localStorage.setItem("isLoggedIn", "true");
-            document.getElementById("header-frame").src = "../template/header.html";
-        }
+      // Bấm nút Login trong header0
+      if (e.data.action === "goToLogin") {
+        window.location.href = "00_LOGIN.html";
+      }
 
-        // Khi người dùng logout từ header.html
-        if (e.data.action === "logout") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-            document.getElementById("header-frame").src = "../template/header0.html";
-        }
-        });
-        document.querySelectorAll('.copy').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-target');
-            const text = document.getElementById(id).textContent.trim();
-            
-            if (navigator.clipboard) {
-              navigator.clipboard.writeText(text).then(() => {
-                // Hiện dấu check
-                btn.innerHTML = '✓';
-                // Đổi lại icon copy sau 900ms
-                setTimeout(() => {
-                  btn.innerHTML = '<img src="../images/ic_copy.png" />';
-                }, 900);
-              }).catch(() => {
-                alert('Copy failed');
-              });
-            } else {
-              alert('Copy not supported');
-            }
+      // Bấm nút Sign Up trong header0
+      if (e.data.action === "goToSignup") {
+        window.location.href = "00_SIGNUP.html";
+      }
+
+      // Khi đăng nhập thành công (từ login.js hoặc login form)
+      if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
+        localStorage.setItem("isLoggedIn", "true");
+        document.getElementById("header-frame").src = "../template/header.html";
+      }
+
+      // Khi người dùng logout từ header.html
+      if (e.data.action === "logout") {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("login_infor");
+        document.getElementById("header-frame").src = "../template/header0.html";
+      }
+    });
+    document.querySelectorAll('.copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-target');
+        const text = document.getElementById(id).textContent.trim();
+
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            // Hiện dấu check
+            btn.innerHTML = '✓';
+            // Đổi lại icon copy sau 900ms
+            setTimeout(() => {
+              btn.innerHTML = '<img src="../images/ic_copy.png" />';
+            }, 900);
+          }).catch(() => {
+            alert('Copy failed');
           });
-        });
-    </script>
-    <main class="checkout-container">
-      <!-- LEFT -->
-      <section class="checkout-left">
-        <h1 class="page-title">PAYMENT</h1>
-        <div class="status-box">
-          <div class="status-icon">
-            <img src="../images/ic_payment.png"/>
-          </div>
-          <div class="status-text">
-            <div class="status-title">Awaiting Payment</div>
-            <div class="status-sub">Order #1056</div>
+        } else {
+          alert('Copy not supported');
+        }
+      });
+    });
+  </script>
+  <main class="checkout-container">
+    <!-- LEFT -->
+    <section class="checkout-left">
+      <h2 class="page-title">PAYMENT</h2>
+      <div class="status-box">
+        <div class="status-icon">
+          <img src="../images/ic_payment.png" />
+        </div>
+        <div class="status-text">
+          <div class="status-title">Awaiting Payment</div>
+          <div class="status-sub">Order #1056</div>
         </div>
       </div>
       <!--BIG PAYMENT BOX-->
@@ -101,7 +103,7 @@
             </div>
           </div>
           <div class="pay-wrap">
-          <button class="btn-pay">PAY NOW →</button>
+            <button class="btn-pay">PAY NOW →</button>
           </div>
         </div>
         <div class="divider"></div>
@@ -123,7 +125,7 @@
                 <div class="tr-value">
                   <span id="acc">0339667803</span>
                   <button class="copy" data-target="acc" title="Copy">
-                    <img src="../images/ic_copy.png"/>
+                    <img src="../images/ic_copy.png" />
                   </button>
                 </div>
               </div>
@@ -132,7 +134,7 @@
                 <div class="tr-value">
                   <span id="note">ORDER_1056</span>
                   <button class="copy" data-target="note" title="Copy">
-                    <img src="../images/ic_copy.png"/>
+                    <img src="../images/ic_copy.png" />
                   </button>
                 </div>
               </div>
@@ -141,7 +143,7 @@
                 <div class="tr-value">
                   <strong id="amt">165.000</strong>
                   <button class="copy" data-target="amt" title="Copy">
-                    <img src="../images/ic_copy.png"/>
+                    <img src="../images/ic_copy.png" />
                   </button>
                 </div>
               </div>
@@ -149,8 +151,9 @@
           </div>
           <div class="transfer-right">
             <div class="qr-card">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?data=EcoFitPayment&size=160x160" alt="QR Code" style="width:140px;height:140px;object-fit:cover;border-radius:6px">
-              <img src="../images/Logo-Napas.jpg" width="70px" style="margin-top: 8px;"/>
+              <img src="https://api.qrserver.com/v1/create-qr-code/?data=EcoFitPayment&size=160x160" alt="QR Code"
+                style="width:140px;height:140px;object-fit:cover;border-radius:6px">
+              <img src="../images/Logo-Napas.jpg" width="70px" style="margin-top: 8px;" />
             </div>
           </div>
         </div>
@@ -161,10 +164,10 @@
           <p class="proof-text">Kindly upload your proof to transfer to help us verify your payment faster</p>
           <div class="proof-action">
             <label class="upload-btn">
-              <img src="../images/ic_upload.png" width="15px" height="15px"/> Upload
+              <img src="../images/ic_upload.png" width="15px" height="15px" /> Upload
               <input type="file" hidden id="proofImage">
             </label>
-            <span id="fileName" style="margin-left:10px; margin-top: 14px; font-size:13px; color:#555;"></span>
+            <span id="fileName" style="margin-left:10px; margin-top: 15px; font-size:13px; color:#555;"></span>
           </div>
         </div>
       </div>
@@ -172,63 +175,59 @@
       <div class="delivery-box">
         <h2 class="title">Delivery address</h2>
         <p class="delivery-text">
-        - | - <br>
-        -
+          - | - <br>
+          -
         </p>
       </div>
-      </section>
-      <!-- RIGHT -->
-      <div class="checkout-right">
-          <div class="order-detail">
-              <h3 class="order-detail__title">ORDER DETAIL</h3>
-              <div class="order-item">
-                  <img src="../images/Product_images/organic_cotton_tee.png" alt="">
-                  <div class="order-item-info">
-                      <h4>Organic Cotton T-Shirt</h4>
-                      <p>Color: White | Size: XXL</p>
-                      <span class="order-item-price">50.000</span>
-                  </div>
-                  <span class="order-item-qty">x1</span>
-              </div>
-              <hr/>
-              <div class="order-item">
-                  <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
-                  <div class="order-item-info">
-                      <h4>Recycled PET Sneakers</h4>
-                      <p>Color: Beige | Size: 43</p>
-                      <span class="order-item-price">150.000</span>
-                  </div>
-                  <span class="order-item-qty">x1</span>
-              </div>
+    </section>
+    <div class="checkout-right">
+      <div class="order-detail">
+        <h3 class="order-detail__title">ORDER DETAIL</h3>
+        <div class="order-item">
+          <img src="../images/Product_images/organic_cotton_tee.png" alt="">
+          <div class="order-item-info">
+            <h4>Organic Cotton T-Shirt</h4>
+            <p>Color: White | Size: XXL</p>
+            <span class="order-item-price">50.000</span>
           </div>
-          <br/>
-          <div class="checkout-right">
-                <div class="order-summary">
-                    <h2 class="order-summary__title">ORDER SUMMARY</h2>
-                    <div class="order-summary__row">
-                        <span>Subtotal Product</span>
-                        <span class="order-summary__value">-</span>
-                    </div>
-                    <div class="order-summary__row">
-                        <span>Shipping Cost</span>
-                        <span class="order-summary__value">30.000</span>
-                    </div>
-                    <div class="order-summary__row">
-                        <span>Discount</span>
-                        <span class="order-summary__value discount">-</span>
-                    </div>
-                    
-                    <div class="order-summary__total">
-                        <span>Total</span>
-                        <span class="total-value"></span>
-                    </div>
-                    
-                    
-                </div>
-            </div>
+          <span class="order-item-qty">x1</span>
+        </div>
+        <hr />
+        <div class="order-item">
+          <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
+          <div class="order-item-info">
+            <h4>Recycled PET Sneakers</h4>
+            <p>Color: Beige | Size: 43</p>
+            <span class="order-item-price">150.000</span>
+          </div>
+          <span class="order-item-qty">x1</span>
+        </div>
       </div>
-    </main>
-    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
-    <script src="../js/payment1.js"></script>
-  </body>
+      <br />
+      <div class="order-summary">
+        <h2 class="order-summary__title">ORDER SUMMARY</h2>
+        <div class="order-summary__row">
+          <span>Subtotal Product</span>
+          <span class="order-summary__value">150.000</span>
+        </div>
+        <div class="order-summary__row">
+          <span>Shipping Cost</span>
+          <span class="order-summary__value">30.000</span>
+        </div>
+        <div class="order-summary__row">
+          <span>Discount</span>
+          <span class="order-summary__value discount">-15.000</span>
+        </div>
+
+        <div class="order-summary__total">
+          <span>Total</span>
+          <span class="total-value">165.000</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+  <script src="../js/payment1.js"></script>
+</body>
+
 </html>
