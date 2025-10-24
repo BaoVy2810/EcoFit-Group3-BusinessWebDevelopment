@@ -24,13 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const img = document.getElementById("blog-image");
 
       if (blog.image && blog.image.trim() !== "") {
-      img.src = blog.image; // nếu blog có ảnh riêng trong JSON
+        img.src = blog.image; // nếu blog có ảnh riêng trong JSON
       } else {
-      img.src = "../images/blog_banner.png"; // banner mặc định trong public
+        img.src = "../../../src/blog_banner.png"; // banner mặc định
       }
 
       img.alt = blog.title;
-      img.onerror = () => console.warn("⚠️ Ảnh không tìm thấy:", img.src);
+      img.onerror = () => {
+        console.warn("⚠️ Ảnh không tìm thấy:", img.src);
+        // Fallback to default banner if image fails to load
+        img.src = "../../../src/blog_banner.png";
+      };
 
 
       // 🧾 Hiển thị nội dung blog

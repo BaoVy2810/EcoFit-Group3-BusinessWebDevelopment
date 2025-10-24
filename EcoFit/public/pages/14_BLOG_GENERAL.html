@@ -5,293 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>14_BLOG_GENERAL</title>
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
-    <style>
-      body {
-        padding-top: 80px;
-      }
-      .main {
-        padding: 50px 0;
-        background: #fafafa;
-      }
-      .footer-frame {
-        margin-top: 60px;
-      }
-      /* Blog specific styles */
-      .blog-header {
-        text-align: center;
-        margin-bottom: 50px;
-      }
-      .blog-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: black;
-        margin-bottom: 15px;
-      }
-      .blog-date {
-        color: black;
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .blog-filters {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 40px;
-        padding: 20px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      .filter-buttons {
-        display: flex;
-        gap: 15px;
-      }
-      .filter-btn {
-        background: none;
-        border: 1px solid #ddd;
-        border-radius: 25px;
-        padding: 8px 20px;
-        cursor: pointer;
-        color: #666;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-      }
-      .filter-btn:hover,
-      .filter-btn.active {
-        background: #2f7d32;
-        color: white;
-        border-color: #2f7d32;
-      }
-      .sort-dropdown {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .sort-dropdown label {
-        font-size: 0.9rem;
-        color: #666;
-      }
-      .sort-select {
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 8px 12px;
-        font-size: 0.9rem;
-        color: #333;
-        cursor: pointer;
-      }
-      .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        margin-bottom: 50px;
-      }
-      .blog-card {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      .blog-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
-      .card-image {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-      }
-      .card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-      }
-      .blog-card:hover .card-image img {
-        transform: scale(1.05);
-      }
-      .card-content {
-        padding: 20px;
-      }
-      .card-date {
-        color: #2f7d32;
-        font-size: 0.85rem;
-        font-weight: 500;
-        margin-bottom: 10px;
-      }
-      .card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 12px;
-        line-height: 1.4;
-      }
-      .card-excerpt {
-        color: #666;
-        font-size: 0.9rem;
-        line-height: 1.6;
-        margin-bottom: 15px;
-      }
-      .read-more-btn {
-        background: #2f7d32;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      .read-more-btn:hover {
-        background: #1b5e20;
-      }
-      .footer-pagination {
-        background: #e8f5e9;
-        padding: 30px 0 20px 0;
-        border-bottom: 1px solid #c8e6c9;
-      }
-      .pagination {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        margin: 30px 0;
-        padding: 15px 0;
-        flex-wrap: wrap;
-      }
-      .pagination-btn {
-        background: none;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 8px 15px;
-        cursor: pointer;
-        color: #666;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        min-width: 40px;
-        height: 40px;
-      }
-      .pagination-btn:hover:not(:disabled) {
-        background: #f5f5f5;
-        border-color: #2f7d32;
-        color: #2f7d32;
-      }
-      .pagination-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      .pagination-numbers {
-        display: flex;
-        gap: 8px;
-      }
-      .pagination-number {
-        background: none;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 8px 12px;
-        cursor: pointer;
-        color: #666;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        min-width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .pagination-number:hover {
-        background: #f5f5f5;
-        border-color: #2f7d32;
-        color: #2f7d32;
-      }
-      .pagination-number.active {
-        background: #2f7d32;
-        color: white;
-        border-color: #2f7d32;
-      }
-      /* Responsive */
-      @media (max-width: 1024px) {
-        .blog-grid {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 25px;
-        }
-      }
-      @media (max-width: 768px) {
-        .blog-title {
-          font-size: 2rem;
-        }
-        .blog-filters {
-          flex-direction: column;
-          gap: 20px;
-          align-items: stretch;
-        }
-        .filter-buttons {
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-        .sort-dropdown {
-          justify-content: center;
-        }
-        .blog-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../css/blog.css" />
   </head>
   <body>
-    <iframe id="header-frame" class="header-frame"></iframe>
+    <!-- HEADER -->
+    <iframe
+      src="../template/header.html"
+      id="header-frame"
+      class="header-frame"
+    ></iframe>
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
+      window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        header.src = isLoggedIn 
-            ? "../template/header.html" 
-            : "../template/header0.html";
-
         header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
+          header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
         };
-        });
-
-        // 🔹 BỔ SUNG ĐOẠN NÀY ĐỂ NHẬN TÍN HIỆU TỪ HEADER VÀ XỬ LÝ LOGIN/LOGOUT
-        window.addEventListener("message", (e) => {
-        if (!e.data || !e.data.action) return;
-
-        // Bấm nút Login trong header0
-        if (e.data.action === "goToLogin") {
-            window.location.href = "00_LOGIN.html";
-        }
-
-        // Bấm nút Sign Up trong header0
-        if (e.data.action === "goToSignup") {
-            window.location.href = "00_SIGNUP.html";
-        }
-
-        // Khi đăng nhập thành công (từ login.js hoặc login form)
-        if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
-            localStorage.setItem("isLoggedIn", "true");
-            document.getElementById("header-frame").src = "../template/header.html";
-        }
-
-        // Khi người dùng logout từ header.html
-        if (e.data.action === "logout") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-            document.getElementById("header-frame").src = "../template/header0.html";
-        }
-        });
+      });
     </script>
+    <!-- HERO BANNER -->
+    <section class="hero-blog">
+      <img src="/src/blog_banner.png" alt="Blog Hero" />
+      <div class="overlay">
+        <div class="hero-content">
+          <span class="blog-type">Blog Type</span>
+          <h2 class="hero-title">
+            The Green Routine: Everyday Habits for a Cleaner Planet
+          </h2>
+          <p class="hero-desc">
+            Simple daily habits can make a big impact. Choose eco products, save
+            energy, and live cleaner every day.
+          </p>
+        </div>
+        <a href="#" class="hero-btn-right">Read full blog</a>
+      </div>
+    </section>
+
     <!-- MAIN BLOG SECTION -->
     <main class="main">
       <div class="container">
@@ -543,7 +291,11 @@
     </div>
 
     <!-- FOOTER -->
-    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+    <iframe
+      src="../template/footer.html"
+      id="footer-frame"
+      class="footer-frame"
+    ></iframe>
     <!-- MAIN SCRIPT -->
     <script src="../js/script.js"></script>
 

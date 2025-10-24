@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
 
   streak = Number(localStorage.getItem("streak")) || 0;
   greenScore = Number(localStorage.getItem("greenScore")) || 0;
-  plantStage = localStorage.getItem("plantStage") || "Seed 🌱";
+  plantStage = localStorage.getItem("plantStage") || "Seed";
 
   updatePlant();
   renderCalendar(currentDate);
@@ -28,18 +28,18 @@ function renderCalendar(date) {
   const year = date.getFullYear();
   const month = date.getMonth();
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
     "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   monthTitle.textContent = `${monthNames[month]} ${year}`;
   daysContainer.innerHTML = "";
@@ -47,13 +47,22 @@ function renderCalendar(date) {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Thêm ô trống đầu tuần
+  // Build grid cells with references for streak styling
+  const cells = []; // all grid cells including leading blanks
+  const claimedSet = new Set(
+    claimedDates
+      .filter((d) => d.getMonth() === month && d.getFullYear() === year)
+      .map((d) => d.getDate())
+  );
+
+  // Leading blanks
   for (let i = 0; i < firstDay; i++) {
     const emptyCell = document.createElement("div");
+    cells.push(emptyCell);
     daysContainer.appendChild(emptyCell);
   }
 
-  // Tạo các ô ngày
+  // Day cells
   for (let day = 1; day <= daysInMonth; day++) {
     const dayCell = document.createElement("div");
     dayCell.classList.add("day-cell");
@@ -61,25 +70,16 @@ function renderCalendar(date) {
 
     const cellDate = new Date(year, month, day);
     const isToday = cellDate.toDateString() === today.toDateString();
-    const isClaimed = claimedDates.some(
-      (d) => d.toDateString() === cellDate.toDateString()
-    );
+    const isClaimed = claimedSet.has(day);
 
-    if (isToday) {
-      dayCell.classList.add("today");
-    }
+    if (isToday) dayCell.classList.add("today");
+    if (isClaimed) dayCell.classList.add("claimed");
 
-    if (isClaimed) {
-      dayCell.classList.add("claimed");
-      dayCell.textContent = "🌱";
-    }
-
-    // Cho phép click vào bất kỳ ngày nào để claim
+    // Click to claim
     dayCell.addEventListener("click", () => {
       const alreadyClaimed = claimedDates.some(
         (d) => d.toDateString() === cellDate.toDateString()
       );
-
       if (!alreadyClaimed) {
         claimedDates.push(cellDate);
         saveClaimedDates();
@@ -89,7 +89,32 @@ function renderCalendar(date) {
       }
     });
 
+    cells.push(dayCell);
     daysContainer.appendChild(dayCell);
+  }
+
+  // Add grey streak band across consecutive claimed days within the same week
+  for (let day = 1; day <= daysInMonth; day++) {
+    if (!claimedSet.has(day)) continue;
+
+    const gridIndex = firstDay + (day - 1);
+    const dow = gridIndex % 7; // 0..6
+    const prevClaimed = day > 1 && claimedSet.has(day - 1) && dow !== 0; // not crossing week
+    const nextClaimed =
+      day < daysInMonth && claimedSet.has(day + 1) && dow !== 6; // not crossing week
+
+    const cell = cells[gridIndex];
+    if (!cell) continue;
+
+    if (prevClaimed && nextClaimed) {
+      cell.classList.add("streak-mid");
+    } else if (prevClaimed && !nextClaimed) {
+      cell.classList.add("streak-end");
+    } else if (!prevClaimed && nextClaimed) {
+      cell.classList.add("streak-start");
+    } else {
+      // single claimed day - keep as claimed only
+    }
   }
 }
 
@@ -129,45 +154,76 @@ function updateStreak() {
 // Cập nhật greenscore và giai đoạn cây
 function updatePlant() {
   greenScore = streak;
-  greenScoreElem.textContent = greenScore;
+  greenScoreElem.textContent = greenScore + "%";
 
   // === 4 cấp độ cây ===
+  let plantStageName = "";
+  let progressPercent = 0;
+
   if (streak >= 30) {
-    plantStage = "Guardian Tree 🌳🏆";
+    plantStage = "Guardian Tree";
+    plantStageName = "Guardian Tree";
+    progressPercent = 100; // Max 100%
   } else if (streak >= 15) {
-    plantStage = "Tree 🌳";
+    plantStage = "Tree";
+    plantStageName = "Tree";
+    progressPercent = Math.min(((streak - 15) / 15) * 100, 100); // 15-30 ngày
   } else if (streak >= 5) {
-    plantStage = "Sapling 🌱🌿";
+    plantStage = "Sapling";
+    plantStageName = "Sapling";
+    progressPercent = Math.min(((streak - 5) / 10) * 100, 100); // 5-15 ngày
   } else {
-    plantStage = "Seed 🌱";
+    plantStage = "Seed";
+    plantStageName = "Seed";
+    progressPercent = (streak / 5) * 100; // 0-5 ngày
   }
 
   localStorage.setItem("greenScore", greenScore);
   localStorage.setItem("plantStage", plantStage);
-  periodElem.textContent = plantStage;
+  periodElem.textContent = plantStageName;
+
+  // Update circular progress
+  updateCircularProgress(progressPercent);
 
   // === Thay đổi hình ảnh cây tương ứng với 4 cấp độ ===
   const plantImg = document.getElementById("plant-img");
 
   if (plantImg) {
     switch (plantStage) {
-      case "Seed 🌱":
+      case "Seed":
         plantImg.src = "../images/hat.png"; // Cấp 1: Hạt giống (0-4 ngày)
         console.log("🌱 Cấp 1 - Hạt giống");
         break;
-      case "Sapling 🌱🌿":
+      case "Sapling":
         plantImg.src = "../images/cay_con.png"; // Cấp 2: Cây con (5-14 ngày)
         console.log("🌱🌿 Cấp 2 - Cây con");
         break;
-      case "Tree 🌳":
+      case "Tree":
         plantImg.src = "../images/cay_lon.png"; // Cấp 3: Cây trưởng thành (15-29 ngày)
         console.log("🌳 Cấp 3 - Cây trưởng thành");
         break;
-      case "Guardian Tree 🌳🏆":
+      case "Guardian Tree":
         plantImg.src = "../images/old_tree.png"; // Cấp 4: Cây bảo hộ (30+ ngày)
         console.log("🌳🏆 Cấp 4 - Cây bảo hộ");
         break;
     }
+  }
+}
+
+// Update circular progress bar
+function updateCircularProgress(percent) {
+  const progressRing = document.getElementById("progress-ring");
+  const progressText = document.getElementById("progress-percent");
+
+  if (progressRing && progressText) {
+    const circumference = 2 * Math.PI * 42; // 2πr where r=42
+    const offset = circumference - (percent / 100) * circumference;
+
+    // Animate the progress ring
+    setTimeout(() => {
+      progressRing.style.strokeDashoffset = offset;
+      progressText.textContent = Math.round(percent);
+    }, 100);
   }
 }
 
