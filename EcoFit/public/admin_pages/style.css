@@ -887,3 +887,63 @@ select {
     .btn-cancel:hover {
       background: #e5e7eb;
     }
+/* ==================== CUSTOM CONFIRM BOX & EDIT MODAL ==================== */
+
+/* Animations */
+@keyframes slideDown {
+  from { 
+    transform: translateY(-20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateX(400px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slideOut {
+  from { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+  to { 
+    transform: translateX(400px); 
+    opacity: 0; 
+  }
+}
+
+/* Confirm Box & Modal Buttons Hover */
+#confirmBox button:hover, 
+#editProductModal button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Edit Form Inputs Focus */
+#editProductForm input:focus, 
+#editProductForm textarea:focus, 
+#editProductForm select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Toast Notification Animation */
+.toast-notification {
+  animation: slideIn 0.3s ease;
+}
+
+.toast-notification.hide {
+  animation: slideOut 0.3s ease;
+}

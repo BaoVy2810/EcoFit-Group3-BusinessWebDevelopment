@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Product - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body style="background: #f9fafb;">
+  <div class="form-container">
+    <div class="form-card">
+      <div class="form-header">
+        <button class="back-btn" onclick="goBack()">
+          <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+        </button>
+        <h2>Add New Product</h2>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <form id="addProductForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="product_name">Product Name<span class="required">*</span></label>
+            <input type="text" id="product_name" name="product_name" required placeholder="Enter product name" />
+          </div>
+
+          <div class="form-group">
+            <label for="category_id">Category<span class="required">*</span></label>
+            <select id="category_id" name="category_id" required>
+              <option value="">Select category</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price (VND)<span class="required">*</span></label>
+            <input type="number" id="price" name="price" required placeholder="Enter price" min="0" step="1000" />
+          </div>
+
+          <div class="form-group">
+            <label for="quantity_available">Quantity Available<span class="required">*</span></label>
+            <input type="number" id="quantity_available" name="quantity_available" required placeholder="Enter quantity" min="0" />
+          </div>
+
+          <div class="form-group">
+            <label for="green_score">Green Score (0-100)<span class="required">*</span></label>
+            <input type="number" id="green_score" name="green_score" required placeholder="Enter green score" min="0" max="100" />
+          </div>
+
+          <div class="form-group">
+            <label for="material">Material</label>
+            <input type="text" id="material" name="material" placeholder="e.g., Organic Cotton, Recycled Polyester" />
+          </div>
+
+          <div class="form-group full-width">
+            <label for="description">Description<span class="required">*</span></label>
+            <textarea id="description" name="description" required placeholder="Enter product description"></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="image_url">Image URL</label>
+            <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="goBack()">
+            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+            Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let categories = [];
+
+    // Load categories for dropdown
+    async function loadCategories() {
+      try {
+        const storedData = localStorage.getItem('products');
+        if (storedData) {
+          const data = JSON.parse(storedData);
+          categories = data.category;
+        } else {
+          const response = await fetch('../../dataset/products.json');
+          const data = await response.json();
+          categories = data.category;
+        }
+
+        const categorySelect = document.getElementById('category_id');
+        categories.forEach(cat => {
+          const option = document.createElement('option');
+          option.value = cat.category_id;
+          option.textContent = cat.category_name;
+          categorySelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    }
+
+    function goBack() {
+      window.location.href = 'products.html';
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('show');
+      setTimeout(() => {
+        errorDiv.classList.remove('show');
+      }, 5000);
+    }
+
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = message;
+      successDiv.classList.add('show');
+      setTimeout(() => {
+        successDiv.classList.remove('show');
+        goBack();
+      }, 2000);
+    }
+
+    async function generateNewProductId() {
+      try {
+        const response = await fetch('../../dataset/products.json');
+        const data = await response.json();
+        const products = data.product;
+        
+        if (products.length === 0) return "P001";
+        
+        // Extract numeric part and find max
+        const maxNum = Math.max(...products.map(p => {
+          const match = p.product_id.match(/\d+$/);
+          return match ? parseInt(match[0]) : 0;
+        }));
+        
+        return `P${String(maxNum + 1).padStart(3, '0')}`;
+      } catch (error) {
+        console.error('Error generating ID:', error);
+        return `P${Date.now()}`;
+      }
+    }
+
+    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const price = parseFloat(formData.get('price'));
+      const quantity = parseInt(formData.get('quantity_available'));
+      const greenScore = parseInt(formData.get('green_score'));
+
+      // Validation
+      if (price <= 0) {
+        showError('Price must be greater than 0');
+        return;
+      }
+
+      if (quantity < 0) {
+        showError('Quantity cannot be negative');
+        return;
+      }
+
+      if (greenScore < 0 || greenScore > 100) {
+        showError('Green score must be between 0 and 100');
+        return;
+      }
+
+      try {
+        const response = await fetch('../../dataset/products.json');
+        const data = await response.json();
+        const products = data.product;
+
+        const newProductId = await generateNewProductId();
+
+        const newProduct = {
+          product_id: newProductId,
+          product_name: formData.get('product_name'),
+          description: formData.get('description'),
+          price: price,
+          category_id: formData.get('category_id'),
+          quantity_available: quantity,
+          green_score: greenScore,
+          material: formData.get('material') || "",
+          image_url: formData.get('image_url') || ""
+        };
+
+        products.push(newProduct);
+
+        const updatedData = {
+          product: products,
+          category: data.category
+        };
+
+        localStorage.setItem('products', JSON.stringify(updatedData));
+
+        console.log('New product created:', newProduct);
+        showSuccess('Product created successfully!');
+
+      } catch (error) {
+        console.error('Error saving product:', error);
+        showError('Failed to create product. Please try again.');
+      }
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCategories();
+    });
+  </script>
+</body>
+</html>

@@ -439,7 +439,7 @@ function loadMonthFilter() {
   Array.from(months).sort().reverse().forEach(monthYear => {
     const [year, month] = monthYear.split('-');
     const date = new Date(year, month - 1);
-    const monthName = date.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
+    const monthName = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     
     const option = document.createElement("option");
     option.value = monthYear;
@@ -759,8 +759,41 @@ function handleOrderFilter() {
     row.querySelector('[name="shipping-address"]').textContent = o.shipping_address;
     row.querySelector('[name="items-count"]').textContent = o.items.length;
     row.querySelector('[name="total-amount"]').textContent = formatCurrency(o.total_amount);
+    
+    // Cập nhật status badge với styling đầy đủ
     const statusSpan = row.querySelector('[name="status"]');
     statusSpan.textContent = o.status;
+    statusSpan.style.cssText = `
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: ${
+        o.status === "Completed"
+          ? "#f0fdf4"
+          : o.status === "Processing"
+          ? "#fefce8"
+          : o.status === "Pending"
+          ? "#eff6ff"
+          : "#fef2f2"
+      };
+      color: ${
+        o.status === "Completed"
+          ? "#16a34a"
+          : o.status === "Processing"
+          ? "#eab308"
+          : o.status === "Pending"
+          ? "#3b82f6"
+          : "#ef4444"
+      };
+    `;
+
+    // Gắn lại sự kiện cho các nút
+    const viewBtn = row.querySelector(".view-detail-btn");
+    viewBtn.addEventListener("click", () => openViewModal(o));
+
+    const editBtn = row.querySelector(".edit-status-btn");
+    editBtn.addEventListener("click", () => openEditModal(o.order_id));
   });
 }
 
