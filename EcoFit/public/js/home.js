@@ -1,45 +1,42 @@
+// home.js
 document.addEventListener("DOMContentLoaded", () => {
-  const headerContainer = document.getElementById("header-container");
-  const mainFrame = document.getElementById("main-frame");
+  const headerFrame = document.getElementById("header-frame");
 
-  // Kiểm tra trạng thái đăng nhập từ localStorage
+  // Kiểm tra trạng thái đăng nhập (dựa theo localStorage)
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  if (isLoggedIn) {
-    // Đã đăng nhập → hiển thị header chính + homepage
-    headerContainer.innerHTML = `<iframe src="../template/header.html" class="header-frame" id="header-frame"></iframe>`;
-    mainFrame.src = "../pages/01_HOMEPAGE.html";
+  // Nếu chưa đăng nhập → hiển thị header0 (chưa login)
+  if (!isLoggedIn) {
+    headerFrame.src = "../template/header0.html";
   } else {
-    // Chưa đăng nhập → header0 + login
-    headerContainer.innerHTML = `<iframe src="../template/header0.html" class="header-frame" id="header-frame"></iframe>`;
-    mainFrame.src = "../pages/00_LOGIN.html";
+    headerFrame.src = "../template/header.html";
   }
 
-  // Nghe tín hiệu từ các iframe con
-  window.addEventListener("message", (event) => {
-    if (!event.data || !event.data.action) return;
+  // Lắng nghe sự kiện đăng nhập thành công
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.action === "loginSuccess") {
+      localStorage.setItem("isLoggedIn", "true");
+      headerFrame.src = "../template/header.html";
+      window.location.href = "01_HOMEPAGE.html"; // chuyển qua trang chính
+    }
+  });
 
-    switch (event.data.action) {
-      case "goToLogin":
-        mainFrame.src = "../pages/00_LOGIN.html";
-        break;
+  // Lắng nghe sự kiện đăng xuất
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.action === "logout") {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("login_infor");
+      headerFrame.src = "../template/header0.html";
+    }
+  });
 
-      case "goToSignup":
-        mainFrame.src = "../pages/00_SIGNUP.html";
-        break;
-
-      case "loggedIn":
-        // Khi đăng nhập hoặc đăng ký thành công
-        localStorage.setItem("isLoggedIn", "true");
-        headerContainer.innerHTML = `<iframe src="../template/header.html" class="header-frame" id="header-frame"></iframe>`;
-        mainFrame.src = "../pages/01_HOMEPAGE.html";
-        break;
-
-      case "logout":
-        localStorage.removeItem("isLoggedIn");
-        headerContainer.innerHTML = `<iframe src="../template/header0.html" class="header-frame" id="header-frame"></iframe>`;
-        mainFrame.src = "../pages/00_LOGIN.html";
-        break;
+  // ✅ Lắng nghe sự kiện "goToLogin" và "goToSignup" từ header0.html
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.action === "goToLogin") {
+      window.location.href = "00_LOGIN.html";
+    }
+    if (e.data && e.data.action === "goToSignup") {
+      window.location.href = "00_SIGNUP.html";
     }
   });
 });
