@@ -2,11 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const blogId = parseInt(params.get("id")) || 1;
 
-<<<<<<< HEAD
-  fetch("blogs.json")
-=======
   fetch("../../dataset/blogs.json")
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
     .then((response) => {
       if (!response.ok) throw new Error("Không thể load file Blogs.json");
       return response.json();
@@ -26,15 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 🖼️ Cập nhật hình ảnh blog
       const img = document.getElementById("blog-image");
-<<<<<<< HEAD
-      img.src = blog.image;
+
+      if (blog.image && blog.image.trim() !== "") {
+      img.src = blog.image; // nếu blog có ảnh riêng trong JSON
+      } else {
+      img.src = "../images/blog_banner.png"; // banner mặc định trong public
+      }
+
       img.alt = blog.title;
       img.onerror = () => console.warn("⚠️ Ảnh không tìm thấy:", img.src);
-=======
-      // Sử dụng blog_banner.png mặc định vì tất cả blog đều dùng chung banner
-      img.src = `../../../src/blog_banner.png`;
-      img.alt = blog.title;
->>>>>>> 3a61038bf8eb4c62351af2a6cdfaf9b8767ab9e8
+
 
       // 🧾 Hiển thị nội dung blog
       const contentContainer = document.getElementById("blog-content");
@@ -47,9 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
         h2.style.marginTop = "25px";
 
         const p = document.createElement("p");
-        // ✅ Dùng innerHTML để hiển thị đầy đủ định dạng & xuống dòng
+        // Dùng innerHTML để hiển thị đầy đủ định dạng & xuống dòng
         p.innerHTML = section.text;
-        p.style.whiteSpace = "pre-line"; // ✅ giữ nguyên ngắt dòng nếu có
+        p.style.whiteSpace = "pre-line"; // giữ nguyên ngắt dòng nếu có
         p.style.lineHeight = "1.6";
         p.style.marginBottom = "20px";
 
