@@ -2414,12 +2414,13 @@ a {
 .floating-label input {
   width: 100%;
   padding: 14px 12px;
-  font-size: 18px;
+  font-size: 16px;
   border: 1px solid #D9D9D9;
   border-radius: 8px;
   background: none;
   outline: none;
   transition: border-color 0.2s ease;
+  font-weight: 400;
 }
 .floating-label input:focus {
   border-color: #3DA547;
@@ -2429,6 +2430,7 @@ a {
   position: absolute;
   left: 14px;
   top: 14px;
+  transform: translateY(-40%);
   color: black;
   font-size: 14px;
   background-color: #fff;
