@@ -1170,7 +1170,7 @@ section.hero::after {
 }
 .name {
   font-size: 22px;
-  font-weight: 450;
+  font-weight: 500;
   text-align: left;
 }
 .type {
@@ -1408,6 +1408,7 @@ section.hero::after {
   font-size: 18px;
   font-weight: 400;
   transform: translateY(-15px);
+  color:#000;
 }
 .greenscore-detail img {
   width: 25px;
@@ -1593,6 +1594,7 @@ section.hero::after {
   display: flex;
   flex-direction: column;
   gap: 50px;
+  width: 100%;
 }
 .review-summary {
   display: flex;
@@ -1608,10 +1610,6 @@ section.hero::after {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: conic-gradient(
-    #FFD54F calc(4.5 / 5 * 360deg),
-    #E4E9EE 0deg
-  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1879,7 +1877,7 @@ section.hero::after {
   color: white;
 }
 .additional-info tbody tr:nth-child(even) {
-  background-color: #b9b9b99c;
+  background-color: #d9d9d9;
 }
 .additional-info th,
 .additional-info td {

@@ -33,9 +33,16 @@
           "Ethically made"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/organic_cotton_tee.png",
+        "../../dataset/product_images/organic_cotton_tee1.png",
+        "../../dataset/product_images/organic_cotton_tee2.png",
+        "../../dataset/product_images/organic_cotton_tee3.png",
+        "../../dataset/product_images/organic_cotton_tee4.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/organic_cotton_tee_front.png",
-        "../../dataset/product_images/organic_cotton_tee_back.png"
+        "../../dataset/product_images/organic_cotton_tee.png",
+        "../../dataset/product_images/organic_cotton_tee.png"
       ],
       "reviews": [
         {
@@ -128,6 +135,13 @@
           "Ideal for corporate wear"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/bamboo_daily_shirt.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_beige.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_pink.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_white.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_black.png"
+      ],
       "review_images": [
         "../../dataset/product_images/recycled_fiber_polo_front.png",
         "../../dataset/product_images/recycled_fiber_polo_back.png"

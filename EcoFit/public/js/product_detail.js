@@ -13,13 +13,30 @@ function getProductIdFromURL() {
 // Load JSON data
 async function loadData() {
     try {
-        const [productsResponse, promotionsResponse] = await Promise.all([
-            fetch('../../dataset/products.json'),
-            fetch('../../dataset/promotions.json')
-        ]);
+        // ƯU TIÊN ĐỌC DỮ LIỆU TỪ LOCALSTORAGE
+        const storedProducts = localStorage.getItem("products");
+        const storedPromotions = localStorage.getItem("promotions");
         
-        productsData = await productsResponse.json();
-        promotionsData = await promotionsResponse.json();
+        if (storedProducts && storedPromotions) {
+            // Nếu có data trong localStorage thì dùng luôn
+            productsData = JSON.parse(storedProducts);
+            promotionsData = JSON.parse(storedPromotions);
+            console.log("✓ Loaded data from localStorage");
+        } else {
+            // Nếu chưa có thì fetch từ file JSON
+            const [productsResponse, promotionsResponse] = await Promise.all([
+                fetch('../../dataset/products.json'),
+                fetch('../../dataset/promotions.json')
+            ]);
+            
+            productsData = await productsResponse.json();
+            promotionsData = await promotionsResponse.json();
+            
+            // Lưu vào localStorage để lần sau dùng
+            localStorage.setItem("products", JSON.stringify(productsData));
+            localStorage.setItem("promotions", JSON.stringify(promotionsData));
+            console.log("✓ Loaded data from JSON files and saved to localStorage");
+        }
         
         const productId = getProductIdFromURL();
         currentProduct = productsData.product.find(p => p.product_id === productId);
@@ -111,14 +128,14 @@ function displayProductDetails() {
     
     // Update gallery main image
     const mainImage = document.querySelector('.gallery-main img');
-    if (mainImage && currentProduct.review_images && currentProduct.review_images.length > 0) {
-        mainImage.src = currentProduct.review_images[0];
+    if (mainImage && currentProduct.product_images && currentProduct.product_images.length > 0) {
+        mainImage.src = currentProduct.product_images[0];
         mainImage.alt = currentProduct.product_name;
     }
-    
+
     // Update gallery thumbnails
     updateGalleryThumbnails();
-    
+
     // Update stock status
     const statusTag = document.querySelector('.status-tag');
     if (statusTag) {
@@ -194,13 +211,12 @@ function displayProductDetails() {
 // Update gallery thumbnails
 function updateGalleryThumbnails() {
     const thumbnailsContainer = document.querySelector('.gallery-thumbnails');
-    if (!thumbnailsContainer || !currentProduct.review_images || currentProduct.review_images.length === 0) return;
-    
-    thumbnailsContainer.innerHTML = currentProduct.review_images.map((img, index) => 
+    if (!thumbnailsContainer || !currentProduct.product_images || currentProduct.product_images.length === 0) return;
+
+    thumbnailsContainer.innerHTML = currentProduct.product_images.map((img, index) => 
         `<img src="${img}" alt="${currentProduct.product_name} ${index + 1}" ${index === 0 ? 'class="active"' : ''}>`
     ).join('');
-    
-    // Add click events to thumbnails
+
     setupThumbnailClicks();
 }
 
@@ -210,10 +226,14 @@ function updateProductRating(avgRating) {
     if (!ratingDiv) return;
     
     const reviewCount = currentProduct.reviews ? currentProduct.reviews.length : 0;
+
+    // Làm tròn rating để chọn ảnh
+    const roundedRating = Math.round(avgRating);
+    const starImage = `../images/${getStarImage(roundedRating)}`;
     
     ratingDiv.innerHTML = `
         <div class="rating-item">
-            <img src="../images/fourstars.png" alt="star">
+            <img src="${starImage}" alt="${roundedRating} stars">
             <span><u>${avgRating}</u></span>
         </div>
         <span class="divider">|</span>
@@ -249,16 +269,36 @@ function updateSizeOptions() {
     ).join('');
 }
 
-// Update color options (if available)
 function updateColorOptions() {
     const colorSelect = document.querySelector('#color');
-    if (!colorSelect) return;
-    
-    // Try to get colors from product attributes or use defaults
-    const colors = ['Grey', 'Beige', 'Pink', 'White', 'Black'];
+    if (!colorSelect || !currentProduct.attributes || !currentProduct.attributes.Color) return;
+
+    // Lấy danh sách màu từ thuộc tính
+    const colors = currentProduct.attributes.Color.split(',').map(c => c.trim());
     colorSelect.innerHTML = colors.map(color => 
         `<option value="${color}">${color}</option>`
     ).join('');
+
+    colorSelect.addEventListener('change', (e) => {
+        const selectedIndex = e.target.selectedIndex;
+        const images = currentProduct.product_images || [];
+
+        if (images.length === 0) return;
+
+        // Nếu ít ảnh hơn số màu → lấy ảnh cuối cùng
+        const newImageIndex = selectedIndex < images.length ? selectedIndex : images.length - 1;
+
+        const mainImage = document.querySelector('.gallery-main img');
+        if (mainImage) {
+            mainImage.src = images[newImageIndex];
+            mainImage.alt = `${currentProduct.product_name} - ${e.target.value}`;
+        }
+
+        const thumbnails = document.querySelectorAll('.gallery-thumbnails img');
+        thumbnails.forEach((thumb, i) => {
+            thumb.classList.toggle('active', i === newImageIndex);
+        });
+    });
 }
 
 // Update additional information table
@@ -333,9 +373,12 @@ function updateReviewSummary(avgRating, totalReviews, ratingCounts) {
     const reviewSummary = document.querySelector('.review-summary');
     if (!reviewSummary) return;
     
+    // Tính phần trăm cho conic-gradient (rating / 5 * 360deg)
+    const ratingPercentage = (parseFloat(avgRating) / 5) * 360;
+    
     reviewSummary.innerHTML = `
         <div class="review-score">
-            <div class="rating-circle">
+            <div class="rating-circle" style="background: conic-gradient(#FFD54F ${ratingPercentage}deg, #E4E9EE 0deg);">
                 <div class="rating-number">${avgRating}</div>
             </div>
             <div class="stars">
@@ -731,7 +774,7 @@ function buyNow(productId, event) {
     
     // Redirect to cart page after short delay
     setTimeout(() => {
-        window.location.href = '05_CART.html';
+        window.location.href = 'EcoFit/public/pages/05_SHOPPING_CART.html';
     }, 500);
 }
 
@@ -900,7 +943,7 @@ window.addEventListener("message", (e) => {
     }
 });
 
-// Add CSS animations for cart message
+// Add CSS animations for cart message only
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideIn {
@@ -926,162 +969,10 @@ style.textContent = `
     }
     
     .cart-message {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Outfit', sans-serif;
         font-weight: 500;
         font-size: 14px;
         letter-spacing: 0.3px;
-    }
-    
-    /* Enhance review actions buttons */
-    .review-actions button {
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border: none;
-        background: transparent;
-        padding: 5px 10px;
-        border-radius: 4px;
-    }
-    
-    .review-actions button:hover {
-        background: #f0f0f0;
-    }
-    
-    .review-actions button.active {
-        background: #e8f5e9;
-        color: #4CAF50;
-    }
-    
-    /* Enhance quantity controls */
-    .qty-btn {
-        cursor: pointer;
-        transition: all 0.2s ease;
-        user-select: none;
-    }
-    
-    .qty-btn:hover {
-        background: #f0f0f0;
-    }
-    
-    .qty-btn:active {
-        transform: scale(0.95);
-    }
-    
-    /* Enhance gallery navigation */
-    .gallery-prev, .gallery-next {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .gallery-prev:hover, .gallery-next:hover {
-        opacity: 0.8;
-        transform: scale(1.1);
-    }
-    
-    .gallery-prev:active, .gallery-next:active {
-        transform: scale(0.95);
-    }
-    
-    /* Enhance thumbnails */
-    .gallery-thumbnails img {
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-    }
-    
-    .gallery-thumbnails img:hover {
-        opacity: 0.8;
-        border-color: #ddd;
-    }
-    
-    .gallery-thumbnails img.active {
-        border-color: #4CAF50;
-    }
-    
-    /* Enhance buttons */
-    .btn-outline, .btn-fill {
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .btn-outline:hover, .btn-fill:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    
-    .btn-outline:active, .btn-fill:active {
-        transform: translateY(0);
-    }
-    
-    .btn-outline:disabled, .btn-fill:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-    
-    /* Product card hover effect */
-    .product-card {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-    }
-    
-    /* More link animation */
-    .more {
-        transition: all 0.2s ease;
-    }
-    
-    .more:hover {
-        opacity: 0.7;
-        text-decoration: underline;
-    }
-    
-    /* Review tabs */
-    .review-tabs button {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .review-tabs button:hover {
-        background: #f0f0f0;
-    }
-    
-    .review-tabs button.active {
-        background: #4CAF50;
-        color: white;
-    }
-    
-    /* Loading state */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    }
-    
-    .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #4CAF50;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
     }
 `;
 document.head.appendChild(style);
@@ -1181,10 +1072,10 @@ function shareProduct(platform) {
     
     switch(platform) {
         case 'facebook':
-            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
+            shareUrl = `https://www.facebook.com/ecofitclothes.shop/posts/?u=${encodeURIComponent(productUrl)}`;
             break;
         case 'instagram':
-            shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(productName)}`;
+            shareUrl = `https://www.instagram.com/ecofitclothes.shop/?url=${encodeURIComponent(productUrl)}`;
             break;
     }
     
