@@ -933,9 +933,14 @@
           "Unique and sustainable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/upcycled_silk_maxi_dress_front.png",
+        "../../dataset/product_images/upcycled_silk_maxi_dress_back.png",
+        "../../dataset/product_images/upcycled_silk_maxi_dress_front2.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/silk_maxi_front.png",
-        "../../dataset/product_images/silk_maxi_back.png"
+        "../../dataset/product_images/silk_maxi_review1.png",
+        "../../dataset/product_images/silk_maxi_review2.png"
       ],
       "reviews": [
         {
@@ -973,9 +978,15 @@
           "Strong and durable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/upcycled_tote_bag_black.png",
+        "../../dataset/product_images/upcycled_tote_bag_brown.png",
+        "../../dataset/product_images/upcycled_tote_bag_orange.png",
+        "../../dataset/product_images/upcycled_tote_bag_model.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/tote_bag_view1.png",
-        "../../dataset/product_images/tote_bag_view2.png"
+        "../../dataset/product_images/upcycled_tote_bag_review1.png",
+        "../../dataset/product_images/upcycled_tote_bag_review2.png"
       ],
       "reviews": [
         {
@@ -1020,9 +1031,16 @@
           "Minimalist design"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/cork_leather_wallet_black.png",
+        "../../dataset/product_images/cork_leather_wallet_brown.png",
+        "../../dataset/product_images/cork_leather_wallet_sandcolor.png",
+        "../../dataset/product_images/cork_leather_wallet_yellow.png",
+        "../../dataset/product_images/cork_leather_wallet_model.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/cork_wallet_closed.png",
-        "../../dataset/product_images/cork_wallet_open.png"
+        "../../dataset/product_images/cork_leather_wallet_review1.png",
+        "../../dataset/product_images/cork_leather_wallet_review2.png"
       ],
       "reviews": [
         {
@@ -1068,8 +1086,8 @@
         "../../dataset/product_images/organic_cotton_cap_model.png"
       ],
       "review_images": [
-        "../../dataset/product_images/cotton_cap_front.png",
-        "../../dataset/product_images/cotton_cap_side.png"
+        "../../dataset/product_images/organic_cotton_cap_review1.png",
+        "../../dataset/product_images/organic_cotton_cap_review2.png"
       ],
       "reviews": [
         {
