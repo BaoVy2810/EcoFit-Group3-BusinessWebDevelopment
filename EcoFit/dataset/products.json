@@ -841,9 +841,15 @@
           "Easy to style"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/organic_cotton_wrap_dress_model.png",
+        "../../dataset/product_images/organic_cotton_wrap_dress_back.png",
+        "../../dataset/product_images/organic_cotton_wrap_dress_full.png",
+        "../../dataset/product_images/organic_cotton_wrap_dress_side.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/wrap_dress_front.png",
-        "../../dataset/product_images/wrap_dress_back.png"
+        "../../dataset/product_images/organic_cotton_wrap_dress_full.png",
+        "../../dataset/product_images/organic_cotton_wrap_dress_side.png"
       ],
       "reviews": [
         {
@@ -881,9 +887,14 @@
           "Perfect for evening wear"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/recycled_satin_slip_dress.png",
+        "../../dataset/product_images/recycled_satin_slip_dress_model.png",
+        "../../dataset/product_images/recycled_satin_slip_dress_material.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/satin_slip_front.png",
-        "../../dataset/product_images/satin_slip_back.png"
+        "../../dataset/product_images/recycled_satin_slip_dress_material.png",
+        "../../dataset/product_images/recycled_satin_slip_dress.png"
       ],
       "reviews": [
         {
@@ -921,9 +932,16 @@
           "Stretchy and comfortable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/bamboo_ribbed_dress_denim.png",
+        "../../dataset/product_images/bamboo_ribbed_dress_olive.png",
+        "../../dataset/product_images/bamboo_ribbed_dress_black.png",
+        "../../dataset/product_images/bamboo_ribbed_dress_plum.png",
+        "../../dataset/product_images/bamboo_ribbed_dress_red.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/bamboo_ribbed_front.png",
-        "../../dataset/product_images/bamboo_ribbed_back.png"
+        "../../dataset/product_images/bamboo_ribbed_dress_review1.png",
+        "../../dataset/product_images/bamboo_ribbed_dress_plum.png"
       ],
       "reviews": [
         {
