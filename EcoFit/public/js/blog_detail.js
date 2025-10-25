@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         img.src = "../../../src/blog_banner.png";
       };
 
-
       // 🧾 Hiển thị nội dung blog
       const contentContainer = document.getElementById("blog-content");
       contentContainer.innerHTML = "";
