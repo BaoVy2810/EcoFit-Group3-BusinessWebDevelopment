@@ -920,24 +920,30 @@ section.hero::after {
   background: #33773e;
 }
 .shop-content {
-  display: flex;
-  justify-content: center;
   gap: 40px;
   padding: 0 80px 100px;
-  background-color: #f9fcf8;
   align-items: flex-start;
+  min-height: 500px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
 }
 
 /*Filter Bar*/
 .filter {
   position: sticky;
-  width: 270px;
+  top: 100px;
+  width: 22%;
   padding: 25px;
   border-radius: 20px;
   height: fit-content;
-  transform: translate(0, -100px);
-  width:22%;
+  margin-top: -100px;
+  background: inherit;
+  z-index: 5;
+  flex-shrink: 0; 
 }
+
 .filter-group {
   margin-bottom: 20px;
 }
@@ -1023,28 +1029,13 @@ section.hero::after {
   color: #3da547;
   font-size: 16px;
 }
-.filter-btn {
-  width: 50%;
-  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.3s;
-  font-size: 16px;
-  transform:translateX(50px);
-}
-.filter-btn:hover {
-  background: #33773e;
-}
-
 /* Products View Section */
 .products {
   flex: 1;
   margin-right: -35px;
   margin-top: -40px;
+  display: flex;
+  flex-direction: column;
 }
 .products__header {
   display: flex;
@@ -1075,11 +1066,30 @@ section.hero::after {
   cursor: pointer;
 }
 .product-grid {
+  flex:1;
   display: flex;
   flex-wrap: wrap;
   gap: 30px; 
   justify-content: flex-start;
-  margin-right:-38px;
+  margin-right: -38px;
+  min-height: 400px;
+  align-content: flex-start;
+  position: relative;
+}
+.product-grid .no-results {
+  width: 100%;
+  text-align: center;
+  padding: 60px 20px;
+  color: black;
+  background: #f9fcf8;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+  /* căn giữa */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .product-card {
   position: relative;
@@ -1256,15 +1266,42 @@ section.hero::after {
   margin: 4px 0 0 0;
 }
 .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 40px 0;
+  font-family: 'Outfit', sans-serif;
 }
-.pagination img {
-    max-width:fit-content;
-    height: auto;
+
+.pagination button {
+  border: none;
+  background: none;
+  color: #555;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
+
+.pagination button:hover {
+  background-color: #e9f5eb;
+  color: #2e7d32;
+}
+
+.pagination .active {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  color: white;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.pagination button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
 .shop-content,
 .products {
   margin-bottom: 30 !important;
@@ -1585,6 +1622,36 @@ section.hero::after {
   background-clip: text;
   color: transparent;
 }
+.related-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 25px;
+}
+.related-pagination button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+.related-pagination button:hover:not(:disabled) {
+  background-color: #e6f3e8;
+  color: #2b7a32;
+}
+.related-pagination button.active {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  color: #fff;
+  font-weight: 600;
+}
+.related-pagination button:disabled {
+  color: #aaa;
+  cursor: not-allowed;
+}
 /*Review + Feedback Section*/
 .review_feedback_section{
   background-color: #F0F8F0;
@@ -1854,7 +1921,36 @@ section.hero::after {
 .review-actions button.active img {
   filter: brightness(0) invert(1);
 }
+.review-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+  font-family: 'Outfit', sans-serif;
+}
+.review-pagination button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #555;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+.review-pagination button.active {
+  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
+  color: white;
+  font-weight: 600;
+}
 
+.review-pagination button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+.review-pagination button:hover:not(:disabled):not(.active) {
+  background-color: #eef6ee;
+}
 /*Additional Information & Description*/
 .review_feedback_section h2{
   font-size: 24px;

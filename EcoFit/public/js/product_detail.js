@@ -78,7 +78,7 @@ async function loadData() {
             console.error('Product not found');
             showErrorMessage('Product not found. Redirecting to shop...');
             setTimeout(() => {
-                window.location.href = '03_SHOP.html';
+                window.location.href = './03_PRODUCT_SearchFilter.html';
             }, 2000);
         }
     } catch (error) {
@@ -396,6 +396,7 @@ function updateReviewsSection() {
     
     // Display individual reviews
     displayIndividualReviews();
+    displayReviewsForPage();
 }
 
 // Update review summary
@@ -476,6 +477,110 @@ function displayIndividualReviews() {
         reviewListCell.insertAdjacentHTML('beforeend', reviewsHTML);
     }
 }
+// --- Pagination for reviews ---
+const REVIEWS_PER_PAGE = 4;
+let currentReviewPage = 1;
+
+function renderReviewPagination() {
+    const totalReviews = currentProduct.reviews.length;
+    const totalPages = Math.ceil(totalReviews / REVIEWS_PER_PAGE);
+    const paginationContainer = document.querySelector('.review-pagination');
+    if (!paginationContainer) return;
+
+    paginationContainer.innerHTML = '';
+
+    const createBtn = (text, page, disabled = false, active = false) => {
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        if (disabled) btn.disabled = true;
+        if (active) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+            if (!disabled && page !== currentReviewPage) {
+                currentReviewPage = page;
+                displayReviewsForPage();
+            }
+        });
+        return btn;
+    };
+
+    // ← Previous
+    paginationContainer.appendChild(
+        createBtn('← Previous', currentReviewPage - 1, currentReviewPage === 1)
+    );
+
+    // Số trang (rút gọn kiểu 1 2 3 ... 24)
+    const totalToShow = 5;
+    let start = Math.max(1, currentReviewPage - 2);
+    let end = Math.min(totalPages, start + totalToShow - 1);
+    if (end - start < totalToShow - 1) start = Math.max(1, end - totalToShow + 1);
+
+    if (start > 1) {
+        paginationContainer.appendChild(createBtn('1', 1));
+        if (start > 2) paginationContainer.appendChild(document.createTextNode('...'));
+    }
+
+    for (let i = start; i <= end; i++) {
+        paginationContainer.appendChild(createBtn(i, i, false, i === currentReviewPage));
+    }
+
+    if (end < totalPages) {
+        if (end < totalPages - 1) paginationContainer.appendChild(document.createTextNode('...'));
+        paginationContainer.appendChild(createBtn(totalPages, totalPages));
+    }
+
+    // Next →
+    paginationContainer.appendChild(
+        createBtn('Next →', currentReviewPage + 1, currentReviewPage === totalPages)
+    );
+}
+
+function displayReviewsForPage() {
+    const reviewListCell = document.querySelector('.review-list-cell');
+    if (!reviewListCell) return;
+
+    const start = (currentReviewPage - 1) * REVIEWS_PER_PAGE;
+    const end = start + REVIEWS_PER_PAGE;
+    const reviewsToShow = currentProduct.reviews.slice(start, end);
+
+    // Xoá review cũ
+    reviewListCell.querySelectorAll('.review-item').forEach(item => item.remove());
+
+    const reviewsHTML = reviewsToShow.map((review, index) => `
+        <div class="review-item">
+            <div class="review-header">
+                <div class="review-stars">
+                    <img src="../images/${getStarImage(review.rating)}" alt="${review.rating} stars" />
+                </div>
+            </div>
+            <p class="review-text"><strong>${escapeHtml(review.text)}</strong></p>
+            <p class="review-meta">${review.date}</p>
+            <div class="review-footer">
+                <div class="review-user">
+                    <img src="../images/avatar${(index % 4) + 1}.png" alt="${escapeHtml(review.user)}" />
+                    <span>${escapeHtml(review.user)}</span>
+                </div>
+                <div class="review-actions">
+                    <button class="thumb-up-btn">
+                        <span><img src="../images/thumb_up.png" alt="like"/></span> 
+                        <span class="like-count">${review.likes}</span>
+                    </button>
+                    <button class="thumb-down-btn">
+                        <span><img src="../images/thumb_down.png" alt="dislike"/></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    const reviewTabs = reviewListCell.querySelector('.review-tabs');
+    if (reviewTabs) {
+        reviewTabs.insertAdjacentHTML('afterend', reviewsHTML);
+    } else {
+        reviewListCell.insertAdjacentHTML('beforeend', reviewsHTML);
+    }
+
+    renderReviewPagination();
+}
 
 // Escape HTML to prevent XSS
 function escapeHtml(text) {
@@ -527,14 +632,75 @@ function displayRelatedProducts() {
 
     const productGrid = document.querySelector('.related_products .product-grid');
     if (!productGrid) return;
+    relatedProductsList = relatedProducts;
+    relatedCurrentPage = 1;
+    displayRelatedProductsForPage();
+    setupRelatedProductsClick();
+}
+// --- Pagination for related products ---
+const RELATED_PER_PAGE = 4;
+let relatedCurrentPage = 1;
+let relatedProductsList = [];
 
-    productGrid.innerHTML = relatedProducts.map(product => {
+function renderRelatedPagination() {
+    const totalProducts = relatedProductsList.length;
+    const totalPages = Math.ceil(totalProducts / RELATED_PER_PAGE);
+    const paginationContainer = document.querySelector('.related-pagination');
+    if (!paginationContainer) return;
+
+    paginationContainer.innerHTML = '';
+
+    const createBtn = (text, page, disabled = false, active = false) => {
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        btn.setAttribute('data-page', page);
+        if (disabled) btn.disabled = true;
+        if (active) btn.classList.add('active');
+        return btn;
+    };
+
+    // Previous
+    paginationContainer.appendChild(
+        createBtn('← Previous', relatedCurrentPage - 1, relatedCurrentPage === 1)
+    );
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        paginationContainer.appendChild(
+            createBtn(i, i, false, i === relatedCurrentPage)
+        );
+    }
+
+    // Next
+    paginationContainer.appendChild(
+        createBtn('Next →', relatedCurrentPage + 1, relatedCurrentPage === totalPages)
+    );
+
+    // 🎯 Gán sự kiện click SAU KHI render xong
+    paginationContainer.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const page = parseInt(btn.getAttribute('data-page'));
+            if (isNaN(page) || page < 1 || page > totalPages) return;
+            relatedCurrentPage = page;
+            displayRelatedProductsForPage(); // ✅ Hiển thị sản phẩm trang mới
+        });
+    });
+}
+
+
+function displayRelatedProductsForPage() {
+    const start = (relatedCurrentPage - 1) * RELATED_PER_PAGE;
+    const end = start + RELATED_PER_PAGE;
+    const productsToShow = relatedProductsList.slice(start, end);
+
+    const productGrid = document.querySelector('.related_products .product-grid');
+    if (!productGrid) return;
+
+    productGrid.innerHTML = productsToShow.map(product => {
         const discountRate = getPromotionDiscount(product.promotion_code);
         const discountedPrice = calculateDiscountedPrice(product.price_original, product.promotion_code);
         const avgRating = calculateAverageRating(product.reviews);
         const categoryName = getCategoryName(product.category_id);
-
-        // Lấy ảnh đại diện
         const productImage = (product.product_images && product.product_images.length > 0)
             ? product.product_images[0]
             : '../../dataset/product_images/placeholder.png';
@@ -571,11 +737,9 @@ function displayRelatedProducts() {
         `;
     }).join('');
 
-    // Cho phép click vào card để xem chi tiết
     setupRelatedProductsClick();
+    renderRelatedPagination();
 }
-
-
 // Setup related products click
 function setupRelatedProductsClick() {
     document.querySelectorAll('.related_products .product-card').forEach(card => {
