@@ -11,7 +11,8 @@
       "address": "",
       "created_at": "2025-08-04 02:20:00",
       "status": "active",
-      "role": "administrator"
+      "role": "administrator",
+      "green_score": ""
     },
     {
       "id": "2",
@@ -24,7 +25,8 @@
       "address": "123 Nguyen Trai, Hanoi",
       "created_at": "2024-10-01 09:20:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 98
     },
     {
       "id": "3",
@@ -37,7 +39,8 @@
       "address": "45 Le Loi, Ho Chi Minh City",
       "created_at": "2024-10-03 14:10:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 96
     },
     {
       "id": "4",
