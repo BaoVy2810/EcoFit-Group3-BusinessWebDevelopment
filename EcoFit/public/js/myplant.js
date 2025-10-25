@@ -1,7 +1,24 @@
-// myplant.js - cleaned & stable
+// myplant.js - optimized with milestones & celebrations
 /* globals fetch, localStorage */
 
 (() => {
+  // --- Account context ---
+  function getCurrentUser() {
+    try {
+      const raw = localStorage.getItem("login_infor");
+      return raw ? JSON.parse(raw) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+  const currentUser = getCurrentUser();
+  const userId =
+    currentUser &&
+    (currentUser.id || currentUser.profile_id || currentUser.email)
+      ? currentUser.id || currentUser.profile_id || currentUser.email
+      : "guest";
+  const userKey = `myplant_user_${userId}`;
+
   // --- Element refs ---
   const daysContainer = document.getElementById("days-container");
   const monthTitle = document.getElementById("month-title");
@@ -11,15 +28,14 @@
 
   // --- State ---
   let currentDate = new Date();
-  let claimedDates = (
-    JSON.parse(localStorage.getItem("claimedDates") || "[]") || []
-  ).map((s) => new Date(s));
-  let streak = Number(localStorage.getItem("streak") || 0);
-  let greenScore = Number(localStorage.getItem("greenScore") || 0);
-  let plantStage = localStorage.getItem("plantStage") || "Seed";
+  let claimedDates = [];
+  let streak = 0;
+  let greenScore = 0;
+  let plantStage = "Seed";
+  let progressPercent = 0;
 
-  const MILESTONES = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-  const LAST_MILESTONE_KEY = "lastMilestoneShown";
+  const LAST_STREAK_MILESTONE = `lastStreakMilestone_${userId}`;
+  const LAST_SCORE_MILESTONE = `lastScoreMilestone_${userId}`;
 
   // --- Helpers ---
   function normalizeDate(d) {
@@ -32,31 +48,45 @@
     return normalizeDate(a).getTime() === normalizeDate(b).getTime();
   }
   function isMilestone(n) {
-    return Number.isFinite(n) && MILESTONES.includes(n);
+    return Number.isFinite(n) && n >= 10 && n % 10 === 0 && n <= 1000;
   }
+
+  // Load state
+  try {
+    const saved = JSON.parse(localStorage.getItem(userKey) || "null");
+    if (saved && Array.isArray(saved.claimedDates)) {
+      claimedDates = saved.claimedDates.map((s) => new Date(s));
+      streak = Number(saved.streak || 0);
+      greenScore = Number(saved.greenScore || 0);
+      plantStage = saved.plantStage || "Seed";
+    }
+  } catch (_) {}
 
   // --- Persistence ---
   function saveState() {
-    localStorage.setItem(
-      "claimedDates",
-      JSON.stringify(claimedDates.map((d) => d.toISOString()))
-    );
+    const data = {
+      claimedDates: claimedDates.map((d) => d.toISOString()),
+      streak,
+      greenScore,
+      plantStage,
+      progressPercent,
+    };
     localStorage.setItem("streak", String(streak));
     localStorage.setItem("greenScore", String(greenScore));
     localStorage.setItem("plantStage", plantStage);
-  }
-
-  function exportStreakJSON(fileName = "myplant.json") {
-    const data = {
-      updatedAt: new Date().toISOString(),
-      streak,
-      greenScore,
-      claimedDates: claimedDates.map(
-        (d) => normalizeDate(d).toISOString().split("T")[0]
-      ),
-    };
-    localStorage.setItem("myplant_calendar_export", JSON.stringify(data));
-    // optional: attempt best-effort PUT (may fail on static hosting)
+    localStorage.setItem(userKey, JSON.stringify(data));
+    // Silent export
+    localStorage.setItem(
+      "myplant_calendar_export",
+      JSON.stringify({
+        userId,
+        updatedAt: new Date().toISOString(),
+        ...data,
+        claimedDates: claimedDates.map(
+          (d) => normalizeDate(d).toISOString().split("T")[0]
+        ),
+      })
+    );
     try {
       fetch("../../dataset/myplant.json", {
         method: "PUT",
@@ -66,73 +96,197 @@
     } catch (_) {}
   }
 
-  // --- UI: green alert ---
-  function showAlert(msg, duration = 3000) {
-    const existing = document.querySelector(".green-alert");
-    if (existing) existing.remove();
-
-    const box = document.createElement("div");
-    box.className = "green-alert";
-    box.innerHTML = `<div class="green-alert-content"><span>${msg}</span><button aria-label="close">✕</button></div>`;
-    document.body.appendChild(box);
-    // force layout then show
-    requestAnimationFrame(() => box.classList.add("show"));
-    box.querySelector("button").addEventListener("click", () => box.remove());
-    if (duration > 0) setTimeout(() => box.remove(), duration);
+  // --- Confetti effect ---
+  function launchConfetti(durationMs = 2500, count = 120) {
+    if (!document.getElementById("confetti-styles")) {
+      const style = document.createElement("style");
+      style.id = "confetti-styles";
+      style.textContent = `
+        @keyframes confetti-fall { 
+          0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .confetti-piece { position: fixed; top: -10px; width: 8px; height: 12px; z-index: 9999; opacity: 0.9; border-radius: 2px; }
+      `;
+      document.head.appendChild(style);
+    }
+    const colors = [
+      "#69bd76",
+      "#3da547",
+      "#1c5b2b",
+      "#ffd166",
+      "#06d6a0",
+      "#118ab2",
+      "#ef476f",
+    ];
+    const container = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement("div");
+      el.className = "confetti-piece";
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animation = `confetti-fall ${
+        1.5 + Math.random()
+      }s linear ${Math.random()}s forwards`;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), durationMs + 1000);
+    }
+    document.body.appendChild(container);
   }
 
-  // --- Milestone UI (uses same green alert for simplicity) ---
-  function onMilestoneReached(days) {
-    const lastShown = Number(localStorage.getItem(LAST_MILESTONE_KEY) || 0);
-    if (days <= lastShown) return; // already shown
-    showAlert(`🌿 Congratulations! ${days}-day streak reached!`);
-    exportStreakJSON();
-    localStorage.setItem(LAST_MILESTONE_KEY, String(days));
+  // --- Simple alert for streak milestones ---
+  function showStreakAlert(count) {
+    const lastShown = Number(localStorage.getItem(LAST_STREAK_MILESTONE) || 0);
+    if (count <= lastShown) return;
+
+    alert(`🔥 Congratulations! You achieved ${count}-day streak! 🔥`);
+    launchConfetti();
+    localStorage.setItem(LAST_STREAK_MILESTONE, String(count));
+    saveState();
   }
 
-  // --- Update plant visuals & circular progress ---
+  // --- Fancy popup for level up ---
+  function showLevelUpPopup(newStage) {
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6); z-index: 10000;
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeIn 0.3s ease;
+    `;
+
+    const popup = document.createElement("div");
+    popup.style.cssText = `
+      background: white; border-radius: 16px; padding: 48px 64px;
+      text-align: center; max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    `;
+
+    popup.innerHTML = `
+      <div style="width: 80px; height: 80px; background: #69bd76; border-radius: 50%; 
+                  margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2 style="font-size: 28px; font-weight: 800; margin: 0 0 12px; color: #1c5b2b;">
+        Congratulations!
+      </h2>
+      <p style="font-size: 16px; color: #666; margin: 0 0 32px;">
+        You've reached <strong style="color: #3da547;">${newStage}</strong> level!
+      </p>
+      <button id="levelup-ok" style="
+        background: #69bd76; color: white; border: none; padding: 12px 48px;
+        border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;
+        transition: all 0.2s;">
+        Continue
+      </button>
+    `;
+
+    if (!document.getElementById("popup-animations")) {
+      const style = document.createElement("style");
+      style.id = "popup-animations";
+      style.textContent = `
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        #levelup-ok:hover { background: #3da547; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(105,189,118,0.4); }
+      `;
+      document.head.appendChild(style);
+    }
+
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+
+    const btn = popup.querySelector("#levelup-ok");
+    btn.addEventListener("click", () => {
+      overlay.style.animation = "fadeIn 0.2s ease reverse";
+      setTimeout(() => overlay.remove(), 200);
+    });
+
+    launchConfetti(3000, 150);
+    saveState();
+  }
+
+  // --- Green Score milestone check ---
+  function checkScoreMilestone(score) {
+    if (!isMilestone(score)) return;
+    const lastShown = Number(localStorage.getItem(LAST_SCORE_MILESTONE) || 0);
+    if (score <= lastShown) return;
+
+    alert(`🎉 Amazing! You've collected ${score} green points! 🎉`);
+    launchConfetti();
+    localStorage.setItem(LAST_SCORE_MILESTONE, String(score));
+    saveState();
+  }
+
+  // --- Update plant visuals ---
   function updatePlantVisuals() {
     greenScore = claimedDates.length;
     if (greenScoreElem) greenScoreElem.textContent = String(greenScore);
 
-    if (greenScore >= 170) plantStage = "Guardian Tree";
-    else if (greenScore >= 100) plantStage = "Tree";
-    else if (greenScore >= 50) plantStage = "Sapling";
-    else plantStage = "Seed";
+    checkScoreMilestone(greenScore);
+
+    const prevStage = plantStage;
+    let percent = 0;
+
+    if (greenScore > 170) {
+      plantStage = "Guardian Tree";
+      percent = 100;
+    } else if (greenScore >= 100) {
+      plantStage = "Tree";
+      percent = ((greenScore - 100) / 70) * 100;
+    } else if (greenScore >= 50) {
+      plantStage = "Sapling";
+      percent = ((greenScore - 50) / 50) * 100;
+    } else if (greenScore >= 20) {
+      plantStage = "Seed";
+      percent = ((greenScore - 20) / 30) * 100;
+    } else {
+      plantStage = "Seed";
+      percent = (greenScore / 20) * 100;
+    }
 
     if (periodElem) periodElem.textContent = plantStage;
-    // update plant image if present
+
     const plantImg = document.getElementById("plant-img");
     if (plantImg) {
-      const map = {
+      const stages = {
         Seed: "../images/hat.png",
         Sapling: "../images/cay_con.png",
         Tree: "../images/cay_lon.png",
         "Guardian Tree": "../images/old_tree.png",
       };
-      plantImg.src = map[plantStage] || map.Seed;
+      plantImg.src = stages[plantStage] || stages.Seed;
     }
 
-    // circular progress (if present)
-    if (typeof updateCircularProgress === "function") {
-      // map to percent in a reasonable way:
-      let percent = 0;
-      if (greenScore >= 170) percent = 100;
-      else if (greenScore >= 100) percent = 100;
-      else percent = Math.min(Math.round((greenScore / 20) * 100), 100);
-      updateCircularProgress(percent);
+    // Update progress ring
+    progressPercent = Math.max(0, Math.min(100, Math.round(percent)));
+    const ring = document.getElementById("progress-ring");
+    const txt = document.getElementById("progress-percent");
+    if (txt) txt.textContent = String(progressPercent);
+    if (ring) {
+      const radius = Number(ring.getAttribute("r") || 42);
+      const circumference = 2 * Math.PI * radius;
+      ring.style.strokeDasharray = `${circumference}`;
+      ring.style.strokeDashoffset = `${
+        circumference * (1 - progressPercent / 100)
+      }`;
+    }
+
+    // Level up celebration
+    if (prevStage !== plantStage) {
+      showLevelUpPopup(plantStage);
     }
   }
 
-  // --- Streak calculation (consecutive tail ending at latest claim) ---
+  // --- Streak calculation ---
   function recalcStreak() {
     if (!claimedDates.length) {
       streak = 0;
       return;
     }
-    // sort normalized
     const arr = claimedDates.map((d) => normalizeDate(d)).sort((a, b) => a - b);
-    // calculate consecutive tail length from the newest
     let tail = 1;
     for (let i = arr.length - 1; i > 0; i--) {
       const diffDays =
@@ -141,13 +295,11 @@
       else break;
     }
     streak = tail;
-    // milestone
-    if (isMilestone(streak)) onMilestoneReached(streak);
+    if (isMilestone(streak)) showStreakAlert(streak);
   }
 
-  // --- Claim rules & actions ---
+  // --- Claim functions ---
   function canClaimDate(date) {
-    // allowed if first ever claim OR equal to next day after latest claimed date
     if (!claimedDates.length) return true;
     const latest = new Date(Math.max(...claimedDates.map((d) => d.getTime())));
     const nextAllowed = normalizeDate(
@@ -156,17 +308,42 @@
     return dateEq(date, nextAllowed);
   }
 
+  function getNextAllowedDate() {
+    if (!claimedDates.length) return null;
+    const latest = new Date(Math.max(...claimedDates.map((d) => d.getTime())));
+    return normalizeDate(
+      new Date(latest.getFullYear(), latest.getMonth(), latest.getDate() + 1)
+    );
+  }
+
   function claimDate(date) {
-    // no double-claim
     if (claimedDates.some((d) => dateEq(d, date))) return false;
     if (!canClaimDate(date)) return false;
-
     claimedDates.push(normalizeDate(date));
     claimedDates.sort((a, b) => a - b);
     recalcStreak();
     updatePlantVisuals();
     saveState();
     return true;
+  }
+
+  // --- Simple toast notification ---
+  function showToast(msg, duration = 3000) {
+    const toast = document.createElement("div");
+    toast.textContent = msg;
+    toast.style.cssText = `
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1c5b2b; color: white; padding: 12px 24px; border-radius: 8px;
+      font-size: 14px; z-index: 9998; animation: slideUp 0.3s ease;
+    `;
+    if (!document.getElementById("toast-anim")) {
+      const style = document.createElement("style");
+      style.id = "toast-anim";
+      style.textContent = `@keyframes slideUp { from { transform: translateX(-50%) translateY(20px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }`;
+      document.head.appendChild(style);
+    }
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), duration);
   }
 
   // --- Calendar render ---
@@ -191,11 +368,8 @@
     if (monthTitle) monthTitle.textContent = `${monthNames[month]} ${year}`;
 
     daysContainer.innerHTML = "";
-    // Monday-first grid: convert JS getDay() (0=Sun..6=Sat) to (0=Mon..6=Sun)
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    // claimed days set for this month for quick lookup
     const claimedSet = new Set(
       claimedDates
         .filter((d) => d.getFullYear() === year && d.getMonth() === month)
@@ -203,8 +377,6 @@
     );
 
     const cells = [];
-
-    // leading blanks (Mon-first)
     for (let i = 0; i < firstDay; i++) {
       const blank = document.createElement("div");
       blank.className = "day-cell empty";
@@ -212,40 +384,23 @@
       cells.push(blank);
     }
 
-    // day cells
     for (let day = 1; day <= daysInMonth; day++) {
       const cellDate = new Date(year, month, day);
       const cell = document.createElement("div");
       cell.className = "day-cell";
       cell.dataset.day = String(day);
 
-      const isToday = dateEq(cellDate, getToday());
       const isClaimed = claimedSet.has(day);
+      const nextAllowed = getNextAllowedDate();
 
-      // mark next allowed day with ring
-      if (!claimedDates.length) {
-        if (day === 1) cell.classList.add("next-allowed");
-      }
-
-      if (!claimedDates.length === false) {
-        const latest =
-          claimedDates.length > 0
-            ? new Date(Math.max(...claimedDates.map((d) => d.getTime())))
-            : null;
-        if (latest) {
-          const nextAllowed = new Date(
-            latest.getFullYear(),
-            latest.getMonth(),
-            latest.getDate() + 1
-          );
-          if (
-            nextAllowed.getFullYear() === year &&
-            nextAllowed.getMonth() === month &&
-            nextAllowed.getDate() === day
-          ) {
-            cell.classList.add("next-allowed");
-          }
-        }
+      if (
+        (!claimedDates.length && day === 1) ||
+        (nextAllowed &&
+          nextAllowed.getFullYear() === year &&
+          nextAllowed.getMonth() === month &&
+          nextAllowed.getDate() === day)
+      ) {
+        cell.classList.add("next-allowed");
       }
 
       if (isClaimed) {
@@ -259,19 +414,13 @@
         cell.textContent = day;
       }
 
-      // click to attempt claim
       cell.addEventListener("click", () => {
-        // only allow clicking actual day numbers (ignore blanks)
-        if (cell.classList.contains("empty")) return;
-        // check if already claimed
-        if (isClaimed) return;
-        const success = claimDate(cellDate);
-        if (!success) {
-          showAlert("⚠️ You can only claim the next day in sequence.");
+        if (cell.classList.contains("empty") || isClaimed) return;
+        if (claimDate(cellDate)) {
+          renderCalendar(currentDate);
+          showToast("🌿 Day claimed!");
         } else {
-          // visual sprout effect when claimed: replace number with leaf and small animation
-          renderCalendar(currentDate); // re-render ensures correct streak classes too
-          showAlert("🌿 Day claimed!");
+          showToast("⚠️ You can only claim the next day in sequence.");
         }
       });
 
@@ -279,15 +428,17 @@
       cells.push(cell);
     }
 
-    // apply streak pseudo classes (start/mid/end) within same week
+    // Streak visual effects
     for (let i = 0; i < cells.length; i++) {
       const el = cells[i];
-      if (!el || el.classList.contains("empty")) continue;
+      if (
+        !el ||
+        el.classList.contains("empty") ||
+        !el.classList.contains("claimed")
+      )
+        continue;
       el.classList.remove("streak-start", "streak-mid", "streak-end");
-      if (!el.classList.contains("claimed")) continue;
-
-      // compute dow for position in week (Mon-first grid)
-      const dow = i % 7; // 0..6 (Mon..Sun)
+      const dow = i % 7;
       const prev = cells[i - 1];
       const next = cells[i + 1];
       const prevClaimed =
@@ -300,15 +451,13 @@
         !next.classList.contains("empty") &&
         next.classList.contains("claimed") &&
         dow !== 6;
-
       if (prevClaimed && nextClaimed) el.classList.add("streak-mid");
       else if (!prevClaimed && nextClaimed) el.classList.add("streak-start");
       else if (prevClaimed && !nextClaimed) el.classList.add("streak-end");
-      // else single claimed: no streak pseudo
     }
   }
 
-  // --- Enforce expiry (reset if missed > 1 day) ---
+  // --- Enforce expiry ---
   function enforceStreakExpiry() {
     if (!claimedDates.length) return;
     const latest = new Date(Math.max(...claimedDates.map((d) => d.getTime())));
@@ -322,13 +471,11 @@
       greenScore = 0;
       plantStage = "Seed";
       saveState();
-      exportStreakJSON();
     }
   }
 
-  // --- Init and events ---
+  // --- Init ---
   window.addEventListener("load", () => {
-    // normalize claimedDates stored as strings
     claimedDates = claimedDates.map((d) => normalizeDate(new Date(d)));
     enforceStreakExpiry();
     recalcStreak();
@@ -352,15 +499,18 @@
   if (rewardBtn)
     rewardBtn.addEventListener("click", () => {
       const today = getToday();
-      // allow claim only if it's next allowed date
       if (claimDate(today)) {
         renderCalendar(currentDate);
-        showAlert("🌿 Day claimed!");
+        showToast(`🔥 ${greenScore} day streak! +1 Green Point`);
+        launchConfetti();
       } else {
-        showAlert("⚠️ You can only claim the next day in sequence.");
+        if (claimedDates.some((d) => dateEq(d, today))) {
+          showToast("ℹ️ Already claimed today.");
+        } else {
+          showToast("⚠️ You can only claim the next day in sequence.");
+        }
       }
     });
 
-  // expose export function globally (optional)
-  window.exportMyPlantStreak = exportStreakJSON;
+  window.exportMyPlantStreak = saveState;
 })();
