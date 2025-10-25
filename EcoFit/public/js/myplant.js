@@ -46,7 +46,7 @@
     localStorage.setItem("plantStage", plantStage);
   }
 
-  function exportStreakJSON(fileName = "streak.json") {
+  function exportStreakJSON(fileName = "myplant.json") {
     const data = {
       updatedAt: new Date().toISOString(),
       streak,
@@ -58,7 +58,7 @@
     localStorage.setItem("myplant_calendar_export", JSON.stringify(data));
     // optional: attempt best-effort PUT (may fail on static hosting)
     try {
-      fetch("../../dataset/streak.json", {
+      fetch("../../dataset/myplant.json", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -191,7 +191,8 @@
     if (monthTitle) monthTitle.textContent = `${monthNames[month]} ${year}`;
 
     daysContainer.innerHTML = "";
-    const firstDay = new Date(year, month, 1).getDay(); // 0..6 Sun..Sat
+    // Monday-first grid: convert JS getDay() (0=Sun..6=Sat) to (0=Mon..6=Sun)
+    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     // claimed days set for this month for quick lookup
@@ -203,7 +204,7 @@
 
     const cells = [];
 
-    // leading blanks
+    // leading blanks (Mon-first)
     for (let i = 0; i < firstDay; i++) {
       const blank = document.createElement("div");
       blank.className = "day-cell empty";
@@ -221,7 +222,31 @@
       const isToday = dateEq(cellDate, getToday());
       const isClaimed = claimedSet.has(day);
 
-      if (isToday) cell.classList.add("today");
+      // mark next allowed day with ring
+      if (!claimedDates.length) {
+        if (day === 1) cell.classList.add("next-allowed");
+      }
+
+      if (!claimedDates.length === false) {
+        const latest =
+          claimedDates.length > 0
+            ? new Date(Math.max(...claimedDates.map((d) => d.getTime())))
+            : null;
+        if (latest) {
+          const nextAllowed = new Date(
+            latest.getFullYear(),
+            latest.getMonth(),
+            latest.getDate() + 1
+          );
+          if (
+            nextAllowed.getFullYear() === year &&
+            nextAllowed.getMonth() === month &&
+            nextAllowed.getDate() === day
+          ) {
+            cell.classList.add("next-allowed");
+          }
+        }
+      }
 
       if (isClaimed) {
         cell.classList.add("claimed");
@@ -261,8 +286,8 @@
       el.classList.remove("streak-start", "streak-mid", "streak-end");
       if (!el.classList.contains("claimed")) continue;
 
-      // compute dow for position in week (grid indexing includes blanks)
-      const dow = i % 7; // 0..6
+      // compute dow for position in week (Mon-first grid)
+      const dow = i % 7; // 0..6 (Mon..Sun)
       const prev = cells[i - 1];
       const next = cells[i + 1];
       const prevClaimed =
