@@ -25,7 +25,7 @@
       "address": "123 Nguyen Trai, Hanoi",
       "created_at": "2024-10-01 09:20:00",
       "status": "active",
-      "role": "customer",
+      "role": "administrator",
       "green_score": 98
     },
     {
