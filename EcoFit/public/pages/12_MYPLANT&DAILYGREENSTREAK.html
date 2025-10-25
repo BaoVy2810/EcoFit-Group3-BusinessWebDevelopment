@@ -32,16 +32,16 @@
 
     <!-- Main Content -->
     <div class="personal_info_container no-padding">
-      <!-- Sidebar (sử dụng chung) -->
+      <!-- Sidebar -->
       <div class="sidebar">
         <div class="menu-section">
           <h1>My Account</h1>
           <nav>
             <ul>
               <li class="active">
-                <a href="12_MYPLANT&DAILYGREENSTREAK.html"
-                  >My Plant & Daily Green Streak</a
-                >
+                <a href="12_MYPLANT&DAILYGREENSTREAK.html">
+                  My Plant & Daily Green Streak
+                </a>
               </li>
               <li><a href="10_NOTIFICATION.html">Notifications</a></li>
               <li><a href="08_PAYMENT2.html">Orders</a></li>
@@ -89,7 +89,6 @@
                   viewBox="0 0 100 100"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <!-- Background circle -->
                   <circle
                     cx="50"
                     cy="50"
@@ -98,7 +97,6 @@
                     stroke="#e5e5e5"
                     stroke-width="6"
                   />
-                  <!-- Progress circle -->
                   <circle
                     id="progress-ring"
                     cx="50"
@@ -121,6 +119,7 @@
             </div>
           </div>
 
+          <!-- Calendar -->
           <div class="myplant-calendar">
             <div class="month-header">
               <span class="arrow" id="prev-month">←</span>
@@ -128,7 +127,6 @@
               <span class="arrow" id="next-month">→</span>
             </div>
 
-            <!-- Day headers -->
             <div class="days-header">
               <span>Sun</span>
               <span>Mon</span>
@@ -139,9 +137,28 @@
               <span>Sat</span>
             </div>
 
-            <div class="days-grid" id="days-container"></div>
+            <div class="days-grid" id="days-container">
+              <!-- Example row -->
+              <div class="day-cell streak-start claimed">
+                <img src="../images/leaf.svg" alt="leaf" />
+              </div>
+              <div class="day-cell streak-mid claimed">
+                <img src="../images/leaf.svg" alt="leaf" />
+              </div>
+              <div class="day-cell streak-mid claimed">
+                <img src="../images/leaf.svg" alt="leaf" />
+              </div>
+              <div class="day-cell streak-mid claimed">
+                <img src="../images/leaf.svg" alt="leaf" />
+              </div>
+              <div class="day-cell streak-mid claimed">
+                <img src="../images/leaf.svg" alt="leaf" />
+              </div>
+              <div class="day-cell streak-end claimed">
+                <img src="../images/leaf.svg" alt="leaf" />
+              </div>
+            </div>
 
-            <!-- Claim Reward -->
             <div
               style="display: flex; justify-content: center; margin-top: 25px"
             >
@@ -151,6 +168,7 @@
         </div>
       </div>
     </div>
+
     <!-- Footer -->
     <iframe
       src="../template/footer.html"

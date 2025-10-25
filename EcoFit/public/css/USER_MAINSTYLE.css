@@ -3408,122 +3408,6 @@ h1 span {
   transform: scale(0.98);
 }
 
-/*12_MYPLANT&DAILYGREENSTREAK*/
-.myplant-main-content {
-  flex: 1;
-  border-radius: 20px;
-  padding: 60px 80px;
-  margin-left: 40px;
-  margin-right: 40px;
-  min-height: 700px;
-}
-
-/* Căn giữa hình cây */
-.plant-display img {
-  width: 180px;
-  height: 280px;
-  object-fit: contain;
-}
-
-.plant-info {
-  font-size: 16px;
-  text-align: center;
-  color: #333;
-  font-family: "Outfit";
-}
-
-.plant-info p {
-  margin: 8px 0;
-  font-family: "Outfit";
-}
-
-.personal_info_container.no-padding {
-  padding-top: 0;
-}
-/* Lịch */
-.myplant-calendar {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 100px;
-  margin: 0 auto;
-  font-family: "Outfit";
-}
-
-/* Calendar styles */
-.days-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  margin-bottom: 30px;
-}
-
-.day-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #e5f2e5;
-  border-radius: 10px;
-  height: 40px;
-  cursor: pointer;
-  font-weight: 500;
-  user-select: none;
-  font-family: "Outfit";
-  font-size: 16px;
-}
-
-.day-cell.today {
-  background-color: #69bd76;
-  color: white;
-  font-weight: 700;
-}
-
-.day-cell.claimed {
-  background-color: #a3d9a5;
-  color: white;
-}
-
-.month-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  font-family: "Outfit";
-}
-
-.month-title {
-  font-size: 20px;
-  font-weight: 600;
-  font-family: "Outfit";
-}
-
-.arrow {
-  cursor: pointer;
-  font-size: 24px;
-  font-family: "Outfit";
-}
-
-/* Nút Claim Reward */
-.reward-btn {
-  background-color: #69bd76;
-  color: white;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 12px 40px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  font-family: "Outfit";
-  transition: all 0.3s ease;
-}
-
-.reward-btn:hover {
-  background-color: #5aa165;
-  transform: translateY(-2px);
-}
-
 /*13_ABOUT_US*/
 :root {
   --primary-green: #3da547;
@@ -4424,7 +4308,7 @@ strong {
   font-weight: 600;
 }
 
-/* 12_MYPLANT & DAILY GREEN STREAK - by Thu Uyen */
+//* 12_MYPLANT & DAILY GREEN STREAK - by Thu Uyen */
 .myplant-main-content {
   flex: 1;
   border-radius: 20px;
@@ -4433,6 +4317,10 @@ strong {
   margin-right: 4px;
   min-height: 700px;
 }
+
+.personal_info_container.no-padding {
+  padding-top: 0;
+/* } no padding for great vision */
 
 .page-title {
   font-size: 22px;
@@ -4753,29 +4641,46 @@ strong {
   }
 }
 
-/* Nút Claim Reward */
-.reward-btn {
-  background-color: #3da547;
-  color: white;
-  font-size: 16px;
+
+/* Alert xanh lá */
+.green-alert {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  background: #e8f9ec;
+  border: 2px solid #69bd76;
+  border-radius: 16px;
+  padding: 16px 24px;
+  color: #2c6e35;
+  font-family: "Outfit", sans-serif;
   font-weight: 600;
-  padding: 12px 45px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-family: "Outfit";
+  font-size: 16px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(105, 189, 118, 0.3);
+  z-index: 9999;
 }
-
-.reward-btn:hover {
-  background-color: #3da547;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(105, 189, 118, 0.4);
+.green-alert.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
-
-.reward-btn:active {
-  transform: translateY(0);
+.green-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.green-alert button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #2c6e35;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.green-alert button:hover {
+  color: #1f5127;
+  transform: scale(1.2);
 }
 
 /* Sprout pop effect inside a day cell */
