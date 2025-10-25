@@ -292,11 +292,10 @@
         ]
       },
       "product_images": [
-        "../../dataset/product_images/tencel_buttonup_red.png",
-        "../../dataset/product_images/tencel_buttonup_white.png",
-        "../../dataset/product_images/tencel_buttonup_bluestripe.png",
-        "../../dataset/product_images/tencel_buttonup_red.png",
-        "../../dataset/product_images/tencel_buttonup_black.png"
+        "../../dataset/product_images/linen_pants_beige.png",
+        "../../dataset/product_images/linen_pants_beige2.png",
+        "../../dataset/product_images/linen_pants_white.png",
+        "../../dataset/product_images/linen_pants_white2.png"
       ],
       "review_images": [
         "../../dataset/product_images/linen_pants_front.png",
@@ -338,6 +337,13 @@
           "Long-lasting quality"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/recycled_denim_jeans.png",
+        "../../dataset/product_images/recycled_denim_jeans2.png",
+        "../../dataset/product_images/recycled_denim_jeans3.png",
+        "../../dataset/product_images/recycled_denim_jeans4.png",
+        "../../dataset/product_images/recycled_denim_jeans5.png"
+      ],
       "review_images": [
         "../../dataset/product_images/recycled_denim_front.png",
         "../../dataset/product_images/recycled_denim_back.png"
@@ -378,6 +384,13 @@
           "Lightweight and durable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/recycled_plastic_sunglasses.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_navy.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_grey.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_combo.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_certificated.png"
+      ],
       "review_images": [
         "../../dataset/product_images/sunglasses_front.png",
         "../../dataset/product_images/sunglasses_side.png"
