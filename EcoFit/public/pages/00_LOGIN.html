@@ -407,20 +407,82 @@
       </div>
     </div>
   <script>
-    function process_login() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+async function process_login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-      if (email && password) {
-        localStorage.setItem("isLoggedIn", "true");
-        if (window.parent) {
-          window.parent.postMessage({ action: "loginSuccess" }, "*");
-        }
-        window.location.href = "../pages/01_HOMEPAGE.html";
-      } else {
-        alert("Please enter both email and password!");
-      }
+  // Validate input
+  if (!email || !password) {
+    alert("Please enter both email and password!");
+    return;
+  }
+
+  try {
+    // Fetch accounts data from JSON file
+    const response = await fetch("../../dataset/accounts.json");
+    
+    if (!response.ok) {
+      throw new Error("Failed to load accounts data");
     }
+
+    const data = await response.json();
+    const profiles = data.profile;
+
+    // Find matching user
+    const user = profiles.find(
+      (profile) => profile.email === email && profile.password === password
+    );
+
+    if (!user) {
+      alert("Invalid email or password!");
+      return;
+    }
+
+    // Check if account is active
+    if (user.status !== "active") {
+      alert("Your account is inactive. Please contact support.");
+      return;
+    }
+
+    // Store user info in localStorage
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userRole", user.role);
+    localStorage.setItem("userName", user.fullname);
+    localStorage.setItem("userEmail", user.email);
+    localStorage.setItem("userId", user.profile_id || user.id);
+
+    // Check "Remember me" checkbox
+    const rememberMe = document.getElementById("save_infor").checked;
+    if (rememberMe) {
+      localStorage.setItem("rememberMe", "true");
+    }
+
+    // Redirect based on role
+    if (user.role === "administrator") {
+      window.location.href = "../admin_pages/dashboard.html";
+    } else if (user.role === "customer") {
+      window.location.href = "../pages/01_HOMEPAGE.html";
+    } else {
+      alert("Unknown user role. Please contact support.");
+    }
+
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("An error occurred during login. Please try again.");
+  }
+}
+
+// Optional: Auto-fill if "Remember me" was checked previously
+window.addEventListener("DOMContentLoaded", () => {
+  const rememberMe = localStorage.getItem("rememberMe");
+  if (rememberMe === "true") {
+    const savedEmail = localStorage.getItem("userEmail");
+    if (savedEmail) {
+      document.getElementById("email").value = savedEmail;
+      document.getElementById("save_infor").checked = true;
+    }
+  }
+});
   </script>
   </body>
 </html>

@@ -130,3 +130,88 @@ function renderTable(dataArray, tbodySelector, templateRowSelector, mappingFn) {
     lucide.createIcons();
   }
 }
+
+// ==================== CRUD HANDLER - COMMON SCRIPT ====================
+// File: crud-handler.js
+
+// Hàm xóa item (dùng chung cho accounts và products)
+function deleteItem(itemId, storageKey, idField = 'id') {
+  if (!confirm('Are you sure you want to delete this item?')) {
+    return;
+  }
+
+  try {
+    // Đọc dữ liệu từ localStorage
+    const storedData = localStorage.getItem(storageKey);
+    if (!storedData) {
+      alert('No data found!');
+      return;
+    }
+
+    const data = JSON.parse(storedData);
+    const dataArray = data.profile || data.product; // accounts có profile, products có product
+
+    // Lọc bỏ item cần xóa
+    const filteredData = dataArray.filter(item => {
+      const currentId = item[idField] || item.profile_id || item.product_id;
+      return currentId !== itemId;
+    });
+
+    // Cập nhật lại localStorage
+    if (data.profile) {
+      data.profile = filteredData;
+    } else {
+      data.product = filteredData;
+    }
+    
+    localStorage.setItem(storageKey, JSON.stringify(data));
+
+    // Reload trang để cập nhật UI
+    alert('Item deleted successfully!');
+    location.reload();
+
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    alert('Failed to delete item!');
+  }
+}
+
+// Hàm mở modal edit (dùng chung)
+function openEditModal(itemId, storageKey, idField = 'id') {
+  try {
+    const storedData = localStorage.getItem(storageKey);
+    if (!storedData) {
+      alert('No data found!');
+      return;
+    }
+
+    const data = JSON.parse(storedData);
+    const dataArray = data.profile || data.product;
+
+    // Tìm item cần edit
+    const item = dataArray.find(i => {
+      const currentId = i[idField] || i.profile_id || i.product_id;
+      return currentId === itemId;
+    });
+
+    if (!item) {
+      alert('Item not found!');
+      return;
+    }
+
+    // Lưu itemId vào sessionStorage để sử dụng khi save
+    sessionStorage.setItem('editItemId', itemId);
+    sessionStorage.setItem('editStorageKey', storageKey);
+
+    // Điều hướng đến trang edit tương ứng
+    if (storageKey === 'accounts') {
+      window.location.href = `edit_account.html?id=${itemId}`;
+    } else if (storageKey === 'products') {
+      window.location.href = `edit_product.html?id=${itemId}`;
+    }
+
+  } catch (error) {
+    console.error('Error opening edit modal:', error);
+    alert('Failed to open edit form!');
+  }
+}

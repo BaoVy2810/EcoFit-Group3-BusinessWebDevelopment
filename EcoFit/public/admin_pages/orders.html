@@ -9,7 +9,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Toggle Sidebar
+  const menuToggle = document.querySelector('.menu-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const mainContent = document.querySelector('.main-content');
 
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+    });
+  }
+
+});
+  </script>
 </head>
 
 <body>
@@ -317,12 +332,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script src="script.js"></script>
 
-  <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="script.js"></script>
+
+<script>
 let orders = [];
 let currentEditOrderId = null;
 let statusChart = null;
 let revenueChart = null;
-let accounts = []; // will load accounts.json to map customer names
+let accounts = [];
 
 // Format tiền VND
 function formatCurrency(amount) {
@@ -336,6 +354,14 @@ function formatCurrency(amount) {
 function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString('vi-VN');
+}
+
+// Helper: get customer fullname by id
+function getCustomerName(customerId) {
+  if (!accounts || accounts.length === 0) return `Customer #${customerId}`;
+  const idStr = customerId != null ? customerId.toString() : "";
+  const acc = accounts.find(a => (a.id && a.id.toString() === idStr) || (a.profile_id && a.profile_id.toString() === idStr));
+  return acc ? (acc.fullname || acc.name || `Customer #${customerId}`) : `Customer #${customerId}`;
 }
 
 // Load dữ liệu orders
@@ -410,7 +436,7 @@ async function loadOrdersData() {
     loadStatusChart();
     loadRevenueChart();
 
-    // Try to load accounts so we can show customer names (optional)
+    // Try to load accounts
     try {
       const resp = await fetch("../../dataset/accounts.json");
       const accData = await resp.json();
@@ -511,12 +537,10 @@ function loadStatusChart() {
 }
 
 // Load Revenue Chart (Last 6 months)
-// --- Hoàn thiện hàm loadRevenueChart ---
 function loadRevenueChart() {
   const now = new Date();
   const last6Months = [];
 
-  // Lấy 6 tháng gần nhất
   for (let i = 5; i >= 0; i--) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
@@ -527,7 +551,6 @@ function loadRevenueChart() {
     });
   }
 
-  // Cộng doanh thu theo từng tháng (chỉ tính Completed)
   orders.forEach(order => {
     if (order.status === "Completed") {
       const date = new Date(order.order_date);
@@ -597,17 +620,34 @@ function loadRevenueChart() {
     }
   });
 }
-</script>
 
-<!-- TIẾP TỤC phần script trong orders.html -->
-<script>
-/* ==========================
-   TIẾP TỤC SCRIPT HOÀN THIỆN
-========================== */
+// ✅ HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
+function handleOrderFilter() {
+  const searchValue = safeLower(document.getElementById("searchInput").value);
+  const statusValue = document.getElementById("statusFilter").value;
+  const monthValue = document.getElementById("monthFilter").value;
 
-// --- Render bảng Orders ---
-function renderOrdersTable() {
-  renderTable(orders, "table tbody", "table tbody tr.template", (row, order) => {
+  const filtered = orders.filter(order => {
+    const customerName = getCustomerName(order.customer_id);
+    const matchSearch =
+      searchValue === "" ||
+      order.order_id.toLowerCase().includes(searchValue) ||
+      (order.customer_id && order.customer_id.toString().toLowerCase().includes(searchValue)) ||
+      safeLower(customerName).includes(searchValue);
+    const matchStatus = statusValue === "all" || order.status === statusValue;
+    const matchMonth =
+      monthValue === "all" ||
+      (() => {
+        const d = new Date(order.order_date);
+        const monthYear = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+        return monthYear === monthValue;
+      })();
+
+    return matchSearch && matchStatus && matchMonth;
+  });
+
+  // Render bảng với logic đầy đủ
+  renderTable(filtered, "table tbody", "table tbody tr.template", (row, order) => {
     row.querySelector('[name="order-id"]').textContent = order.order_id;
     row.querySelector('[name="order-date"]').textContent = formatDate(order.order_date);
     row.querySelector('[name="customer-id"]').textContent = getCustomerName(order.customer_id);
@@ -615,6 +655,7 @@ function renderOrdersTable() {
     row.querySelector('[name="items-count"]').textContent = order.items.length;
     row.querySelector('[name="total-amount"]').textContent = formatCurrency(order.total_amount);
 
+    // Styling cho status badge
     const statusSpan = row.querySelector('[name="status"]');
     statusSpan.textContent = order.status;
     statusSpan.style.cssText = `
@@ -642,17 +683,21 @@ function renderOrdersTable() {
       };
     `;
 
-    // Gắn sự kiện cho nút xem chi tiết
+    // Gắn event cho button View
     const viewBtn = row.querySelector(".view-detail-btn");
-    viewBtn.addEventListener("click", () => openViewModal(order));
+    if (viewBtn) {
+      viewBtn.addEventListener("click", () => openViewModal(order));
+    }
 
-    // Gắn sự kiện cho nút chỉnh sửa trạng thái
+    // Gắn event cho button Edit
     const editBtn = row.querySelector(".edit-status-btn");
-    editBtn.addEventListener("click", () => openEditModal(order.order_id));
+    if (editBtn) {
+      editBtn.addEventListener("click", () => openEditModal(order.order_id));
+    }
   });
 }
 
-// --- Hiển thị modal chi tiết đơn hàng ---
+// Hiển thị modal chi tiết đơn hàng
 function openViewModal(order) {
   document.getElementById("modal-order-id").textContent = order.order_id;
   document.getElementById("modal-order-date").textContent = formatDate(order.order_date);
@@ -693,7 +738,7 @@ function closeViewModal() {
   document.getElementById("viewOrderModal").classList.remove("show");
 }
 
-// --- Modal chỉnh sửa trạng thái ---
+// Modal chỉnh sửa trạng thái
 function openEditModal(orderId) {
   currentEditOrderId = orderId;
   const order = orders.find(o => o.order_id === orderId);
@@ -709,7 +754,7 @@ function closeEditModal() {
   document.getElementById("editStatusModal").classList.remove("show");
 }
 
-// --- Lưu thay đổi trạng thái ---
+// Lưu thay đổi trạng thái
 function saveStatusChange() {
   if (!currentEditOrderId) return;
   const newStatus = document.getElementById("newStatusSelect").value;
@@ -720,71 +765,54 @@ function saveStatusChange() {
   localStorage.setItem("orders", JSON.stringify({ orders }));
 
   // Cập nhật lại bảng và biểu đồ
-  renderOrdersTable();
+  handleOrderFilter();
   loadStatusChart();
   loadRevenueChart();
+
+  // Update stats
+  const completedOrders = orders.filter(o => o.status === "Completed");
+  document.getElementById("completed-orders").textContent = completedOrders.length;
+  
+  const processingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
+  document.getElementById("processing-orders").textContent = processingOrders.length;
 
   closeEditModal();
 }
 
-// --- Lọc & tìm kiếm ---
-function handleOrderFilter() {
-  const searchValue = safeLower(document.getElementById("searchInput").value);
-  const statusValue = document.getElementById("statusFilter").value;
-  const monthValue = document.getElementById("monthFilter").value;
-
-  const filtered = orders.filter(order => {
-    const customerName = getCustomerName(order.customer_id);
-    const matchSearch =
-      searchValue === "" ||
-      order.order_id.toLowerCase().includes(searchValue) ||
-      (order.customer_id && order.customer_id.toString().toLowerCase().includes(searchValue)) ||
-      safeLower(customerName).includes(searchValue);
-    const matchStatus = statusValue === "all" || order.status === statusValue;
-    const matchMonth =
-      monthValue === "all" ||
-      (() => {
-        const d = new Date(order.order_date);
-        const monthYear = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-        return monthYear === monthValue;
-      })();
-
-    return matchSearch && matchStatus && matchMonth;
-  });
-
-  renderTable(filtered, "table tbody", "table tbody tr.template", (row, o) => {
-    row.querySelector('[name="order-id"]').textContent = o.order_id;
-    row.querySelector('[name="order-date"]').textContent = formatDate(o.order_date);
-    row.querySelector('[name="customer-id"]').textContent = getCustomerName(o.customer_id);
-    row.querySelector('[name="shipping-address"]').textContent = o.shipping_address;
-    row.querySelector('[name="items-count"]').textContent = o.items.length;
-    row.querySelector('[name="total-amount"]').textContent = formatCurrency(o.total_amount);
-    const statusSpan = row.querySelector('[name="status"]');
-    statusSpan.textContent = o.status;
-  });
-}
-
-// Helper: get customer fullname by id (falls back to "Customer #id" if not found)
-function getCustomerName(customerId) {
-  if (!accounts || accounts.length === 0) return `Customer #${customerId}`;
-  const idStr = customerId != null ? customerId.toString() : "";
-  const acc = accounts.find(a => (a.id && a.id.toString() === idStr) || (a.profile_id && a.profile_id.toString() === idStr));
-  return acc ? (acc.fullname || acc.name || `Customer #${customerId}`) : `Customer #${customerId}`;
-}
-
-// --- Khởi tạo khi load trang ---
+// ✅ KHỞI TẠO KHI LOAD TRANG
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
+  
   loadOrdersData().then(() => {
-    renderOrdersTable();
+    // Render bảng lần đầu
+    handleOrderFilter();
+    
+    // Gắn event cho search và filter
     document.getElementById("searchInput").addEventListener("input", handleOrderFilter);
     document.getElementById("statusFilter").addEventListener("change", handleOrderFilter);
     document.getElementById("monthFilter").addEventListener("change", handleOrderFilter);
   });
+
+  // Kiểm tra tài khoản admin đăng nhập
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const userRole = localStorage.getItem("userRole");
+
+  if (!isLoggedIn || userRole !== "administrator") {
+    alert("Please login as administrator to access this page.");
+    window.location.href = "../pages/00_LOGIN.html";
+    return;
+  }
+
+  // Display admin name
+  const userName = localStorage.getItem("userName");
+  if (userName) {
+    const userNameElement = document.querySelector(".user-name");
+    if (userNameElement) {
+      userNameElement.textContent = userName;
+    }
+  }
 });
 </script>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
