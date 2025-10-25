@@ -573,9 +573,16 @@
           "Pack of 3 pairs"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/organic_cotton_socks_blue.png",
+        "../../dataset/product_images/organic_cotton_socks_green.png",
+        "../../dataset/product_images/organic_cotton_socks_white.png",
+        "../../dataset/product_images/organic_cotton_socks_black.png",
+        "../../dataset/product_images/organic_cotton_socks_yellow.png"
+      ],
       "review_images": [
         "../../dataset/product_images/cotton_socks_pack.png",
-        "../../dataset/product_images/cotton_socks_detail.png"
+        "../../dataset/product_images/cotton_socks_pack1.png"
       ],
       "reviews": [
         {
@@ -620,6 +627,13 @@
           "Available in multiple colors"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/hair_clip_brown.png",
+        "../../dataset/product_images/hair_clip_blue.png",
+        "../../dataset/product_images/hair_clip_green.png",
+        "../../dataset/product_images/hair_clip_red.png",
+        "../../dataset/product_images/hair_clip_yellow.png"
+      ],
       "review_images": [
         "../../dataset/product_images/hair_clip_colors.png",
         "../../dataset/product_images/hair_clip_wearing.png"
@@ -659,7 +673,7 @@
       "green_score": { "value": 90, "image": "../images/80-100greenscore.png" },
       "category_id": "C002",
       "attributes": {
-        "Material": "Bamboo viscose",
+        "Material": "93% Bamboo Viscose, 7% Spandex",
         "Fit": "Loose Fit",
         "Weight": "220 gr.",
         "Size": "XS - S - M - L - XL - XXL",
@@ -674,6 +688,12 @@
           "Breathable and moisture-wicking"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/bamboo_lounge_pants.png",
+        "../../dataset/product_images/bamboo_lounge_pants_side.png",
+        "../../dataset/product_images/bamboo_lounge_pants_sizeS.png",
+        "../../dataset/product_images/bamboo_lounge_pants_sizeXXL.png"
+      ],
       "review_images": [
         "../../dataset/product_images/bamboo_lounge_front.png",
         "../../dataset/product_images/bamboo_lounge_back.png"
@@ -714,9 +734,15 @@
           "Versatile styling options"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/tencel_culottes.png",
+        "../../dataset/product_images/tencel_culottes2.png",
+        "../../dataset/product_images/tencel_culottes3.png",
+        "../../dataset/product_images/tencel_culottes4.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/tencel_culottes_front.png",
-        "../../dataset/product_images/tencel_culottes_back.png"
+        "../../dataset/product_images/tencel_culottes3.png",
+        "../../dataset/product_images/tencel_culottes4.png"
       ],
       "reviews": [
         {
@@ -739,7 +765,7 @@
       "green_score": { "value": 91, "image": "../images/80-100greenscore.png" },
       "category_id": "C002",
       "attributes": {
-        "Material": "Upcycled cotton blend",
+        "Material": "100% Organic Cotton",
         "Fit": "Utility Fit",
         "Weight": "280 gr.",
         "Size": "S - M - L - XL",
@@ -747,13 +773,21 @@
         "Delivery time": "7 - 9 working days"
       },
       "additional_info": {
-        "description_text": "Functional cargo pants with multiple pockets, made from textile waste.",
+        "description_text": "Made from heavy-weight organic cotton twill, these cargos feature functional pockets and a relaxed fit. Designed for comfort, built for sustainability.",
         "key_features": [
           "Made from repurposed materials",
           "Multiple cargo pockets",
           "Durable construction"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/organic_cotton_cargo_pants.png",
+        "../../dataset/product_images/organic_cotton_cargo_pants_orange.png",
+        "../../dataset/product_images/organic_cotton_cargo_pants_beige.png",
+        "../../dataset/product_images/organic_cotton_cargo_pants_blue.png",
+        "../../dataset/product_images/organic_cotton_cargo_pants_green.png",
+        "../../dataset/product_images/organic_cotton_cargo_pants_kaki.png"
+      ],
       "review_images": [
         "../../dataset/product_images/cargo_pants_front.png",
         "../../dataset/product_images/cargo_pants_back.png"
@@ -762,9 +796,23 @@
         {
           "user": "Max",
           "rating": 4,
-          "text": "Great pockets and fit. Very practical!",
+          "text": "Amazing texture and airy fit. Perfect for daily wear.",
           "date": "3 Oct, 2025",
           "likes": 10
+        },
+        {
+          "user": "John",
+          "rating": 5,
+          "text": "Love the natural tone and quality stitching.",
+          "date": "3 Oct, 2025",
+          "likes": 4
+        },
+        {
+          "user": "Anna",
+          "rating": 5,
+          "text": "Perfect weekend pants!",
+          "date": "3 Oct, 2025",
+          "likes": 19
         }
       ]
     },
@@ -794,13 +842,17 @@
           "Timeless design"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/eco_linen_midi_dress.png",
+        "../../dataset/product_images/eco_linen_midi_dress_red.png"
+      ],
       "review_images": [
         "../../dataset/product_images/linen_midi_dress_front.png",
         "../../dataset/product_images/linen_midi_dress_back.png"
       ],
       "reviews": [
         {
-          "user": "Thảo",
+          "user": "Minmin",
           "rating": 5,
           "text": "Absolutely love this dress! Perfect for summer.",
           "date": "14 Oct, 2025",
