@@ -63,11 +63,14 @@
             <textarea id="description" name="description" required placeholder="Enter product description"></textarea>
           </div>
 
-          <div class="form-group full-width">
-            <label for="image_url">Image URL</label>
-            <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg" />
-          </div>
-        </div>
+<div class="form-group full-width">
+  <label for="image_upload">Product Images</label>
+  <input type="file" id="image_upload" name="image_upload" accept="image/*" multiple 
+         style="padding: 10px; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer;" />
+  <small style="color: #6b7280; font-size: 12px; display: block; margin-top: 8px;">
+    You can select multiple images for this product
+  </small>
+</div>
 
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="goBack()">
@@ -188,17 +191,32 @@
 
         const newProductId = await generateNewProductId();
 
-        const newProduct = {
-          product_id: newProductId,
-          product_name: formData.get('product_name'),
-          description: formData.get('description'),
-          price: price,
-          category_id: formData.get('category_id'),
-          quantity_available: quantity,
-          green_score: greenScore,
-          material: formData.get('material') || "",
-          image_url: formData.get('image_url') || ""
-        };
+// Xử lý upload images
+const imageFiles = document.getElementById('image_upload').files;
+const imageNames = [];
+
+if (imageFiles.length > 0) {
+  for (let i = 0; i < imageFiles.length; i++) {
+    imageNames.push(imageFiles[i].name);
+  }
+  console.log('Selected images:', imageNames);
+}
+
+const newProduct = {
+  product_id: newProductId,
+  product_name: formData.get('product_name'),
+  description: formData.get('description'),
+  price_original: price,
+  price: price,
+  category_id: formData.get('category_id'),
+  quantity_available: quantity,
+  green_score: {
+    value: greenScore,
+    breakdown: {}
+  },
+  material: formData.get('material') || "",
+  product_images: imageNames
+};
 
         products.push(newProduct);
 
