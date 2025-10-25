@@ -292,11 +292,10 @@
         ]
       },
       "product_images": [
-        "../../dataset/product_images/tencel_buttonup_red.png",
-        "../../dataset/product_images/tencel_buttonup_white.png",
-        "../../dataset/product_images/tencel_buttonup_bluestripe.png",
-        "../../dataset/product_images/tencel_buttonup_red.png",
-        "../../dataset/product_images/tencel_buttonup_black.png"
+        "../../dataset/product_images/linen_pants_beige.png",
+        "../../dataset/product_images/linen_pants_beige2.png",
+        "../../dataset/product_images/linen_pants_white.png",
+        "../../dataset/product_images/linen_pants_white2.png"
       ],
       "review_images": [
         "../../dataset/product_images/linen_pants_front.png",
@@ -338,6 +337,13 @@
           "Long-lasting quality"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/recycled_denim_jeans.png",
+        "../../dataset/product_images/recycled_denim_jeans2.png",
+        "../../dataset/product_images/recycled_denim_jeans3.png",
+        "../../dataset/product_images/recycled_denim_jeans4.png",
+        "../../dataset/product_images/recycled_denim_jeans5.png"
+      ],
       "review_images": [
         "../../dataset/product_images/recycled_denim_front.png",
         "../../dataset/product_images/recycled_denim_back.png"
@@ -378,6 +384,13 @@
           "Lightweight and durable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/recycled_plastic_sunglasses.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_navy.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_grey.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_combo.png",
+        "../../dataset/product_images/recycled_plastic_sunglasses_certificated.png"
+      ],
       "review_images": [
         "../../dataset/product_images/sunglasses_front.png",
         "../../dataset/product_images/sunglasses_side.png"
@@ -425,9 +438,13 @@
           "Multiple compartments"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/hemp_bag.png",
+        "../../dataset/product_images/hemp_bag_beige.png"
+      ],
       "review_images": [
-        "../../dataset/product_images/hemp_bag_front.png",
-        "../../dataset/product_images/hemp_bag_wearing.png"
+        "../../dataset/product_images/hemp_bag_inside.png",
+        "../../dataset/product_images/hemp_bag_back.png"
       ],
       "reviews": [
         {
@@ -465,6 +482,11 @@
           "Lightweight and durable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/bamboo_case.png",
+        "../../dataset/product_images/bamboo_case1.png",
+        "../../dataset/product_images/bamboo_case2.png"
+      ],
       "review_images": [
         "../../dataset/product_images/bamboo_case_closed.png",
         "../../dataset/product_images/bamboo_case_open.png"
@@ -490,7 +512,7 @@
       "green_score": { "value": 91, "image": "../images/80-100greenscore.png" },
       "category_id": "C004",
       "attributes": {
-        "Material": "Recycled polyester blend",
+        "Material": "42% recycled cotton, 18% organic cotton, 20% wool, 20% viscose",
         "Dimensions": "180 x 70 cm",
         "Weight": "85 gr.",
         "Pattern": "Various",
@@ -505,6 +527,12 @@
           "Versatile styling"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/recycled_fabric_scarf_black.png",
+        "../../dataset/product_images/recycled_fabric_scarf_grey.png",
+        "../../dataset/product_images/recycled_fabric_scarf_oat.png",
+        "../../dataset/product_images/recycled_fabric_scarf_petrol.png"
+      ],
       "review_images": [
         "../../dataset/product_images/scarf_folded.png",
         "../../dataset/product_images/scarf_wearing.png"
