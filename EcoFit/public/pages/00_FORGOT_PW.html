@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - EcoFit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 50px 60px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #999;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 24px;
+            padding: 8px 20px;
+            background: #f5f5f5;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #e8e8e8;
+        }
+
+        .back-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: #a0a0a0;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .required {
+            color: #ff4444;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: all 0.3s;
+            background: #fafafa;
+            color: #000;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 400;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3da547;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(92, 184, 92, 0.08);
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 45px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: #3da547;
+        }
+
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-verify {
+            width: 70%;
+            padding: 16px;
+            background: linear-gradient(180deg, #69BD76 0%, #3DA547 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.3px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-verify:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(92, 184, 92, 0.3);
+        }
+
+        .btn-verify:active {
+            transform: translateY(0);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .modal-header p {
+            font-size: 16px;
+            color: #a0a0a0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel,
+        .btn-confirm {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e8e8e8;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(180deg, #69BD76 0%, #3DA547 100%);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(92, 184, 92, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+                margin: 20% auto;
+            }
+
+            .modal-header h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="00_LOGIN.html" class="back-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Login
+        </a>
+
+        <h1>Forgot Password?</h1>
+        <p class="subtitle">Enter your information to reset your password</p>
+
+        <form id="verifyForm" onsubmit="return false;">
+            <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" placeholder="sample@gmail.com" required>
+            </div>
+
+            <button type="button" class="btn-verify" onclick="verifyUser()">Verify & Reset Password</button>
+        </form>
+    </div>
+
+    <!-- Modal for New Password -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <p>Enter your new password</p>
+            </div>
+
+            <div class="form-group">
+                <label for="new_password">New Password <span class="required">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="new_password" placeholder="********" required>
+                    <span class="toggle-password" onclick="togglePassword('new_password')">
+                        <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_new_password">Confirm New Password <span class="required">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="confirm_new_password" placeholder="********" required>
+                    <span class="toggle-password" onclick="togglePassword('confirm_new_password')">
+                        <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-confirm" onclick="resetPassword()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let accountsDatabase = null;
+
+        // Load accounts from JSON file
+        async function loadAccountsFromJSON() {
+            try {
+                const response = await fetch('../../dataset/accounts.json');
+                if (!response.ok) {
+                    throw new Error('Cannot load accounts.json');
+                }
+                const data = await response.json();
+                accountsDatabase = data;
+                console.log('Accounts loaded:', data); // Debug log
+                return data;
+            } catch (error) {
+                console.error('Error loading accounts:', error);
+                alert('Unable to load account data. Please try again!');
+                return null;
+            }
+        }
+
+        // Load accounts from localStorage or JSON file
+        async function loadAccounts() {
+            const stored = localStorage.getItem('accounts');
+            if (stored) {
+                console.log('Loading from localStorage'); // Debug log
+                return JSON.parse(stored);
+            }
+            
+            // If no localStorage, load from JSON file
+            if (!accountsDatabase) {
+                console.log('Loading from JSON file'); // Debug log
+                await loadAccountsFromJSON();
+            }
+            
+            if (accountsDatabase) {
+                // Initialize localStorage with data from JSON
+                localStorage.setItem('accounts', JSON.stringify(accountsDatabase));
+                return accountsDatabase;
+            }
+            
+            return null;
+        }
+
+        // Initialize: Load data when page loads
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadAccountsFromJSON();
+        });
+
+        // Save accounts to localStorage
+        function saveAccounts(accounts) {
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+        }
+
+        let currentUser = null;
+
+        async function verifyUser() {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!name || !phone || !email) {
+                alert('Please fill in all information!');
+                return;
+            }
+
+            const accounts = await loadAccounts();
+            
+            if (!accounts || !accounts.profile) {
+                alert('Unable to load data. Please try again!');
+                return;
+            }
+
+            console.log('Searching for user...'); // Debug log
+            console.log('Input:', { name, phone, email }); // Debug log
+            
+            // Find user - improved logic with better matching
+            const user = accounts.profile.find(u => {
+                const nameMatch = u.fullname && u.fullname.toLowerCase().trim() === name.toLowerCase().trim();
+                const phoneMatch = u.phone && u.phone.trim() === phone.trim();
+                const emailMatch = u.email && u.email.toLowerCase().trim() === email.toLowerCase().trim();
+                
+                console.log('Checking user:', u.fullname, { nameMatch, phoneMatch, emailMatch }); // Debug log
+                
+                return nameMatch && phoneMatch && emailMatch;
+            });
+
+            if (user) {
+                console.log('User found:', user); // Debug log
+                currentUser = user;
+                document.getElementById('passwordModal').style.display = 'block';
+            } else {
+                console.log('User not found'); // Debug log
+                alert('Account not found with this information. Please check again!');
+            }
+        }
+
+        async function resetPassword() {
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_new_password').value;
+
+            if (!newPassword || !confirmPassword) {
+                alert('Please enter new password!');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('Password must be at least 6 characters!');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('Confirm password does not match!');
+                return;
+            }
+
+            // Update password in localStorage
+            const accounts = await loadAccounts();
+            
+            if (!accounts || !accounts.profile) {
+                alert('Unable to update password. Please try again!');
+                return;
+            }
+
+            const userIndex = accounts.profile.findIndex(u => 
+                (u.profile_id === currentUser.profile_id || u.id === currentUser.id)
+            );
+
+            if (userIndex !== -1) {
+                accounts.profile[userIndex].password = newPassword;
+                saveAccounts(accounts);
+                
+                alert('Password changed successfully! You will be redirected to login page.');
+                window.location.href = '00_LOGIN.html';
+            } else {
+                alert('An error occurred. Please try again!');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('new_password').value = '';
+            document.getElementById('confirm_new_password').value = '';
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const wrapper = input.parentElement;
+            const eyeOpen = wrapper.querySelector('.eye-open');
+            const eyeClosed = wrapper.querySelector('.eye-closed');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeOpen.style.display = 'none';
+                eyeClosed.style.display = 'block';
+            } else {
+                input.type = 'password';
+                eyeOpen.style.display = 'block';
+                eyeClosed.style.display = 'none';
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('passwordModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
