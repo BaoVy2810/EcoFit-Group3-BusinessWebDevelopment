@@ -498,25 +498,47 @@ function getStarImage(rating) {
 
 // Display related products
 function displayRelatedProducts() {
-    const relatedProducts = productsData.product
-        .filter(p => p.category_id === currentProduct.category_id && p.product_id !== currentProduct.product_id)
-        .slice(0, 4);
-    
+    if (!productsData || !currentProduct) return;
+
+    const currentCategory = currentProduct.category_id;
+    const currentMaterial = currentProduct.attributes?.Material || '';
+    const currentScore = currentProduct.green_score?.value || 0;
+
+    // Lấy các sản phẩm cùng category (trừ chính nó)
+    let relatedProducts = productsData.product.filter(p =>
+        p.category_id === currentCategory && p.product_id !== currentProduct.product_id
+    );
+
+    // Nếu ít hơn 4 sản phẩm, bổ sung thêm
+    if (relatedProducts.length < 4) {
+        const remaining = 4 - relatedProducts.length;
+
+        const extraProducts = productsData.product
+            .filter(p =>
+                p.product_id !== currentProduct.product_id &&
+                p.category_id !== currentCategory &&
+                (Math.abs(p.green_score.value - currentScore) <= 5 ||
+                 (p.attributes?.Material && p.attributes.Material === currentMaterial))
+            )
+            .slice(0, remaining);
+
+        relatedProducts = [...relatedProducts, ...extraProducts];
+    }
+
     const productGrid = document.querySelector('.related_products .product-grid');
     if (!productGrid) return;
-    
+
     productGrid.innerHTML = relatedProducts.map(product => {
         const discountRate = getPromotionDiscount(product.promotion_code);
         const discountedPrice = calculateDiscountedPrice(product.price_original, product.promotion_code);
         const avgRating = calculateAverageRating(product.reviews);
         const categoryName = getCategoryName(product.category_id);
-        
-        // Get product image
-        let productImage = '../../dataset/product_images/placeholder.png';
-        if (product.review_images && product.review_images.length > 0) {
-            productImage = product.review_images[0];
-        }
-        
+
+        // Lấy ảnh đại diện
+        const productImage = (product.product_images && product.product_images.length > 0)
+            ? product.product_images[0]
+            : '../../dataset/product_images/placeholder.png';
+
         return `
             <div class="product-card" data-product-id="${product.product_id}">
                 ${discountRate > 0 ? `<div class="discount">${discountRate}% off</div>` : ''}
@@ -537,7 +559,7 @@ function displayRelatedProducts() {
                     <p class="name">${escapeHtml(product.product_name)}</p>
                     <p class="type">${categoryName}</p>
                     <p class="greenscore">
-                        <img src="${product.green_score.image}" style="width:fit-content;" alt="greenscore"/>
+                        <img src="${product.green_score.image}" alt="greenscore" />
                         <span class="bought">${product.number_bought}</span>
                     </p>
                     <div class="btn-group">
@@ -548,10 +570,11 @@ function displayRelatedProducts() {
             </div>
         `;
     }).join('');
-    
-    // Add click event to product cards
+
+    // Cho phép click vào card để xem chi tiết
     setupRelatedProductsClick();
 }
+
 
 // Setup related products click
 function setupRelatedProductsClick() {
@@ -804,7 +827,7 @@ function buyNow(productId, event) {
     
     // Redirect to cart page after short delay
     setTimeout(() => {
-        window.location.href = 'EcoFit/public/pages/05_SHOPPING_CART.html';
+        window.location.href = './05_SHOPPING_CART.html';
     }, 500);
 }
 
@@ -1093,26 +1116,38 @@ document.addEventListener('error', (e) => {
 // Share product functionality
 function shareProduct(platform) {
     if (!currentProduct) return;
-    
-    const productUrl = window.location.href;
-    const productName = currentProduct.product_name;
-    const productDesc = currentProduct.description;
-    
-    let shareUrl = '';
-    
-    switch(platform) {
-        case 'facebook':
-            shareUrl = `https://www.facebook.com/ecofitclothes.shop/posts/?u=${encodeURIComponent(productUrl)}`;
+
+    const productUrl = encodeURIComponent(window.location.href);
+    const productName = encodeURIComponent(currentProduct.product_name);
+    const productDesc = encodeURIComponent(currentProduct.description || "");
+
+    let shareUrl = "";
+
+    switch (platform) {
+        case "facebook":
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${productUrl}&quote=${productName}%20-%20${productDesc}`;
             break;
-        case 'instagram':
-            shareUrl = `https://www.instagram.com/ecofitclothes.shop/?url=${encodeURIComponent(productUrl)}`;
+        case "instagram":
+            shareUrl = `https://www.instagram.com/ecofitclothes.shop/`;
             break;
+        default:
+            console.warn("Unsupported platform:", platform);
+            return;
     }
-    
-    if (shareUrl) {
-        window.open(shareUrl, '_blank', 'width=600,height=400');
-    }
+    window.open(shareUrl, "_blank", "width=600,height=500");
 }
+
+// Add share button event listeners
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".product-share a[data-platform]").forEach(button => {
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+            const platform = button.dataset.platform;
+            shareProduct(platform);
+        });
+    });
+});
+
 
 // Add share button event listeners
 document.addEventListener('DOMContentLoaded', () => {

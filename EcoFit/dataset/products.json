@@ -22,6 +22,7 @@
         "Fit": "Unisex Regular",
         "Weight": "180 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color": "Black, Military Green, Red, Navy, White",
         "Technique": "Screen Printing",
         "Delivery time": "5 - 7 working days"
       },
@@ -83,6 +84,7 @@
         "Fit": "Regular Fit",
         "Weight": "190 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color": "Grey, Beige, Black, Pink, White",
         "Technique": "Knitting",
         "Delivery time": "5 - 7 working days",
         "Eco-certification": "GOTS-certified"
@@ -138,6 +140,7 @@
         "Fit": "Slim Fit",
         "Weight": "200 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color":"1",
         "Technique": "Embroidery",
         "Delivery time": "6 - 8 working days"
       },
@@ -189,6 +192,7 @@
         "Fit": "Oversized",
         "Weight": "175 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color":"Yellow",
         "Technique": "Digital Printing",
         "Delivery time": "5 - 7 working days"
       },
@@ -202,7 +206,7 @@
       },
       "product_images": [
         "../../dataset/product_images/hemp_oversized_tee.png",
-        "../../dataset/product_images/recycled_fiber_polo2.jpg"
+        "../../dataset/product_images/hemp_oversized_tee_side.png"
       ],
       "review_images": [
         "../../dataset/product_images/hemp_oversized_tee_front.png",
@@ -233,6 +237,7 @@
         "Fit": "Classic Fit",
         "Weight": "200 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color":"Red, White, Blue Stripe, Black",
         "Technique": "Plain weave",
         "Delivery time": "5 - 7 working days"
       },
@@ -248,7 +253,6 @@
         "../../dataset/product_images/tencel_buttonup_red.png",
         "../../dataset/product_images/tencel_buttonup_white.png",
         "../../dataset/product_images/tencel_buttonup_bluestripe.png",
-        "../../dataset/product_images/tencel_buttonup_red.png",
         "../../dataset/product_images/tencel_buttonup_black.png"
       ],
       "review_images": [
@@ -280,6 +284,7 @@
         "Fit": "Relaxed",
         "Weight": "210 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color": "Beige, White",
         "Technique": "Woven",
         "Delivery time": "7 working days"
       },
@@ -326,6 +331,7 @@
         "Fit": "Slim Fit",
         "Weight": "340 gr.",
         "Size": "26 - 27 - 28 - 29 - 30 - 31 - 32 - 33 - 34 - 35 - 36",
+        "Color":"1",
         "Technique": "Stone wash",
         "Delivery time": "7 - 9 working days"
       },
@@ -373,6 +379,7 @@
         "Lens type": "UV400 polarized",
         "Weight": "28 gr.",
         "Frame size": "Medium",
+        "Color": "Black, Navy, Grey",
         "Technique": "Injection molding",
         "Delivery time": "5 - 7 working days"
       },
@@ -426,6 +433,7 @@
         "Material": "Hemp canvas",
         "Dimensions": "22 x 18 x 6 cm",
         "Weight": "180 gr.",
+        "Color":"Beige",
         "Strap": "Adjustable",
         "Technique": "Hand-stitched",
         "Delivery time": "5 - 7 working days"
@@ -470,6 +478,7 @@
         "Material": "Natural bamboo",
         "Dimensions": "16 x 6 x 4 cm",
         "Weight": "50 gr.",
+        "Color": "Natural Wood",
         "Interior": "Soft microfiber",
         "Technique": "Handcrafted",
         "Delivery time": "4 - 6 working days"
@@ -516,6 +525,7 @@
         "Dimensions": "180 x 70 cm",
         "Weight": "85 gr.",
         "Pattern": "Various",
+        "Color": "Black, Grey, Oat, Petrol",
         "Technique": "Digital print",
         "Delivery time": "4 - 6 working days"
       },
@@ -560,6 +570,7 @@
       "attributes": {
         "Material": "Organic cotton yarn",
         "Size": "35 EU - 36 EU - 37 EU - 38 EU - 39 EU - 40 EU - 41 EU - 42 EU - 43 EU - 44 EU - 45 EU",
+        "Color": "Blue, Green, White, Black, Yellow",
         "Weight": "40 gr. per pair",
         "Pack": "3 pairs",
         "Technique": "Knitted",
@@ -615,7 +626,7 @@
         "Material": "100% recycled ocean plastic",
         "Size": "Medium (8 cm)",
         "Weight": "15 gr.",
-        "Colors": "Various",
+        "Color": "Brown, Blue, Green, Red, Yellow",
         "Technique": "Injection molding",
         "Delivery time": "3 - 5 working days"
       },
@@ -677,6 +688,7 @@
         "Fit": "Loose Fit",
         "Weight": "220 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color":"Black",
         "Technique": "Jersey knit",
         "Delivery time": "5 - 7 working days"
       },
@@ -723,6 +735,7 @@
         "Fit": "Wide Leg",
         "Weight": "230 gr.",
         "Size": "XS - S - M - L - XL",
+        "Color":"Blue",
         "Technique": "Twill weave",
         "Delivery time": "6 - 8 working days"
       },
@@ -769,6 +782,7 @@
         "Fit": "Utility Fit",
         "Weight": "280 gr.",
         "Size": "S - M - L - XL",
+        "Color":"Orange, Beige, Blue, Green, Kaki",
         "Technique": "Reinforced stitching",
         "Delivery time": "7 - 9 working days"
       },
@@ -831,6 +845,7 @@
         "Fit": "A-line",
         "Weight": "240 gr.",
         "Size": "XS - S - M - L - XL",
+        "Color":"Natural, Red",
         "Technique": "Natural dye",
         "Delivery time": "7 - 10 working days"
       },
@@ -882,6 +897,7 @@
         "Fit": "Wrap style",
         "Weight": "210 gr.",
         "Size": "XS - S - M - L - XL - XXL",
+        "Color":"Beige",
         "Technique": "Screen printing",
         "Delivery time": "6 - 8 working days"
       },
@@ -928,6 +944,7 @@
         "Fit": "Slip style",
         "Weight": "150 gr.",
         "Size": "XS - S - M - L",
+        "Color":"Beige",
         "Technique": "Bias cut",
         "Delivery time": "7 - 9 working days"
       },
@@ -973,6 +990,7 @@
         "Fit": "Bodycon",
         "Weight": "195 gr.",
         "Size": "XS - S - M - L - XL",
+        "Color":"Denim, Olive, Black, Plum, Red",
         "Technique": "Ribbed knit",
         "Delivery time": "5 - 7 working days"
       },
@@ -1020,6 +1038,7 @@
         "Fit": "Maxi length",
         "Weight": "180 gr.",
         "Size": "XS - S - M - L",
+        "Color":"Summer",
         "Technique": "Hand-finished",
         "Delivery time": "8 - 10 working days"
       },
@@ -1064,6 +1083,7 @@
         "Material": "Upcycled textile scraps",
         "Dimensions": "38 x 42 cm",
         "Weight": "120 gr.",
+        "Color":"Black, Brown, Orange",
         "Capacity": "15 liters",
         "Technique": "Patchwork",
         "Delivery time": "3 - 5 working days"
@@ -1117,6 +1137,7 @@
         "Material": "Cork leather",
         "Dimensions": "11 x 9 cm",
         "Weight": "45 gr.",
+        "Color":"Black, Brown, Sandcolor, Yellow",
         "Card slots": "6",
         "Technique": "Laser cut",
         "Delivery time": "4 - 6 working days"
@@ -1164,6 +1185,7 @@
         "Material": "Organic cotton canvas",
         "Size": "Adjustable",
         "Weight": "60 gr.",
+        "Color":"Faded Black, Cherry Blossom, Navy Blue, White",
         "Style": "Baseball cap",
         "Technique": "Embroidery",
         "Delivery time": "3 - 5 working days"
