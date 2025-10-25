@@ -1053,6 +1053,13 @@
           "Breathable and lightweight"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/organic_cotton_cap_fadedblack.png",
+        "../../dataset/product_images/organic_cotton_cap_cherryblossom.png",
+        "../../dataset/product_images/organic_cotton_cap_navyblue.png",
+        "../../dataset/product_images/organic_cotton_cap_white.png",
+        "../../dataset/product_images/organic_cotton_cap_model.png"
+      ],
       "review_images": [
         "../../dataset/product_images/cotton_cap_front.png",
         "../../dataset/product_images/cotton_cap_side.png"
