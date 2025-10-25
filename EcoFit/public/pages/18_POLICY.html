@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>18_POLICY</title>
-    <link rel="stylesheet" href="../css/term_policy.css">
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css">    
 </head>
 <body class="stylebody">
@@ -166,7 +165,7 @@
                 </section>
 
                 <hr style="border-top: 1px solid "/>
-                <section class="section" id="website">
+                <section class="section" id="changes">
                     <h2>Changes to this Privacy Policy</h2>
                     <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
                     <p>We will let you know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the "Last updated" date at the top of this Privacy Policy.</p>
@@ -183,49 +182,56 @@
     </div>
     <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <script>
-        const sections = document.querySelectorAll('.main-content .section[id]');
-        const navLinks = document.querySelectorAll('.sidebar nav ul li a');
+        // --- CHỈNH CHỖ NÀY: selector class name phải đúng với HTML ---
+        const sections = document.querySelectorAll('.main-content-policy .section, .main-content-policy .section-policy');
+        const navLinks = document.querySelectorAll('.sidebar-policy nav ul li a');
 
-        // Cấu hình Intersection Observer
         const options = {
             root: null,
-            rootMargin: '-120px 0px 0px 0px', 
-            threshold: 0
+            rootMargin: '-120px 0px 0px 0px',
+            threshold: 0.2 // Giúp highlight mượt hơn
         };
 
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const id = entry.target.getAttribute('id');
-                const targetLink = document.querySelector(`.sidebar nav ul li a[href="#${id}"]`);
+                const targetLink = document.querySelector(`.sidebar-policy nav ul li a[href="#${id}"]`);
 
                 if (entry.isIntersecting) {
-                    // 1. Xóa class active khỏi TẤT CẢ các link
-                    navLinks.forEach(link => {
-                        link.classList.remove('current-section');
-                    });
-                    
-                    // 2. Thêm class active vào link TƯƠNG ỨNG
-                    if (targetLink) {
-                        targetLink.classList.add('current-section');
-                    }
+                    // Xóa class active khỏi tất cả link
+                    navLinks.forEach(link => link.classList.remove('current-section'));
+                    // Thêm class active cho link tương ứng
+                    if (targetLink) targetLink.classList.add('current-section');
                 }
             });
         }, options);
 
-        // Bắt đầu quan sát các section
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-        
-        // Tùy chọn: Xử lý cho section đầu tiên khi trang vừa load (tránh trường hợp chưa cuộn mà chưa có link nào active)
+        sections.forEach(section => observer.observe(section));
+
+        // Khi vừa load trang, tô sẵn link đầu tiên
         if (sections.length > 0) {
             const firstLinkId = sections[0].getAttribute('id');
-            const firstLink = document.querySelector(`.sidebar nav ul li a[href="#${firstLinkId}"]`);
-            if (firstLink) {
-                firstLink.classList.add('current-section');
-            }
+            const firstLink = document.querySelector(`.sidebar-policy nav ul li a[href="#${firstLinkId}"]`);
+            if (firstLink) firstLink.classList.add('current-section');
         }
+        // --- Đoạn scroll offset để header không che chữ ---
+        document.querySelectorAll('.sidebar-policy nav ul li a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                const headerOffset = 120; // chiều cao header
+                const elementPosition = targetSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
     </script>
+
 </body>
 </html>
 </body>
