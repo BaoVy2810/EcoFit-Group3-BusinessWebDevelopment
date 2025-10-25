@@ -534,11 +534,87 @@ function sortProducts(sortOption) {
             // Default sorting
             break;
     }
-    filteredProducts = sorted;
-    currentPage = 1;
-    displayProductsForPage();
+filteredProducts = sorted;
+currentPage = 1;
+displayProductsForPage();
+}
+// PROMOTION BANNER (English version)
+document.addEventListener("DOMContentLoaded", () => {
+  const voucherBtn = document.getElementById("getVoucherBtn");
+
+  if (voucherBtn) {
+    voucherBtn.addEventListener("click", () => {
+      const voucherCode = "STYLE25"; // use promo_code here
+      const storedVouchers = JSON.parse(localStorage.getItem("userVouchers")) || [];
+
+      // Check if already claimed
+      if (storedVouchers.includes(voucherCode)) {
+        showBannerMessage("⚠️ You’ve already claimed this voucher!");
+        return;
+      }
+
+      // Save to localStorage
+      storedVouchers.push(voucherCode);
+      localStorage.setItem("userVouchers", JSON.stringify(storedVouchers));
+
+      // UI animation + message
+      showBannerMessage(`🎉 Successfully claimed voucher ${voucherCode}! Enjoy 25% off selected dresses.`);
+      voucherBtn.classList.add("voucher-claimed");
+      voucherBtn.textContent = "Claimed!";
+      voucherBtn.disabled = true;
+    });
+  }
+});
+
+// Popup message UI
+function showBannerMessage(text) {
+  const existingMsg = document.querySelector(".banner-message");
+  if (existingMsg) existingMsg.remove();
+
+  const msg = document.createElement("div");
+  msg.className = "banner-message";
+  msg.textContent = text;
+  msg.style.cssText = `
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      background: #4caf50;
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-weight: 500;
+      z-index: 9999;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+  `;
+  document.body.appendChild(msg);
+  setTimeout(() => {
+    msg.style.opacity = "1";
+    msg.style.transform = "translateY(0)";
+  }, 10);
+
+  setTimeout(() => {
+    msg.style.opacity = "0";
+    msg.style.transform = "translateY(-10px)";
+    setTimeout(() => msg.remove(), 300);
+  }, 3000);
 }
 
+// Style when claimed
+const bannerStyle = document.createElement("style");
+bannerStyle.textContent = `
+  #getVoucherBtn.voucher-claimed {
+    background: #aaa !important;
+    cursor: not-allowed;
+  }
+
+  #getVoucherBtn.voucher-claimed:hover {
+    filter: none;
+  }
+`;
+document.head.appendChild(bannerStyle);
 // Initialize event listeners
 function initializeEventListeners() {
     // Filter button
