@@ -64,106 +64,91 @@
         <div class="myplant-main-content">
           <h2 class="page-title">My Plant & Daily Green Streak</h2>
 
-          <div class="plant-card">
-            <div class="plant-display">
-              <img id="plant-img" src="../images/hat.png" alt="Plant Stage" />
-            </div>
-
-            <div class="plant-info-wrapper">
-              <div class="plant-info-left">
-                <div class="info-item">
-                  <span class="info-label">Current Period:</span>
-                  <span class="info-value" id="period">Seed</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">Green Score:</span>
-                  <span class="info-value" id="green-score">0%</span>
-                </div>
+          <!-- Flexbox Container: Plant Card Left, Calendar Right -->
+          <div class="myplant-layout-container">
+            <!-- Left: Plant Card -->
+            <div class="plant-card">
+              <div class="plant-display">
+                <img id="plant-img" src="../images/hat.png" alt="Plant Stage" />
               </div>
 
-              <!-- Circular Progress Chart -->
-              <div class="progress-circle">
-                <svg
-                  width="100"
-                  height="100"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="42"
-                    fill="none"
-                    stroke="#e5e5e5"
-                    stroke-width="6"
-                  />
-                  <circle
-                    id="progress-ring"
-                    cx="50"
-                    cy="50"
-                    r="42"
-                    fill="none"
-                    stroke="#69bd76"
-                    stroke-width="6"
-                    stroke-linecap="round"
-                    stroke-dasharray="263.894"
-                    stroke-dashoffset="263.894"
-                    transform="rotate(-90 50 50)"
-                    style="transition: stroke-dashoffset 0.6s ease-in-out"
-                  />
-                </svg>
-                <div class="progress-text">
-                  <span id="progress-percent">0</span>%
+              <div class="plant-info-wrapper">
+                <div class="plant-info-left">
+                  <div class="info-item">
+                    <span class="info-label">Current Period:</span>
+                    <span class="info-value" id="period">Seed</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Green Score:</span>
+                    <span class="info-value" id="green-score">0%</span>
+                  </div>
                 </div>
+
+                <!-- Circular Progress Chart -->
+                <div class="progress-circle">
+                  <svg
+                    width="100"
+                    height="100"
+                    viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      fill="none"
+                      stroke="#e5e5e5"
+                      stroke-width="6"
+                    />
+                    <circle
+                      id="progress-ring"
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      fill="none"
+                      stroke="#69bd76"
+                      stroke-width="6"
+                      stroke-linecap="round"
+                      stroke-dasharray="263.894"
+                      stroke-dashoffset="263.894"
+                      transform="rotate(-90 50 50)"
+                      style="transition: stroke-dashoffset 0.6s ease-in-out"
+                    />
+                  </svg>
+                  <div class="progress-text">
+                    <span id="progress-percent">0</span>%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Calendar -->
+            <div class="myplant-calendar">
+              <div class="month-header">
+                <span class="arrow" id="prev-month">←</span>
+                <span class="month-title" id="month-title">Oct 2025</span>
+                <span class="arrow" id="next-month">→</span>
+              </div>
+
+              <div class="days-header">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+
+              <div class="days-grid" id="days-container">
+                <!-- JavaScript will populate calendar here -->
               </div>
             </div>
           </div>
 
-          <!-- Calendar -->
-          <div class="myplant-calendar">
-            <div class="month-header">
-              <span class="arrow" id="prev-month">←</span>
-              <span class="month-title" id="month-title">Oct 2025</span>
-              <span class="arrow" id="next-month">→</span>
-            </div>
-
-            <div class="days-header">
-              <span>Sun</span>
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
-            </div>
-
-            <div class="days-grid" id="days-container">
-              <!-- Example row -->
-              <div class="day-cell streak-start claimed">
-                <img src="../images/leaf.svg" alt="leaf" />
-              </div>
-              <div class="day-cell streak-mid claimed">
-                <img src="../images/leaf.svg" alt="leaf" />
-              </div>
-              <div class="day-cell streak-mid claimed">
-                <img src="../images/leaf.svg" alt="leaf" />
-              </div>
-              <div class="day-cell streak-mid claimed">
-                <img src="../images/leaf.svg" alt="leaf" />
-              </div>
-              <div class="day-cell streak-mid claimed">
-                <img src="../images/leaf.svg" alt="leaf" />
-              </div>
-              <div class="day-cell streak-end claimed">
-                <img src="../images/leaf.svg" alt="leaf" />
-              </div>
-            </div>
-
-            <div
-              style="display: flex; justify-content: center; margin-top: 25px"
-            >
-              <button id="reward-btn" class="reward-btn">Claim Reward</button>
-            </div>
+          <!-- Claim Reward Button - Below Both -->
+          <div style="display: flex; justify-content: center; margin-top: 35px">
+            <button id="reward-btn" class="reward-btn">Claim Reward</button>
           </div>
         </div>
       </div>
