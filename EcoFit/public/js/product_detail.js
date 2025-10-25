@@ -14,29 +14,59 @@ function getProductIdFromURL() {
 async function loadData() {
     try {
         // ƯU TIÊN ĐỌC DỮ LIỆU TỪ LOCALSTORAGE
-        const storedProducts = localStorage.getItem("products");
-        const storedPromotions = localStorage.getItem("promotions");
+        //const storedProducts = localStorage.getItem("products");
+        //const storedPromotions = localStorage.getItem("promotions");
         
-        if (storedProducts && storedPromotions) {
+        //if (storedProducts && storedPromotions) {
             // Nếu có data trong localStorage thì dùng luôn
-            productsData = JSON.parse(storedProducts);
-            promotionsData = JSON.parse(storedPromotions);
-            console.log("✓ Loaded data from localStorage");
-        } else {
+            //productsData = JSON.parse(storedProducts);
+            //promotionsData = JSON.parse(storedPromotions);
+            //console.log("✓ Loaded data from localStorage");
+        //} else {
             // Nếu chưa có thì fetch từ file JSON
-            const [productsResponse, promotionsResponse] = await Promise.all([
-                fetch('../../dataset/products.json'),
-                fetch('../../dataset/promotions.json')
-            ]);
-            
-            productsData = await productsResponse.json();
-            promotionsData = await promotionsResponse.json();
+            //const [productsResponse, promotionsResponse] = await Promise.all([
+                //fetch('../../dataset/products.json'),
+                //fetch('../../dataset/promotions.json')
+            //]);
+    //productsData = await productsResponse.json();
+            //promotionsData = await promotionsResponse.json();
             
             // Lưu vào localStorage để lần sau dùng
-            localStorage.setItem("products", JSON.stringify(productsData));
-            localStorage.setItem("promotions", JSON.stringify(promotionsData));
-            console.log("✓ Loaded data from JSON files and saved to localStorage");
+            //localStorage.setItem("products", JSON.stringify(productsData));
+            //localStorage.setItem("promotions", JSON.stringify(promotionsData));
+            //console.log("✓ Loaded data from JSON files and saved to localStorage");
+        //}
+    // 🔹 DEV MODE: luôn đọc lại JSON mới nhất, bỏ qua cache localStorage
+        const DEV_MODE = true;
+            if (!DEV_MODE) {
+                // Production mode: vẫn ưu tiên dùng localStorage để load nhanh
+                const storedProducts = localStorage.getItem("products");
+                const storedPromotions = localStorage.getItem("promotions");
+
+            if (storedProducts && storedPromotions) {
+                productsData = JSON.parse(storedProducts);
+                promotionsData = JSON.parse(storedPromotions);
+                console.log("✓ Loaded data from localStorage");
+            }
         }
+
+        if (!productsData || !promotionsData || DEV_MODE) {
+            // 🔹 Luôn fetch lại bản mới, thêm timestamp để tránh cache
+            const timestamp = new Date().getTime();
+            const [productsResponse, promotionsResponse] = await Promise.all([
+                fetch('../../dataset/products.json?t=${timestamp}'),
+                fetch('../../dataset/promotions.json?t=${timestamp}')
+            ]);
+
+    productsData = await productsResponse.json();
+    promotionsData = await promotionsResponse.json();
+
+    // Cập nhật lại localStorage (để dùng nếu tắt DEV_MODE)
+    localStorage.setItem("products", JSON.stringify(productsData));
+    localStorage.setItem("promotions", JSON.stringify(promotionsData));
+
+    console.log("🔄 Loaded fresh JSON data from files");
+}
         
         const productId = getProductIdFromURL();
         currentProduct = productsData.product.find(p => p.product_id === productId);

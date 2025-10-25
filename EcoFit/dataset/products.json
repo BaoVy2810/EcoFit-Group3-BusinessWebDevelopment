@@ -21,7 +21,7 @@
         "Material": "Organic Cotton",
         "Fit": "Unisex Regular",
         "Weight": "180 gr.",
-        "Size": "XS - XXL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Screen Printing",
         "Delivery time": "5 - 7 working days"
       },
@@ -34,15 +34,15 @@
         ]
       },
       "product_images": [
-        "../../dataset/product_images/organic_cotton_tee.png",
-        "../../dataset/product_images/organic_cotton_tee1.png",
-        "../../dataset/product_images/organic_cotton_tee2.png",
-        "../../dataset/product_images/organic_cotton_tee3.png",
-        "../../dataset/product_images/organic_cotton_tee4.png"
+        "../../dataset/product_images/organic_cotton_tee_black.png",
+        "../../dataset/product_images/organic_cotton_tee_militarygreen.png",
+        "../../dataset/product_images/organic_cotton_tee_red.png",
+        "../../dataset/product_images/organic_cotton_tee_navy.png",
+        "../../dataset/product_images/organic_cotton_tee_white.png"
       ],
       "review_images": [
-        "../../dataset/product_images/organic_cotton_tee.png",
-        "../../dataset/product_images/organic_cotton_tee.png"
+        "../../dataset/product_images/organic_cotton_tee_model.png",
+        "../../dataset/product_images/organic_cotton_tee_model2.png"
       ],
       "reviews": [
         {
@@ -50,6 +50,13 @@
           "rating": 5,
           "text": "Super soft and comfortable. Love the eco touch!",
           "date": "2 Oct, 2025",
+          "likes": 8
+        },
+        {
+          "user": "Linh",
+          "rating": 3,
+          "text": "Great",
+          "date": "9 Sep, 2025",
           "likes": 8
         },
         {
@@ -75,7 +82,7 @@
         "Material": "Bamboo viscose",
         "Fit": "Regular Fit",
         "Weight": "190 gr.",
-        "Size": "XS - XXL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Knitting",
         "Delivery time": "5 - 7 working days",
         "Eco-certification": "GOTS-certified"
@@ -88,6 +95,13 @@
           "Moisture-wicking for active comfort"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/bamboo_daily_shirt.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_beige.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_black.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_pink.png",
+        "../../dataset/product_images/Bamboo_daily_shirt_white.png"
+      ],
       "review_images": [
         "../../dataset/product_images/bamboo_daily_shirt_frontview.png",
         "../../dataset/product_images/bamboo_daily_shirt_backview.png"
@@ -123,7 +137,7 @@
         "Material": "Recycled polyester blend",
         "Fit": "Slim Fit",
         "Weight": "200 gr.",
-        "Size": "S - XL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Embroidery",
         "Delivery time": "6 - 8 working days"
       },
@@ -136,15 +150,12 @@
         ]
       },
       "product_images": [
-        "../../dataset/product_images/bamboo_daily_shirt.png",
-        "../../dataset/product_images/Bamboo_daily_shirt_beige.png",
-        "../../dataset/product_images/Bamboo_daily_shirt_pink.png",
-        "../../dataset/product_images/Bamboo_daily_shirt_white.png",
-        "../../dataset/product_images/Bamboo_daily_shirt_black.png"
+        "../../dataset/product_images/recycled_fiber_polo1.jpg",
+        "../../dataset/product_images/recycled_fiber_polo2.jpg"
       ],
       "review_images": [
-        "../../dataset/product_images/recycled_fiber_polo_front.png",
-        "../../dataset/product_images/recycled_fiber_polo_back.png"
+        "../../dataset/product_images/recycled_fiber_polo_front.jpg",
+        "../../dataset/product_images/recycled_fiber_polo_back.jpg"
       ],
       "reviews": [
         {
@@ -177,7 +188,7 @@
         "Material": "Hemp",
         "Fit": "Oversized",
         "Weight": "175 gr.",
-        "Size": "S - XL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Digital Printing",
         "Delivery time": "5 - 7 working days"
       },
@@ -189,6 +200,10 @@
           "Naturally UV-resistant"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/hemp_oversized_tee.png",
+        "../../dataset/product_images/recycled_fiber_polo2.jpg"
+      ],
       "review_images": [
         "../../dataset/product_images/hemp_oversized_tee_front.png",
         "../../dataset/product_images/hemp_oversized_tee_back.png"
@@ -217,7 +232,7 @@
         "Material": "Tencel™ Lyocell",
         "Fit": "Classic Fit",
         "Weight": "200 gr.",
-        "Size": "XS - XXL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Plain weave",
         "Delivery time": "5 - 7 working days"
       },
@@ -229,6 +244,13 @@
           "Durable & biodegradable"
         ]
       },
+      "product_images": [
+        "../../dataset/product_images/tencel_buttonup_red.png",
+        "../../dataset/product_images/tencel_buttonup_white.png",
+        "../../dataset/product_images/tencel_buttonup_bluestripe.png",
+        "../../dataset/product_images/tencel_buttonup_red.png",
+        "../../dataset/product_images/tencel_buttonup_black.png"
+      ],
       "review_images": [
         "../../dataset/product_images/tencel_buttonup_front.png",
         "../../dataset/product_images/tencel_buttonup_back.png"
@@ -257,7 +279,7 @@
         "Material": "Organic linen",
         "Fit": "Relaxed",
         "Weight": "210 gr.",
-        "Size": "XS - XXL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Woven",
         "Delivery time": "7 working days"
       },
@@ -297,7 +319,7 @@
         "Material": "60% Recycled denim",
         "Fit": "Slim Fit",
         "Weight": "340 gr.",
-        "Size": "26 - 36",
+        "Size": "26 - 27 - 28 - 29 - 30 - 31 - 32 - 33 - 34 - 35 - 36",
         "Technique": "Stone wash",
         "Delivery time": "7 - 9 working days"
       },
@@ -502,7 +524,7 @@
       "category_id": "C004",
       "attributes": {
         "Material": "Organic cotton yarn",
-        "Size": "35-45 EU",
+        "Size": "35 EU - 36 EU - 37 EU - 38 EU - 39 EU - 40 EU - 41 EU - 42 EU - 43 EU - 44 EU - 45 EU",
         "Weight": "40 gr. per pair",
         "Pack": "3 pairs",
         "Technique": "Knitted",
@@ -605,7 +627,7 @@
         "Material": "Bamboo viscose",
         "Fit": "Loose Fit",
         "Weight": "220 gr.",
-        "Size": "S - XXL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Jersey knit",
         "Delivery time": "5 - 7 working days"
       },
@@ -645,7 +667,7 @@
         "Material": "Tencel™ Lyocell",
         "Fit": "Wide Leg",
         "Weight": "230 gr.",
-        "Size": "XS - XL",
+        "Size": "XS - S - M - L - XL",
         "Technique": "Twill weave",
         "Delivery time": "6 - 8 working days"
       },
@@ -685,7 +707,7 @@
         "Material": "Upcycled cotton blend",
         "Fit": "Utility Fit",
         "Weight": "280 gr.",
-        "Size": "S - XL",
+        "Size": "S - M - L - XL",
         "Technique": "Reinforced stitching",
         "Delivery time": "7 - 9 working days"
       },
@@ -725,7 +747,7 @@
         "Material": "100% Linen",
         "Fit": "A-line",
         "Weight": "240 gr.",
-        "Size": "XS - XL",
+        "Size": "XS - S - M - L - XL",
         "Technique": "Natural dye",
         "Delivery time": "7 - 10 working days"
       },
@@ -772,7 +794,7 @@
         "Material": "Organic cotton",
         "Fit": "Wrap style",
         "Weight": "210 gr.",
-        "Size": "XS - XXL",
+        "Size": "XS - S - M - L - XL - XXL",
         "Technique": "Screen printing",
         "Delivery time": "6 - 8 working days"
       },
@@ -812,7 +834,7 @@
         "Material": "Recycled satin blend",
         "Fit": "Slip style",
         "Weight": "150 gr.",
-        "Size": "XS - L",
+        "Size": "XS - S - M - L",
         "Technique": "Bias cut",
         "Delivery time": "7 - 9 working days"
       },
@@ -852,7 +874,7 @@
         "Material": "Bamboo viscose",
         "Fit": "Bodycon",
         "Weight": "195 gr.",
-        "Size": "XS - XL",
+        "Size": "XS - S - M - L - XL",
         "Technique": "Ribbed knit",
         "Delivery time": "5 - 7 working days"
       },
@@ -892,7 +914,7 @@
         "Material": "Upcycled silk",
         "Fit": "Maxi length",
         "Weight": "180 gr.",
-        "Size": "XS - L",
+        "Size": "XS - S - M - L",
         "Technique": "Hand-finished",
         "Delivery time": "8 - 10 working days"
       },
