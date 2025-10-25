@@ -3,13 +3,23 @@ const monthTitle = document.getElementById("month-title");
 const rewardBtn = document.getElementById("reward-btn");
 const greenScoreElem = document.getElementById("green-score");
 const periodElem = document.getElementById("period");
+// Milestone modal elements
+const streakModal = document.getElementById("streak-modal");
+const streakModalMessage = document.getElementById("streak-modal-message");
 
 let currentDate = new Date();
 let claimedDates = []; // lưu ngày đã claim
 let streak = 0; // số ngày liên tiếp claim
 let greenScore = 0; // điểm xanh
 let plantStage = "Seed"; // giai đoạn cây
-const today = new Date(2025, 10, 22);
+
+// Helpers for date normalization and 'today'
+function normalizeDate(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+function getToday() {
+  return normalizeDate(new Date());
+}
 const MILESTONES = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
 // Helper: milestone checker (10..100)
@@ -39,6 +49,26 @@ function showToast(message, type = "success", timeoutMs = 2500) {
   if (timeoutMs > 0) setTimeout(close, timeoutMs);
 }
 
+// ======== Milestone modal helpers (auto-close) ========
+function showMilestoneModal(days) {
+  if (streakModal) {
+    streakModalMessage.textContent = `You reached ${days} days streak!`;
+    streakModal.classList.remove("hidden");
+    // Auto-close after 3 seconds
+    setTimeout(() => {
+      hideMilestoneModal();
+    }, 3000);
+  } else {
+    // Fallback alert when modal container is not present
+    alert(`Congratulations! You reached ${days} days streak!`);
+  }
+}
+
+function hideMilestoneModal() {
+  if (!streakModal) return;
+  streakModal.classList.add("hidden");
+}
+
 // ======== Export streak JSON (silent save only, no download) ========
 function exportStreakJSON(fileName = "streak.json") {
   const data = {
@@ -49,14 +79,19 @@ function exportStreakJSON(fileName = "streak.json") {
   };
   // Silent persistence only (no download dialog)
   localStorage.setItem("myplant_calendar_export", JSON.stringify(data));
+  // Best-effort background save to dataset/streak.json (may no-op on static hosting)
+  try {
+    fetch("../../dataset/streak.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }).catch(() => {});
+  } catch (_) {}
 }
 
 function onMilestoneReached() {
-  // Toast only, save silently
-  showToast(
-    `🎉 Congratulations! You reached a new milestone: ${streak} days`,
-    "success"
-  );
+  // Show auto-closing popup only on milestones, save silently
+  showMilestoneModal(streak);
   exportStreakJSON("streak.json");
   lastMilestoneShown = streak;
   localStorage.setItem("lastMilestoneShown", String(lastMilestoneShown));
@@ -70,7 +105,8 @@ window.addEventListener("load", () => {
   streak = Number(localStorage.getItem("streak")) || 0;
   greenScore = Number(localStorage.getItem("greenScore")) || 0;
   plantStage = localStorage.getItem("plantStage") || "Seed";
-
+  // Reset streak if last claim is older than 24h (missed a day)
+  enforceStreakExpiry();
   updatePlant();
   renderCalendar(currentDate);
 });
@@ -120,7 +156,7 @@ function renderCalendar(date) {
     dayCell.textContent = day;
 
     const cellDate = new Date(year, month, day);
-    const isToday = cellDate.toDateString() === today.toDateString();
+    const isToday = cellDate.toDateString() === getToday().toDateString();
     const isClaimed = claimedSet.has(day);
 
     if (isToday) dayCell.classList.add("today");
@@ -159,13 +195,16 @@ function renderCalendar(date) {
       saveClaimedDates();
       updateStreak();
       updatePlant();
+      // Re-render to refresh classes/state
       renderCalendar(currentDate);
-
-      // Show congrats at milestones, otherwise generic streak toast
+      // Sprout pop effect on the newly rendered cell for this day
+      const newlyRenderedCell = Array.from(
+        daysContainer.querySelectorAll(".day-cell")
+      ).find((el) => Number(el.textContent) === cellDate.getDate());
+      sproutPop(newlyRenderedCell);
+      // Milestone-only popup
       if (isMilestoneDay(streak)) {
         onMilestoneReached();
-      } else {
-        showToast(`Reached new streak ${streak} days`, "success");
       }
     });
 
@@ -230,28 +269,33 @@ function updateStreak() {
 
 // Cập nhật greenscore và giai đoạn cây
 function updatePlant() {
+  // Green score equals number of claimed days (not percent)
   greenScore = streak;
-  greenScoreElem.textContent = greenScore + "%";
+  greenScoreElem.textContent = String(greenScore);
 
-  // === 4 cấp độ cây ===
+  // === Cấp độ cây theo mốc mới: 20, 50, 100, 170+ ===
   let plantStageName = "";
   let progressPercent = 0;
-  if (streak >= 30) {
+  if (streak >= 170) {
     plantStage = "Guardian Tree";
     plantStageName = "Guardian Tree";
     progressPercent = 100;
-  } else if (streak >= 15) {
+  } else if (streak >= 100) {
     plantStage = "Tree";
     plantStageName = "Tree";
-    progressPercent = Math.min(((streak - 15) / 15) * 100, 100);
-  } else if (streak >= 5) {
+    progressPercent = Math.min(((streak - 100) / 70) * 100, 100);
+  } else if (streak >= 50) {
     plantStage = "Sapling";
     plantStageName = "Sapling";
-    progressPercent = Math.min(((streak - 5) / 10) * 100, 100);
+    progressPercent = Math.min(((streak - 50) / 50) * 100, 100);
+  } else if (streak >= 20) {
+    plantStage = "Seed"; // hat
+    plantStageName = "Seed";
+    progressPercent = Math.min(((streak - 20) / 30) * 100, 100);
   } else {
     plantStage = "Seed";
     plantStageName = "Seed";
-    progressPercent = (streak / 5) * 100;
+    progressPercent = Math.min((streak / 20) * 100, 100);
   }
 
   localStorage.setItem("greenScore", greenScore);
@@ -300,6 +344,19 @@ function saveClaimedDates() {
   localStorage.setItem("claimedDates", JSON.stringify(claimedDates));
 }
 
+// ======== Sprout pop animation on the clicked day cell ========
+function sproutPop(cell) {
+  if (!cell) return;
+  const img = document.createElement("img");
+  img.src = "../images/cay_con.png";
+  img.alt = "sprout";
+  img.className = "sprout-pop";
+  cell.appendChild(img);
+  setTimeout(() => {
+    if (img && img.parentElement) img.parentElement.removeChild(img);
+  }, 800);
+}
+
 // ======== Optional: expose export feature ========
 window.exportMyPlantStreak = exportStreakJSON;
 
@@ -320,6 +377,7 @@ document.getElementById("next-month").addEventListener("click", () => {
 
 // Nút claim reward
 rewardBtn.addEventListener("click", () => {
+  const today = getToday();
   const todayStr = today.toDateString();
   const alreadyClaimed = claimedDates.some(
     (d) => d.toDateString() === todayStr
@@ -353,7 +411,34 @@ rewardBtn.addEventListener("click", () => {
   renderCalendar(currentDate);
   if (isMilestoneDay(streak)) {
     onMilestoneReached();
-  } else {
-    showToast(`Reached new streak ${streak} days`, "success");
   }
 });
+
+// ======== Auto reset when missed more than 24h ========
+function enforceStreakExpiry() {
+  if (claimedDates.length === 0) return;
+  const last = new Date(
+    Math.max.apply(
+      null,
+      claimedDates.map((d) => d.getTime())
+    )
+  );
+  const lastDay = normalizeDate(last);
+  const today = getToday();
+  const diffMs = today.getTime() - lastDay.getTime();
+  const diffDays = Math.floor(diffMs / (24 * 60 * 60 * 1000));
+  if (diffDays > 1) {
+    // Missed at least one whole day → reset
+    claimedDates = [];
+    streak = 0;
+    greenScore = 0;
+    plantStage = "Seed";
+    localStorage.removeItem("claimedDates");
+    localStorage.setItem("streak", "0");
+    localStorage.setItem("greenScore", "0");
+    localStorage.setItem("plantStage", "Seed");
+    exportStreakJSON("streak.json");
+    // Re-render from current month
+    currentDate = new Date();
+  }
+}

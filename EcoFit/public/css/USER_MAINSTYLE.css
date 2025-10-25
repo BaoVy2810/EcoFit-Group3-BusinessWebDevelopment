@@ -3419,26 +3419,10 @@ h1 span {
 }
 
 /* Căn giữa hình cây */
-.plant-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 50px;
-  background: white;
-  border-radius: 20px;
-  padding: 50px 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 550px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .plant-display img {
   width: 180px;
   height: 280px;
   object-fit: contain;
-  margin-bottom: 20px;
 }
 
 .plant-info {
@@ -3453,6 +3437,9 @@ h1 span {
   font-family: "Outfit";
 }
 
+.personal_info_container.no-padding {
+  padding-top: 0;
+}
 /* Lịch */
 .myplant-calendar {
   background: #ffffff;
@@ -3460,7 +3447,7 @@ h1 span {
   padding: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  max-width: 200px;
+  max-width: 100px;
   margin: 0 auto;
   font-family: "Outfit";
 }
@@ -4152,6 +4139,31 @@ h1 span {
   font-weight: 600;
 }
 
+/*15_BLOG_DETAIL*/
+.blog-detail-hero {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  display: flex;
+  border-radius: 0;
+  margin-bottom: 10px;
+}
+
+#blog-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+.blog-detail-container #blog-title {
+  margin-bottom: 10px;
+}
+
+.blog-detail-container #blog-date {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
 /*16_FAQ*/
 .faq-container {
   max-width: 800px;
@@ -4406,7 +4418,7 @@ strong {
   font-weight: 600;
 }
 
-/*12_MYPLANT&DAILYGREENSTREAK*/
+/*12_MYPLANT&DAILYGREENSTREAK - by Thu Uyen*/
 .myplant-main-content {
   flex: 1;
   border-radius: 20px;
@@ -4434,10 +4446,10 @@ strong {
   border-radius: 12px;
   padding: 35px 40px 30px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  max-width: 550px;
+  max-width: 480px;
   margin-left: auto;
   margin-right: auto;
-  min-height: 480px;
+  min-height: 500px;
   overflow: hidden;
 }
 
@@ -4681,6 +4693,56 @@ strong {
 
 .reward-btn:active {
   transform: translateY(0);
+}
+
+/* Sprout pop effect inside a day cell */
+.sprout-pop {
+  position: absolute;
+  bottom: 4px;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  animation: sprout-pop-in 0.8s ease forwards;
+}
+
+@keyframes sprout-pop-in {
+  0% {
+    transform: translateY(8px) scale(0.6);
+    opacity: 0;
+  }
+  40% {
+    transform: translateY(-2px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Shrink calendar overall */
+.myplant-calendar {
+  max-width: 360px;
+  padding: 14px 16px;
+}
+.month-title {
+  font-size: 15px;
+}
+.arrow {
+  font-size: 18px;
+  padding: 4px 6px;
+}
+.days-header {
+  gap: 6px;
+  font-size: 11px;
+}
+.day-cell {
+  height: 30px;
+  font-size: 12px;
+}
+.progress-circle {
+  width: 90px;
+  height: 90px;
 }
 
 /* Responsive styles for My Plant */
