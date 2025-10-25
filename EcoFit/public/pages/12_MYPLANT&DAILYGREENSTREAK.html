@@ -64,9 +64,7 @@
         <div class="myplant-main-content">
           <h2 class="page-title">My Plant & Daily Green Streak</h2>
 
-          <!-- Flexbox Container: Plant Card Left, Calendar Right -->
-          <div class="myplant-layout-container">
-            <!-- Left: Plant Card -->
+          <div class="myplant-two-col">
             <div class="plant-card">
               <div class="plant-display">
                 <img id="plant-img" src="../images/hat.png" alt="Plant Stage" />
@@ -122,33 +120,34 @@
               </div>
             </div>
 
-            <!-- Right: Calendar -->
-            <div class="myplant-calendar">
-              <div class="month-header">
-                <span class="arrow" id="prev-month">←</span>
-                <span class="month-title" id="month-title">Oct 2025</span>
-                <span class="arrow" id="next-month">→</span>
+            <!-- Right column: calendar + button -->
+            <div class="calendar-column">
+              <div class="myplant-calendar" style="margin-bottom: 18px">
+                <div class="month-header">
+                  <span class="arrow" id="prev-month">←</span>
+                  <span class="month-title" id="month-title">Oct 2025</span>
+                  <span class="arrow" id="next-month">→</span>
+                </div>
+
+                <div class="days-header">
+                  <span>Mon</span>
+                  <span>Tue</span>
+                  <span>Wed</span>
+                  <span>Thu</span>
+                  <span>Fri</span>
+                  <span>Sat</span>
+                  <span>Sun</span>
+                </div>
+
+                <div class="days-grid" id="days-container">
+                  <!-- JavaScript will populate calendar here -->
+                </div>
               </div>
 
-              <div class="days-header">
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
-              </div>
-
-              <div class="days-grid" id="days-container">
-                <!-- JavaScript will populate calendar here -->
+              <div style="display: flex; justify-content: center">
+                <button id="reward-btn" class="reward-btn">Claim Reward</button>
               </div>
             </div>
-          </div>
-
-          <!-- Claim Reward Button - Below Both -->
-          <div style="display: flex; justify-content: center; margin-top: 35px">
-            <button id="reward-btn" class="reward-btn">Claim Reward</button>
           </div>
         </div>
       </div>
