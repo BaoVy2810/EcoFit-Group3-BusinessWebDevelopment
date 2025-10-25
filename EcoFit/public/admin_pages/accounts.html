@@ -154,9 +154,9 @@
         </div>
                   <div style="display: grid; grid-template-columns: 35% 65%; gap: 24px; margin-bottom: 32px;">
 
-<div class="chart-container" style="padding: 24px;">
-  <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">Top 5 Green Score</h3>
-  <canvas id="topGreenScoreChart" style="max-height: 400px;"></canvas>
+<div class="chart-container" style="padding: 24px;  max-height: 750px; ">
+  <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">User Activity Chart</h3>
+  <canvas id="userActivityChart" height="350px" align="center"></canvas>
 </div>
 
 
@@ -414,107 +414,81 @@ function handleFilterChange() {
 
 
 
-function renderTopGreenScoreChart() {
-  const customers = accounts
-    .filter(acc => acc.role === 'customer' && acc.green_score)
-    .sort((a, b) => b.green_score - a.green_score)
-    .slice(0, 5);
 
-  const labels = customers.map(c => c.fullname);
-  const scores = customers.map(c => c.green_score);
+// Giả sử accountsData đã load từ accounts.json (mảng profile[])
+function renderActiveInactiveChart(accountsData) {
+    // Gom nhóm theo tháng (YYYY-MM)
+    const monthlyStats = {};  // { "2025-09": { active: 3, inactive: 1 }, ... }
 
-  const ctx = document.getElementById("topGreenScoreChart").getContext("2d");
+    accounts.forEach(acc => {
+        const month = acc.created_at.slice(0, 7); // "2025-09"
+        if (!monthlyStats[month]) {
+            monthlyStats[month] = { active: 0, inactive: 0 };
+        }
+        if (acc.status === "active") {
+            monthlyStats[month].active++;
+        } else {
+            monthlyStats[month].inactive++;
+        }
+    });
 
-  if (window.topGreenScoreChartInstance) {
-    window.topGreenScoreChartInstance.destroy();
-  }
+    // Tách dữ liệu thành mảng cho Chart.js
+    const labels = Object.keys(monthlyStats).sort(); // ["2025-09", "2025-10", ...]
+    const activeData = labels.map(m => monthlyStats[m].active);
+    const inactiveData = labels.map(m => monthlyStats[m].inactive);
 
-  window.topGreenScoreChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Green Score',
-        data: scores,
-        backgroundColor: [
-          'rgba(34, 197, 94, 0.8)',
-          'rgba(59, 130, 246, 0.8)',
-          'rgba(245, 158, 11, 0.8)',
-          'rgba(139, 92, 246, 0.8)',
-          'rgba(236, 72, 153, 0.8)'
-        ],
-        borderColor: [
-          'rgb(34, 197, 94)',
-          'rgb(59, 130, 246)',
-          'rgb(245, 158, 11)',
-          'rgb(139, 92, 246)',
-          'rgb(236, 72, 153)'
-        ],
-        borderWidth: 2,
-        borderRadius: 8,
-        barThickness: 28  // Giảm từ 40 xuống 28
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
+    const ctx = document.getElementById("userActivityChart").getContext("2d");
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Active Users",
+                    data: activeData,
+                    backgroundColor: "rgb(34, 197, 94)",
+                                        borderWidth: 0,
+                    borderRadius: 8,
+                    spacing: 4,
+                    font: {
+                      size: 14,
+                      family: 'Outfit'
+                    },
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                },
+                {
+                    label: "Inactive Users",
+                    data: inactiveData,
+                    backgroundColor: "rgb(59, 130, 246)"
+                }
+            ]
         },
-        tooltip: {
-          backgroundColor: 'rgba(17, 24, 39, 0.95)',
-          padding: 12,
-          titleFont: { size: 14, family: 'Outfit', weight: '600' },
-          bodyFont: { size: 13, family: 'Outfit' },
-          cornerRadius: 8,
-          callbacks: {
-            label: function(context) {
-              return ` Score: ${context.parsed.x}/100`;
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    position: 'bottom',
+                    text: "Active / Inactive User Ratio by Month",
+                    font: {
+                                size: 14,
+                                family: 'Outfit'
+                            },
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
             }
-          }
         }
-      },
-      scales: {
-        x: {
-          beginAtZero: true,
-          max: 100,
-          grid: {
-            display: true,
-            color: 'rgba(0, 0, 0, 0.05)'
-          },
-          ticks: {
-            font: { family: 'Outfit', size: 11 }
-          }
-        },
-        y: {
-          grid: {
-            display: false
-          },
-          ticks: {
-            font: { family: 'Outfit', size: 11, weight: '500' }
-          }
-        }
-      },
-      layout: {
-        padding: {
-          left: 10,
-          right: 20,
-          top: 10,
-          bottom: 10
-        }
-      },
-      animation: {
-        duration: 1200,
-        easing: 'easeInOutQuart'
-      }
-    }
-  });
+    });
 }
+
+
 // Cập nhật phần gọi hàm (thay thế đoạn loadAccountsData().then)
 loadAccountsData().then(() => {
-  renderTopGreenScoreChart(); // Thêm dòng này
+  renderActiveInactiveChart(); // Thêm dòng này
   renderIcons();
 });
 
