@@ -4310,6 +4310,7 @@ strong {
 
 /* 12_MYPLANT & DAILY GREEN STREAK - by Thu Uyen */
 .myplant-main-content {
+  flex: 1;
   border-radius: 20px;
   padding: 40px 60px;
   margin-left: 40px;
@@ -4321,35 +4322,47 @@ strong {
   padding-top: 0;
 } /* no padding for great vision */
 
-.page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1e1e1e;
-  margin: 10px 0 24px 0;
+.myplant-main-content .page-title {
+  font-size: 30px;
+  margin-bottom: 20px;
   text-align: left;
-  font-family: "Outfit";
+  position: relative;
+  font-weight: 700;
+  margin: 20px 0 30px 0;
+  color: black;
+  letter-spacing: 1px;
 }
 
-/* Layout Container: Plant Card Left, Calendar Right */
-.myplant-layout-container {
+/* Two-column layout: keep original sizes */
+.myplant-two-col {
   display: flex;
-  gap: 30px;
   align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  gap: 24px; /* tighter middle spacing */
+}
+
+.calendar-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 992px) {
+  .myplant-two-col {
+    flex-direction: column;
+    gap: 24px;
+  }
 }
 
 /* Plant Card */
 .plant-card {
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
   background: #f5f5f5;
   border-radius: 12px;
-  padding: 35px 40px 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  flex: 0 0 auto;
-  width: 420px;
-  min-height: 500px;
+  padding: 50px 60px; /* tăng padding */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* tăng chiều rộng */
+  min-height: 600px; /* tăng chiều cao */
   overflow: hidden;
 }
 
@@ -4376,7 +4389,7 @@ strong {
   width: 100%;
   font-family: "Outfit";
   order: 2;
-  margin-top: 16px;
+  margin-top: 40px; /* tăng từ 16px → 30px */
 }
 
 .plant-info-left {
@@ -4437,22 +4450,16 @@ strong {
   text-align: center;
 }
 
-/* Calendar Wrapper (contains calendar + button) */
-.myplant-calendar-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Lịch */
 .myplant-calendar {
   background: #ffffff;
-  border-radius: 12px;
-  padding: 18px 22px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 22px 26px 28px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
-  max-width: 480px;
+  max-width: 500px;
   margin: 0 auto;
+  margin-left: 100px;
   font-family: "Outfit";
 }
 
@@ -4508,7 +4515,7 @@ strong {
 .days-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 10px;
   margin-bottom: 10px;
 }
 
@@ -4519,15 +4526,17 @@ strong {
   align-items: center;
   background-color: #eef4ef;
   border-radius: 50%;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   aspect-ratio: 1 / 1;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   font-family: "Outfit";
-  font-size: 13px;
+  font-size: 14px;
   color: #2b2b2b;
   transition: all 0.2s ease;
   z-index: 1;
+  overflow: hidden;
 }
 
 .day-cell:hover {
@@ -4535,15 +4544,14 @@ strong {
   transform: scale(1.05);
 }
 
-.day-cell.today {
-  background-color: #3da547;
-  color: white;
-  font-weight: 700;
-  border: 2px solid #3da547;
+/* Next allowed day: show ring */
+.day-cell.next-allowed {
+  background: transparent;
+  box-shadow: inset 0 0 0 3px #69bd76;
 }
 
 .day-cell.claimed {
-  background: linear-gradient(135deg, #69bd76 0%, #3da547 100%);
+  background: #69bd76;
   color: transparent;
 }
 
@@ -4558,14 +4566,17 @@ strong {
   pointer-events: none;
 }
 
+/* Leaf icon (use mask to match design color) */
 .day-cell.claimed::after {
-  content: "🌿";
-  font-size: 16px;
+  content: "";
   position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  margin: auto;
+  width: 22px;
+  height: 22px;
+  -webkit-mask: url("../images/leaf.png") center/contain no-repeat;
+  mask: url("../images/leaf.png") center/contain no-repeat;
+  background: #1c5b2b;
 }
 
 /* Grey streak band across consecutive days within a week */
@@ -4575,13 +4586,13 @@ strong {
   content: "";
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
-  height: 18px;
+  left: -6px;
+  right: -6px;
+  height: 28px;
   transform: translateY(-50%);
   background: rgba(61, 165, 71, 0.25);
   z-index: 0;
-  border-radius: 999px; /* rounded band */
+  border-radius: 14px; /* rounded band */
 }
 .day-cell.streak::before {
   content: "";
@@ -4597,10 +4608,21 @@ strong {
 }
 
 .day-cell.streak-start {
-  border-radius: 50%; /* keep circular cell */
+  border-radius: 50%;
 }
 .day-cell.streak-end {
-  border-radius: 50%; /* keep circular cell */
+  border-radius: 50%;
+}
+.day-cell.streak-start::before {
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+}
+.day-cell.streak-end::before {
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+.day-cell.streak-mid::before {
+  border-radius: 0;
 }
 .day-cell.streak-start::before {
   border-top-left-radius: 999px;
@@ -4626,6 +4648,7 @@ strong {
   cursor: pointer;
   font-family: "Outfit";
   transition: all 0.3s ease;
+  margin-left: 100px;
   box-shadow: 0 4px 12px rgba(105, 189, 118, 0.3);
 }
 
@@ -4733,20 +4756,14 @@ strong {
     margin-bottom: 18px;
   }
 
-  /* Stack layout vertically on mobile */
-  .myplant-layout-container {
-    flex-direction: column;
-    gap: 30px;
-  }
-
   .plant-card {
     padding: 25px 30px 25px;
-    width: 100%;
     max-width: 100%;
     min-height: 420px;
   }
 
   .myplant-calendar {
+    padding: 20px 15px;
     max-width: 100%;
   }
 
