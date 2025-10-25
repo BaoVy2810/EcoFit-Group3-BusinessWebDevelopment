@@ -4155,12 +4155,18 @@ h1 span {
   object-fit: cover;
   object-position: center center;
 }
-.blog-detail-container #blog-title {
-  margin-bottom: 10px;
+
+.blog-detailed-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* căn giữa theo trục dọc nếu cần */
 }
 
-.blog-detail-container #blog-date {
-  margin-top: 0;
+.blog-detailed-container p {
+  text-align: justify; /* căn đều nội dung */
+}
+
+#blog-title {
   margin-bottom: 30px;
 }
 
@@ -4294,7 +4300,7 @@ h1 span {
   margin-bottom: 30px;
 }
 .term_head h1 span {
-  background: linear-gradient(135deg, #5aa165 0%, #307b37 100%);
+  background: linear-gradient(135deg, #69bd76 0%, #3da547 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -4344,7 +4350,7 @@ h1 span {
 }
 .sidebar-policy nav ul li a:hover,
 .sidebar-policy nav ul li a.current-section {
-  color: #5a9e5a;
+  color: #3da547;
   font-weight: 700;
   font-size: 1.06rem;
   transform: scale(1.05);
@@ -4396,7 +4402,7 @@ h1 span {
   content: "•";
   position: absolute;
   left: 5px;
-  color: #5a9e5a;
+  color: #3da547;
   font-weight: bold;
 }
 .section-policy ol {
@@ -4418,13 +4424,13 @@ strong {
   font-weight: 600;
 }
 
-/*12_MYPLANT&DAILYGREENSTREAK - by Thu Uyen*/
+/* 12_MYPLANT & DAILY GREEN STREAK - by Thu Uyen */
 .myplant-main-content {
   flex: 1;
   border-radius: 20px;
   padding: 40px 60px;
   margin-left: 40px;
-  margin-right: 40px;
+  margin-right: 4px;
   min-height: 700px;
 }
 
@@ -4501,7 +4507,7 @@ strong {
 
 .plant-info-left .info-value {
   font-size: 16px;
-  color: #69bd76;
+  color: #3da547;
   font-weight: 700;
 }
 
@@ -4510,28 +4516,31 @@ strong {
   position: relative;
   width: 100px;
   height: 100px;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .progress-circle svg {
+  width: 100%;
+  height: 100%;
+  display: block;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
 }
 
 .progress-text {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 14px;
-  font-weight: 600;
-  color: #69bd76;
-  font-family: "Outfit";
-  pointer-events: none;
-}
-
-.progress-text span {
-  font-size: 18px;
+  inset: 0; /* căn giữa tuyệt đối trong khung */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
   font-weight: 700;
+  color: #3da547;
+  font-family: "Outfit";
+  line-height: 1;
+  pointer-events: none;
+  text-align: center;
 }
 
 /* Lịch */
@@ -4574,7 +4583,7 @@ strong {
 }
 
 .arrow:hover {
-  color: #69bd76;
+  color: #3da547;
   background: #f5f5f5;
 }
 
@@ -4582,11 +4591,11 @@ strong {
 .days-header {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  color: #999;
-  font-weight: 500;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #82909a;
+  font-weight: 600;
 }
 
 .days-header span {
@@ -4607,33 +4616,44 @@ strong {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  height: 36px;
+  background-color: #eef4ef;
+  border-radius: 50%;
+  height: 38px;
+  aspect-ratio: 1 / 1;
   cursor: pointer;
   font-weight: 500;
-  user-select: none;
   font-family: "Outfit";
   font-size: 13px;
-  color: #333;
+  color: #2b2b2b;
   transition: all 0.2s ease;
+  z-index: 1;
 }
 
 .day-cell:hover {
-  background-color: #e0f2e0;
+  background-color: #dbeedd;
   transform: scale(1.05);
 }
 
 .day-cell.today {
-  background-color: #69bd76;
+  background-color: #3da547;
   color: white;
   font-weight: 700;
-  border: 2px solid #5aa165;
+  border: 2px solid #3da547;
 }
 
 .day-cell.claimed {
-  background-color: #a3d9a5;
-  color: white;
+  background: linear-gradient(135deg, #69bd76 0%, #3da547 100%);
+  color: transparent;
+}
+
+.day-cell.claimed::after {
+  content: "🌿";
+  font-size: 16px;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Grey streak band across consecutive days within a week */
@@ -4645,11 +4665,24 @@ strong {
   top: 50%;
   left: 0;
   right: 0;
-  height: 14px;
+  height: 18px;
   transform: translateY(-50%);
-  background: rgba(111, 191, 115, 0.22);
+  background: rgba(61, 165, 71, 0.25);
   z-index: 0;
 }
+.day-cell.streak::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -50%;
+  width: 200%;
+  height: 18px;
+  background: rgba(61, 165, 71, 0.25);
+  transform: translateY(-50%);
+  z-index: 0;
+  border-radius: 999px;
+}
+
 .day-cell.streak-start {
   border-top-left-radius: 999px;
   border-bottom-left-radius: 999px;
@@ -4672,7 +4705,7 @@ strong {
 
 /* Nút Claim Reward */
 .reward-btn {
-  background-color: #69bd76;
+  background-color: #3da547;
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -4686,7 +4719,7 @@ strong {
 }
 
 .reward-btn:hover {
-  background-color: #5aa165;
+  background-color: #3da547;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(105, 189, 118, 0.4);
 }
@@ -4698,9 +4731,59 @@ strong {
 /* Sprout pop effect inside a day cell */
 .sprout-pop {
   position: absolute;
-  bottom: 4px;
-  width: 26px;
-  height: 26px;
+  bottom: 2px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  animation: sprout-pop-in 0.8s ease forwards;
+}
+
+@keyframes sprout-pop-in {
+  0% {
+    transform: translateY(8px) scale(0.6);
+    opacity: 0;
+  }
+  40% {
+    transform: translateY(-2px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Nút Claim Reward */
+.reward-btn {
+  background-color: #3da547;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 45px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: "Outfit";
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(105, 189, 118, 0.3);
+}
+
+.reward-btn:hover {
+  background-color: #3da547;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(105, 189, 118, 0.4);
+}
+
+.reward-btn:active {
+  transform: translateY(0);
+}
+
+/* Sprout pop effect inside a day cell */
+.sprout-pop {
+  position: absolute;
+  bottom: 2px;
+  width: 20px;
+  height: 20px;
   pointer-events: none;
   animation: sprout-pop-in 0.8s ease forwards;
 }

@@ -160,7 +160,15 @@ function renderCalendar(date) {
     const isClaimed = claimedSet.has(day);
 
     if (isToday) dayCell.classList.add("today");
-    if (isClaimed) dayCell.classList.add("claimed");
+    if (isClaimed) {
+      dayCell.classList.add("claimed");
+      // add leaf icon inside claimed cell
+      const leaf = document.createElement("img");
+      leaf.src = "../images/leaf.png";
+      leaf.alt = "leaf";
+      leaf.className = "sprout-pop";
+      dayCell.appendChild(leaf);
+    }
 
     // Click to claim (only allow next sequential day)
     dayCell.addEventListener("click", () => {
@@ -197,11 +205,17 @@ function renderCalendar(date) {
       updatePlant();
       // Re-render to refresh classes/state
       renderCalendar(currentDate);
-      // Sprout pop effect on the newly rendered cell for this day
+      // add leaf icon to newly claimed cell
       const newlyRenderedCell = Array.from(
         daysContainer.querySelectorAll(".day-cell")
       ).find((el) => Number(el.textContent) === cellDate.getDate());
-      sproutPop(newlyRenderedCell);
+      if (newlyRenderedCell) {
+        const leaf = document.createElement("img");
+        leaf.src = "../images/leaf.png";
+        leaf.alt = "leaf";
+        leaf.className = "sprout-pop";
+        newlyRenderedCell.appendChild(leaf);
+      }
       // Milestone-only popup
       if (isMilestoneDay(streak)) {
         onMilestoneReached();
