@@ -1,7 +1,8 @@
 // Hàm kiểm tra email đã tồn tại trong accounts
 function check_email_exists(json_accounts, email) {
-    for (let i = 0; i < json_accounts.accounts.length; i++) {
-        if (json_accounts.accounts[i].email === email) {
+    
+    for (let i = 0; i < json_accounts.profile.length; i++) {
+        if (json_accounts.profile[i].email === email) {
             return true;
         }
     }
@@ -10,10 +11,10 @@ function check_email_exists(json_accounts, email) {
 
 // Hàm tạo ID mới cho user
 function generate_user_id(json_accounts) {
-    if (json_accounts.accounts.length === 0) {
+    if (json_accounts.profile.length === 0) {
         return 1;
     }
-    const maxId = Math.max(...json_accounts.accounts.map(ac => parseInt(ac.id) || 0));
+    const maxId = Math.max(...json_accounts.profile.map(ac => parseInt(ac.id) || 0));
     return maxId + 1;
 }
 
@@ -72,7 +73,7 @@ function process_signup() {
             };
 
             // ✅ Giả lập cập nhật vào localStorage
-            json_accounts.accounts.push(new_account);
+            json_accounts.profile.push(new_account);
             localStorage.setItem("accounts", JSON.stringify(json_accounts));
 
             let new_profile = {
