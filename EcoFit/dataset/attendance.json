@@ -1,6 +1,14 @@
 {
-  "updatedAt": "2025-01-01T00:00:00.000Z",
-  "streak": 0,
-  "greenScore": 0,
-  "claimedDates": []
+  "lastUpdated": "2025-01-01T00:00:00.000Z",
+  "users": {
+    "guest": {
+      "userId": "guest",
+      "updatedAt": "2025-01-01T00:00:00.000Z",
+      "claimedDates": [],
+      "streak": 0,
+      "greenScore": 0,
+      "plantStage": "Seed",
+      "dailyPoints": {}
+    }
+  }
 }
