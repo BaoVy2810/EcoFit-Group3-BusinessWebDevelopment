@@ -47,6 +47,13 @@
             localStorage.removeItem("login_infor");
             document.getElementById("header-frame").src = "../template/header0.html";
         }
+        // 🔍 Khi người dùng search trong header
+        if (e.data.action === "search") {
+            const query = e.data.query?.trim();
+            if (query) {
+                window.location.href = `../pages/03_PRODUCT_SearchFilter.html?q=${encodeURIComponent(query)}`;
+            }
+        }
         });
     </script>
     <!-- Hero Section -->
@@ -352,7 +359,5 @@
     </section>
     <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <script src="../js/homepage.js"></script>
-    <script src="../js/search_bar.js"></script>
-
 </body>
 </html>

@@ -67,6 +67,21 @@
                                 border-radius: 30px;
                                 padding-left: 45px;
                                 font-size: 16px;"/>
+                <!-- Dropdown Suggestion -->
+                <ul id="search-dropdown"
+                    style="display:none; 
+                            position:absolute; 
+                            top:105%; 
+                            left:0; 
+                            width:100%; 
+                            background:white;
+                            border-radius:10px; 
+                            box-shadow:0 4px 10px rgba(0,0,0,0.1); 
+                            list-style:none;
+                            padding:6px 0; 
+                            margin:0; 
+                            z-index:9999;">
+                </ul>
             </div>
 
             <!--Notifications, Cart, User-->
@@ -74,7 +89,8 @@
                     style="gap: 10px; 
                         margin:10px 30px 0 0">
                 <!-- Notification -->
-                <button type="button" class="position-relative" 
+                <a href="../pages/10_NOTIFICATION.html" target="_parent"
+                    class="position-relative" 
                     style="background-color: #F7F1D8; 
                             border-radius: 50%; 
                             width: 40px; 
@@ -84,13 +100,13 @@
                             align-items: center;
                             border:none;
                             outline:none;
-                            box-shadow:none;"">
+                            box-shadow:none;">
                     <img src="../images/Bell_icon.png" alt="bell" style="width:30px; height:30px;">
                     <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" 
                         style="font-size: 10px">
                         1
                     </span>
-                </button>
+                </a>
                 <!-- Cart -->
                 <button type="button"  class="position-relative" 
                     style="background-color: #69BD76; 
@@ -156,6 +172,30 @@
         }
         });
     });
+    window.addEventListener("DOMContentLoaded", () => {
+    // --- Xử lý các phần khác như activeNav, logout (đã có) ---
+
+    // 🟢 XỬ LÝ THANH TÌM KIẾM TOÀN HỆ THỐNG
+    const searchInput = document.querySelector('.form-control');
+    const searchIcon = document.querySelector('img[alt="Search Icon"]');
+
+    function handleSearch() {
+        const query = searchInput.value.trim();
+        if (query !== "") {
+        // Gửi tin nhắn cho trang cha để chuyển hướng
+        window.parent.postMessage({ action: "search", query }, "*");
+        }
+    }
+
+    // Khi nhấn Enter
+    searchInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") handleSearch();
+    });
+
+    // Khi click icon search
+    searchIcon.addEventListener("click", handleSearch);
+    });
     </script>
+    <script src="../js/search_bar.js"></script>
 </body>
 </html>
