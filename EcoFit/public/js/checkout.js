@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // === 5. Áp dụng mã giảm giá ===
     const applyBtn = document.querySelector('.apply-btn');
     const discountInput = document.querySelector('.discount-input');
+    let appliedPromotion = null;
+
     applyBtn.addEventListener('click', () => {
         const code = discountInput.value.trim().toUpperCase();
 
@@ -46,19 +48,78 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (code === 'ECOFIT10') {
-            discount = 10000;
-            alert('✓ Discount code applied successfully! (-10.000đ)');
-        } else if (code === 'GREEN15') {
-            discount = 15000;
-            alert('✓ Discount code applied successfully! (-15.000đ)');
-        } else {
+        // Load promotions data from localStorage
+        const promotionsData = JSON.parse(localStorage.getItem('promotions')) || { promotion: [] };
+        
+        // Find the promotion by code
+        const promotion = promotionsData.promotion.find(p => p.promo_code === code);
+
+        if (!promotion) {
             discount = 0;
+            appliedPromotion = null;
             alert('✗ Invalid discount code');
+        } else {
+            appliedPromotion = promotion;
+            // Calculate discount amount based on discount rate and subtotal
+            discount = Math.round((subtotal * promotion.discount_rate) / 100);
+            alert(`✓ Discount code applied successfully! (${promotion.discount_rate}% off)`);
         }
 
         updateSummary(subtotal, shippingCost, discount);
     });
+
+    // Update the updateSummary function to handle dynamic discount calculation
+    function updateSummary(subtotal, shipping, discountAmount) {
+        // If we have an applied promotion, recalculate discount based on current subtotal
+        if (appliedPromotion) {
+            discountAmount = Math.round((subtotal * appliedPromotion.discount_rate) / 100);
+        }
+        
+        const total = subtotal + shipping - discountAmount;
+        
+        // Update DOM elements
+        const subtotalElement = document.querySelector('.subtotal-price');
+        const shippingElement = document.querySelector('.shipping-price');
+        const discountElement = document.querySelector('.discount-price');
+        const totalElement = document.querySelector('.total-price');
+        
+        if (subtotalElement) subtotalElement.textContent = formatPrice(subtotal);
+        if (shippingElement) shippingElement.textContent = formatPrice(shipping);
+        if (discountElement) discountElement.textContent = formatPrice(discountAmount);
+        if (totalElement) totalElement.textContent = formatPrice(total);
+    }
+
+    // Also update any other functions that call updateSummary to ensure discount is recalculated
+    // For example, when quantity changes or items are removed:
+    function handleQuantityChange() {
+        const subtotal = calculateSubtotal(); // Your existing subtotal calculation
+        const shippingCost = calculateShipping(); // Your existing shipping calculation
+        updateSummary(subtotal, shippingCost, discount);
+    }
+
+    // Make sure to load promotions data when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        // If promotions aren't in localStorage, load them
+        if (!localStorage.getItem('promotions')) {
+            loadPromotionsData();
+        }
+    });
+
+    async function loadPromotionsData() {
+        try {
+            const response = await fetch('../../dataset/promotions.json');
+            const data = await response.json();
+            localStorage.setItem('promotions', JSON.stringify(data));
+            console.log('Promotions data loaded successfully');
+        } catch (error) {
+            console.error('Error loading promotions data:', error);
+        }
+    }
+
+    // Format price function (make sure this exists)
+    function formatPrice(price) {
+        return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
+    }
 
     // === 6. Nút PLACE ORDER ===
     const placeOrderBtn = document.querySelector('.place-order');
