@@ -13,7 +13,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Toggle Sidebar
+  const menuToggle = document.querySelector('.menu-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const mainContent = document.querySelector('.main-content');
 
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+    });
+  }
+
+});
+  </script>
 </head>
 
 <body>
@@ -46,19 +61,15 @@
           <p>PAGES</p>
         </div>
 
-        <button class="menu-item"><i data-lucide="gift"></i><span>Promotions</span></button>
-        <button class="menu-item"><i data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
         <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
-        <button class="menu-item"><i data-lucide="message-circle"></i><span>Contact</span></button>
-        <button class="menu-item"><i data-lucide="file-text"></i><span>Invoice</span></button>
+
       </nav>
     </aside>
 
     <!-- Main Content -->
     <div class="main-content">
-      <!-- ==================== HEADER - PASTE CODE TỪ accounts.html ==================== -->
-      <!-- Giữ nguyên toàn bộ phần <header class="header">...</header> -->
-
       <header class="header">
         <div class="header-left">
           <button class="menu-toggle"><i data-lucide="menu"></i></button>
@@ -360,8 +371,32 @@
 
     // Load chart đầu tiên
     initChart();
+
+    // Check authentication and display user info
+window.addEventListener("DOMContentLoaded", () => {
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const userRole = localStorage.getItem("userRole");
+
+  if (!isLoggedIn || userRole !== "administrator") {
+    // Redirect to login if not authenticated or not admin
+    alert("Please login as administrator to access this page.");
+    window.location.href = "../pages/00_LOGIN.html";
+    return;
+  }
+
+  // Display admin name
+  const userName = localStorage.getItem("userName");
+  if (userName) {
+    const userNameElement = document.querySelector(".user-name");
+    if (userNameElement) {
+      userNameElement.textContent = userName;
+    }
+  }
+});
   </script>
   <script src="script.js"></script>
+  
 </body>
 
 </html>

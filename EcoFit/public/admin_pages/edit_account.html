@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Account - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body style="background: #f9fafb;">
+  <div class="form-container">
+    <div class="form-card">
+      <div class="form-header">
+        <button class="back-btn" onclick="goBack()">
+          <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i>
+        </button>
+        <h2>Edit Account</h2>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <form id="editAccountForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullname">Full Name<span class="required">*</span></label>
+            <input type="text" id="fullname" name="fullname" required placeholder="Enter full name" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email<span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="Enter email address" />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Leave blank to keep current password" />
+            <small style="color: #6b7280; font-size: 12px;">Leave empty to keep current password</small>
+          </div>
+
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" />
+          </div>
+
+          <div class="form-group">
+            <label for="role">Role<span class="required">*</span></label>
+            <select id="role" name="role" required>
+              <option value="">Select role</option>
+              <option value="customer">Customer</option>
+              <option value="administrator">Administrator</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status<span class="required">*</span></label>
+            <select id="status" name="status" required>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" placeholder="Enter full address"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="goBack()">
+            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+            Update Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let currentAccount = null;
+    let accountId = null;
+
+    function goBack() {
+      window.location.href = 'accounts.html';
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('show');
+      setTimeout(() => {
+        errorDiv.classList.remove('show');
+      }, 5000);
+    }
+
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = message;
+      successDiv.classList.add('show');
+      setTimeout(() => {
+        successDiv.classList.remove('show');
+        goBack();
+      }, 2000);
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    async function loadAccountData() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        accountId = urlParams.get('id');
+
+        if (!accountId) {
+          showError('Account ID not found');
+          setTimeout(goBack, 2000);
+          return;
+        }
+
+        const storedData = localStorage.getItem('accounts');
+        let data;
+
+        if (storedData) {
+          data = JSON.parse(storedData);
+        } else {
+          const response = await fetch('../../dataset/accounts.json');
+          data = await response.json();
+        }
+
+        const accounts = data.profile;
+        currentAccount = accounts.find(acc => 
+          (acc.id || acc.profile_id) === accountId
+        );
+
+        if (!currentAccount) {
+          showError('Account not found');
+          setTimeout(goBack, 2000);
+          return;
+        }
+
+        document.getElementById('fullname').value = currentAccount.fullname || '';
+        document.getElementById('email').value = currentAccount.email || '';
+        document.getElementById('phone').value = currentAccount.phone || '';
+        document.getElementById('gender').value = currentAccount.gender || '';
+        document.getElementById('dob').value = currentAccount.dob || '';
+        document.getElementById('role').value = currentAccount.role || '';
+        document.getElementById('status').value = currentAccount.status || '';
+        document.getElementById('address').value = currentAccount.address || '';
+
+      } catch (error) {
+        console.error('Error loading account:', error);
+        showError('Failed to load account data');
+      }
+    }
+
+    document.getElementById('editAccountForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      if (!isValidEmail(email)) {
+        showError('Please enter a valid email address');
+        return;
+      }
+
+      if (password && password.length < 6) {
+        showError('Password must be at least 6 characters long');
+        return;
+      }
+
+      try {
+        const storedData = localStorage.getItem('accounts');
+        let data;
+
+        if (storedData) {
+          data = JSON.parse(storedData);
+        } else {
+          const response = await fetch('../../dataset/accounts.json');
+          data = await response.json();
+        }
+
+        const accounts = data.profile;
+
+        const emailExists = accounts.some(acc => 
+          acc.email === email && (acc.id || acc.profile_id) !== accountId
+        );
+
+        if (emailExists) {
+          showError('This email is already registered');
+          return;
+        }
+
+        const accountIndex = accounts.findIndex(acc => 
+          (acc.id || acc.profile_id) === accountId
+        );
+
+        if (accountIndex === -1) {
+          showError('Account not found');
+          return;
+        }
+
+        const updatedAccount = {
+          ...accounts[accountIndex],
+          fullname: formData.get('fullname'),
+          email: email,
+          phone: formData.get('phone') || "",
+          gender: formData.get('gender') || "",
+          dob: formData.get('dob') || "",
+          address: formData.get('address') || "",
+          status: formData.get('status'),
+          role: formData.get('role')
+        };
+
+        if (password) {
+          updatedAccount.password = password;
+        }
+
+        accounts[accountIndex] = updatedAccount;
+
+        const updatedData = {
+          profile: accounts
+        };
+
+        localStorage.setItem('accounts', JSON.stringify(updatedData));
+
+        console.log('Account updated:', updatedAccount);
+        showSuccess('Account updated successfully!');
+
+      } catch (error) {
+        console.error('Error updating account:', error);
+        showError('Failed to update account. Please try again.');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAccountData();
+    });
+  </script>
+</body>
+</html>

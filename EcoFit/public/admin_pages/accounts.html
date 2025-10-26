@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Account Management - Admin Dashboard</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -54,11 +56,10 @@
 
         <div class="pages-divider"><p>PAGES</p></div>
 
-        <button class="menu-item"><i data-lucide="gift"></i><span>Promotions</span></button>
-        <button class="menu-item"><i data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
         <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
-        <button class="menu-item"><i data-lucide="message-circle"></i><span>Contact</span></button>
-        <button class="menu-item"><i data-lucide="file-text"></i><span>Invoice</span></button>
+
       </nav>
     </aside>
 
@@ -151,6 +152,14 @@
             </div>
           </div>
         </div>
+                  <div style="display: grid; grid-template-columns: 35% 65%; gap: 24px; margin-bottom: 32px;">
+
+<div class="chart-container" style="padding: 24px;  max-height: 750px; ">
+  <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">User Activity Chart</h3>
+  <canvas id="userActivityChart" height="350px" align="center"></canvas>
+</div>
+
+
 
         <!-- Table -->
         <div class="chart-container" style="padding: 24px;">
@@ -202,10 +211,10 @@
   <td style="padding: 16px;"><span name="role"></span></td>
   <td style="padding: 16px;"><span name="status"></span></td>
   <td style="padding: 16px;">
-    <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;">
+    <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;" title="Edit">
       <i data-lucide="edit"></i>
     </button>
-    <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;">
+    <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;" title="Delete">
       <i data-lucide="trash-2"></i>
     </button>
   </td>
@@ -217,7 +226,15 @@
       </main>
     </div>
   </div>
+  <script src="script.js"></script>
+
   <SCRIPT>
+    // tạo icons SAU KHI render bảng xong
+function renderIcons() {
+  if (window.lucide && typeof lucide.createIcons === "function") {
+    lucide.createIcons();
+  }
+}
 let accounts = [];
 
 async function loadAccountsData() {
@@ -290,14 +307,15 @@ async function loadAccounts() {
 
 function updateTable(filteredAccounts) {
   renderTable(filteredAccounts, "table tbody", "table tbody tr.template", (row, acc) => {
-    row.querySelector("td:nth-child(1)").textContent = `#${acc.id || acc.profile_id}`;
+    const itemId = acc.id || acc.profile_id;
+    
+    row.querySelector("td:nth-child(1)").textContent = `#${itemId}`;
     row.querySelector('[name="name"]').textContent = acc.fullname;
     row.querySelector('[name="email"]').textContent = acc.email;
 
     const roleSpan = row.querySelector('[name="role"]');
     roleSpan.textContent = acc.role.charAt(0).toUpperCase() + acc.role.slice(1);
     
-    // CSS đẹp hơn cho role badge
     if (acc.role === "administrator") {
       roleSpan.style.cssText = `
         padding: 6px 16px;
@@ -328,8 +346,23 @@ function updateTable(filteredAccounts) {
     statusSpan.style.borderRadius = "12px";
     statusSpan.style.fontSize = "12px";
     statusSpan.style.fontWeight = "500";
+
+    // THÊM EVENT CHO NÚT EDIT VÀ DELETE
+    const editBtn = row.querySelector('button[title="Edit"]') || row.querySelectorAll('button')[0];
+    const deleteBtn = row.querySelector('button[title="Delete"]') || row.querySelectorAll('button')[1];
+    
+    if (editBtn) {
+      editBtn.onclick = () => openEditModal(itemId, 'accounts', 'id');
+    }
+    
+    if (deleteBtn) {
+      deleteBtn.onclick = () => deleteItem(itemId, 'accounts', 'id');
+    }
   });
+  renderIcons();
 }
+
+  
 
 function handleFilterChange() {
   const searchValue = safeLower(document.getElementById("searchInput").value);
@@ -352,11 +385,14 @@ function handleFilterChange() {
     return matchSearch && matchRole && matchStatus;
   });
 
+
+
+
   updateTable(filtered);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
+
+  
   loadAccounts();
   loadAccountsData();
 
@@ -373,8 +409,113 @@ document.addEventListener("DOMContentLoaded", () => {
       handleFilterChange();
     }
   });
+
+
+
+
+
+
+// Giả sử accountsData đã load từ accounts.json (mảng profile[])
+function renderActiveInactiveChart(accountsData) {
+    // Gom nhóm theo tháng (YYYY-MM)
+    const monthlyStats = {};  // { "2025-09": { active: 3, inactive: 1 }, ... }
+
+    accounts.forEach(acc => {
+        const month = acc.created_at.slice(0, 7); // "2025-09"
+        if (!monthlyStats[month]) {
+            monthlyStats[month] = { active: 0, inactive: 0 };
+        }
+        if (acc.status === "active") {
+            monthlyStats[month].active++;
+        } else {
+            monthlyStats[month].inactive++;
+        }
+    });
+
+    // Tách dữ liệu thành mảng cho Chart.js
+    const labels = Object.keys(monthlyStats).sort(); // ["2025-09", "2025-10", ...]
+    const activeData = labels.map(m => monthlyStats[m].active);
+    const inactiveData = labels.map(m => monthlyStats[m].inactive);
+
+    const ctx = document.getElementById("userActivityChart").getContext("2d");
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Active Users",
+                    data: activeData,
+                    backgroundColor: "rgb(34, 197, 94)",
+                                        borderWidth: 0,
+                    borderRadius: 8,
+                    spacing: 4,
+                    font: {
+                      size: 14,
+                      family: 'Outfit'
+                    },
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                },
+                {
+                    label: "Inactive Users",
+                    data: inactiveData,
+                    backgroundColor: "rgb(59, 130, 246)"
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    position: 'bottom',
+                    text: "Active / Inactive User Ratio by Month",
+                    font: {
+                                size: 14,
+                                family: 'Outfit'
+                            },
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        }
+    });
+}
+
+
+// Cập nhật phần gọi hàm (thay thế đoạn loadAccountsData().then)
+loadAccountsData().then(() => {
+  renderActiveInactiveChart(); // Thêm dòng này
+  renderIcons();
+});
+
+  //Kiểm tra tài khoản admin đăng nhập
+window.addEventListener("DOMContentLoaded", () => {
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const userRole = localStorage.getItem("userRole");
+
+  if (!isLoggedIn || userRole !== "administrator") {
+    // Redirect to login if not authenticated or not admin
+    alert("Please login as administrator to access this page.");
+    window.location.href = "../pages/00_LOGIN.html";
+    return;
+  }
+
+  // Display admin name
+  const userName = localStorage.getItem("userName");
+  if (userName) {
+    const userNameElement = document.querySelector(".user-name");
+    if (userNameElement) {
+      userNameElement.textContent = userName;
+    }
+  }
 });
 </script>
-  <script src="script.js"></script>
+
+
 </body>
 </html>

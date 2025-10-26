@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .todo-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .todo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .todo-item {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .todo-item:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .todo-item.completed {
+      background: linear-gradient(135deg, #69bd76, #3da547);
+      color: white;
+    }
+
+    .todo-checkbox {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #d1d5db;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .todo-item.completed .todo-checkbox {
+      background: white;
+      border-color: white;
+      color:black;
+    }
+
+    .todo-checkbox:hover {
+      border-color:linear-gradient(135deg, #69bd76, #3da547);;
+    }
+
+    .todo-content {
+      flex: 1;
+      font-size: 16px;
+      color: #111827;
+    }
+
+    .todo-item.completed .todo-content {
+      color: white;
+      text-decoration: line-through;
+      opacity: 0.9;
+    }
+
+    .todo-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .star-btn {
+      padding: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      color: #d1d5db;
+    }
+
+    .star-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .todo-item.completed .star-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .star-btn.starred {
+      color: #fbbf24;
+    }
+
+    .star-btn i {
+      width: 20px;
+      height: 20px;
+    }
+
+    .delete-btn {
+      padding: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      color: #9ca3af;
+    }
+
+    .delete-btn:hover {
+      background: #fef2f2;
+      color: #ef4444;
+    }
+
+    .todo-item.completed .delete-btn {
+      color: white;
+    }
+
+    .todo-item.completed .delete-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .delete-btn i {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.2s;
+    }
+
+    .modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      animation: slideUp 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .modal-header h3 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #111827;
+      margin: 0;
+    }
+
+    .close-modal {
+      padding: 8px;
+      border: none;
+      background: #f3f4f6;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .close-modal:hover {
+      background: #e5e7eb;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #111827;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: linear-gradient(135deg, #69bd76, #3da547);;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+
+    .btn-cancel {
+      padding: 12px 24px;
+      background: #f3f4f6;
+      color: #374151;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+      background: #e5e7eb;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+    }
+
+    .empty-state i {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
+
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          mainContent.classList.toggle('expanded');
+        });
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+        <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
+        <div>
+          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
+          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="menu-item" onclick="location.href='dashboard.html'">
+          <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
+        </button>
+        <button class="menu-item" onclick="location.href='accounts.html'">
+          <i data-lucide="square-user-round"></i><span>Accounts</span>
+        </button>
+        <button class="menu-item" onclick="location.href='products.html'">
+          <i data-lucide="package"></i><span>Products</span>
+        </button>
+        <button class="menu-item" onclick="location.href='orders.html'">
+          <i data-lucide="list"></i><span>Order Lists</span>
+        </button>
+        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
+
+        <div class="pages-divider"><p>PAGES</p></div>
+
+        <button class="menu-item" onclick="location.href='promotions.html'">
+          <i data-lucide="gift"></i><span>Promotions</span>
+        </button>
+        <button class="menu-item" onclick="location.href='blogs.html'">
+          <i data-lucide="calendar"></i><span>Blogs</span>
+        </button>
+        <button class="menu-item active"><i data-lucide="check-square"></i><span>To-Do</span></button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle"><i data-lucide="menu"></i></button>
+        </div>
+
+        <div class="header-right">
+          <button class="notification-btn">
+            <i data-lucide="bell"></i><span class="notification-dot"></span>
+          </button>
+          <div class="user-profile">
+            <div class="user-info">
+              <p class="user-name">Moni Roy</p>
+              <p class="user-role">Admin</p>
+            </div>
+            <img src="../images/admin.png" alt="Admin" />
+          </div>
+        </div>
+      </header>
+
+      <!-- To-Do List -->
+      <main class="content">
+        <div class="todo-container">
+          <div class="todo-header">
+            <h2 class="page-title" style="margin-bottom: 0;">To-Do List</h2>
+            <button class="btn-save" onclick="openAddModal()">
+              <i data-lucide="plus"></i>Add New Task
+            </button>
+          </div>
+
+          <div class="todo-list" id="todoList">
+            <!-- Tasks will be rendered here -->
+          </div>
+
+          <div class="empty-state" id="emptyState" style="display: none;">
+            <i data-lucide="check-circle"></i>
+            <p>No tasks yet. Add your first task!</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal Add Task -->
+  <div id="taskModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Task</h3>
+        <button class="close-modal" onclick="closeModal()">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="taskForm">
+          <div class="form-group">
+            <label>Task Name</label>
+            <input type="text" id="taskInput" placeholder="Enter your task..." required />
+          </div>
+        </form>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-save" onclick="saveTask()">
+          <i data-lucide="plus"></i>Add Task
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const STORAGE_KEY = 'todos';
+    let todos = [];
+
+    // Render icons
+    function renderIcons() {
+      if (window.lucide && typeof lucide.createIcons === "function") {
+        lucide.createIcons();
+      }
+    }
+
+    // Initialize default data
+    function initializeTodoData() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        const defaultData = [
+          { id: 1, text: "Meeting with CEO", completed: false, starred: false },
+          { id: 2, text: "Pick up kids from school", completed: false, starred: true },
+          { id: 3, text: "Shopping with Brother", completed: false, starred: false },
+          { id: 4, text: "Review with HR", completed: true, starred: false },
+          { id: 5, text: "Going to Dia's School", completed: false, starred: false },
+          { id: 6, text: "Check design files", completed: false, starred: true },
+          { id: 7, text: "Update File", completed: false, starred: false }
+        ];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
+      }
+    }
+
+    // Load todos
+    function loadTodos() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          todos = JSON.parse(stored);
+          renderTodos();
+        }
+      } catch (error) {
+        console.error("Error loading todos:", error);
+      }
+    }
+
+    // Save to localStorage
+    function saveTodos() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+
+    // Render todos
+    function renderTodos() {
+      const todoList = document.getElementById('todoList');
+      const emptyState = document.getElementById('emptyState');
+
+      if (todos.length === 0) {
+        todoList.innerHTML = '';
+        emptyState.style.display = 'block';
+        renderIcons();
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      
+      // Sort: starred first, then by completed status
+      const sortedTodos = [...todos].sort((a, b) => {
+        if (a.starred !== b.starred) return b.starred - a.starred;
+        if (a.completed !== b.completed) return a.completed - b.completed;
+        return 0;
+      });
+
+      todoList.innerHTML = sortedTodos.map(todo => `
+        <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
+          <div class="todo-checkbox" onclick="toggleComplete(${todo.id})">
+            ${todo.completed ? '<i data-lucide="check"></i>' : ''}
+          </div>
+          <div class="todo-content">${todo.text}</div>
+          <div class="todo-actions">
+            <button class="star-btn ${todo.starred ? 'starred' : ''}" onclick="toggleStar(${todo.id})">
+              <i data-lucide="${todo.starred ? 'star' : 'star'}"></i>
+            </button>
+            <button class="delete-btn" onclick="deleteTodo(${todo.id})">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      renderIcons();
+    }
+
+    // Toggle complete
+    function toggleComplete(id) {
+      const todo = todos.find(t => t.id === id);
+      if (todo) {
+        todo.completed = !todo.completed;
+        saveTodos();
+        renderTodos();
+      }
+    }
+
+    // Toggle star
+    function toggleStar(id) {
+      const todo = todos.find(t => t.id === id);
+      if (todo) {
+        todo.starred = !todo.starred;
+        saveTodos();
+        renderTodos();
+      }
+    }
+
+    // Delete todo
+    function deleteTodo(id) {
+      todos = todos.filter(t => t.id !== id);
+      saveTodos();
+      renderTodos();
+    }
+
+    // Open modal
+    function openAddModal() {
+      document.getElementById('taskInput').value = '';
+      document.getElementById('taskModal').classList.add('show');
+      renderIcons();
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('taskModal').classList.remove('show');
+    }
+
+    // Save task
+    function saveTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+
+      if (!text) {
+        alert('Please enter a task!');
+        return;
+      }
+
+      const newId = todos.length > 0 ? Math.max(...todos.map(t => t.id)) + 1 : 1;
+      
+      todos.push({
+        id: newId,
+        text: text,
+        completed: false,
+        starred: false
+      });
+
+      saveTodos();
+      renderTodos();
+      closeModal();
+    }
+
+    // Close modal on outside click
+    document.getElementById('taskModal').addEventListener('click', (e) => {
+      if (e.target.id === 'taskModal') closeModal();
+    });
+
+    // Enter key to save
+    document.getElementById('taskInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveTask();
+      }
+    });
+
+    // Initialize
+    window.addEventListener("DOMContentLoaded", () => {
+      // Check admin authentication
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const userRole = localStorage.getItem("userRole");
+
+      if (!isLoggedIn || userRole !== "administrator") {
+        alert("Please login as administrator to access this page.");
+        window.location.href = "../pages/00_LOGIN.html";
+        return;
+      }
+
+      const userName = localStorage.getItem("userName");
+      if (userName) {
+        const userNameElement = document.querySelector(".user-name");
+        if (userNameElement) userNameElement.textContent = userName;
+      }
+
+      initializeTodoData();
+      loadTodos();
+      renderIcons();
+    });
+  </script>
+</body>
+</html>

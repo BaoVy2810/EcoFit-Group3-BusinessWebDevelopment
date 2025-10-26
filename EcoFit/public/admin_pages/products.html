@@ -9,71 +9,66 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Toggle Sidebar
-            const menuToggle = document.querySelector('.menu-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('.main-content');
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Toggle Sidebar
+  const menuToggle = document.querySelector('.menu-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const mainContent = document.querySelector('.main-content');
 
-            if (menuToggle) {
-                menuToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('collapsed');
-                    mainContent.classList.toggle('expanded');
-                });
-            }
-        });
-    </script>
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+    });
+  }
+
+});
+  </script>
 </head>
 
 <body>
-    <div class="dashboard-container">
-        <!-- ==================== SIDEBAR - PASTE CODE TỪ accounts.html ==================== -->
-        <!-- Giữ nguyên toàn bộ phần <aside class="sidebar">...</aside> từ file accounts.html -->
-        <!-- Chỉ cần thay đổi class "active" từ menu-item Accounts sang Products -->
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div
+        style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+        <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
+        <div>
+          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
+          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
+        </div>
+      </div>
 
-        <aside class="sidebar">
-            <div
-                style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
-                <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
-                <div>
-                    <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
-                    <p style="margin: 0; font-size: 16px;">Admin Panel</p>
-                </div>
-            </div>
+      <nav class="nav-menu">
+        <button class="menu-item" onclick="location.href='dashboard.html' ">
+          <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
+        </button>
+        <button class="menu-item" onclick="location.href='accounts.html'">
+          <i data-lucide="square-user-round"></i><span>Accounts</span>
+        </button>
+        <button class="menu-item active" onclick="location.href='products.html'">
+          <i data-lucide="package"></i><span>Products</span>
+        </button>
+        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order
+            Lists</span></button>
+        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
 
-            <nav class="nav-menu">
-                <button class="menu-item" onclick="location.href='dashboard.html'">
-                    <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
-                </button>
-                <button class="menu-item" onclick="location.href='accounts.html'">
-                    <i data-lucide="square-user-round"></i><span>Accounts</span>
-                </button>
-                <button class="menu-item active">
-                    <i data-lucide="package"></i><span>Products</span>
-                </button>
-        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order Lists</span></button>
-                <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
+        <div class="pages-divider">
+          <p>PAGES</p>
+        </div>
 
-                <div class="pages-divider">
-                    <p>PAGES</p>
-                </div>
+        <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
+        <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
 
-                <button class="menu-item"><i data-lucide="gift"></i><span>Promotions</span></button>
-                <button class="menu-item"><i data-lucide="calendar"></i><span>Blogs</span></button>
-                <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
-                <button class="menu-item"><i data-lucide="message-circle"></i><span>Contact</span></button>
-                <button class="menu-item"><i data-lucide="file-text"></i><span>Invoice</span></button>
-            </nav>
-        </aside>
+      </nav>
+    </aside>
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- ==================== HEADER - PASTE CODE TỪ accounts.html ==================== -->
-            <!-- Giữ nguyên toàn bộ phần <header class="header">...</header> -->
-
             <header class="header">
                 <div class="header-left">
                     <button class="menu-toggle"><i data-lucide="menu"></i></button>
@@ -161,7 +156,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- ==================== CHARTS SECTION - ĐẶT TRƯỚC TABLE ==================== -->
+                <!-- CHARTS SECTION - ĐẶT TRƯỚC TABLE  -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
 
                     <!-- Category Distribution Chart -->
@@ -201,481 +196,522 @@
                         </div>
                     </div>
 
-                </div>
-                <!-- Table -->
-                <div class="chart-container" style="padding: 24px;">
-                    <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Products</h3>
+<div class="chart-container" style="padding: 24px; grid-column: 1 / -1;">
+    <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Products</h3>
 
-                    <div
-                        style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
-                        <div style="flex: 1; display: flex; gap: 12px;">
-                            <div class="search-box">
-                                <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                                <input id="searchInput" placeholder="Search by name or description" />
-                            </div>
+    <div style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+        <div style="flex: 1; display: flex; gap: 12px;">
+            <div class="search-box">
+                <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                <input id="searchInput" placeholder="Search by name or description" />
+            </div>
 
-                            <select id="categoryFilter">
-                                <option value="all">All Categories</option>
-                            </select>
+            <select id="categoryFilter" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-family: 'Outfit', sans-serif; cursor: pointer;">
+                <option value="all">All Categories</option>
+            </select>
 
-                            <select id="stockFilter">
-                                <option value="all">All Stock</option>
-                                <option value="in-stock">In Stock (>30)</option>
-                                <option value="low-stock">Low Stock (≤30)</option>
-                            </select>
+            <select id="stockFilter" style="padding: 10px 16px; border: 1px solid #e5e7eb; border-radius: 8px; font-family: 'Outfit', sans-serif; cursor: pointer;">
+                <option value="all">All Stock</option>
+                <option value="in-stock">In Stock (>30)</option>
+                <option value="low-stock">Low Stock (≤30)</option>
+            </select>
+        </div>
+
+        <button onclick="location.href='new_product.html'" style="padding: 10px 20px; background: linear-gradient(135deg, #3DA547, #69BD76); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="plus" style="width: 20px; height: 20px;"></i>Add New Product
+        </button>
+    </div>
+
+    <div style="max-height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
+            <thead style="position: sticky; top: 0; background: #f9fafb; z-index: 10;">
+                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
+                    <th style="padding: 16px; font-weight: 600; color: #374151; white-space: nowrap;">ID</th>
+                    <th style="padding: 16px; font-weight: 600; color: #374151; min-width: 250px;">Product Name</th>
+                    <th style="padding: 16px; font-weight: 600; color: #374151; white-space: nowrap;">Category</th>
+                    <th style="padding: 16px; font-weight: 600; color: #374151; white-space: nowrap;">Price</th>
+                    <th style="padding: 16px; font-weight: 600; color: #374151; white-space: nowrap;">Stock</th>
+                    <th style="padding: 16px; font-weight: 600; color: #374151; min-width: 150px;">Green Score</th>
+                    <th style="padding: 16px; font-weight: 600; color: #374151; white-space: nowrap;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Template row -->
+                <tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
+                    <td style="padding: 16px; font-weight: 600; color: #6b7280;"></td>
+                    <td style="padding: 16px;">
+                        <div>
+                            <div style="font-weight: 600; color: #111827; margin-bottom: 4px;" name="product-name"></div>
+                            <div style="font-size: 12px; color: #6b7280; line-height: 1.4;" name="description"></div>
                         </div>
-
-                        <button onclick="location.href='new_product.html'">
-                            <i data-lucide="plus" style="width: 20px; height: 20px;"></i>Add New Product
-                        </button>
-                    </div>
-
-                    <div
-                        style="max-height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
-                                    <th>ID</th>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Stock</th>
-                                    <th>Green Score</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="template"
-                                    style="display: none !important; border-bottom: 1px solid #f3f4f6;">
-                                    <td style="padding: 16px;"></td>
-                                    <td style="padding: 16px;">
-                                        <div>
-                                            <div style="font-weight: 600; color: #111827;" name="product-name"></div>
-                                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;"
-                                                name="description"></div>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 16px;"><span name="category"></span></td>
-                                    <td style="padding: 16px;" name="price"></td>
-                                    <td style="padding: 16px;"><span name="stock"></span></td>
-                                    <td style="padding: 16px;">
-                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                            <div
-                                                style="flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                                <div name="green-score-bar"
-                                                    style="height: 100%; background: linear-gradient(90deg, #22c55e, #3da547); border-radius: 4px;">
-                                                </div>
-                                            </div>
-                                            <span name="green-score-value"
-                                                style="font-weight: 600; color: #22c55e; min-width: 35px;"></span>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 16px;">
-                                        <button
-                                            style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;">
-                                            <i data-lucide="edit"></i>
-                                        </button>
-                                        <button
-                                            style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;">
-                                            <i data-lucide="trash-2"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    </td>
+                    <td style="padding: 16px;"><span name="category"></span></td>
+                    <td style="padding: 16px; font-weight: 600; color: #111827;" name="price"></td>
+                    <td style="padding: 16px;"><span name="stock"></span></td>
+                    <td style="padding: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
+                                <div name="green-score-bar" style="height: 100%; background: linear-gradient(90deg, #22c55e, #3da547); border-radius: 4px; transition: width 0.3s;"></div>
+                            </div>
+                            <span name="green-score-value" style="font-weight: 600; color: #22c55e; min-width: 35px; font-size: 14px;"></span>
+                        </div>
+                    </td>
+                    <td style="padding: 16px;">
+                        <div style="display: flex; gap: 8px;">
+                            <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6; transition: color 0.2s;" title="Edit">
+                                <i data-lucide="edit" style="width: 18px; height: 18px;"></i>
+                            </button>
+                            <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444; transition: color 0.2s;" title="Delete">
+                                <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
                 </div>
             </main>
         </div>
     </div>
 
     <script>
-        let products = [];
-        let categories = [];
+// Global variables
+let products = [];
+let categories = [];
+let categoryChart = null;
 
-        // Format tiền VND
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND'
-            }).format(amount);
-        }
-
-        // Load dữ liệu products
-       async function loadProductsData() {
-  try {
-    const storedData = localStorage.getItem('products');
-    if (storedData) {
-      const data = JSON.parse(storedData);
-      products = data.product;
-      categories = data.category;
-    } else {
-      const response = await fetch("../../dataset/products.json");
-      const data = await response.json();
-      products = data.product;
-      categories = data.category;
-
-      // Save to localStorage
-      localStorage.setItem('products', JSON.stringify(data));
-    }
-
-    // ✅ LUÔN LUÔN CẬP NHẬT UI DƯỚI ĐÂY
-    document.getElementById("total-products").textContent = products.length;
-    document.getElementById("total-categories").textContent = categories.length;
-
-    const avgScore = (
-      products.reduce((sum, p) => sum + p.green_score, 0) / products.length
-    ).toFixed(1);
-    document.getElementById("avg-green-score").textContent = avgScore;
-
-    const lowStock = products.filter(p => p.quantity_available <= 30).length;
-    document.getElementById("low-stock").textContent = lowStock;
-
-    const categoryFilter = document.getElementById("categoryFilter");
-    categories.forEach(cat => {
-      const option = document.createElement("option");
-      option.value = cat.category_id;
-      option.textContent = cat.category_name;
-      categoryFilter.appendChild(option);
-    });
-
-  } catch (error) {
-    console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
-  }
+// Format tiền VND
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    }).format(amount);
 }
 
+// Hàm render bảng sản phẩm
+function renderProductsTable(filteredProducts) {
+    const tbody = document.querySelector('table tbody');
+    const template = tbody.querySelector('tr.template');
     
-        // Load và render bảng products
-        async function loadProducts() {
-            try {
-                const response = await fetch("../../dataset/products.json");
-                const data = await response.json();
-                products = data.product;
-                categories = data.category;
-                updateTable(products);
-            } catch (error) {
-                console.error("Error loading products:", error);
-            }
+    if (!template) {
+        console.error('Template row not found');
+        return;
+    }
+
+    // Xóa tất cả rows cũ (trừ template)
+    const oldRows = tbody.querySelectorAll('tr:not(.template)');
+    oldRows.forEach(row => row.remove());
+
+    // Render từng sản phẩm
+    filteredProducts.forEach((product) => {
+        const row = template.cloneNode(true);
+        row.classList.remove('template');
+        row.style.display = '';
+
+        // ID
+        row.querySelector("td:nth-child(1)").textContent = product.product_id;
+
+        // Product Name & Description
+        row.querySelector('[name="product-name"]').textContent = product.product_name;
+        const descText = product.description.length > 60
+            ? product.description.substring(0, 60) + "..."
+            : product.description;
+        row.querySelector('[name="description"]').textContent = descText;
+
+        // Category
+        const category = categories.find(c => c.category_id === product.category_id);
+        const categorySpan = row.querySelector('[name="category"]');
+        categorySpan.textContent = category ? category.category_name : "N/A";
+        categorySpan.style.cssText = `
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        `;
+
+        // Price
+        row.querySelector('[name="price"]').textContent = formatCurrency(product.price_original);
+
+        // Stock
+        const stockSpan = row.querySelector('[name="stock"]');
+        stockSpan.textContent = product.quantity_available;
+
+        if (product.quantity_available <= 30) {
+            stockSpan.style.cssText = `
+                padding: 4px 12px;
+                background: #fef2f2;
+                color: #ef4444;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+            `;
+        } else {
+            stockSpan.style.cssText = `
+                padding: 4px 12px;
+                background: #f0fdf4;
+                color: #22c55e;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+            `;
         }
 
-        // Cập nhật bảng
-        function updateTable(filteredProducts) {
-            renderTable(filteredProducts, "table tbody", "table tbody tr.template", (row, product) => {
-                // ID
-                row.querySelector("td:nth-child(1)").textContent = `#${product.product_id}`;
-
-                // Product Name & Description
-                row.querySelector('[name="product-name"]').textContent = product.product_name;
-                const descText = product.description.length > 60
-                    ? product.description.substring(0, 60) + "..."
-                    : product.description;
-                row.querySelector('[name="description"]').textContent = descText;
-
-                // Category
-                const category = categories.find(c => c.category_id === product.category_id);
-                const categorySpan = row.querySelector('[name="category"]');
-                categorySpan.textContent = category ? category.category_name : "N/A";
-                categorySpan.style.cssText = `
-      padding: 6px 12px;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: white;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 500;
-      display: inline-block;
-    `;
-
-                // Price
-                row.querySelector('[name="price"]').textContent = formatCurrency(product.price);
-
-                // Stock
-                const stockSpan = row.querySelector('[name="stock"]');
-                stockSpan.textContent = product.quantity_available;
-
-                if (product.quantity_available <= 30) {
-                    stockSpan.style.cssText = `
-        padding: 4px 12px;
-        background: #fef2f2;
-        color: #ef4444;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-      `;
-                } else {
-                    stockSpan.style.cssText = `
-        padding: 4px 12px;
-        background: #f0fdf4;
-        color: #22c55e;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-      `;
-                }
-
-
-                // Green Score with progress bar
-                const scoreBar = row.querySelector('[name="green-score-bar"]');
-                const scoreValue = row.querySelector('[name="green-score-value"]');
-                scoreBar.style.width = `${product.green_score}%`;
-                scoreValue.textContent = product.green_score;
-            });
+        // Green Score with progress bar
+        const greenScore = product.green_score?.value || product.green_score || 0;
+        const scoreBar = row.querySelector('[name="green-score-bar"]');
+        const scoreValue = row.querySelector('[name="green-score-value"]');
+        
+        if (scoreBar && scoreValue) {
+            scoreBar.style.width = `${greenScore}%`;
+            scoreValue.textContent = greenScore;
         }
 
-        // Xử lý filter
-        function handleFilterChange() {
-            const searchValue = safeLower(document.getElementById("searchInput").value);
-            const categoryValue = document.getElementById("categoryFilter").value;
-            const stockValue = document.getElementById("stockFilter").value;
+        tbody.appendChild(row);
+        const editBtn = row.querySelector('button[title="Edit"]');
+const deleteBtn = row.querySelector('button[title="Delete"]');
 
-            const filtered = products.filter((product) => {
-                // Tìm kiếm theo tên hoặc mô tả
-                const matchSearch =
-                    searchValue === "" ||
-                    safeLower(product.product_name).includes(searchValue) ||
-                    safeLower(product.description).includes(searchValue);
+if (editBtn) {
+  editBtn.onclick = () => openEditModal(product.product_id, 'products', 'product_id');
+}
 
-                // Lọc theo category
-                const matchCategory = categoryValue === "all" || product.category_id === categoryValue;
+if (deleteBtn) {
+  deleteBtn.onclick = () => deleteItem(product.product_id, 'products', 'product_id');
+}
+    });
 
-                // Lọc theo stock
-                let matchStock = true;
-                if (stockValue === "in-stock") {
-                    matchStock = product.quantity_available > 30;
-                } else if (stockValue === "low-stock") {
-                    matchStock = product.quantity_available <= 30;
-                }
+    // Cập nhật icons sau khi render
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
 
-                return matchSearch && matchCategory && matchStock;
-            });
+// Load dữ liệu products
+async function loadProductsData() {
+    try {
+        const response = await fetch("../../dataset/products.json");
+        const data = await response.json();
+        products = data.product;
+        categories = data.category;
 
-            updateTable(filtered);
-        }
+        // Cập nhật stats
+        document.getElementById("total-products").textContent = products.length;
+        document.getElementById("total-categories").textContent = categories.length;
 
+        const avgScore = products.reduce((sum, p) => {
+            const score = p.green_score?.value || p.green_score || 0;
+            return sum + score;
+        }, 0) / products.length;
+        document.getElementById("avg-green-score").textContent = avgScore.toFixed(1);
 
-        document.addEventListener("DOMContentLoaded", () => {
-            lucide.createIcons();
-            loadProducts();
-            loadProductsData();
+        const lowStock = products.filter(p => p.quantity_available <= 30).length;
+        document.getElementById("low-stock").textContent = lowStock;
 
-            // Gắn event cho search
-            document.getElementById("searchInput").addEventListener("input", handleFilterChange);
-
-            // Gắn event cho các select filter
-            document.getElementById("categoryFilter").addEventListener("change", handleFilterChange);
-            document.getElementById("stockFilter").addEventListener("change", handleFilterChange);
-
-            // Thêm event Enter cho ô search
-            document.getElementById("searchInput").addEventListener("keypress", (e) => {
-                if (e.key === "Enter") {
-                    handleFilterChange();
-                }
-            });
+        // Thêm categories vào filter
+        const categoryFilter = document.getElementById("categoryFilter");
+        categories.forEach(cat => {
+            const option = document.createElement("option");
+            option.value = cat.category_id;
+            option.textContent = cat.category_name;
+            categoryFilter.appendChild(option);
         });
-    </script>
-    <!-- ==================== SCRIPTS FOR CHARTS ==================== -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <script>
-        let categoryChart = null;
+        // Render bảng
+        renderProductsTable(products);
 
-        // Load và vẽ Category Distribution Chart
-        async function loadCategoryChart() {
-            try {
-                const response = await fetch("../../dataset/products.json");
-                const data = await response.json();
+    } catch (error) {
+        console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
+    }
+}
 
-                const products = data.product;
-                const categories = data.category;
+// Xử lý filter
+function handleFilterChange() {
+    const searchValue = document.getElementById("searchInput").value.toLowerCase().trim();
+    const categoryValue = document.getElementById("categoryFilter").value;
+    const stockValue = document.getElementById("stockFilter").value;
 
-                // Đếm số sản phẩm theo category
-                const categoryCount = {};
-                categories.forEach(cat => {
-                    categoryCount[cat.category_id] = {
-                        name: cat.category_name,
-                        count: 0
-                    };
-                });
+    const filtered = products.filter((product) => {
+        // Tìm kiếm theo tên hoặc mô tả
+        const matchSearch =
+            searchValue === "" ||
+            product.product_name.toLowerCase().includes(searchValue) ||
+            product.description.toLowerCase().includes(searchValue);
 
-                products.forEach(product => {
-                    if (categoryCount[product.category_id]) {
-                        categoryCount[product.category_id].count++;
-                    }
-                });
+        // Lọc theo category
+        const matchCategory = categoryValue === "all" || product.category_id === categoryValue;
 
-                // Chuẩn bị dữ liệu cho chart
-                const labels = Object.values(categoryCount).map(c => c.name);
-                const counts = Object.values(categoryCount).map(c => c.count);
-                const colors = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444'];
+        // Lọc theo stock
+        let matchStock = true;
+        if (stockValue === "in-stock") {
+            matchStock = product.quantity_available > 30;
+        } else if (stockValue === "low-stock") {
+            matchStock = product.quantity_available <= 30;
+        }
 
-                // Vẽ Donut Chart
-                const ctx = document.getElementById('categoryChart').getContext('2d');
+        return matchSearch && matchCategory && matchStock;
+    });
 
-                if (categoryChart) {
-                    categoryChart.destroy();
-                }
+    renderProductsTable(filtered);
+}
 
-                categoryChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: counts,
-                            backgroundColor: colors,
-                            borderWidth: 0,
-                            borderRadius: 8,
-                            spacing: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    padding: 20,
-                                    font: {
-                                        size: 14,
-                                        family: 'Outfit'
-                                    },
-                                    usePointStyle: true,
-                                    pointStyle: 'circle'
-                                }
+// Load và vẽ Category Distribution Chart
+async function loadCategoryChart() {
+    try {
+        const response = await fetch("../../dataset/products.json");
+        const data = await response.json();
+
+        const products = data.product;
+        const categories = data.category;
+
+        // Đếm số sản phẩm theo category
+        const categoryCount = {};
+        categories.forEach(cat => {
+            categoryCount[cat.category_id] = {
+                name: cat.category_name,
+                count: 0
+            };
+        });
+
+        products.forEach(product => {
+            if (categoryCount[product.category_id]) {
+                categoryCount[product.category_id].count++;
+            }
+        });
+
+        // Chuẩn bị dữ liệu cho chart
+        const labels = Object.values(categoryCount).map(c => c.name);
+        const counts = Object.values(categoryCount).map(c => c.count);
+        const colors = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444'];
+
+        // Vẽ Donut Chart
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+
+        if (categoryChart) {
+            categoryChart.destroy();
+        }
+
+        categoryChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: colors,
+                    borderWidth: 0,
+                    borderRadius: 8,
+                    spacing: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14,
+                                family: 'Outfit'
                             },
-                            tooltip: {
-                                backgroundColor: '#111827',
-                                padding: 12,
-                                titleFont: {
-                                    size: 14,
-                                    family: 'Outfit'
-                                },
-                                bodyFont: {
-                                    size: 13,
-                                    family: 'Outfit'
-                                },
-                                cornerRadius: 8,
-                                callbacks: {
-                                    label: function (context) {
-                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                        return ` ${context.parsed} products (${percentage}%)`;
-                                    }
-                                }
-                            }
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#111827',
+                        padding: 12,
+                        titleFont: {
+                            size: 14,
+                            family: 'Outfit'
                         },
-                        cutout: '70%'
-                    }
-                });
-
-            } catch (error) {
-                console.error("Error loading category chart:", error);
-            }
-        }
-
-        // Load Top 5 Best Selling Products từ orders.json
-        async function loadTopProducts() {
-            try {
-                const response = await fetch("../../dataset/orders.json");
-                const data = await response.json();
-
-                const orders = data.orders;
-
-                // Tính tổng số lượng bán cho mỗi sản phẩm
-                const productSales = {};
-
-                orders.forEach(order => {
-                    if (order.status === "Completed") {
-                        order.items.forEach(item => {
-                            if (!productSales[item.product_id]) {
-                                productSales[item.product_id] = {
-                                    product_id: item.product_id,
-                                    product_name: item.product_name,
-                                    total_sold: 0,
-                                    revenue: 0
-                                };
+                        bodyFont: {
+                            size: 13,
+                            family: 'Outfit'
+                        },
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function (context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return ` ${context.parsed} products (${percentage}%)`;
                             }
-                            productSales[item.product_id].total_sold += item.quantity;
-                            productSales[item.product_id].revenue += item.quantity * item.unit_price;
-                        });
+                        }
                     }
-                });
-
-                // Chuyển thành array và sắp xếp theo số lượng bán
-                const sortedProducts = Object.values(productSales)
-                    .sort((a, b) => b.total_sold - a.total_sold)
-                    .slice(0, 5);
-
-                // Tìm max để tính % cho progress bar
-                const maxSold = sortedProducts[0]?.total_sold || 1;
-
-                // Render danh sách
-                renderTopProducts(sortedProducts, maxSold);
-
-            } catch (error) {
-                console.error("Error loading top products:", error);
+                },
+                cutout: '70%'
             }
-        }
-
-        // Render danh sách top products
-        function renderTopProducts(products, maxSold) {
-            const container = document.getElementById('topProductsList');
-            const template = container.querySelector('.top-product-item.template');
-
-            if (!template) return;
-
-            const templateClone = template.cloneNode(true);
-
-            // Xóa tất cả items cũ (trừ template)
-            const oldItems = container.querySelectorAll('.top-product-item:not(.template)');
-            oldItems.forEach(item => item.remove());
-
-            // Render products mới
-            products.forEach((product, index) => {
-                const item = templateClone.cloneNode(true);
-                item.classList.remove('template');
-                item.style.display = '';
-
-                // Rank
-                item.querySelector('[name="rank"]').textContent = index + 1;
-
-                // Product name
-                item.querySelector('[name="product-name"]').textContent = product.product_name;
-
-                // Sold count
-                item.querySelector('[name="sold-count"]').textContent = product.total_sold;
-
-                // Revenue
-                const revenueFormatted = new Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND'
-                }).format(product.revenue);
-                item.querySelector('[name="revenue"]').textContent = revenueFormatted;
-
-                // Progress bar
-                const percentage = (product.total_sold / maxSold) * 100;
-                item.querySelector('[name="progress-bar"]').style.width = `${percentage}%`;
-
-                // Gradient màu theo rank
-                const rankEl = item.querySelector('[name="rank"]');
-                if (index === 0) {
-                    rankEl.style.background = 'linear-gradient(135deg, #fbbf24, #f59e0b)'; // Gold
-                } else if (index === 1) {
-                    rankEl.style.background = 'linear-gradient(135deg, #d1d5db, #9ca3af)'; // Silver
-                } else if (index === 2) {
-                    rankEl.style.background = 'linear-gradient(135deg, #fb923c, #f97316)'; // Bronze
-                }
-
-                container.appendChild(item);
-            });
-        }
-
-        // Gọi hàm load charts khi DOM ready
-        document.addEventListener("DOMContentLoaded", () => {
-            loadCategoryChart();
-            loadTopProducts();
         });
-    </script>
-    <script src="script.js"></script>
+
+    } catch (error) {
+        console.error("Error loading category chart:", error);
+    }
+}
+
+// Load Top 5 Best Selling Products từ orders.json
+async function loadTopProducts() {
+    try {
+        const response = await fetch("../../dataset/orders.json");
+        const data = await response.json();
+
+        const orders = data.orders;
+
+        // Tính tổng số lượng bán cho mỗi sản phẩm
+        const productSales = {};
+
+        orders.forEach(order => {
+            if (order.status === "Completed") {
+                order.items.forEach(item => {
+                    if (!productSales[item.product_id]) {
+                        productSales[item.product_id] = {
+                            product_id: item.product_id,
+                            product_name: item.product_name,
+                            total_sold: 0,
+                            revenue: 0
+                        };
+                    }
+                    productSales[item.product_id].total_sold += item.quantity;
+                    productSales[item.product_id].revenue += item.quantity * item.unit_price;
+                });
+            }
+        });
+
+        // Chuyển thành array và sắp xếp theo số lượng bán
+        const sortedProducts = Object.values(productSales)
+            .sort((a, b) => b.total_sold - a.total_sold)
+            .slice(0, 5);
+
+        // Tìm max để tính % cho progress bar
+        const maxSold = sortedProducts[0]?.total_sold || 1;
+
+        // Render danh sách
+        renderTopProducts(sortedProducts, maxSold);
+
+    } catch (error) {
+        console.error("Error loading top products:", error);
+    }
+}
+
+// Render danh sách top products
+function renderTopProducts(products, maxSold) {
+    const container = document.getElementById('topProductsList');
+    const template = container.querySelector('.top-product-item.template');
+
+    if (!template) return;
+
+    const templateClone = template.cloneNode(true);
+
+    // Xóa tất cả items cũ (trừ template)
+    const oldItems = container.querySelectorAll('.top-product-item:not(.template)');
+    oldItems.forEach(item => item.remove());
+
+    // Render products mới
+    products.forEach((product, index) => {
+        const item = templateClone.cloneNode(true);
+        item.classList.remove('template');
+        item.style.display = '';
+
+        // Rank
+        item.querySelector('[name="rank"]').textContent = index + 1;
+
+        // Product name
+        item.querySelector('[name="product-name"]').textContent = product.product_name;
+
+        // Sold count
+        item.querySelector('[name="sold-count"]').textContent = product.total_sold;
+
+        // Revenue
+        const revenueFormatted = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(product.revenue);
+        item.querySelector('[name="revenue"]').textContent = revenueFormatted;
+
+        // Progress bar
+        const percentage = (product.total_sold / maxSold) * 100;
+        item.querySelector('[name="progress-bar"]').style.width = `${percentage}%`;
+
+        // Gradient màu theo rank
+        const rankEl = item.querySelector('[name="rank"]');
+        if (index === 0) {
+            rankEl.style.background = 'linear-gradient(135deg, #fbbf24, #f59e0b)'; // Gold
+        } else if (index === 1) {
+            rankEl.style.background = 'linear-gradient(135deg, #d1d5db, #9ca3af)'; // Silver
+        } else if (index === 2) {
+            rankEl.style.background = 'linear-gradient(135deg, #fb923c, #f97316)'; // Bronze
+        }
+
+        container.appendChild(item);
+    });
+}
+
+// Kiểm tra authentication và khởi tạo trang
+function initializePage() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const userRole = localStorage.getItem("userRole");
+
+    if (!isLoggedIn || userRole !== "administrator") {
+        alert("Please login as administrator to access this page.");
+        window.location.href = "../pages/00_LOGIN.html";
+        return;
+    }
+
+    // Display admin name
+    const userName = localStorage.getItem("userName");
+    if (userName) {
+        const userNameElement = document.querySelector(".user-name");
+        if (userNameElement) {
+            userNameElement.textContent = userName;
+        }
+    }
+
+    // Toggle Sidebar
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        });
+    }
+
+    // Load all data
+    loadProductsData();
+    loadCategoryChart();
+    loadTopProducts();
+
+    // Gắn event cho search
+    document.getElementById("searchInput").addEventListener("input", handleFilterChange);
+
+    // Gắn event cho các select filter
+    document.getElementById("categoryFilter").addEventListener("change", handleFilterChange);
+    document.getElementById("stockFilter").addEventListener("change", handleFilterChange);
+
+    // Thêm event Enter cho ô search
+    document.getElementById("searchInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            handleFilterChange();
+        }
+    });
+
+    // Khởi tạo Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+// Chỉ một DOMContentLoaded listener duy nhất
+document.addEventListener("DOMContentLoaded", initializePage);
+</script>
+
+<script src="script.js"></script>
 </body>
 
 </html>
