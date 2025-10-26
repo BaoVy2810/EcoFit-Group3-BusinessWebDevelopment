@@ -1,79 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Social icons interaction
-  document.querySelectorAll(".social svg").forEach((icon) => {
-    icon.addEventListener("click", () => {
-      console.log("Social icon clicked");
-    });
-  });
-
-  // Navigation links interaction
-  document.querySelectorAll(".nav a").forEach((link) => {
-    if (link.getAttribute("href") === "#") {
-      link.addEventListener("click", (e) => e.preventDefault());
-    }
-  });
-
-  // Footer items interaction
-  document.querySelectorAll(".footer ul li").forEach((item) => {
-    item.addEventListener("click", () => {
-      console.log("Footer item clicked:", item.textContent);
-    });
-  });
-
-  // Filter buttons functionality
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  const blogCards = document.querySelectorAll(".blog-card");
-
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      filterButtons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      const filter = btn.textContent.trim();
-
-      blogCards.forEach((card) => {
-        if (filter === "All Tags") {
-          card.style.display = "block";
-        } else {
-          const shouldShow = Math.random() > 0.3;
-          card.style.display = shouldShow ? "block" : "none";
-        }
-      });
-      console.log(`Filter applied: ${filter}`);
-    });
-  });
-
-  // Sort dropdown functionality
-  const sortSelect = document.querySelector(".sort-select");
-  if (sortSelect) {
-    sortSelect.addEventListener("change", () => {
-      const sortBy = sortSelect.value;
-      console.log(`Sort by: ${sortBy}`);
-      const blogGrid = document.querySelector(".blog-grid");
-      blogGrid.style.opacity = "0.7";
-      setTimeout(() => {
-        blogGrid.style.opacity = "1";
-        console.log(`Cards sorted by: ${sortBy}`);
-      }, 300);
-    });
-  }
-
-  // Read more buttons
-  document.querySelectorAll(".read-more-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const id = e.target.getAttribute("data-id");
-      window.location.href = `Blog_detail.html?id=${id}`;
-    });
-  });
-
-  // Blog content headings interaction
-  const blogHeadings = document.querySelectorAll(".blog-content h2");
-  blogHeadings.forEach((heading) => {
-    heading.addEventListener("click", () => {
-      console.log(`Heading clicked: ${heading.textContent}`);
-    });
-    heading.style.cursor = "pointer";
-  });
-
   // Pagination
   const numbersContainer = document.querySelector(".pagination-numbers");
   const prevBtn = document.querySelector(".pagination-btn.prev");
@@ -82,16 +7,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalPages = 30;
   const windowSize = 3;
 
-  // Store original titles when page first loads
-  const originalTitles = [];
+  // Store ONLY page 1 original data ONCE at load
+  const page1OriginalData = [];
   const blogGrid = document.querySelector(".blog-grid");
+
   if (blogGrid) {
     const cards = blogGrid.querySelectorAll(".blog-card");
     cards.forEach((card) => {
       const titleElem = card.querySelector(".card-title");
-      if (titleElem) {
-        originalTitles.push(titleElem.textContent.trim());
-      }
+      const imgElem = card.querySelector(".card-image img");
+      const excerptElem = card.querySelector(".card-excerpt");
+      const dateElem = card.querySelector(".card-date");
+      const tagElem = card.querySelector(".blog-tag");
+      const dataId = card.getAttribute("data-id");
+
+      page1OriginalData.push({
+        title: titleElem ? titleElem.textContent.trim() : "",
+        image: imgElem ? imgElem.getAttribute("src") : "",
+        excerpt: excerptElem ? excerptElem.textContent.trim() : "",
+        date: dateElem ? dateElem.textContent.trim() : "",
+        tag: tagElem ? tagElem.textContent.trim() : "",
+        category: card.getAttribute("data-category") || "",
+        dataId: dataId || String(Array.from(cards).indexOf(card) + 1),
+      });
     });
   }
 
@@ -164,8 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function simulatePageLoad(page) {
     const blogGrid = document.querySelector(".blog-grid");
+    if (!blogGrid) return;
+
     blogGrid.style.opacity = "0.5";
     blogGrid.style.transform = "translateY(10px)";
+
     setTimeout(() => {
       loadPageContent(page);
       blogGrid.style.opacity = "1";
@@ -175,10 +116,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadPageContent(page) {
     const blogGrid = document.querySelector(".blog-grid");
+    if (!blogGrid) return;
+
     const cards = blogGrid.querySelectorAll(".blog-card");
 
-    // Base titles without page numbers
-    const baseTitles = [
+    // Generic data for pages 2+
+    const genericTitles = [
       "Sustainable Living Tips for Beginners",
       "How to Reduce Plastic Waste at Home",
       "The Benefits of Organic Gardening",
@@ -188,152 +131,264 @@ document.addEventListener("DOMContentLoaded", () => {
       "Composting: A Complete Beginner's Guide",
       "Renewable Energy for Your Home",
       "Sustainable Fashion Choices",
-      "Zero Waste Kitchen Essentials",
-      "DIY Natural Cleaning Recipes",
-      "Sustainable Travel Tips",
-      "Eco-Friendly Pet Care",
-      "Green Building Materials",
-      "Solar Power for Beginners",
-      "Organic Vegetable Gardening",
-      "Reducing Food Waste at Home",
-      "Sustainable Fashion Brands",
-      "Electric Vehicle Guide",
-      "Composting in Small Spaces",
     ];
 
-    // Update card titles
+    const genericExcerpts = [
+      "Discover simple ways to start your eco-friendly journey today.",
+      "Practical tips for reducing single-use plastics in your daily life.",
+      "Learn the benefits of growing your own organic vegetables.",
+      "Find the best eco-friendly products for a cleaner home.",
+      "Understand how your choices impact the environment.",
+      "Explore sustainable ways to travel and commute.",
+      "A step-by-step guide to starting your compost pile.",
+      "Harness the power of renewable energy at home.",
+      "Make sustainable fashion choices that look great.",
+    ];
+
+    const genericTags = [
+      "Eco Habits",
+      "Smart Shopping",
+      "Community & Local",
+      "Eco Habits",
+      "Smart Shopping",
+      "Sustainable Fashion",
+      "Eco Habits",
+      "Community & Local",
+      "Greentech",
+    ];
+
+    const genericCategories = [
+      "eco-habits",
+      "smart-shopping",
+      "community",
+      "eco-habits",
+      "smart-shopping",
+      "fashion",
+      "eco-habits",
+      "community",
+      "greentech",
+    ];
+
+    // Update each card
     cards.forEach((card, index) => {
       const titleElem = card.querySelector(".card-title");
-      if (titleElem) {
-        const titleIndex = (page - 1) * 3 + index;
-        const baseTitle = baseTitles[titleIndex % baseTitles.length];
+      const imgElem = card.querySelector(".card-image img");
+      const excerptElem = card.querySelector(".card-excerpt");
+      const dateElem = card.querySelector(".card-date");
+      const tagElem = card.querySelector(".blog-tag");
+      const linkBtn = card.querySelector(".card-link");
 
-        // Only add page number if NOT on page 1
-        if (page === 1) {
-          titleElem.textContent = baseTitle;
-        } else {
-          titleElem.textContent = `${baseTitle}`;
+      if (page === 1) {
+        // RESTORE PAGE 1 ORIGINAL DATA
+        if (page1OriginalData[index]) {
+          const original = page1OriginalData[index];
+
+          if (titleElem) titleElem.textContent = original.title;
+          if (excerptElem) excerptElem.textContent = original.excerpt;
+          if (dateElem) dateElem.textContent = original.date;
+          if (tagElem) tagElem.textContent = original.tag;
+
+          // IMPORTANT: Force reload original image
+          if (imgElem && original.image) {
+            imgElem.setAttribute("src", original.image);
+            imgElem.src = original.image; // Double set to force refresh
+          }
+
+          card.setAttribute("data-id", original.dataId);
+          card.setAttribute("data-category", original.category);
+
+          if (linkBtn) {
+            linkBtn.setAttribute("data-id", original.dataId);
+          }
+        }
+      } else {
+        // GENERATE NEW DATA FOR PAGE 2+
+        const dataIndex =
+          ((page - 2) * cards.length + index) % genericTitles.length;
+        const newDataId = (page - 1) * cards.length + index + 1;
+
+        // Update all attributes
+        card.setAttribute("data-id", String(newDataId));
+        card.setAttribute(
+          "data-category",
+          genericCategories[index % genericCategories.length]
+        );
+
+        if (linkBtn) {
+          linkBtn.setAttribute("data-id", String(newDataId));
+        }
+
+        if (titleElem) {
+          titleElem.textContent = `${genericTitles[dataIndex]}`;
+        }
+
+        // GENERATE NEW PLACEHOLDER IMAGE
+        if (imgElem) {
+          const colors = [
+            "81c784/white",
+            "66bb6a/white",
+            "5cb85c/white",
+            "4caf50/white",
+            "43a047/white",
+            "388e3c/white",
+            "2e7d32/white",
+            "1b5e20/white",
+            "689f38/white",
+          ];
+          const colorIndex =
+            ((page - 2) * cards.length + index) % colors.length;
+          const placeholderNames = [
+            "Eco+Tips",
+            "Green+Life",
+            "Organic+Farm",
+            "Eco+Product",
+            "Carbon+Free",
+            "Green+Travel",
+            "Smart+Compost",
+            "Renewable+Energy",
+            "Eco+Fashion",
+          ];
+          const placeholderText =
+            placeholderNames[index % placeholderNames.length];
+          const newSrc = `https://placehold.co/400x250/${colors[colorIndex]}?text=${placeholderText}`;
+
+          imgElem.setAttribute("src", newSrc);
+          imgElem.src = newSrc; // Force update
+        }
+
+        if (excerptElem) {
+          excerptElem.textContent = genericExcerpts[dataIndex];
+        }
+
+        if (dateElem) {
+          const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const day = (((page - 1) * 3 + index + 1) % 28) + 1;
+          const monthIndex = ((page - 1) * 2 + index) % 12;
+          dateElem.textContent = `${day} ${months[monthIndex]} 2025`;
+        }
+
+        if (tagElem) {
+          tagElem.textContent = genericTags[index % genericTags.length];
         }
       }
     });
-
-    // Update blog content headings (if they exist on the page)
-    const blogHeadings = document.querySelectorAll(".blog-content h2");
-    if (blogHeadings.length > 0) {
-      const headingTexts = ["Headline 1", "Headline 2", "Headline 3"];
-      blogHeadings.forEach((heading, index) => {
-        if (page === 1) {
-          heading.textContent = headingTexts[index];
-        } else {
-          heading.textContent = `${headingTexts[index]}`;
-        }
-      });
-    }
-
-    // Update blog content paragraphs
-    const blogParagraphs = document.querySelectorAll(".blog-content p");
-    if (blogParagraphs.length > 0) {
-      const paragraphTexts = [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Feugiat pretium, nisi sed id id sed orci, tempor. Pellentesque egestas odio ante, accumsan cursus. Fermentum in bibendum aliquet vel vitae vero ut nibh. Leo feugiat enim enim vulputate cursus eu nisi pharetra.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
-      ];
-      blogParagraphs.forEach((paragraph, index) => {
-        paragraph.textContent =
-          paragraphTexts[index] ||
-          `Paragraph ${index + 1} content for page ${page}`;
-      });
-    }
   }
 
-  // Initialize pagination
-  updatePagination();
+  // Handle card clicks with event delegation (works for dynamically updated cards)
+  if (blogGrid) {
+    blogGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".blog-card");
+      const linkBtn = e.target.closest(".card-link");
+
+      if (linkBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = linkBtn.getAttribute("data-id");
+        if (id) {
+          console.log(`Navigating to blog detail: ${id}`);
+          window.location.href = `15_BLOG_DETAIL.html?id=${id}`;
+        }
+        return;
+      }
+
+      if (card) {
+        const id = card.getAttribute("data-id");
+        if (id) {
+          console.log(`Navigating to blog detail: ${id}`);
+          window.location.href = `15_BLOG_DETAIL.html?id=${id}`;
+        }
+      }
+    });
+  }
+
+  // Filter buttons functionality
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filter = btn.getAttribute("data-filter");
+
+      const cards = document.querySelectorAll(".blog-card");
+      cards.forEach((card) => {
+        if (filter === "all" || card.getAttribute("data-category") === filter) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // Sort dropdown
+  const sortSelect = document.querySelector(".sort-select");
+  if (sortSelect) {
+    sortSelect.addEventListener("change", () => {
+      const blogGrid = document.querySelector(".blog-grid");
+      if (blogGrid) {
+        blogGrid.style.opacity = "0.7";
+        setTimeout(() => {
+          blogGrid.style.opacity = "1";
+        }, 300);
+      }
+    });
+  }
+
+  // Card hover animations
+  if (blogGrid) {
+    blogGrid.addEventListener(
+      "mouseenter",
+      (e) => {
+        const card = e.target.closest(".blog-card");
+        if (card) {
+          card.style.transform = "translateY(-8px)";
+          card.style.transition = "transform 0.3s ease";
+        }
+      },
+      true
+    );
+
+    blogGrid.addEventListener(
+      "mouseleave",
+      (e) => {
+        const card = e.target.closest(".blog-card");
+        if (card) {
+          card.style.transform = "translateY(0)";
+        }
+      },
+      true
+    );
+  }
 
   // Search functionality
   const searchInput = document.querySelector(".search-input");
   const searchBtn = document.querySelector(".search-btn");
-
   if (searchInput && searchBtn) {
     searchBtn.addEventListener("click", () => {
       const query = searchInput.value.trim();
-      if (query) {
-        console.log("Searching for:", query);
-      }
+      if (query) console.log("Searching:", query);
     });
-
     searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         const query = searchInput.value.trim();
-        if (query) {
-          console.log("Searching for:", query);
-        }
+        if (query) console.log("Searching:", query);
       }
     });
   }
 
-  // Header actions
-  document.querySelectorAll(".icon").forEach((icon) => {
-    icon.addEventListener("click", () => {
-      console.log("Header icon clicked");
-    });
-  });
-
-  // Cart button
-  const cartBtn = document.querySelector(".cart-btn");
-  if (cartBtn) {
-    cartBtn.addEventListener("click", () => {
-      console.log("Cart clicked");
-    });
-  }
-
-  // User avatar
-  const userAvatar = document.querySelector(".user-avatar");
-  if (userAvatar) {
-    userAvatar.addEventListener("click", () => {
-      console.log("User avatar clicked");
-    });
-  }
-
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
-      if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    });
-  });
-
-  // Card hover animations
-  const cards = document.querySelectorAll(".blog-card");
-  cards.forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      card.style.transform = "translateY(-8px)";
-    });
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "translateY(0)";
-    });
-  });
-
-  // Blog content hover animation
-  const blogContent = document.querySelector(".blog-content");
-  if (blogContent) {
-    const paragraphs = blogContent.querySelectorAll("p");
-    paragraphs.forEach((p) => {
-      p.addEventListener("mouseenter", () => {
-        p.style.backgroundColor = "#f8f9fa";
-        p.style.transition = "background-color 0.3s ease";
-      });
-      p.addEventListener("mouseleave", () => {
-        p.style.backgroundColor = "transparent";
-      });
-    });
-  }
+  // Initialize
+  updatePagination();
 });
