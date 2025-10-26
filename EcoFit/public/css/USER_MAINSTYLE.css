@@ -3046,6 +3046,8 @@ h1 span {
   width: 300px;
   padding: 60px 40px;
   border-right: 1px solid #e5e5e5;
+  flex-shrink: 0; 
+  background: #f9fcf8;
 }
 .menu-section {
   margin-bottom: 60px;
@@ -3066,7 +3068,7 @@ h1 span {
   margin: 0;
 }
 .sidebar nav ul li {
-  margin-bottom: 16px;
+  margin-bottom: 16px !important;
 }
 .sidebar nav ul li:last-child {
   margin-bottom: 0;
@@ -3077,7 +3079,7 @@ h1 span {
   font-size: 16px;
   font-weight: 400;
   display: block;
-  padding: 4px 0;
+  padding: 4px 0 !important;
   transition: color 0.2s ease;
   white-space: nowrap;
 }
@@ -3092,6 +3094,7 @@ h1 span {
 .content {
   flex: 1;
   padding: 60px 80px;
+  background: #f9fcf8;
 }
 .content h2 {
   font-size: 28px;
