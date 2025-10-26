@@ -17,7 +17,27 @@ async function loadProducts() {
         categories = data.category || [];
         filteredProducts = [...allProducts];
         currentPage = 1;
-        displayProductsForPage();
+        
+        // ✅ CHECK IF CATEGORY WAS SELECTED FROM PAGE 02
+        const selectedCategory = sessionStorage.getItem('selectedCategory');
+        if (selectedCategory) {
+            // Auto-check the corresponding category checkbox
+            const checkboxes = document.querySelectorAll('.filter-group:nth-child(2) input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const label = checkbox.parentElement.textContent.trim();
+                if (label === selectedCategory) {
+                    checkbox.checked = true;
+                }
+            });
+            
+            // Clear the stored category
+            sessionStorage.removeItem('selectedCategory');
+            
+            // Apply filter immediately
+            filterProducts();
+        } else {
+            displayProductsForPage();
+        }
     } catch (error) {
         console.error('Error loading products:', error);
     }
