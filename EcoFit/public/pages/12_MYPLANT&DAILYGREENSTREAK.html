@@ -1,191 +1,190 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>12_MYPLANT&DAILYGREENSTREAK</title>
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12_MYPLANT&DAILYGREENSTREAK</title>
 
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
-  </head>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap"
+    rel="stylesheet" />
 
-  <body>
-    <!-- Header -->
-    <iframe
-      src="../template/header.html"
-      id="header-frame"
-      class="header-frame"
-      style="width: 100%; border: none; overflow: hidden"
-    ></iframe>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
+</head>
 
-    <!-- Main Content -->
-    <div class="personal_info_container no-padding">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="menu-section">
-          <h1>My Account</h1>
-          <nav>
-            <ul>
-              <li class="active">
-                <a href="12_MYPLANT&DAILYGREENSTREAK.html">
-                  My Plant & Daily Green Streak
-                </a>
-              </li>
-              <li><a href="08_PAYMENT2.html">Orders</a></li>
-            </ul>
-          </nav>
-        </div>
-        <div class="menu-section">
-          <h1>Settings</h1>
-          <nav>
-            <ul>
-              <li><a href="09_PERSONAL_INFO.html">Personal Info</a></li>
-              <li><a href="11_PASSWORD.html">Password</a></li>
-              <li><a href="10_NOTIFICATION.html">Notifications</a></li>
-              <li><a href="#" id="sidebar-logout">Logout</a></li>
-            </ul>
-          </nav>
-        </div>
+<body>
+  <iframe id="header-frame" class="header-frame"></iframe>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const header = document.getElementById("header-frame");
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      header.src = isLoggedIn
+        ? "../template/header.html"
+        : "../template/header0.html";
+    });
+
+    window.addEventListener("message", (e) => {
+      if (!e.data || !e.data.action) return;
+
+      // Bấm nút Login trong header0
+      if (e.data.action === "goToLogin") {
+        window.location.href = "00_LOGIN.html";
+      }
+
+      // Bấm nút Sign Up trong header0
+      if (e.data.action === "goToSignup") {
+        window.location.href = "00_SIGNUP.html";
+      }
+
+      // Khi đăng nhập thành công
+      if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
+        localStorage.setItem("isLoggedIn", "true");
+        document.getElementById("header-frame").src = "../template/header.html";
+      }
+
+      // Khi người dùng logout từ header.html
+      if (e.data.action === "logout") {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("login_infor");
+        document.getElementById("header-frame").src = "../template/header0.html";
+      }
+    });
+  </script>
+
+  <!-- Main Content -->
+  <div class="personal_info_container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="menu-section">
+        <h1>My Account</h1>
+        <nav>
+          <ul>
+            <li class="active">
+              <a href="12_MYPLANT&DAILYGREENSTREAK.html">My Plant & Daily Green Streak</a>
+            </li>
+            <li><a href="08_PAYMENT2.html">Orders</a></li>
+          </ul>
+        </nav>
       </div>
+      <div class="menu-section">
+        <h1>Settings</h1>
+        <nav>
+          <ul>
+            <li><a href="09_PERSONAL_INFO.html">Personal Info</a></li>
+            <li><a href="11_PASSWORD.html">Password</a></li>
+            <li><a href="10_NOTIFICATION.html">Notifications</a></li>
+            <li><a href="#" id="sidebar-logout">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
 
-      <!-- Main Content Area -->
-      <div class="content">
-        <div class="myplant-main-content">
-          <h2 class="page-title">My Plant & Daily Green Streak</h2>
 
-          <div class="myplant-two-col">
-            <div class="plant-card">
-              <div class="plant-display">
-                <img id="plant-img" src="../images/hat.png" alt="Plant Stage" />
+    <!-- Main Content Area -->
+    <main class="content">
+      <h2 class="page-title"><b>My Plant & Daily Green Streak</b></h2>
+
+      <div class="myplant-two-col">
+        <div class="plant-card">
+          <div class="plant-display">
+            <img id="plant-img" src="../images/hat.png" alt="Plant Stage" />
+          </div>
+
+          <div class="plant-info-wrapper">
+            <div class="plant-info-left">
+              <div class="info-item">
+                <span class="info-label">Current Period:</span>
+                <span class="info-value" id="period">Seed</span>
               </div>
-
-              <div class="plant-info-wrapper">
-                <div class="plant-info-left">
-                  <div class="info-item">
-                    <span class="info-label">Current Period:</span>
-                    <span class="info-value" id="period">Seed</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Green Score:</span>
-                    <span class="info-value" id="green-score">0%</span>
-                  </div>
-                </div>
-
-                <!-- Circular Progress Chart -->
-                <div class="progress-circle">
-                  <svg
-                    width="100"
-                    height="100"
-                    viewBox="0 0 100 100"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="42"
-                      fill="none"
-                      stroke="#e5e5e5"
-                      stroke-width="6"
-                    />
-                    <circle
-                      id="progress-ring"
-                      cx="50"
-                      cy="50"
-                      r="42"
-                      fill="none"
-                      stroke="#69bd76"
-                      stroke-width="6"
-                      stroke-linecap="round"
-                      stroke-dasharray="263.894"
-                      stroke-dashoffset="263.894"
-                      transform="rotate(-90 50 50)"
-                      style="transition: stroke-dashoffset 0.6s ease-in-out"
-                    />
-                  </svg>
-                  <div class="progress-text">
-                    <span id="progress-percent">0</span>%
-                  </div>
-                </div>
+              <div class="info-item">
+                <span class="info-label">Green Score:</span>
+                <span class="info-value" id="green-score">0%</span>
               </div>
             </div>
 
-            <!-- Right column: calendar + button -->
-            <div class="calendar-column">
-              <div class="myplant-calendar" style="margin-bottom: 18px">
-                <div class="month-header">
-                  <span class="arrow" id="prev-month">←</span>
-                  <span class="month-title" id="month-title">Oct 2025</span>
-                  <span class="arrow" id="next-month">→</span>
-                </div>
-
-                <div class="days-header">
-                  <span>Mon</span>
-                  <span>Tue</span>
-                  <span>Wed</span>
-                  <span>Thu</span>
-                  <span>Fri</span>
-                  <span>Sat</span>
-                  <span>Sun</span>
-                </div>
-
-                <div class="days-grid" id="days-container">
-                  <!-- JavaScript will populate calendar here -->
-                </div>
-              </div>
-
-              <div style="display: flex; justify-content: center">
-                <button id="reward-btn" class="reward-btn">Claim Reward</button>
+            <!-- Circular Progress Chart -->
+            <div class="progress-circle">
+              <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#e5e5e5" stroke-width="6" />
+                <circle id="progress-ring" cx="50" cy="50" r="42" fill="none" stroke="#69bd76" stroke-width="6"
+                  stroke-linecap="round" stroke-dasharray="263.894" stroke-dashoffset="263.894"
+                  transform="rotate(-90 50 50)" style="transition: stroke-dashoffset 0.6s ease-in-out" />
+              </svg>
+              <div class="progress-text">
+                <span id="progress-percent">0</span>%
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Right column: calendar + button -->
+        <div class="calendar-column">
+          <div class="myplant-calendar" style="margin-bottom: 18px">
+            <div class="month-header">
+              <span class="arrow" id="prev-month">←</span>
+              <span class="month-title" id="month-title">Oct 2025</span>
+              <span class="arrow" id="next-month">→</span>
+            </div>
+
+            <div class="days-header">
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+              <span>Sun</span>
+            </div>
+
+            <div class="days-grid" id="days-container">
+              <!-- JavaScript will populate calendar here -->
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: center">
+            <button id="reward-btn" class="reward-btn">Claim Reward</button>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
+  </div>
 
-    <!-- Footer -->
-    <iframe
-      src="../template/footer.html"
-      class="footer-frame"
-      style="width: 100%; border: none; overflow: hidden"
-    ></iframe>
-    <script>
+
+  <!-- Footer -->
+  <iframe src="../template/footer.html" class="footer-frame"></iframe>
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
-    const logoutLink = document.getElementById("sidebar-logout");
-    if (logoutLink) {
+      const logoutLink = document.getElementById("sidebar-logout");
+      if (logoutLink) {
         logoutLink.addEventListener("click", (e) => {
-        e.preventDefault();
+          e.preventDefault();
 
-        // Xóa thông tin đăng nhập
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("login_infor");
+          // Xóa thông tin đăng nhập
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("login_infor");
 
-        // Gửi tín hiệu logout cho header
-        const header = document.getElementById("header-frame");
-        if (header && header.contentWindow) {
+          // Gửi tín hiệu logout cho header
+          const header = document.getElementById("header-frame");
+          if (header && header.contentWindow) {
             header.contentWindow.postMessage({ action: "logout" }, "*");
-        }
+          }
 
-        // Reload header để trở lại header0
-        header.src = "../template/header0.html";
+          // Reload header để trở lại header0
+          header.src = "../template/header0.html";
 
-        // Chuyển về trang chủ
-        window.location.href = "01_HOMEPAGE.html";
+          // Chuyển về trang chủ
+          window.location.href = "01_HOMEPAGE.html";
         });
-    }
+      }
     });
-    </script>
-    <script src="../js/myplant.js"></script>
-  </body>
+  </script>
+  <script src="../js/myplant.js"></script>
+</body>
+
 </html>
