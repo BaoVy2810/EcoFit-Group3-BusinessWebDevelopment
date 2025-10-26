@@ -348,7 +348,47 @@
                 background: #ced4da;
             }
         `;
-        
+        // 🔹 Compact layout fix to match header spacing
+        style.textContent += `
+            .notification-popup * {
+                font-family: 'Outfit', sans-serif !important;
+                line-height: 1.3 !important;
+                letter-spacing: 0.2px;
+            }
+
+            .notification-item {
+                padding: 12px 18px !important; /* giảm padding để gọn hơn */
+                gap: 10px !important;
+            }
+
+            .notification-icon {
+                width: 38px !important;
+                height: 38px !important;
+                font-size: 20px !important;
+            }
+
+            .notification-title {
+                font-size: 14.5px !important;
+            }
+
+            .notification-message {
+                font-size: 13.5px !important;
+                margin-bottom: 4px !important;
+            }
+
+            .notification-time {
+                font-size: 11.5px !important;
+                color: #a0a0a0 !important;
+            }
+
+            .popup-header, .popup-footer {
+                padding: 14px 18px !important;
+            }
+
+            .popup-title {
+                font-size: 18px !important;
+            }
+        `;
         document.head.appendChild(style);
     }
 
@@ -604,53 +644,87 @@
             }
         });
     }
+    // ==========================================
+// INIT (iframe-aware)
+// ==========================================
 
-    // ==========================================
-    // INIT
-    // ==========================================
-    
-    function init() {
-        console.log('🔔 Notification system initialized');
-        
-        // Wait for DOM ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                initEventListeners();
-                updateBadge();
-            });
-        } else {
-            initEventListeners();
-            updateBadge();
-        }
-        
-        // Demo: Add notification after 5 seconds
-        setTimeout(() => {
-            addNotification({
-                icon: '⭐',
-                iconClass: 'gift',
-                title: 'New reward points!',
-                message: 'You just received 100 reward points from your recent order.',
-                link: '#rewards'
-            });
-        }, 5000);
+function init() {
+  console.log('🔔 Notification system initialized');
+
+  // Nếu file chạy trong header iframe
+  const inIframe = window.parent && window.parent !== window;
+
+  if (inIframe) {
+    const bellButton = document.getElementById('bell-button');
+    if (bellButton) {
+      bellButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        const rect = bellButton.getBoundingClientRect();
+        const bellPosition = { top: rect.bottom, right: window.innerWidth - rect.right };
+
+        // Gửi toàn bộ dữ liệu notification lên parent page
+        window.parent.postMessage({
+          action: "toggleNotifications",
+          bellPosition,
+          notifications
+        }, "*");
+      });
     }
 
-    // ==========================================
-    // EXPORT PUBLIC API
-    // ==========================================
-    
-    window.NotificationSystem = {
-        init,
-        toggleNotifications,
-        closeNotifications,
-        markAsRead,
-        markAllAsRead,
-        viewAllNotifications,
-        addNotification,
-        notifications
-    };
+    // Không tạo popup trong iframe
+    updateBadge();
+    return;
+  }
 
-    // Auto init
-    init();
+  // Nếu đang chạy trực tiếp (trong trang cha)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initEventListeners();
+      updateBadge();
+    });
+  } else {
+    initEventListeners();
+    updateBadge();
+  }
+
+  // Demo: thêm thông báo mới sau 5s
+  setTimeout(() => {
+    addNotification({
+      icon: '⭐',
+      iconClass: 'gift',
+      title: 'New reward points!',
+      message: 'You just received 100 reward points from your recent order.',
+      link: '#rewards'
+    });
+  }, 5000);
+}
+
+// ==========================================
+// EXPORT PUBLIC API
+// ==========================================
+
+window.NotificationSystem = {
+  init,
+  toggleNotifications,
+  closeNotifications,
+  markAsRead,
+  markAllAsRead,
+  viewAllNotifications,
+  addNotification,
+  notifications
+};
+
+// Lắng nghe tín hiệu từ iframe header
+window.addEventListener("message", (e) => {
+  if (e.data?.action === "toggleNotifications") {
+    const { bellPosition, notifications: data } = e.data;
+    if (data) notifications = data; // đồng bộ dữ liệu
+    toggleNotifications(bellPosition);
+  }
+});
+
+// Auto init
+init();
 
 })();
