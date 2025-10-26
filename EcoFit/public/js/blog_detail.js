@@ -26,14 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (blog.image && blog.image.trim() !== "") {
         img.src = blog.image; // nếu blog có ảnh riêng trong JSON
       } else {
-        img.src = "../../../src/blog_banner.png"; // banner mặc định
+        img.src = "../../dataset/banner/blog_banner.png"; // banner mặc định
       }
 
       img.alt = blog.title;
       img.onerror = () => {
         console.warn("⚠️ Ảnh không tìm thấy:", img.src);
         // Fallback to default banner if image fails to load
-        img.src = "../../../src/blog_banner.png";
+        img.src = "../../dataset/banner/blog_banner.png";
       };
 
       // 🧾 Hiển thị nội dung blog
