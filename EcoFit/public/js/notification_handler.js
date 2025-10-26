@@ -719,6 +719,16 @@
                 closeNotifications();
             }
         });
+
+        setTimeout(() => {
+        addNotification({
+            icon: '⭐',
+            iconClass: 'gift',
+            title: 'New reward points from Parent!',
+            message: 'You just received 100 reward points from the parent page.',
+            link: '#rewards'
+        });
+    }, 5000);
         
         console.log('🔔 Parent: Init completed');
     }
