@@ -1,25 +1,11 @@
-// ==========================================
-// BELL NOTIFICATION SYSTEM (UPDATED FOR IFRAME SUPPORT)
-// File: bell_notification.js
-// ==========================================
-
 (function() {
     'use strict';
 
-    // ==========================================
-    // CONFIGURATION
-    // ==========================================
-    
     const CONFIG = {
         isInIframe: window.self !== window.top,
-        parentOrigin: '*', // Thay bằng domain cụ thể để bảo mật
+        parentOrigin: '*', 
         debug: true
     };
-
-    // ==========================================
-    // NOTIFICATION DATA
-    // ==========================================
-    
     let notifications = [
         {
             id: 1,
@@ -62,53 +48,53 @@
             link: '#policy'
         }
     ];
-
-    // ==========================================
-    // IFRAME COMMUNICATION
-    // ==========================================
-    
     function sendToParent(message) {
         if (CONFIG.isInIframe && window.parent) {
             if (CONFIG.debug) console.log('🔔 Sending to parent:', message);
             window.parent.postMessage(message, CONFIG.parentOrigin);
         }
     }
-
     function handleParentMessage(event) {
-        // Kiểm tra origin để bảo mật
-        // if (event.origin !== 'https://your-domain.com') return;
-        
-        const data = event.data;
-        if (CONFIG.debug) console.log('🔔 Received from parent:', data);
-        
-        switch (data.type) {
-            case 'PARENT_READY':
-                // Parent thông báo đã sẵn sàng
-                updateBadge(); // Đồng bộ badge ban đầu
-                break;
-                
-            case 'UPDATE_BADGE':
-                // Parent yêu cầu cập nhật badge
-                updateBadge();
-                break;
-                
-            case 'ADD_NOTIFICATION':
-                // Parent thêm notification mới
-                addNotification(data.notification);
-                break;
+    const data = event.data;
+    if (CONFIG.debug) console.log('🔔 Received from parent:', data);
+    
+    switch (data.type) {
+        case 'PARENT_READY':
+            updateBadge();
+            break;
+            
+        case 'UPDATE_BADGE':
+            updateBadge();
+            break;
+            
+        case 'ADD_NOTIFICATION':
+            addNotification(data.notification);
+            break;
+            
+        case 'NOTIFICATION_READ':
+            if (data.fromParent) {
+                markAsRead(data.notificationId);
+            }
+            break;
+            
+        case 'MARK_ALL_READ':
+            if (data.fromParent) {
+                markAllAsRead();
+            }
+            break;
+            
+        case 'VIEW_ALL_NOTIFICATIONS':
+            if (data.fromParent) {
+                viewAllNotifications();
+            }
+            break;
         }
     }
-
-    // ==========================================
-    // CREATE POPUP HTML (CHỈ KHI KHÔNG PHẢI IFRAME)
-    // ==========================================
-    
     function createNotificationPopup() {
         if (CONFIG.isInIframe) {
             if (CONFIG.debug) console.log('🔔 In iframe mode, skipping popup creation');
             return;
         }
-        
         // Create overlay
         const overlay = document.createElement('div');
         overlay.id = 'notification-overlay';
@@ -146,10 +132,6 @@
         injectStyles();
     }
 
-    // ==========================================
-    // INJECT CSS STYLES (CHỈ KHI KHÔNG PHẢI IFRAME)
-    // ==========================================
-    
     function injectStyles() {
         if (CONFIG.isInIframe || document.getElementById('notification-styles')) return;
         
@@ -494,10 +476,6 @@
         document.head.appendChild(style);
     }
 
-    // ==========================================
-    // POSITION POPUP UNDER BELL (CHỈ KHI KHÔNG PHẢI IFRAME)
-    // ==========================================
-    
     function positionPopup() {
         if (CONFIG.isInIframe) return;
         
@@ -539,10 +517,6 @@
         }
     }
 
-    // ==========================================
-    // TOGGLE NOTIFICATIONS (HỖ TRỢ CẢ IFRAME VÀ STANDALONE)
-    // ==========================================
-    
     function toggleNotifications() {
         if (CONFIG.isInIframe) {
             // Gửi thông tin đến parent
@@ -608,10 +582,6 @@
         if (overlay) overlay.classList.remove('show');
     }
 
-    // ==========================================
-    // RENDER NOTIFICATIONS
-    // ==========================================
-    
     function renderNotifications() {
         if (CONFIG.isInIframe) {
             // Trong iframe, chỉ cập nhật badge là đủ
@@ -649,10 +619,6 @@
         updateBadge();
     }
 
-    // ==========================================
-    // MARK AS READ
-    // ==========================================
-    
     function markAsRead(id) {
         const notification = notifications.find(n => n.id === id);
         if (notification) {
@@ -690,10 +656,6 @@
         }
     }
 
-    // ==========================================
-    // UPDATE BADGE
-    // ==========================================
-    
     function updateBadge() {
         const unreadCount = notifications.filter(n => !n.read).length;
         const badge = document.querySelector('#bell-button .badge');
@@ -716,10 +678,6 @@
         }
     }
 
-    // ==========================================
-    // VIEW ALL NOTIFICATIONS
-    // ==========================================
-    
     function viewAllNotifications() {
         if (CONFIG.isInIframe) {
             sendToParent({ 
@@ -734,10 +692,6 @@
         closeNotifications();
     }
 
-    // ==========================================
-    // TOAST NOTIFICATION (CHỈ KHI KHÔNG PHẢI IFRAME)
-    // ==========================================
-    
     function showToast(message) {
         if (CONFIG.isInIframe) return;
         
@@ -756,10 +710,6 @@
         }, 2500);
     }
 
-    // ==========================================
-    // ADD NEW NOTIFICATION
-    // ==========================================
-    
     function addNotification(notification) {
         notifications.unshift({
             id: Date.now(),
@@ -774,10 +724,6 @@
             showToast('You have a new notification!');
         }
     }
-
-    // ==========================================
-    // EVENT LISTENERS (HỖ TRỢ CẢ IFRAME VÀ STANDALONE)
-    // ==========================================
     
     function initEventListeners() {
         // Click bell button
@@ -846,26 +792,18 @@
             window.addEventListener('message', handleParentMessage);
         }
     }
-
-    // ==========================================
-    // INIT
-    // ==========================================
     
     function init() {
         if (CONFIG.debug) console.log('🔔 Notification system initialized - Iframe mode:', CONFIG.isInIframe);
         
-        // Chỉ tạo popup khi không phải iframe
         if (!CONFIG.isInIframe) {
             createNotificationPopup();
         }
-        
-        // Wait for DOM ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 initEventListeners();
                 updateBadge();
                 
-                // Thông báo cho parent biết iframe đã sẵn sàng
                 if (CONFIG.isInIframe) {
                     setTimeout(() => {
                         sendToParent({ type: 'IFRAME_READY' });
@@ -875,8 +813,6 @@
         } else {
             initEventListeners();
             updateBadge();
-            
-            // Thông báo cho parent biết iframe đã sẵn sàng
             if (CONFIG.isInIframe) {
                 setTimeout(() => {
                     sendToParent({ type: 'IFRAME_READY' });
@@ -898,10 +834,6 @@
         }
     }
 
-    // ==========================================
-    // EXPORT PUBLIC API
-    // ==========================================
-    
     window.NotificationSystem = {
         init,
         toggleNotifications,
@@ -911,12 +843,10 @@
         viewAllNotifications,
         addNotification,
         notifications,
-        // Thêm hàm mới để parent có thể gọi
         updateBadge,
         getUnreadCount: () => notifications.filter(n => !n.read).length
     };
 
-    // Auto init
     init();
 
 })();

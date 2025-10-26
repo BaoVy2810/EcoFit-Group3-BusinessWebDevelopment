@@ -1,47 +1,78 @@
+// parent_handler.js (ĐÃ SỬA LỖI)
 (function() {
     'use strict';
     
     let notificationPopup = null;
     let notificationOverlay = null;
     let currentNotifications = [];
+    let headerIframe = null;
+    
+    console.log('🔔 Parent handler loading...');
+    
     window.addEventListener('message', function(event) {
         const data = event.data;
+        console.log('🔔 Parent received message:', data);
         
         switch (data.type) {
             case 'IFRAME_READY':
-                // Gửi thông báo đã sẵn sàng
+                console.log('🔔 Parent: IFRAME_READY received');
                 event.source.postMessage({ type: 'PARENT_READY' }, event.origin);
+                headerIframe = event.source;
                 break;
                 
             case 'BELL_CLICK':
+                console.log('🔔 Parent: BELL_CLICK received', data.bellPosition);
                 handleBellClick(data.bellPosition, data.notifications);
                 break;
                 
             case 'BADGE_UPDATE':
-                // Có thể cập nhật badge trên parent nếu cần
-                console.log('Badge update:', data.unreadCount);
+                console.log('🔔 Parent: BADGE_UPDATE received', data.unreadCount);
+                break;
+                
+            case 'NOTIFICATION_READ':
+                console.log('🔔 Parent: NOTIFICATION_READ received');
+                handleNotificationRead(data.notificationId, data.notification);
+                break;
+                
+            case 'MARK_ALL_READ':
+                console.log('🔔 Parent: MARK_ALL_READ received');
+                handleMarkAllReadFromIframe();
+                break;
+                
+            case 'VIEW_ALL_NOTIFICATIONS':
+                console.log('🔔 Parent: VIEW_ALL_NOTIFICATIONS received');
+                handleViewAllNotificationsFromIframe(data.notifications);
+                break;
+                
+            case 'CLOSE_NOTIFICATIONS':
+                console.log('🔔 Parent: CLOSE_NOTIFICATIONS received');
+                closeNotifications();
                 break;
         }
     });
     
-    // ==========================================
-    // XỬ LÝ CLICK BELL TỪ IFRAME
-    // ==========================================
-    
     function handleBellClick(bellPosition, notifications = []) {
+        console.log('🔔 Parent: Handling bell click', bellPosition);
+        
         if (notifications && notifications.length > 0) {
             currentNotifications = notifications;
+            console.log('🔔 Parent: Updated notifications', currentNotifications);
         }
         
         if (!notificationPopup) {
+            console.log('🔔 Parent: Creating new popup');
             createNotificationPopup();
+        } else {
+            console.log('🔔 Parent: Using existing popup');
         }
         
         positionPopup(bellPosition);
         showNotifications();
     }
-    
+
     function createNotificationPopup() {
+        console.log('🔔 Parent: Creating notification popup');
+        
         // Tạo overlay
         notificationOverlay = document.createElement('div');
         notificationOverlay.id = 'parent-notification-overlay';
@@ -75,20 +106,25 @@
         document.body.appendChild(notificationOverlay);
         document.body.appendChild(notificationPopup);
         
+        console.log('🔔 Parent: Popup elements created and appended');
+        
         // Thêm event listeners
-        document.getElementById('parent-mark-all-read').addEventListener('click', handleMarkAllRead);
-        document.getElementById('parent-view-all').addEventListener('click', handleViewAll);
+        document.getElementById('parent-mark-all-read').addEventListener('click', markAllAsRead);
+        document.getElementById('parent-view-all').addEventListener('click', viewAllNotifications);
         
         injectParentStyles();
         renderNotifications();
+        
+        console.log('🔔 Parent: Popup creation completed');
     }
     
-    // ==========================================
-    // STYLES CHO POPUP TRONG TRANG CHA
-    // ==========================================
-    
     function injectParentStyles() {
-        if (document.getElementById('parent-notification-styles')) return;
+        if (document.getElementById('parent-notification-styles')) {
+            console.log('🔔 Parent: Styles already injected');
+            return;
+        }
+        
+        console.log('🔔 Parent: Injecting styles');
         
         const style = document.createElement('style');
         style.id = 'parent-notification-styles';
@@ -387,143 +423,74 @@
             #parent-notification-popup .notification-list::-webkit-scrollbar-thumb:hover {
                 background: #ced4da !important;
             }
-            
-            /* TOAST NOTIFICATION */
-            #parent-notification-toast {
-                position: fixed !important;
-                bottom: 30px !important;
-                right: 30px !important;
-                background: #212529 !important;
-                color: white !important;
-                padding: 14px 20px !important;
-                border-radius: 10px !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-                font-size: 14px !important;
-                z-index: 2147483647 !important;
-                opacity: 0 !important;
-                transition: opacity 0.3s ease !important;
-                margin: 0 !important;
-                border: none !important;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-                pointer-events: none !important;
-            }
-            
-            #parent-notification-toast.show {
-                opacity: 1 !important;
-            }
         `;
         
         document.head.appendChild(style);
+        console.log('🔔 Parent: Styles injected successfully');
     }
-    
-    // ==========================================
-    // ĐỊNH VỊ POPUP DƯỚI ICON CHUÔNG
-    // ==========================================
     
     function positionPopup(bellPosition) {
         if (!notificationPopup) return;
         
-        // Tính toán vị trí dựa trên vị trí bell trong iframe
+        console.log('🔔 Parent: Positioning popup at:', bellPosition);
+        
         const popupTop = bellPosition.bottom + 10;
         const popupRight = window.innerWidth - bellPosition.right;
         
         notificationPopup.style.setProperty('top', `${popupTop}px`, 'important');
         notificationPopup.style.setProperty('right', `${popupRight}px`, 'important');
         
-        // Tính toán vị trí mũi tên
         const bellCenter = bellPosition.left + (bellPosition.width / 2);
-        const popupLeft = window.innerWidth - popupRight - 380; // 380 = popup width
+        const popupLeft = window.innerWidth - popupRight - 380;
         const arrowRight = (popupLeft + 380) - bellCenter - 8;
         
-        // Cập nhật vị trí mũi tên
         updateArrowPosition(arrowRight);
+        console.log('🔔 Parent: Popup positioned');
     }
     
     function updateArrowPosition(arrowRight) {
         const styleEl = document.getElementById('parent-notification-styles');
         if (styleEl) {
             let styleContent = styleEl.textContent;
-            
-            // Xóa style arrow cũ
             styleContent = styleContent.replace(/#parent-notification-popup\.parent-notification-popup::before\s*\{[^}]+\}/g, '');
-            
-            // Thêm style arrow mới
             styleContent += `
                 #parent-notification-popup.parent-notification-popup::before {
                     right: ${arrowRight}px !important;
                 }
             `;
-            
             styleEl.textContent = styleContent;
         }
     }
     
-    // ==========================================
-    // HIỂN THỊ/ẨN POPUP
-    // ==========================================
-    
     function showNotifications() {
-        if (!notificationPopup || !notificationOverlay) return;
+        if (!notificationPopup || !notificationOverlay) {
+            console.log('🔔 Parent: Cannot show notifications - popup or overlay missing');
+            return;
+        }
         
+        console.log('🔔 Parent: Showing notifications');
         notificationPopup.classList.add('show');
         notificationOverlay.classList.add('show');
         renderNotifications();
+        console.log('🔔 Parent: Notifications shown');
     }
     
     function closeNotifications() {
+        console.log('🔔 Parent: Closing notifications');
         if (notificationPopup) notificationPopup.classList.remove('show');
         if (notificationOverlay) notificationOverlay.classList.remove('show');
     }
     
-    // ==========================================
-    // RENDER NOTIFICATIONS (Dummy data)
-    // ==========================================
-    
     function renderNotifications() {
         const container = document.getElementById('parent-notification-list');
-        if (!container) return;
-        const notifications = [
-            {
-                id: 1,
-                icon: '🎁',
-                iconClass: 'gift',
-                title: 'Special discount code!',
-                message: 'Get 20% off your first order now!',
-                time: '5 minutes ago',
-                read: false
-            },
-            {
-                id: 2,
-                icon: '🛍️',
-                iconClass: 'shop',
-                title: 'New collection',
-                message: 'Fall/Winter 2025 collection is now available!',
-                time: '1 hour ago',
-                read: false
-            },
-            {
-                id: 3,
-                icon: '🚚',
-                iconClass: 'delivery',
-                title: 'Free shipping',
-                message: 'Free shipping for orders over 500,000đ!',
-                time: '3 hours ago',
-                read: false,
-                link: '#shipping'
-            },
-            {
-                id: 4,
-                icon: 'ℹ️',
-                iconClass: 'info',
-                title: 'Policy update',
-                message: 'We have updated our return policy.',
-                time: '1 day ago',
-                read: true,
-                link: '#policy'
-            }
-        ];
+        if (!container) {
+            console.log('🔔 Parent: Notification list container not found');
+            return;
+        }
         
-        if (notifications.length === 0) {
+        console.log('🔔 Parent: Rendering notifications', currentNotifications);
+        
+        if (currentNotifications.length === 0) {
             container.innerHTML = `
                 <div class="empty-notifications">
                     <div class="empty-icon">🔔</div>
@@ -533,7 +500,7 @@
             return;
         }
         
-        container.innerHTML = notifications.map(notif => `
+        container.innerHTML = currentNotifications.map(notif => `
             <div class="notification-item ${notif.read ? '' : 'unread'}" 
                  data-id="${notif.id}">
                 <div class="notification-icon ${notif.iconClass}">
@@ -547,66 +514,203 @@
             </div>
         `).join('');
         
-        // Thêm event listeners cho các notification items
         container.querySelectorAll('.notification-item').forEach(item => {
             item.addEventListener('click', function() {
                 const notificationId = this.getAttribute('data-id');
-                handleNotificationClick(notificationId);
+                markAsRead(notificationId);
             });
         });
+        
+        console.log('🔔 Parent: Notifications rendered');
     }
     
-    // ==========================================
-    // TOAST NOTIFICATION
-    // ==========================================
-    
-    function showToast(message) {
-        let toast = document.getElementById('parent-notification-toast');
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.id = 'parent-notification-toast';
-            document.body.appendChild(toast);
+    function markAsRead(notificationId) {
+        console.log('🔔 Parent: Marking notification as read:', notificationId);
+        
+        if (headerIframe) {
+            headerIframe.postMessage({
+                type: 'NOTIFICATION_READ',
+                notificationId: parseInt(notificationId),
+                fromParent: true
+            }, '*');
         }
         
-        toast.textContent = message;
-        toast.classList.add('show');
+        const notif = currentNotifications.find(n => n.id === parseInt(notificationId));
+        if (notif) {
+            notif.read = true;
+            if (notificationPopup && notificationPopup.classList.contains('show')) {
+                renderNotifications();
+            }
+        }
         
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 2500);
-    }
-    
-    // ==========================================
-    // XỬ LÝ CÁC HÀM KHÁC
-    // ==========================================
-    
-    function handleNotificationClick(notificationId) {
-        console.log('Notification clicked:', notificationId);
-        showToast('Notification clicked: ' + notificationId);
+        showToast('Notification marked as read');
         closeNotifications();
-    }
+    } // ĐÃ THÊM DẤU } Ở ĐÂY
     
-    function handleMarkAllRead() {
-        console.log('Mark all as read');
+    function markAllAsRead() {
+        console.log('🔔 Parent: Marking all as read');
+        
+        if (headerIframe) {
+            headerIframe.postMessage({
+                type: 'MARK_ALL_READ',
+                fromParent: true
+            }, '*');
+        }
+        
+        currentNotifications.forEach(notif => notif.read = true);
+        if (notificationPopup && notificationPopup.classList.contains('show')) {
+            renderNotifications();
+        }
+        
         showToast('All notifications marked as read');
         closeNotifications();
     }
     
-    function handleViewAll() {
-        console.log('View all notifications');
-        showToast('Viewing all notifications');
+    function viewAllNotifications() {
+        console.log('🔔 Parent: View all notifications');
+        
+        if (headerIframe) {
+            headerIframe.postMessage({
+                type: 'VIEW_ALL_NOTIFICATIONS',
+                fromParent: true
+            }, '*');
+        }
+        
+        console.log('View all notifications:', currentNotifications);
+        alert('Navigating to notifications page...');
         closeNotifications();
     }
     
-    // ==========================================
-    // INIT
-    // ==========================================
+    function addNotification(notification) {
+        console.log('🔔 Parent: Adding notification', notification);
+        
+        if (headerIframe) {
+            headerIframe.postMessage({
+                type: 'ADD_NOTIFICATION',
+                notification: notification,
+                fromParent: true
+            }, '*');
+        }
+        
+        const newNotification = {
+            id: Date.now(),
+            ...notification,
+            time: 'Just now',
+            read: false
+        };
+        
+        currentNotifications.unshift(newNotification);
+        if (notificationPopup && notificationPopup.classList.contains('show')) {
+            renderNotifications();
+        }
+        
+        showToast('You have a new notification!');
+    }
+    
+    function handleNotificationRead(notificationId, notification) {
+        console.log('🔔 Parent: Handling notification read from iframe');
+        const notif = currentNotifications.find(n => n.id === notificationId);
+        if (notif) {
+            notif.read = true;
+        }
+        
+        if (notificationPopup && notificationPopup.classList.contains('show')) {
+            renderNotifications();
+        }
+    }
+    
+    function handleMarkAllReadFromIframe() {
+        console.log('🔔 Parent: Handling mark all read from iframe');
+        currentNotifications.forEach(notif => notif.read = true);
+        
+        if (notificationPopup && notificationPopup.classList.contains('show')) {
+            renderNotifications();
+        }
+        
+        showToast('All notifications marked as read');
+    }
+    
+    function handleViewAllNotificationsFromIframe(notifications) {
+        console.log('🔔 Parent: Handling view all from iframe');
+        if (notifications) {
+            currentNotifications = notifications;
+        }
+        
+        console.log('View all notifications:', currentNotifications);
+        alert('Navigating to notifications page...');
+    }
+    
+    function showToast(message) {
+        console.log('🔔 Parent: Showing toast:', message);
+        let toast = document.getElementById('parent-notification-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'parent-notification-toast';
+            toast.style.cssText = `
+                position: fixed !important;
+                bottom: 30px !important;
+                right: 30px !important;
+                background: #212529 !important;
+                color: white !important;
+                padding: 14px 20px !important;
+                border-radius: 10px !important;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                font-size: 14px !important;
+                z-index: 2147483647 !important;
+                opacity: 0 !important;
+                transition: opacity 0.3s ease !important;
+                pointer-events: none !important;
+            `;
+            document.body.appendChild(toast);
+        }
+        
+        toast.textContent = message;
+        toast.style.setProperty('opacity', '1', 'important');
+        
+        setTimeout(() => {
+            toast.style.setProperty('opacity', '0', 'important');
+        }, 2500);
+    }
+    
+    window.ParentNotificationHandler = {
+        toggleNotificationPopup: function() {
+            console.log('🔔 Parent: Toggle popup called');
+            const isOpen = notificationPopup && notificationPopup.classList.contains('show');
+            
+            if (isOpen) {
+                closeNotifications();
+            } else {
+                if (!notificationPopup) {
+                    createNotificationPopup();
+                }
+                notificationPopup.style.setProperty('top', '80px', 'important');
+                notificationPopup.style.setProperty('right', '20px', 'important');
+                showNotifications();
+            }
+        },
+        closeNotifications,
+        markAsRead,
+        markAllAsRead,
+        viewAllNotifications,
+        addNotification,
+        getNotifications: () => currentNotifications,
+        getUnreadCount: () => currentNotifications.filter(n => !n.read).length
+    };
     
     function init() {
         console.log('🔔 Parent notification handler initialized');
         
+        headerIframe = document.querySelector('iframe[src*="header.html"]');
+        if (!headerIframe) {
+            console.warn('🔔 Parent: Header iframe not found');
+        } else {
+            console.log('🔔 Parent: Header iframe found');
+        }
+        
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeNotifications();
+            if (e.key === 'Escape') {
+                closeNotifications();
+            }
         });
         
         document.addEventListener('click', (e) => {
@@ -615,8 +719,13 @@
                 closeNotifications();
             }
         });
+        
+        console.log('🔔 Parent: Init completed');
     }
     
-    init();
-    
-})();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})(); // ĐÃ SỬA DẤU NGOẶC CUỐI
