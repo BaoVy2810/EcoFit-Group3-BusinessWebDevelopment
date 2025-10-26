@@ -8,17 +8,17 @@
   </head>
   <body>
     <iframe id="header-frame" class="header-frame"></iframe>
-    
+
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
         const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        header.src = isLoggedIn 
-            ? "../template/header.html" 
-            : "../template/header0.html";
+        header.src = isLoggedIn
+          ? "../template/header.html"
+          : "../template/header0.html";
 
         header.onload = () => {
-            header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
+          header.contentWindow.postMessage({ activeNav: "nav-blog" }, "*");
         };
       });
 
@@ -26,22 +26,24 @@
         if (!e.data || !e.data.action) return;
 
         if (e.data.action === "goToLogin") {
-            window.location.href = "00_LOGIN.html";
+          window.location.href = "00_LOGIN.html";
         }
 
         if (e.data.action === "goToSignup") {
-            window.location.href = "00_SIGNUP.html";
+          window.location.href = "00_SIGNUP.html";
         }
 
         if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
-            localStorage.setItem("isLoggedIn", "true");
-            document.getElementById("header-frame").src = "../template/header.html";
+          localStorage.setItem("isLoggedIn", "true");
+          document.getElementById("header-frame").src =
+            "../template/header.html";
         }
 
         if (e.data.action === "logout") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-            document.getElementById("header-frame").src = "../template/header0.html";
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("login_infor");
+          document.getElementById("header-frame").src =
+            "../template/header0.html";
         }
       });
     </script>
@@ -51,9 +53,19 @@
       <div class="hero-overlay">
         <div class="hero-content">
           <span class="blog-type">Blog Tips</span>
-          <h1 class="hero-title">The Green Routine: Everyday Habits for a Cleaner Planet</h1>
-          <p class="hero-desc">Simple daily habits can make a big impact. Choose eco products, save energy, and live cleaner every day.</p>
-          <button class="hero-btn" onclick="window.location.href='15_BLOG_DETAIL.html?id=4'">Read full blog</button>
+          <h1 class="hero-title">
+            The Green Routine: Everyday Habits for a Cleaner Planet
+          </h1>
+          <p class="hero-desc">
+            Simple daily habits can make a big impact. Choose eco products, save
+            energy, and live cleaner every day.
+          </p>
+          <button
+            class="hero-btn"
+            onclick="window.location.href='15_BLOG_DETAIL.html?id=4'"
+          >
+            Read full blog
+          </button>
         </div>
       </div>
     </section>
@@ -65,7 +77,9 @@
         <section class="blog-header">
           <h1 class="blog-title">Blog</h1>
           <p class="blog-subtitle">
-            The EcoFit Blog shares stories, tips, and sustainability insights to help you shop smarter, live greener, and build a more sustainable future together.
+            The EcoFit Blog shares stories, tips, and sustainability insights to
+            help you shop smarter, live greener, and build a more sustainable
+            future together.
           </p>
         </section>
 
@@ -73,11 +87,21 @@
         <section class="blog-filters">
           <div class="filter-buttons">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="eco-habits">Eco Habits</button>
-            <button class="filter-btn" data-filter="smart-shopping">Smart Shopping</button>
-            <button class="filter-btn" data-filter="community">Community & Local</button>
-            <button class="filter-btn" data-filter="fashion">Sustainable Fashion</button>
-            <button class="filter-btn" data-filter="greentech">Greentech</button>
+            <button class="filter-btn" data-filter="eco-habits">
+              Eco Habits
+            </button>
+            <button class="filter-btn" data-filter="smart-shopping">
+              Smart Shopping
+            </button>
+            <button class="filter-btn" data-filter="community">
+              Community & Local
+            </button>
+            <button class="filter-btn" data-filter="fashion">
+              Sustainable Fashion
+            </button>
+            <button class="filter-btn" data-filter="greentech">
+              Greentech
+            </button>
           </div>
           <div class="sort-dropdown">
             <label>Sort by:</label>
@@ -96,7 +120,7 @@
             <span class="blog-tag">Eco Habits</span>
             <div class="card-image">
               <img
-                src="https://placehold.co/400x250/e8f5e9/2f7d32?text=Plastic+Free"
+                src="/EcoFit/dataset/banner/blog_plastic_free.png"
                 alt="Plastic Free"
               />
             </div>
@@ -115,7 +139,7 @@
             <span class="blog-tag">Smart Shopping</span>
             <div class="card-image">
               <img
-                src="https://placehold.co/400x250/6fbf73/white?text=Eco+Products"
+                src="/EcoFit/dataset/banner/blog_eco_product.png"
                 alt="Eco Products"
               />
             </div>
@@ -125,7 +149,9 @@
                 <button class="card-link" data-id="2">Read full blog</button>
               </div>
               <h3 class="card-title">How to Choose Eco-Friendly Products</h3>
-              <p class="card-excerpt">What to look for when shopping sustainably.</p>
+              <p class="card-excerpt">
+                What to look for when shopping sustainably.
+              </p>
             </div>
           </div>
 
@@ -134,7 +160,7 @@
             <span class="blog-tag">Community & Local</span>
             <div class="card-image">
               <img
-                src="https://placehold.co/400x250/4caf50/white?text=Green+Partners"
+                src="/EcoFit/dataset/banner/blog_green_partners.png"
                 alt="Green Partners"
               />
             </div>
@@ -144,7 +170,9 @@
                 <button class="card-link" data-id="3">Read full blog</button>
               </div>
               <h3 class="card-title">Meet Our Green Partners</h3>
-              <p class="card-excerpt">Learn how our suppliers are reducing waste and emissions.</p>
+              <p class="card-excerpt">
+                Learn how our suppliers are reducing waste and emissions.
+              </p>
             </div>
           </div>
 
@@ -162,8 +190,13 @@
                 <span class="card-date">3 Mar 2025</span>
                 <button class="card-link" data-id="4">Read full blog</button>
               </div>
-              <h3 class="card-title">The Green Routine: Everyday Habits for a Cleaner Planet</h3>
-              <p class="card-excerpt">Simple daily habits can make a big impact. Choose eco products, save energy, and live cleaner every day.</p>
+              <h3 class="card-title">
+                The Green Routine: Everyday Habits for a Cleaner Planet
+              </h3>
+              <p class="card-excerpt">
+                Simple daily habits can make a big impact. Choose eco products,
+                save energy, and live cleaner every day.
+              </p>
             </div>
           </div>
 
@@ -181,8 +214,13 @@
                 <span class="card-date">17 Apr 2025</span>
                 <button class="card-link" data-id="5">Read full blog</button>
               </div>
-              <h3 class="card-title">The Truth About Greenwashing: How to Spot Fake "Eco" Claims</h3>
-              <p class="card-excerpt">Learn how to spot fake "eco" labels and choose truly sustainable products with confidence.</p>
+              <h3 class="card-title">
+                The Truth About Greenwashing: How to Spot Fake "Eco" Claims
+              </h3>
+              <p class="card-excerpt">
+                Learn how to spot fake "eco" labels and choose truly sustainable
+                products with confidence.
+              </p>
             </div>
           </div>
 
@@ -200,8 +238,13 @@
                 <span class="card-date">13 May 2025</span>
                 <button class="card-link" data-id="6">Read full blog</button>
               </div>
-              <h3 class="card-title">Sustainable Fashion: Why Material Matters</h3>
-              <p class="card-excerpt">Discover how fabric choices impact the planet - and how to build a wardrobe that's stylish, ethical, and eco-friendly.</p>
+              <h3 class="card-title">
+                Sustainable Fashion: Why Material Matters
+              </h3>
+              <p class="card-excerpt">
+                Discover how fabric choices impact the planet - and how to build
+                a wardrobe that's stylish, ethical, and eco-friendly.
+              </p>
             </div>
           </div>
 
@@ -219,8 +262,13 @@
                 <span class="card-date">12 July 2025</span>
                 <button class="card-link" data-id="7">Read full blog</button>
               </div>
-              <h3 class="card-title">Zero-Waste Living: Start Small, Think Big</h3>
-              <p class="card-excerpt">Learn how small, everyday changes can dramatically cut waste and help you live a more sustainable, zero-waste lifestyle.</p>
+              <h3 class="card-title">
+                Zero-Waste Living: Start Small, Think Big
+              </h3>
+              <p class="card-excerpt">
+                Learn how small, everyday changes can dramatically cut waste and
+                help you live a more sustainable, zero-waste lifestyle.
+              </p>
             </div>
           </div>
 
@@ -238,8 +286,14 @@
                 <span class="card-date">25 Oct 2025</span>
                 <button class="card-link" data-id="8">Read full blog</button>
               </div>
-              <h3 class="card-title">The Power of Local: Why Buying Nearby Is Greener</h3>
-              <p class="card-excerpt">Discover how choosing local products reduces carbon emissions, supports communities, and builds a more sustainable, resilient economy.</p>
+              <h3 class="card-title">
+                The Power of Local: Why Buying Nearby Is Greener
+              </h3>
+              <p class="card-excerpt">
+                Discover how choosing local products reduces carbon emissions,
+                supports communities, and builds a more sustainable, resilient
+                economy.
+              </p>
             </div>
           </div>
 
@@ -257,8 +311,14 @@
                 <span class="card-date">4 Dec 2025</span>
                 <button class="card-link" data-id="9">Read full blog</button>
               </div>
-              <h3 class="card-title">The Future of Sustainable Tech: AI for a Greener World</h3>
-              <p class="card-excerpt">Explore how artificial intelligence is transforming sustainability - from optimizing energy use to fighting climate change - while tackling its own environmental footprint.</p>
+              <h3 class="card-title">
+                The Future of Sustainable Tech: AI for a Greener World
+              </h3>
+              <p class="card-excerpt">
+                Explore how artificial intelligence is transforming
+                sustainability - from optimizing energy use to fighting climate
+                change - while tackling its own environmental footprint.
+              </p>
             </div>
           </div>
         </section>
@@ -288,7 +348,11 @@
     </main>
 
     <!-- FOOTER -->
-    <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
+    <iframe
+      src="../template/footer.html"
+      id="footer-frame"
+      class="footer-frame"
+    ></iframe>
     <script src="../js/script.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -304,7 +368,10 @@
             const filter = btn.getAttribute("data-filter");
 
             blogCards.forEach((card) => {
-              if (filter === "all" || card.getAttribute("data-category") === filter) {
+              if (
+                filter === "all" ||
+                card.getAttribute("data-category") === filter
+              ) {
                 card.style.display = "block";
               } else {
                 card.style.display = "none";
@@ -322,7 +389,8 @@
         });
 
         // Handle pagination
-        const paginationNumbers = document.querySelectorAll(".pagination-number");
+        const paginationNumbers =
+          document.querySelectorAll(".pagination-number");
         paginationNumbers.forEach((btn) => {
           btn.addEventListener("click", () => {
             paginationNumbers.forEach((b) => b.classList.remove("active"));
@@ -331,20 +399,20 @@
         });
       });
       document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        const paginationNumbers = document.querySelectorAll(".pagination-number");
-        const fixedPages = [1, 2, 3, 29, 30];
-        
-        // Reset to fixed numbers
-        paginationNumbers.forEach((btn, index) => {
-            if (index < fixedPages.length) {
-                btn.textContent = fixedPages[index];
-                btn.style.display = "flex";
-            }
-        });
-    }, 100);
-});
-    </script>
+        setTimeout(() => {
+          const paginationNumbers =
+            document.querySelectorAll(".pagination-number");
+          const fixedPages = [1, 2, 3, 29, 30];
 
+          // Reset to fixed numbers
+          paginationNumbers.forEach((btn, index) => {
+            if (index < fixedPages.length) {
+              btn.textContent = fixedPages[index];
+              btn.style.display = "flex";
+            }
+          });
+        }, 100);
+      });
+    </script>
   </body>
 </html>
