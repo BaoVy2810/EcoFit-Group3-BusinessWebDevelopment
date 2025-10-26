@@ -596,24 +596,12 @@
         const dateStr = dateToString(cellDate);
         const points = dailyPoints[dateStr] || 1;
 
-        // Show leaf icon with point value
-        const wrapper = document.createElement("div");
-        wrapper.style.cssText =
-          "display: flex; flex-direction: column; align-items: center; gap: 2px;";
-
+        // Show leaf icon only
         const img = document.createElement("img");
         img.className = "leaf-icon";
         img.alt = "leaf";
-        img.src = "../images/leaf.png";
-
-        const pointText = document.createElement("span");
-        pointText.textContent = `+${points}`;
-        pointText.style.cssText =
-          "font-size: 10px; color: #3da547; font-weight: 600;";
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(pointText);
-        cell.appendChild(wrapper);
+        img.src = "../images/EcoFit_logo_black.png";
+        cell.appendChild(img);
       } else {
         cell.textContent = day;
       }
