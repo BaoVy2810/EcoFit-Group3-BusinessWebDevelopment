@@ -3046,7 +3046,7 @@ h1 span {
   width: 300px;
   padding: 60px 40px;
   border-right: 1px solid #e5e5e5;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   background: #f9fcf8;
 }
 .menu-section {
@@ -3734,8 +3734,12 @@ h1 span {
 
 /*14_BLOG_GENERAL*/
 .blog-main .blog-container {
-  margin-left: 50px;
-  margin-right: 50px;
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
 }
 /* Hero Blog Section */
 .hero-blog {
