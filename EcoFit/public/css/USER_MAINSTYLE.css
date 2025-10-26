@@ -4321,8 +4321,8 @@ strong {
   min-height: 700px;
 }
 
-.personal_info_container.no-padding {
-  padding-top: 0;
+.personal_info_container.content {
+  padding: 60px 80px !important;
 } /* no padding for great vision */
 
 .myplant-main-content .page-title {
