@@ -45,20 +45,33 @@ async function loadData() {
 
 // Calculate discounted price
 function calculateDiscountedPrice(originalPrice, promoCode) {
-    if (!promoCode || !promotionsData) return originalPrice;
-    
-    const promotion = promotionsData.promotion.find(p => p.promo_code === promoCode);
-    if (!promotion) return originalPrice;
-    
-    const discount = (originalPrice * promotion.discount_rate) / 100;
+    if (!promoCode) return originalPrice;
+    const discounts = {
+        'ECO10': 10,
+        'GREEN20': 20,
+        'SAVE15': 15,
+        'ACC5': 5,
+        'STYLE25':25,
+        'CLEAR40':40,
+    };
+    const discountRate = discounts[promoCode] || 0;
+    const discount = (originalPrice * discountRate) / 100;
     return Math.round(originalPrice - discount);
 }
-
 // Get promotion discount rate
 function getPromotionDiscount(promoCode) {
-    if (!promoCode || !promotionsData) return 0;
-    const promotion = promotionsData.promotion.find(p => p.promo_code === promoCode);
-    return promotion ? promotion.discount_rate : 0;
+    if (!promoCode) return 0;
+    
+    const discounts = {
+        'ECO10': 10,
+        'GREEN20': 20,
+        'SAVE15': 15,
+        'ACC5': 5,
+        'STYLE25':25,
+        'CLEAR40':40,
+    };
+    
+    return discounts[promoCode] || 0;
 }
 
 // Format price

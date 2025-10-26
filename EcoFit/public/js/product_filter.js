@@ -123,8 +123,10 @@ function calculateDiscount(originalPrice, promotionCode) {
     const discounts = {
         'ECO10': 10,
         'GREEN20': 20,
-        'STYLE15': 15,
-        'ACC5': 5
+        'SAVE15': 15,
+        'ACC5': 5,
+        'STYLE25':25,
+        'CLEAR40':40,
     };
     return discounts[promotionCode] || 0;
 }
@@ -287,8 +289,10 @@ function calculateDiscountedPrice(originalPrice, promotionCode) {
     const discounts = {
         'ECO10': 10,
         'GREEN20': 20,
-        'STYLE15': 15,
-        'ACC5': 5
+        'SAVE15': 15,
+        'ACC5': 5,
+        'STYLE25':25,
+        'CLEAR40':40,
     };
     const discountPercent = discounts[promotionCode] || 0;
     return originalPrice * (1 - discountPercent / 100);
