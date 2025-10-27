@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const newPasswordInput = document.getElementById('new-password');
   const saveButton = document.querySelector('.save-password-button');
 
+  // QUAN TRỌNG: Đổi type của nút Save thành button
+  if (saveButton) {
+    saveButton.type = 'button';
+  }
+
   // Password validation function
   function validatePassword(password) {
     return password.length >= 6;
@@ -42,144 +47,104 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Real-time validation for current password
-  currentPasswordInput.addEventListener('input', function() {
-    clearError(this);
-    
-    if (this.value && !validatePassword(this.value)) {
-      showError(this, 'Password must be at least 6 characters');
-    }
-  });
-
-  // Real-time validation for new password
-  newPasswordInput.addEventListener('input', function() {
-    clearError(this);
-    
-    if (this.value && !validatePassword(this.value)) {
-      showError(this, 'Password must be at least 6 characters');
-    }
-  });
-
-  // Form submission
-  passwordForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    let isValid = true;
-    
-    // Clear all previous errors
-    clearError(currentPasswordInput);
-    clearError(newPasswordInput);
-    
-    // Validate current password
-    if (!currentPasswordInput.value) {
-      showError(currentPasswordInput, 'Current password is required');
-      isValid = false;
-    } else if (!validatePassword(currentPasswordInput.value)) {
-      showError(currentPasswordInput, 'Password must be at least 6 characters');
-      isValid = false;
-    }
-    
-    // Validate new password
-    if (!newPasswordInput.value) {
-      showError(newPasswordInput, 'New password is required');
-      isValid = false;
-    } else if (!validatePassword(newPasswordInput.value)) {
-      showError(newPasswordInput, 'Password must be at least 6 characters');
-      isValid = false;
-    }
-    
-    // Check if new password is different from current
-    if (isValid && currentPasswordInput.value === newPasswordInput.value) {
-      showError(newPasswordInput, 'New password must be different from current password');
-      isValid = false;
-    }
-    
-    if (isValid) {
-      // Simulate password change (in production, this would be an API call)
-      const passwordData = {
-        currentPassword: currentPasswordInput.value,
-        newPassword: newPasswordInput.value
-      };
+  if (currentPasswordInput) {
+    currentPasswordInput.addEventListener('input', function() {
+      clearError(this);
       
-      console.log('Password change data:', passwordData);
-      
-      // Show loading state
-      saveButton.disabled = true;
-      saveButton.textContent = 'Saving...';
-      
-      // Simulate API call
-      setTimeout(() => {
-        // Reset button state
-        saveButton.disabled = false;
-        saveButton.textContent = 'Save';
-        
-        // Clear form
-        passwordForm.reset();
-        
-        // Show success message
-        showSuccessMessage('Password changed successfully!');
-      }, 1500);
-    }
-  });
-
-  // Success message function
-  function showSuccessMessage(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-notification';
-    successDiv.innerHTML = `
-      <span style="margin-right: 8px;">✓</span>
-      ${message}
-    `;
-    successDiv.style.cssText = `
-      position: fixed;
-      top: 100px;
-      right: 30px;
-      background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%);
-      color: white;
-      padding: 15px 30px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 500;
-      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
-      z-index: 9999;
-      animation: slideIn 0.3s ease;
-      display: flex;
-      align-items: center;
-    `;
-    
-    document.body.appendChild(successDiv);
-    
-    // Remove message after 3 seconds
-    setTimeout(() => {
-      successDiv.style.animation = 'slideOut 0.3s ease';
-      setTimeout(() => successDiv.remove(), 300);
-    }, 3000);
+      if (this.value && !validatePassword(this.value)) {
+        showError(this, 'Password must be at least 6 characters');
+      }
+    });
   }
 
-  // Add animations
+  // Real-time validation for new password
+  if (newPasswordInput) {
+    newPasswordInput.addEventListener('input', function() {
+      clearError(this);
+      
+      if (this.value && !validatePassword(this.value)) {
+        showError(this, 'Password must be at least 6 characters');
+      }
+    });
+  }
+
+  // Xử lý sự kiện click trên nút Save
+  if (saveButton) {
+    saveButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      let isValid = true;
+      
+      // Clear all previous errors
+      if (currentPasswordInput) clearError(currentPasswordInput);
+      if (newPasswordInput) clearError(newPasswordInput);
+      
+      // Validate current password
+      if (!currentPasswordInput.value) {
+        showError(currentPasswordInput, 'Current password is required');
+        isValid = false;
+      } else if (!validatePassword(currentPasswordInput.value)) {
+        showError(currentPasswordInput, 'Password must be at least 6 characters');
+        isValid = false;
+      }
+      
+      // Validate new password
+      if (!newPasswordInput.value) {
+        showError(newPasswordInput, 'New password is required');
+        isValid = false;
+      } else if (!validatePassword(newPasswordInput.value)) {
+        showError(newPasswordInput, 'Password must be at least 6 characters');
+        isValid = false;
+      }
+      
+      // Check if new password is different from current
+      if (isValid && currentPasswordInput.value === newPasswordInput.value) {
+        showError(newPasswordInput, 'New password must be different from current password');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // Show loading state
+        const originalText = saveButton.textContent;
+        saveButton.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+          // Reset button state
+          saveButton.disabled = false;
+          saveButton.textContent = originalText;
+          
+          // Clear form
+          if (currentPasswordInput) currentPasswordInput.value = '';
+          if (newPasswordInput) newPasswordInput.value = '';
+          
+          // Show success message
+          alert('Password changed successfully!');
+        }, 1000);
+      }
+    });
+  }
+
+  // QUAN TRỌNG: Ngăn chặn form submit hoàn toàn
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return false;
+    });
+
+    // Thêm event listener khác để chắc chắn
+    passwordForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      return false;
+    }, true);
+  }
+
+  // Thêm style cơ bản
   const style = document.createElement('style');
   style.textContent = `
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    
-    @keyframes slideOut {
-      from {
-        transform: translateX(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-    }
-
     .save-password-button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -193,15 +158,15 @@ document.addEventListener('DOMContentLoaded', function() {
   `;
   document.head.appendChild(style);
 
-  // Optional: Add password visibility toggle
-  addPasswordToggle(currentPasswordInput);
-  addPasswordToggle(newPasswordInput);
+  // Toggle hiển thị mật khẩu
+  if (currentPasswordInput) addPasswordToggle(currentPasswordInput);
+  if (newPasswordInput) addPasswordToggle(newPasswordInput);
 
   function addPasswordToggle(input) {
     const wrapper = input.closest('.input-wrapper');
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
-    toggleBtn.innerHTML = '👁️';
+    toggleBtn.innerHTML = '';
     toggleBtn.style.cssText = `
       position: absolute;
       right: 12px;
@@ -224,10 +189,10 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleBtn.addEventListener('click', function() {
       if (input.type === 'password') {
         input.type = 'text';
-        this.innerHTML = '🙈';
+        this.innerHTML = '';
       } else {
         input.type = 'password';
-        this.innerHTML = '👁️';
+        this.innerHTML = '';
       }
     });
     
