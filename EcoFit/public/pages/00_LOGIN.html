@@ -208,6 +208,7 @@
       .btn-login:active {
         transform: translateY(0);
       }
+      
       .divider {
         text-align: center;
         margin: 3vh 0;
@@ -226,15 +227,24 @@
         padding: 0 1.5vw;
         font-weight: 400;
       }
-      .btn-google {
+
+      /* Google Sign-In Button Wrapper */
+      #googleSignInWrapper {
+        position: relative;
+        width: 70%;
+        max-width: 400px;
+        margin: 0 auto 3vh;
+        height: 52px;
+      }
+
+      /* Custom Button Design */
+      .btn-google-custom {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 1vw;
-        margin-left: auto;
-        margin-right: auto;
-        width: 70%;
-        max-width: 400px;
+        width: 100%;
+        height: 100%;
         padding: 1.6vh 0;
         background: #f5f5f5;
         color: #000;
@@ -244,11 +254,13 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s;
-        margin-bottom: 3vh;
         font-family: "Outfit", sans-serif;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
       }
 
-      .btn-google:hover {
+      .btn-google-custom:hover {
         background: #ececec;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -258,6 +270,28 @@
         width: clamp(18px, 1.3vw, 20px);
         height: clamp(18px, 1.3vw, 20px);
         flex-shrink: 0;
+      }
+
+      /* Hide Google's default button but keep it clickable */
+      #googleSignInBtn {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0 !important;
+        z-index: 2 !important;
+      }
+
+      /* Override Google button iframe styles */
+      #googleSignInBtn > div {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      #googleSignInBtn iframe {
+        width: 100% !important;
+        height: 100% !important;
       }
 
       .signup-link {
@@ -284,7 +318,7 @@
         }
 
         .btn-login,
-        .btn-google {
+        #googleSignInWrapper {
           width: 80%;
         }
       }
@@ -313,7 +347,7 @@
         }
 
         .btn-login,
-        .btn-google {
+        #googleSignInWrapper {
           width: 90%;
         }
 
@@ -386,10 +420,14 @@
               <span>OR</span>
             </div>
 
-            <button type="button" class="btn-google" id="googleSignInBtn">
-              <img src="../images/google_logo.png" width="24px" />
-              Continue with Google
-            </button>
+            <!-- Google Sign-In with custom styling -->
+            <div id="googleSignInWrapper">
+              <div class="btn-google-custom">
+                <img src="../images/google_logo.png" alt="Google" class="google-icon" />
+                <span>Continue with Google</span>
+              </div>
+              <div id="googleSignInBtn"></div>
+            </div>
 
             <div class="signup-link">
               Don't have account? <a href="00_SIGNUP.html">Sign up</a>
@@ -488,17 +526,37 @@
           if (typeof google !== 'undefined' && google.accounts) {
             google.accounts.id.initialize({
               client_id: GOOGLE_CLIENT_ID,
-              callback: handleGoogleSignIn, // ✅ callback chính
+              callback: handleGoogleSignIn,
               ux_mode: 'popup'
             });
 
-            // 🔽 Hiển thị nút Google chính thức
+            // Render invisible Google button
             google.accounts.id.renderButton(
               document.getElementById("googleSignInBtn"),
-              { theme: "outline", size: "large", text: "continue_with", width: "300" }
+              { 
+                theme: "outline", 
+                size: "large",
+                width: "400"
+              }
             );
 
-            console.log('✅ Google Sign-In initialized & button rendered');
+            // Add hover effect to custom button when hovering over wrapper
+            const wrapper = document.getElementById('googleSignInWrapper');
+            const customBtn = wrapper.querySelector('.btn-google-custom');
+            
+            wrapper.addEventListener('mouseenter', () => {
+              customBtn.style.background = '#ececec';
+              customBtn.style.transform = 'translateY(-2px)';
+              customBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.08)';
+            });
+            
+            wrapper.addEventListener('mouseleave', () => {
+              customBtn.style.background = '#f5f5f5';
+              customBtn.style.transform = 'translateY(0)';
+              customBtn.style.boxShadow = 'none';
+            });
+
+            console.log('✅ Google Sign-In initialized with custom button overlay');
           } else {
             console.error('❌ Google API not available');
           }
@@ -572,10 +630,7 @@
           console.error('❌ Error processing Google Sign-In:', error);
           alert('An error occurred during Google Sign-In.\n\nError: ' + error.message + '\n\nPlease try regular login instead.');
         }
-      }
-
-      // ========== HELPER FUNCTIONS ==========
-      
+      }      
       function parseJwt(token) {
         try {
           const base64Url = token.split('.')[1];
@@ -621,15 +676,12 @@
           } else {
             alert("Unknown user role: " + user.role);
           }
-        }, 1000); // Tăng timeout lên 1 giây
+        }, 1000);
       }
-
-      // ========== INIT ON PAGE LOAD ==========
       window.addEventListener('DOMContentLoaded', () => {
         console.log('🚀 Login page loaded');
         console.log('📍 Current URL:', window.location.href);
         
-        // Load saved email if "Remember me" was checked
         const rememberMe = localStorage.getItem("rememberMe");
         const savedEmail = localStorage.getItem("savedEmail");
         
@@ -638,19 +690,7 @@
           document.getElementById("save_infor").checked = true;
           console.log('✅ Loaded saved email');
         }
-
-        // Load Google Sign-In
         loadGoogleSignIn();
-        
-        // Attach Google button handler
-        const googleBtn = document.getElementById('googleSignInBtn');
-        if (googleBtn) {
-          console.log('✅ Google button handler attached');
-        } else {
-          console.error('❌ Google button not found!');
-        }
-
-        // Enter key support for login
         document.getElementById('password').addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             process_login();
