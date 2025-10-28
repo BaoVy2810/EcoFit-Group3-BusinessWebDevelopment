@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-signin-client_id" content="74994887097-7rnvpb6rl89itjuoj7c0cfrvmfuj29fj.apps.googleusercontent.com">
     <title>00_LOGIN</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -130,6 +131,7 @@
         gap: 0.8vw;
         flex-shrink: 0;
       }
+      
       .remember-me input[type="checkbox"] {
         appearance: none;
         width: 18px;
@@ -162,12 +164,10 @@
         font-weight: 400;
         white-space: nowrap;
       }
-
       .forgot-password {
         text-align: right;
         flex-shrink: 0;
       }
-
       .forgot-password a {
         color: #33773e;
         text-decoration: none;
@@ -208,7 +208,6 @@
       .btn-login:active {
         transform: translateY(0);
       }
-
       .divider {
         text-align: center;
         margin: 3vh 0;
@@ -216,7 +215,6 @@
         height: 1px;
         background: #e8e8e8;
       }
-
       .divider span {
         position: absolute;
         top: 50%;
@@ -228,7 +226,6 @@
         padding: 0 1.5vw;
         font-weight: 400;
       }
-
       .btn-google {
         display: flex;
         align-items: center;
@@ -281,7 +278,6 @@
         text-decoration: underline;
       }
 
-      /* Responsive cho tablet */
       @media (max-width: 1024px) {
         .form-section {
           padding: 5vh 6vw;
@@ -293,7 +289,6 @@
         }
       }
 
-      /* Responsive cho mobile landscape */
       @media (max-width: 968px) {
         .container {
           flex-direction: column;
@@ -312,7 +307,6 @@
         }
       }
 
-      /* Responsive cho mobile portrait */
       @media (max-width: 600px) {
         .form-section {
           padding: 4vh 6vw;
@@ -328,7 +322,6 @@
         }
       }
 
-      /* Ngăn chặn breakpoint cho màn hình rất nhỏ */
       @media (max-width: 400px) {
         .remember-forgot-row {
           flex-direction: column;
@@ -341,7 +334,6 @@
         }
       }
     </style>
-    <script src="../js/login.js"></script>
   </head>
   <body>
     <div class="container">
@@ -394,7 +386,7 @@
               <span>OR</span>
             </div>
 
-            <button type="button" class="btn-google">
+            <button type="button" class="btn-google" id="googleSignInBtn">
               <img src="../images/google_logo.png" width="24px" />
               Continue with Google
             </button>
@@ -406,83 +398,265 @@
         </div>
       </div>
     </div>
-  <script>
-async function process_login() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+    <script>
+      // ========== CONFIG ==========
+      const GOOGLE_CLIENT_ID = '74994887097-7rnvpb6rl89itjuoj7c0cfrvmfuj29fj.apps.googleusercontent.com';
+      const ACCOUNTS_JSON_PATH = '../../dataset/accounts.json';
 
-  // Validate input
-  if (!email || !password) {
-    alert("Please enter both email and password!");
-    return;
-  }
+      // ========== REGULAR LOGIN ==========
+      async function process_login() {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-  try {
-    // Fetch accounts data from JSON file
-    const response = await fetch("../../dataset/accounts.json");
-    
-    if (!response.ok) {
-      throw new Error("Failed to load accounts data");
-    }
+        if (!email || !password) {
+          alert("Please enter both email and password!");
+          return;
+        }
 
-    const data = await response.json();
-    const profiles = data.profile;
+        try {
+          console.log('Fetching:', ACCOUNTS_JSON_PATH);
+          const response = await fetch(ACCOUNTS_JSON_PATH);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to load accounts data: ${response.status}`);
+          }
 
-    // Find matching user
-    const user = profiles.find(
-      (profile) => profile.email === email && profile.password === password
-    );
+          const data = await response.json();
+          console.log('Loaded accounts:', data);
+          const profiles = data.profile;
 
-    if (!user) {
-      alert("Invalid email or password!");
-      return;
-    }
+          const user = profiles.find(
+            (profile) => profile.email === email && profile.password === password
+          );
 
-    // Check if account is active
-    if (user.status !== "active") {
-      alert("Your account is inactive. Please contact support.");
-      return;
-    }
+          if (!user) {
+            alert("Invalid email or password!");
+            return;
+          }
 
-    // Store user info in localStorage
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("userRole", user.role);
-    localStorage.setItem("userName", user.fullname);
-    localStorage.setItem("userEmail", user.email);
-    localStorage.setItem("userId", user.profile_id || user.id);
+          if (user.status !== "active") {
+            alert("Your account is inactive. Please contact support.");
+            return;
+          }
 
-    // Check "Remember me" checkbox
-    const rememberMe = document.getElementById("save_infor").checked;
-    if (rememberMe) {
-      localStorage.setItem("rememberMe", "true");
-    }
+          // Save login info
+          saveUserToLocalStorage(user, "regular");
 
-    // Redirect based on role
-    if (user.role === "administrator") {
-      window.location.href = "../admin_pages/dashboard.html";
-    } else if (user.role === "customer") {
-      window.location.href = "../pages/01_HOMEPAGE.html";
-    } else {
-      alert("Unknown user role. Please contact support.");
-    }
+          // Remember me
+          const rememberMe = document.getElementById("save_infor").checked;
+          if (rememberMe) {
+            localStorage.setItem("rememberMe", "true");
+            localStorage.setItem("savedEmail", email);
+          } else {
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("savedEmail");
+          }
 
-  } catch (error) {
-    console.error("Login error:", error);
-    alert("An error occurred during login. Please try again.");
-  }
-}
+          // Redirect
+          redirectUser(user);
 
-// Optional: Auto-fill if "Remember me" was checked previously
-window.addEventListener("DOMContentLoaded", () => {
-  const rememberMe = localStorage.getItem("rememberMe");
-  if (rememberMe === "true") {
-    const savedEmail = localStorage.getItem("userEmail");
-    if (savedEmail) {
-      document.getElementById("email").value = savedEmail;
-      document.getElementById("save_infor").checked = true;
-    }
-  }
-});
-  </script>
+        } catch (error) {
+          console.error("Login error:", error);
+          alert(`An error occurred during login: ${error.message}\nCheck Console (F12) for details.`);
+        }
+      }
+
+      // ========== GOOGLE SIGN-IN ==========
+      
+      function loadGoogleSignIn() {
+        console.log('🔄 Loading Google Sign-In API...');
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        
+        script.onload = function() {
+          console.log('✅ Google Sign-In API loaded successfully');
+          initializeGoogleSignIn();
+        };
+        
+        script.onerror = function() {
+          console.error('❌ Failed to load Google Sign-In API');
+          alert('Failed to load Google Sign-In. Please use regular login or check your internet connection.');
+        };
+        
+        document.head.appendChild(script);
+      }
+
+      function initializeGoogleSignIn() {
+        try {
+          if (typeof google !== 'undefined' && google.accounts) {
+            google.accounts.id.initialize({
+              client_id: GOOGLE_CLIENT_ID,
+              callback: handleGoogleSignIn, // ✅ callback chính
+              ux_mode: 'popup'
+            });
+
+            // 🔽 Hiển thị nút Google chính thức
+            google.accounts.id.renderButton(
+              document.getElementById("googleSignInBtn"),
+              { theme: "outline", size: "large", text: "continue_with", width: "300" }
+            );
+
+            console.log('✅ Google Sign-In initialized & button rendered');
+          } else {
+            console.error('❌ Google API not available');
+          }
+        } catch (error) {
+          console.error('❌ Error initializing Google Sign-In:', error);
+        }
+      }
+
+      async function handleGoogleSignIn(response) {
+        console.log('🟢 Google Sign-In callback triggered');
+        
+        try {
+          const userInfo = parseJwt(response.credential);
+          console.log('👤 User info from Google:', userInfo);
+          
+          if (!userInfo || !userInfo.email) {
+            throw new Error('Invalid user info from Google');
+          }
+          
+          const accountsResponse = await fetch(ACCOUNTS_JSON_PATH);
+          
+          if (!accountsResponse.ok) {
+            throw new Error('Failed to load accounts database');
+          }
+          
+          const data = await accountsResponse.json();
+          const profiles = data.profile;
+          
+          let user = profiles.find(profile => profile.email === userInfo.email);
+          
+          if (!user) {
+            console.log('⚠️ User not found in database');
+            const confirmRegister = confirm(
+              `No EcoFit account found for:\n${userInfo.email}\n\nWould you like to create a new account?`
+            );
+            
+            if (confirmRegister) {
+              user = {
+                profile_id: Date.now().toString(),
+                fullname: userInfo.name || 'Google User',
+                email: userInfo.email,
+                phone: '',
+                password: '',
+                gender: '',
+                dob: '',
+                address: '',
+                created_at: new Date().toISOString(),
+                status: 'active',
+                role: 'customer',
+                green_score: 0
+              };
+              
+              console.log('✅ New user created:', user);
+              alert('Welcome to EcoFit! 🌿\n\nYour account has been created.\n(In production, this would be saved to the database)');
+            } else {
+              console.log('❌ User declined account creation');
+              return;
+            }
+          }
+          
+          if (user.status !== 'active') {
+            alert('Your account is inactive. Please contact support at admin@ecofit.vn');
+            return;
+          }
+          
+          console.log('✅ Login successful for:', user.email);
+          saveUserToLocalStorage(user, "google");
+          redirectUser(user);
+          
+        } catch (error) {
+          console.error('❌ Error processing Google Sign-In:', error);
+          alert('An error occurred during Google Sign-In.\n\nError: ' + error.message + '\n\nPlease try regular login instead.');
+        }
+      }
+
+      // ========== HELPER FUNCTIONS ==========
+      
+      function parseJwt(token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(
+            atob(base64)
+              .split('')
+              .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+              .join('')
+          );
+          return JSON.parse(jsonPayload);
+        } catch (error) {
+          console.error('Error parsing JWT:', error);
+          return null;
+        }
+      }
+
+      function saveUserToLocalStorage(user, method) {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userRole", user.role);
+        localStorage.setItem("userName", user.fullname);
+        localStorage.setItem("userEmail", user.email);
+        localStorage.setItem("userId", user.profile_id);
+        localStorage.setItem("loginMethod", method);
+        console.log('💾 User info saved to localStorage');
+      }
+
+      function redirectUser(user) {
+        console.log('🔄 Redirecting user...');
+        console.log('User role:', user.role);
+        
+        alert(`Welcome back, ${user.fullname}! 🌿`);
+        
+        setTimeout(() => {
+          if (user.role === "administrator") {
+            const adminUrl = "../admin_pages/dashboard.html";
+            console.log('→ Redirecting to:', adminUrl);
+            window.location.href = adminUrl;
+          } else if (user.role === "customer") {
+            const homeUrl = "../pages/01_HOMEPAGE.html";
+            console.log('→ Redirecting to:', homeUrl);
+            window.location.href = homeUrl;
+          } else {
+            alert("Unknown user role: " + user.role);
+          }
+        }, 1000); // Tăng timeout lên 1 giây
+      }
+
+      // ========== INIT ON PAGE LOAD ==========
+      window.addEventListener('DOMContentLoaded', () => {
+        console.log('🚀 Login page loaded');
+        console.log('📍 Current URL:', window.location.href);
+        
+        // Load saved email if "Remember me" was checked
+        const rememberMe = localStorage.getItem("rememberMe");
+        const savedEmail = localStorage.getItem("savedEmail");
+        
+        if (rememberMe === "true" && savedEmail) {
+          document.getElementById("email").value = savedEmail;
+          document.getElementById("save_infor").checked = true;
+          console.log('✅ Loaded saved email');
+        }
+
+        // Load Google Sign-In
+        loadGoogleSignIn();
+        
+        // Attach Google button handler
+        const googleBtn = document.getElementById('googleSignInBtn');
+        if (googleBtn) {
+          console.log('✅ Google button handler attached');
+        } else {
+          console.error('❌ Google button not found!');
+        }
+
+        // Enter key support for login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            process_login();
+          }
+        });
+      });
+    </script>
   </body>
 </html>
