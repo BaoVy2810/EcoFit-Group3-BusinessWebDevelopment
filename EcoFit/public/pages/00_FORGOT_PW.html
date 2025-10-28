@@ -375,176 +375,319 @@
             </div>
         </div>
     </div>
-
     <script>
-        let accountsDatabase = null;
+    const ACCOUNTS_JSON_PATH = "../../dataset/accounts.json";
 
-        // Load accounts from JSON file
-        async function loadAccountsFromJSON() {
-            try {
-                const response = await fetch('../../dataset/accounts.json');
-                if (!response.ok) {
-                    throw new Error('Cannot load accounts.json');
-                }
-                const data = await response.json();
-                accountsDatabase = data;
-                console.log('Accounts loaded:', data); // Debug log
-                return data;
-            } catch (error) {
-                console.error('Error loading accounts:', error);
-                alert('Unable to load account data. Please try again!');
-                return null;
-            }
+    // ========== KIỂM TRA EMAIL ==========
+    async function verifyUser() {
+    const email = document.getElementById("email").value.trim();
+    if (!email) {
+        alert("⚠️ Please enter your email address.");
+        return;
+    }
+
+    try {
+        const response = await fetch(ACCOUNTS_JSON_PATH);
+        if (!response.ok) throw new Error("Cannot load accounts database.");
+
+        const data = await response.json();
+        const profiles = data.profile;
+        const user = profiles.find(p => p.email === email);
+
+        if (!user) {
+        alert("❌ This email is not registered!");
+        return;
         }
 
-        // Load accounts from localStorage or JSON file
-        async function loadAccounts() {
-            const stored = localStorage.getItem('accounts');
-            if (stored) {
-                console.log('Loading from localStorage'); // Debug log
-                return JSON.parse(stored);
-            }
-            
-            // If no localStorage, load from JSON file
-            if (!accountsDatabase) {
-                console.log('Loading from JSON file'); // Debug log
-                await loadAccountsFromJSON();
-            }
-            
-            if (accountsDatabase) {
-                // Initialize localStorage with data from JSON
-                localStorage.setItem('accounts', JSON.stringify(accountsDatabase));
-                return accountsDatabase;
-            }
-            
-            return null;
-        }
+        // ✅ Nếu email tồn tại → tạo mã xác thực
+        const code = generate_verification_code();
+        send_verification_email(email, code);
+        show_verification_modal(email, code, user);
 
-        // Initialize: Load data when page loads
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadAccountsFromJSON();
-        });
+    } catch (err) {
+        console.error("Error verifying user:", err);
+        alert("An error occurred. Check console for details.");
+    }
+    }
 
-        // Save accounts to localStorage
-        function saveAccounts(accounts) {
-            localStorage.setItem('accounts', JSON.stringify(accounts));
-        }
+    // ========== HÀM TẠO & GỬI MÃ ==========
+    function generate_verification_code() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+    }
 
-        let currentUser = null;
+    function send_verification_email(email, code) {
+    console.log(`📧 Sending verification code to ${email}`);
+    console.log(`🔑 Code: ${code}`);
+    return true;
+    }
 
-        async function verifyUser() {
-            const name = document.getElementById('name').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const email = document.getElementById('email').value.trim();
+    // ========== HIỂN THỊ MODAL XÁC THỰC ==========
+    function show_verification_modal(email, correctCode, user) {
+    const modalHTML = `
+        <div id="verificationModal" 
+            style="position:fixed;
+                    top:0;
+                    left:0;
+                    width:100%;
+                    height:100%;
+                    background:rgba(0,0,0,0.7);
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    z-index:9999;
+                    backdrop-filter:blur(5px);">
+        <div style="background:#fff;
+                    border-radius:20px;
+                    padding:40px;
+                    max-width:450px;
+                    width:90%;
+                    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+                    text-align:center;">
+            <div style="width:80px;
+                        height:80px;
+                        background:linear-gradient(135deg,#69bd76 0%,#3da547 100%);
+                        border-radius:50%;
+                        margin:0 auto 24px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            </div>
+            <h2 style="font-size:28px;
+                        font-weight:700;
+                        color:#000;
+                        margin-bottom:12px;">
+                Verify Your Email
+            </h2>
+            <p style="font-size:16px;
+                        color:#666;
+                        margin-bottom:24px;">
+                We've sent a 6-digit code to<br>
+                <strong style="color:#3da547;">${email}</strong>
+            </p>
+            <div style="background:#f8f8f8;
+                        border-radius:12px;
+                        padding:16px;
+                        margin-bottom:24px;">
+            <p style="font-size:14px;
+                        color:#999;
+                        margin-bottom:8px;">
+                (For testing) Your code is:
+            </p>
+            <p style="font-size:32px;
+                        font-weight:700;
+                        color:#3da547;
+                        letter-spacing:8px;">
+                ${correctCode}
+            </p>
+            </div>
+            <input id="verificationCodeInput" type="text" maxlength="6" placeholder="Enter code"
+            style="width:100%;
+                    padding:16px;
+                    border:2px solid #e8e8e8;
+                    border-radius:12px;
+                    font-size:24px;
+                    text-align:center;
+                    letter-spacing:8px;
+                    font-weight:600;
+                    margin-bottom:16px;"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
+            <div id="verificationError" 
+                    style="color:#e74c3c;
+                            font-size:14px;
+                            margin-bottom:16px;
+                            display:none;">
+                Incorrect code. Try again.
+            </div>
+            <div style="display:flex;
+                        gap:12px;">
+            <button onclick="verify_code('${correctCode}', '${user.email}')" 
+                style=" flex:1;
+                        padding:14px;
+                        background:linear-gradient(180deg,#69BD76 0%,#3DA547 100%);
+                        color:white;
+                        border:none;
+                        border-radius:12px;
+                        font-size:16px;
+                        font-weight:600;
+                        cursor:pointer;">
+                Verify
+            </button>
+            <button onclick="resend_code('${email}')" 
+                style="flex:1;
+                        padding:14px;
+                        background:white;
+                        color:#3da547;
+                        border:2px solid #3da547;
+                        border-radius:12px;
+                        font-size:16px;
+                        font-weight:600;
+                        cursor:pointer;">
+                Resend
+            </button>
+            </div>
+            <button onclick="close_verification_modal()" 
+                style="width:100%;
+                        padding:14px;
+                        background:transparent;
+                        color:#999;
+                        border:none;
+                        font-size:14px;
+                        font-weight:500;
+                        cursor:pointer;
+                        margin-top:12px;">
+                Cancel
+            </button>
+        </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    setTimeout(() => document.getElementById("verificationCodeInput").focus(), 100);
+    }
 
-            if (!name || !phone || !email) {
-                alert('Please fill in all information!');
-                return;
-            }
+    function close_verification_modal() {
+    const modal = document.getElementById("verificationModal");
+    if (modal) modal.remove();
+    }
 
-            const accounts = await loadAccounts();
-            
-            if (!accounts || !accounts.profile) {
-                alert('Unable to load data. Please try again!');
-                return;
-            }
+    // ========== KIỂM TRA MÃ ==========
+    function verify_code(correctCode, email) {
+    const inputCode = document.getElementById("verificationCodeInput").value.trim();
+    const errorDiv = document.getElementById("verificationError");
 
-            console.log('Searching for user...'); // Debug log
-            console.log('Input:', { name, phone, email }); // Debug log
-            
-            // Find user - improved logic with better matching
-            const user = accounts.profile.find(u => {
-                const nameMatch = u.fullname && u.fullname.toLowerCase().trim() === name.toLowerCase().trim();
-                const phoneMatch = u.phone && u.phone.trim() === phone.trim();
-                const emailMatch = u.email && u.email.toLowerCase().trim() === email.toLowerCase().trim();
-                
-                console.log('Checking user:', u.fullname, { nameMatch, phoneMatch, emailMatch }); // Debug log
-                
-                return nameMatch && phoneMatch && emailMatch;
-            });
+    if (inputCode === correctCode) {
+        close_verification_modal();
+        show_reset_password_modal(email);
+    } else {
+        errorDiv.style.display = "block";
+        document.getElementById("verificationCodeInput").style.borderColor = "#e74c3c";
+        document.getElementById("verificationCodeInput").value = "";
+        setTimeout(() => {
+        errorDiv.style.display = "none";
+        document.getElementById("verificationCodeInput").style.borderColor = "#e8e8e8";
+        }, 2000);
+    }
+    }
 
-            if (user) {
-                console.log('User found:', user); // Debug log
-                currentUser = user;
-                document.getElementById('passwordModal').style.display = 'block';
-            } else {
-                console.log('User not found'); // Debug log
-                alert('Account not found with this information. Please check again!');
-            }
-        }
+    function resend_code(email) {
+    const newCode = generate_verification_code();
+    send_verification_email(email, newCode);
+    const codeDisplay = document.querySelector('#verificationModal p[style*="font-size:32px"]');
+    codeDisplay.textContent = newCode;
+    const verifyBtn = document.querySelector('#verificationModal button[onclick^="verify_code"]');
+    verifyBtn.setAttribute("onclick", `verify_code('${newCode}', '${email}')`);
+    alert("✅ A new verification code has been sent!");
+    }
+    function show_reset_password_modal(email) {
+    const modalHTML = `
+        <div id="resetModal" 
+            style="position:fixed;
+                    top:0;
+                    left:0;
+                    width:100%;
+                    height:100%;
+                    background:rgba(0,0,0,0.7);
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    z-index:9999;">
+            <div style="background:white;
+                        border-radius:20px;
+                        padding:40px;
+                        max-width:450px;
+                        width:90%;
+                        box-shadow:0 20px 60px rgba(0,0,0,0.3);
+                        text-align:center;">
+                <h2 style="font-size:28px;
+                            font-weight:700;
+                            color:#000;
+                            margin-bottom:24px;">
+                    Reset Your Password
+                </h2>
+                <input type="password" id="newPassword" placeholder="Enter new password"
+                    style="width:100%;
+                            padding:14px;
+                            border:2px solid #e8e8e8;
+                            border-radius:12px;
+                            font-size:16px;
+                            margin-bottom:16px;">
+                <input type="password" id="confirmPassword" placeholder="Confirm new password"
+                style="width:100%;
+                        padding:14px;
+                        border:2px solid #e8e8e8;
+                        border-radius:12px;
+                        font-size:16px;
+                        margin-bottom:16px;">
+                <button onclick="reset_password('${email}')" 
+                        style="width:100%;
+                                padding:14px;
+                                background:linear-gradient(135deg,#69BD76 0%,#3DA547 100%);
+                                color:white;
+                                border:none;
+                                border-radius:12px;
+                                font-size:16px;
+                                font-weight:600;
+                                cursor:pointer;">
+                    Update Password
+                </button>
+                <button onclick="close_reset_modal()" 
+                        style="width:100%;
+                                padding:12px;
+                                background:transparent;
+                                color:#999;
+                                border:none;
+                                font-size:14px;
+                                margin-top:12px;
+                                cursor:pointer;">
+                    Cancel
+                    </button>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    }
 
-        async function resetPassword() {
-            const newPassword = document.getElementById('new_password').value;
-            const confirmPassword = document.getElementById('confirm_new_password').value;
+    function close_reset_modal() {
+    const modal = document.getElementById("resetModal");
+    if (modal) modal.remove();
+    }
 
-            if (!newPassword || !confirmPassword) {
-                alert('Please enter new password!');
-                return;
-            }
+    function reset_password(email) {
+    const newPass = document.getElementById("newPassword").value.trim();
+    const confirmPass = document.getElementById("confirmPassword").value.trim();
 
-            if (newPassword.length < 6) {
-                alert('Password must be at least 6 characters!');
-                return;
-            }
+    if (!newPass || !confirmPass) {
+        alert("⚠️ Please fill in both fields.");
+        return;
+    }
+    if (newPass !== confirmPass) {
+        alert("⚠️ Passwords do not match.");
+        return;
+    }
+    if (newPass.length < 6) {
+        alert("⚠️ Password must be at least 6 characters.");
+        return;
+    }
 
-            if (newPassword !== confirmPassword) {
-                alert('Confirm password does not match!');
-                return;
-            }
+    // ✅ Lưu thay đổi (mock)
+    let accounts = JSON.parse(localStorage.getItem("accounts") || "{}");
+    if (accounts.profile) {
+        const user = accounts.profile.find(u => u.email === email);
+        if (user) user.password = newPass;
+        localStorage.setItem("accounts", JSON.stringify(accounts));
+    }
 
-            // Update password in localStorage
-            const accounts = await loadAccounts();
-            
-            if (!accounts || !accounts.profile) {
-                alert('Unable to update password. Please try again!');
-                return;
-            }
+    alert("✅ Password updated successfully!");
+    close_reset_modal();
+    window.location.href = "00_LOGIN.html";
+    }
 
-            const userIndex = accounts.profile.findIndex(u => 
-                (u.profile_id === currentUser.profile_id || u.id === currentUser.id)
-            );
-
-            if (userIndex !== -1) {
-                accounts.profile[userIndex].password = newPassword;
-                saveAccounts(accounts);
-                
-                alert('Password changed successfully! You will be redirected to login page.');
-                window.location.href = '00_LOGIN.html';
-            } else {
-                alert('An error occurred. Please try again!');
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-            document.getElementById('new_password').value = '';
-            document.getElementById('confirm_new_password').value = '';
-        }
-
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const wrapper = input.parentElement;
-            const eyeOpen = wrapper.querySelector('.eye-open');
-            const eyeClosed = wrapper.querySelector('.eye-closed');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                eyeOpen.style.display = 'none';
-                eyeClosed.style.display = 'block';
-            } else {
-                input.type = 'password';
-                eyeOpen.style.display = 'block';
-                eyeClosed.style.display = 'none';
-            }
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('passwordModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
+    window.addEventListener("DOMContentLoaded", () => {
+    console.log("✅ Forgot Password page loaded with email verification");
+    });
     </script>
 </body>
 </html>
