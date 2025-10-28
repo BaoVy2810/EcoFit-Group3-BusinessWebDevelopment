@@ -221,13 +221,18 @@
                   <td style="padding: 16px;" name="items-count"></td>
                   <td style="padding: 16px; font-weight: 600; color: #22c55e;" name="total-amount"></td>
                   <td style="padding: 16px;"><span name="status"></span></td>
-                  <td style="padding: 16px;">
-                    <button class="view-detail-btn" style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;">
-                      <i data-lucide="eye"></i>
-                    </button>
-                    <button class="edit-status-btn" style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #f59e0b;">
-                      <i data-lucide="edit"></i>
-                    </button>
+                  <td>
+
+
+  <div class="action-buttons" style="gap:3px">
+    <button title="View">
+      <i data-lucide="eye" style="width: 24px; height: 24px;"></i>
+    </button>
+    <button title="Edit">
+      <i data-lucide="Edit" style="width: 24px; height: 24px;"></i>
+    </button>
+  </div>
+                    
                   </td>
                 </tr>
               </tbody>
@@ -463,7 +468,7 @@ function loadMonthFilter() {
   Array.from(months).sort().reverse().forEach(monthYear => {
     const [year, month] = monthYear.split('-');
     const date = new Date(year, month - 1);
-    const monthName = date.toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
+    const monthName = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     
     const option = document.createElement("option");
     option.value = monthYear;
@@ -544,7 +549,7 @@ function loadRevenueChart() {
     const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
     last6Months.push({
       monthYear,
-      label: date.toLocaleDateString("vi-VN", { month: "short", year: "numeric" }),
+      label: date.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
       revenue: 0
     });
   }
@@ -619,7 +624,7 @@ function loadRevenueChart() {
   });
 }
 
-// ✅ HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
+//  HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
 function handleOrderFilter() {
   const searchValue = safeLower(document.getElementById("searchInput").value);
   const statusValue = document.getElementById("statusFilter").value;
@@ -682,13 +687,13 @@ function handleOrderFilter() {
     `;
 
     // Gắn event cho button View
-    const viewBtn = row.querySelector(".view-detail-btn");
+    const viewBtn = row.querySelector(".action-buttons button[title='View']");
     if (viewBtn) {
       viewBtn.addEventListener("click", () => openViewModal(order));
     }
 
     // Gắn event cho button Edit
-    const editBtn = row.querySelector(".edit-status-btn");
+    const editBtn = row.querySelector(".action-buttons button[title='Edit']");
     if (editBtn) {
       editBtn.addEventListener("click", () => openEditModal(order.order_id));
     }

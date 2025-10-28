@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notification Management - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .notification-form {
+      display: grid;
+      gap: 24px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .image-upload-area {
+      border: 2px dashed #e5e7eb;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      background: #f9fafb;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .image-upload-area:hover {
+      border-color: #3DA547;
+      background: #f0fdf4;
+    }
+
+    .image-upload-area.has-image {
+      padding: 0;
+      border: none;
+    }
+
+    .image-preview {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .image-preview .remove-image {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      color: #9ca3af;
+    }
+
+    .summary-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      color: #6b7280;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .summary-value {
+      color: #111827;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .preview-section {
+      margin-top: 24px;
+    }
+
+    .notification-preview {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .preview-icon {
+      width: 40px;
+      height: 40px;
+      background: #eff6ff;
+      color: #3b82f6;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .preview-content {
+      flex: 1;
+    }
+
+    .preview-title {
+      font-weight: 600;
+      color: #111827;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .preview-time {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .preview-message {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .preview-image {
+      margin-top: 12px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .preview-image img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .action-buttons-top {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn-draft {
+      padding: 12px 24px;
+      background: white;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-draft:hover {
+      background: #f9fafb;
+    }
+
+    .btn-schedule {
+      padding: 12px 24px;
+      background: white;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-schedule:hover {
+      background: #f9fafb;
+    }
+
+    .btn-send {
+      padding: 12px 24px;
+      background: #3DA547;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-send:hover {
+      background: #32883b;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .toolbar button {
+      padding: 6px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+    }
+
+    .toolbar button:hover {
+      background: #f3f4f6;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    .two-column-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 32px;
+    }
+
+    @media (max-width: 1200px) {
+      .two-column-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
+
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          mainContent.classList.toggle('expanded');
+        });
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+        <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
+        <div>
+          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
+          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="menu-item" onclick="location.href='dashboard.html'">
+          <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
+        </button>
+        <button class="menu-item" onclick="location.href='accounts.html'">
+          <i data-lucide="square-user-round"></i><span>Accounts</span>
+        </button>
+        <button class="menu-item" onclick="location.href='products.html'">
+          <i data-lucide="package"></i><span>Products</span>
+        </button>
+        <button class="menu-item" onclick="location.href='orders.html'">
+          <i data-lucide="list"></i><span>Order Lists</span>
+        </button>
+        <button class="menu-item active"><i data-lucide="bell"></i><span>Notifications</span></button>
+
+        <div class="pages-divider"><p>PAGES</p></div>
+
+        <button class="menu-item" onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle"><i data-lucide="menu"></i></button>
+        </div>
+
+        <div class="header-right">
+          <button class="notification-btn">
+            <i data-lucide="bell"></i><span class="notification-dot"></span>
+          </button>
+          <div class="user-profile">
+            <div class="user-info">
+              <p class="user-name">Moni Roy</p>
+              <p class="user-role">Admin</p>
+            </div>
+            <img src="../images/admin.png" alt="Admin" />
+          </div>
+        </div>
+      </header>
+
+      <!-- Notification Management -->
+      <main class="content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+          <h2 class="page-title" style="margin-bottom: 0;">Create Notification</h2>
+          <div class="action-buttons-top">
+            <button class="btn-draft" onclick="saveDraft()">
+              <i data-lucide="save" style="width: 20px; height: 20px;"></i>Save as Draft
+            </button>
+            <button class="btn-schedule" onclick="scheduleNotification()">
+              <i data-lucide="calendar" style="width: 20px; height: 20px;"></i>Schedule
+            </button>
+            <button class="btn-send" onclick="sendNotification()">
+              <i data-lucide="send" style="width: 20px; height: 20px;"></i>Send Now
+            </button>
+          </div>
+        </div>
+
+        <div class="two-column-layout">
+          <!-- Left Column: Form -->
+          <div>
+            <div class="chart-container" style="padding: 32px;">
+              <h3 style="margin-bottom: 8px; font-size: 20px; font-weight: bold;">Notification Details</h3>
+              <p style="color: #6b7280; margin-bottom: 32px;">Create a notification to send to your users</p>
+
+              <form class="notification-form" id="notificationForm">
+                <div class="form-group">
+                  <label>Notification Title <span style="color: #ef4444;">*</span></label>
+                  <input type="text" id="notificationTitle" placeholder="Limited Time Offer: [Discount]% Off" maxlength="60" required />
+                  <div class="char-count"><span id="titleCount">0</span>/60 characters</div>
+                </div>
+
+                <div class="form-group">
+                  <label>Notification Message <span style="color: #ef4444;">*</span></label>
+                  <textarea id="notificationMessage" placeholder="For A Limited Time, Enjoy [Discount]% Off On [Product/Service]. Use Code [CODE] At Checkout. Offer Valid Until [End Date]." maxlength="500" rows="6" required></textarea>
+                  <div class="toolbar">
+                    <button type="button" title="Bold"><i data-lucide="bold" style="width: 16px; height: 16px;"></i></button>
+                    <button type="button" title="Italic"><i data-lucide="italic" style="width: 16px; height: 16px;"></i></button>
+                    <button type="button" title="Link"><i data-lucide="link" style="width: 16px; height: 16px;"></i></button>
+                    <button type="button" title="Bullet List"><i data-lucide="list" style="width: 16px; height: 16px;"></i></button>
+                    <button type="button" title="Numbered List"><i data-lucide="list-ordered" style="width: 16px; height: 16px;"></i></button>
+                  </div>
+                  <div class="char-count"><span id="messageCount">0</span>/500 characters</div>
+                </div>
+
+                <div class="form-group">
+                  <label>Image (Optional)</label>
+                  <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('imageInput').click()">
+                    <div id="uploadPlaceholder">
+                      <i data-lucide="image" class="upload-icon"></i>
+                      <p style="color: #6b7280; margin-bottom: 8px;">Click to upload image</p>
+                      <p style="color: #9ca3af; font-size: 12px;">PNG, JPG up to 5MB</p>
+                    </div>
+                    <div id="imagePreview" class="image-preview" style="display: none;">
+                      <img id="previewImg" src="" alt="Preview" />
+                      <button type="button" class="remove-image" onclick="event.stopPropagation(); removeImage()">
+                        <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>Remove
+                      </button>
+                    </div>
+                  </div>
+                  <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)" />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Target Audience <span style="color: #ef4444;">*</span></label>
+                    <select id="targetAudience" required>
+                      <option value="">Select audience</option>
+                      <option value="all">All Users</option>
+                      <option value="accelerator">Accelerator Users Only</option>
+                      <option value="premium">Premium Members</option>
+                      <option value="new">New Users</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Delivery Time</label>
+                    <input type="datetime-local" id="deliveryTime" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Right Column: Summary & Preview -->
+          <div>
+            <!-- Summary -->
+            <div class="chart-container" style="padding: 24px; margin-bottom: 24px;">
+              <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: bold;">Summary</h3>
+              <div class="summary-card">
+                <div class="summary-item">
+                  <span class="summary-label">Status</span>
+                  <span class="summary-value" id="summaryStatus">Ready to Send</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Audience</span>
+                  <span class="summary-value" id="summaryAudience">Not selected</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Delivery</span>
+                  <span class="summary-value" id="summaryDelivery">Send immediately</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="chart-container" style="padding: 24px;">
+              <h3 style="margin-bottom: 16px; font-size: 18px; font-weight: bold;">Preview</h3>
+              
+              <div class="notification-preview">
+                <div class="preview-header">
+                  <div class="preview-icon">
+                    <i data-lucide="bell" style="width: 20px; height: 20px;"></i>
+                  </div>
+                  <div class="preview-content">
+                    <div class="preview-title" id="previewTitle">Notification Title</div>
+                    <div class="preview-time">Just Now</div>
+                  </div>
+                </div>
+                <div class="preview-message" id="previewMessage">Your notification message will appear here...</div>
+                <div class="preview-image" id="previewImageContainer" style="display: none;">
+                  <img id="previewImageImg" src="" alt="Notification Image" />
+                </div>
+              </div>
+
+              <!-- Sample Notifications -->
+              <div style="margin-top: 24px;">
+                <div class="notification-preview">
+                  <div class="preview-header">
+                    <div class="preview-icon">
+                      <i data-lucide="bell" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <div class="preview-content">
+                      <div class="preview-title">Accelerator Program Launch</div>
+                      <div class="preview-time">Just Now</div>
+                    </div>
+                  </div>
+                  <div class="preview-message">Join our exclusive accelerator program for startups and entrepreneurs...</div>
+                </div>
+
+                <div class="notification-preview">
+                  <div class="preview-header">
+                    <div class="preview-icon" style="background: #fef2f2; color: #ef4444;">
+                      <i data-lucide="shield-alert" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <div class="preview-content">
+                      <div class="preview-title">Security Update Required</div>
+                      <div class="preview-time">5m Ago</div>
+                    </div>
+                  </div>
+                  <div class="preview-message">Important security update requires your immediate attention...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function renderIcons() {
+      if (window.lucide && typeof lucide.createIcons === "function") {
+        lucide.createIcons();
+      }
+    }
+
+    let uploadedImage = null;
+
+    // Character count
+    document.getElementById('notificationTitle').addEventListener('input', (e) => {
+      const count = e.target.value.length;
+      document.getElementById('titleCount').textContent = count;
+      updatePreview();
+    });
+
+    document.getElementById('notificationMessage').addEventListener('input', (e) => {
+      const count = e.target.value.length;
+      document.getElementById('messageCount').textContent = count;
+      updatePreview();
+    });
+
+    document.getElementById('targetAudience').addEventListener('change', (e) => {
+      const audience = e.target.options[e.target.selectedIndex].text;
+      document.getElementById('summaryAudience').textContent = audience || 'Not selected';
+    });
+
+    document.getElementById('deliveryTime').addEventListener('change', (e) => {
+      const delivery = e.target.value;
+      if (delivery) {
+        const date = new Date(delivery);
+        const formatted = date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'numeric', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        document.getElementById('summaryDelivery').textContent = `Scheduled for ${formatted}`;
+      } else {
+        document.getElementById('summaryDelivery').textContent = 'Send immediately';
+      }
+    });
+
+    function updatePreview() {
+      const title = document.getElementById('notificationTitle').value || 'Notification Title';
+      const message = document.getElementById('notificationMessage').value || 'Your notification message will appear here...';
+      
+      document.getElementById('previewTitle').textContent = title;
+      document.getElementById('previewMessage').textContent = message;
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File size must be less than 5MB');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          uploadedImage = e.target.result;
+          document.getElementById('previewImg').src = uploadedImage;
+          document.getElementById('uploadPlaceholder').style.display = 'none';
+          document.getElementById('imagePreview').style.display = 'block';
+          document.getElementById('imageUploadArea').classList.add('has-image');
+          
+          // Update preview
+          document.getElementById('previewImageImg').src = uploadedImage;
+          document.getElementById('previewImageContainer').style.display = 'block';
+          
+          renderIcons();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeImage() {
+      uploadedImage = null;
+      document.getElementById('imageInput').value = '';
+      document.getElementById('uploadPlaceholder').style.display = 'block';
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('imageUploadArea').classList.remove('has-image');
+      document.getElementById('previewImageContainer').style.display = 'none';
+      renderIcons();
+    }
+
+    function saveDraft() {
+      const title = document.getElementById('notificationTitle').value;
+      if (!title) {
+        alert('Please enter a notification title');
+        return;
+      }
+      alert('Notification saved as draft!');
+    }
+
+    function scheduleNotification() {
+      const title = document.getElementById('notificationTitle').value;
+      const message = document.getElementById('notificationMessage').value;
+      const audience = document.getElementById('targetAudience').value;
+      const deliveryTime = document.getElementById('deliveryTime').value;
+
+      if (!title || !message || !audience) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      if (!deliveryTime) {
+        alert('Please select a delivery time to schedule');
+        return;
+      }
+
+      alert('Notification scheduled successfully!');
+    }
+
+    function sendNotification() {
+      const title = document.getElementById('notificationTitle').value;
+      const message = document.getElementById('notificationMessage').value;
+      const audience = document.getElementById('targetAudience').value;
+
+      if (!title || !message || !audience) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      if (confirm('Are you sure you want to send this notification now?')) {
+        alert('Notification sent successfully!');
+        document.getElementById('notificationForm').reset();
+        removeImage();
+        updatePreview();
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const userRole = localStorage.getItem("userRole");
+
+      if (!isLoggedIn || userRole !== "administrator") {
+        alert("Please login as administrator to access this page.");
+        window.location.href = "../pages/00_LOGIN.html";
+        return;
+      }
+
+      const userName = localStorage.getItem("userName");
+      if (userName) {
+        const userNameElement = document.querySelector(".user-name");
+        if (userNameElement) userNameElement.textContent = userName;
+      }
+
+      renderIcons();
+    });
+  </script>
+</body>
+</html>
