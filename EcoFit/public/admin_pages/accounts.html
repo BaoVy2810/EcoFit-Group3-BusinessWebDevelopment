@@ -156,8 +156,8 @@
                   <div style="display: grid; grid-template-columns: 35% 65%; gap: 24px; margin-bottom: 32px;">
 
 <div class="chart-container" style="padding: 24px;  max-height: 750px; ">
-  <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">User Activity Chart</h3>
-  <canvas id="userActivityChart" height="350px" align="center"></canvas>
+  <h3 style="margin-bottom: 20px; font-size: 24px; font-weight: bold;">User Activity Chart</h3>
+  <canvas id="userActivityChart" height="330px" align="center"></canvas>
 </div>
 
 
@@ -211,13 +211,15 @@
   <td style="padding: 16px;" name="email"></td>
   <td style="padding: 16px;"><span name="role"></span></td>
   <td style="padding: 16px;"><span name="status"></span></td>
-  <td style="padding: 16px;">
-    <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;" title="Edit">
-      <i data-lucide="edit"></i>
+<td >
+  <div class="action-buttons">
+    <button title="Edit">
+      <i data-lucide="edit" style="width: 24px; height: 24px;"></i>
     </button>
-    <button style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;" title="Delete">
-      <i data-lucide="trash-2"></i>
+    <button title="Delete">
+      <i data-lucide="trash-2" style="width: 24px; height: 24px;"></i>
     </button>
+  </div>
   </td>
 </tr>
               </tbody>
