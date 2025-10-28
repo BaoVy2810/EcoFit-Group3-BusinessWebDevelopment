@@ -647,6 +647,7 @@
             toast = document.createElement('div');
             toast.id = 'parent-notification-toast';
             toast.style.cssText = `
+                font-family: "Outfit" !important;
                 position: fixed !important;
                 bottom: 30px !important;
                 right: 30px !important;
