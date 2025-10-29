@@ -468,7 +468,7 @@
                 transition: opacity 0.3s ease !important;
                 margin: 0 !important;
                 border: none !important;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+                font-family: "Outfit" !important;
                 pointer-events: none !important;
             }
         `;

@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>09_PERSONAL_INFO</title>
+    <title>Personal Information</title>
+    <link rel="icon" href="../images/ecofit_logo2.png" sizes="32x32" type="image/png">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
     <script src="../js/notification_handler.js"></script>
@@ -13,7 +15,7 @@
 <body>
     <iframe id="header-frame" class="header-frame"></iframe>
     <script>
-            window.addEventListener("DOMContentLoaded", () => {
+        window.addEventListener("DOMContentLoaded", () => {
             const header = document.getElementById("header-frame");
             const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
             header.src = isLoggedIn
@@ -51,12 +53,54 @@
             if (e.data.action === "toggleNotifications") {
                 if (!window.NotificationPopup) {
                     window.NotificationPopup = createNotificationPopupInParent(
-                        e.data.notifications, 
+                        e.data.notifications,
                         e.data.bellPosition
                     );
                 } else {
                     window.NotificationPopup.toggle();
                 }
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra đăng nhập
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            if (!isLoggedIn) {
+                alert("Please login to view your personal information");
+                window.location.href = "00_LOGIN.html";
+                return;
+            }
+
+            // Load thông tin người dùng
+            setTimeout(() => {
+                if (typeof loadUserProfile === 'function') {
+                    loadUserProfile();
+                }
+            }, 100);
+        });
+
+        // Xử lý logout từ sidebar
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoutLink = document.getElementById("sidebar-logout");
+            if (logoutLink) {
+                logoutLink.addEventListener("click", (e) => {
+                    e.preventDefault();
+
+                    // Xóa thông tin đăng nhập
+                    localStorage.removeItem("isLoggedIn");
+                    localStorage.removeItem("login_infor");
+
+                    // Gửi tín hiệu logout cho header
+                    const header = document.getElementById("header-frame");
+                    if (header && header.contentWindow) {
+                        header.contentWindow.postMessage({ action: "logout" }, "*");
+                    }
+
+                    // Reload header để trở lại header0
+                    header.src = "../template/header0.html";
+
+                    // Chuyển về trang chủ
+                    window.location.href = "01_HOMEPAGE.html";
+                });
             }
         });
     </script>
@@ -193,4 +237,5 @@
     </script>
     <script src="../js/personal_info.js"></script>
 </body>
+
 </html>
