@@ -1,46 +1,46 @@
 <html>
+
 <head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <title>Header</title>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap");
-    * {
-        font-family: "Outfit" !important;
-    }
-    .nav-link.active {
-        font-weight: 800;
-    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Header</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Outfit:wght@100..900&display=swap");
+
+        * {
+            font-family: "Outfit" !important;
+        }
+
+        .nav-link.active {
+            font-weight: 800;
+        }
     </style>
-    
+
 </head>
+
 <body style="background-color: #ffffff">
-    <nav class="navbar navbar-expand-lg navbar-light" 
-        style="padding:0">
+    <nav class="navbar navbar-expand-lg navbar-light" style="padding:0">
         <div class="container-fluid d-flex flex-row align-items-center px-0 positive-relative">
             <!--Logo-->
             <a class="navbar-brand ms-2 ms-lg-0" href="#">
-                <img src="../images/EcoFit_logo.png"
-                    alt="logoEcoFit"
-                    style="height:40px; 
-                            margin: 15px 40px 0 50px;"/>
+                <img src="../images/EcoFit_logo.png" alt="logoEcoFit" style="height:40px; 
+                            margin: 15px 40px 0 50px;" />
             </a>
 
             <!--Navigation-->
-            <div class="collapse navbar-collapse" 
-                id="navbarNav" 
-                style="margin-top: 15px;">
-                <ul class="navbar-nav mt-2 mt-lg-0" 
-                    style="font-size: 16px; 
+            <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 15px;">
+                <ul class="navbar-nav mt-2 mt-lg-0" style="font-size: 16px; 
                             gap: 40px;">
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/01_HOMEPAGE.html" id="nav-home" target="_parent">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/02_PRODUCT_CATEGORY.html" id="nav-shop" target="_parent">Shop</a>
+                        <a class="nav-link" href="../pages/02_PRODUCT_CATEGORY.html" id="nav-shop"
+                            target="_parent">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/13_ABOUT_US.html" id="nav-about" target="_parent">About Us</a>
+                        <a class="nav-link" href="../pages/13_ABOUT_US.html" id="nav-about" target="_parent">About
+                            Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/14_BLOG_GENERAL.html" id="nav-blog" target="_parent">Blog</a>
@@ -50,31 +50,24 @@
                     </li>
                 </ul>
             </div>
-            
+
             <!--Search Box-->
-            <div class="positive-relative"
-                style="
+            <div class="positive-relative" style="
                         margin: 13px 40px 0 40px;
                         display: inline-block;">
-                <img src="../images/Search_icon.png"
-                    alt="Search Icon"
-                    style="position:absolute;
+                <img src="../images/Search_icon.png" alt="Search Icon" style="position:absolute;
                             width:20px;
                             height:20px;
                             opacity:0.7;
                             margin:20px 40px 0 14px;
                             transform: translateY(-50%);">
-                <input type="text"
-                        class="form-control rounder-spill ps-30"
-                        placeholder="Seach product"
-                        style="background-color: #FAFAFA;
+                <input type="text" class="form-control rounder-spill ps-30" placeholder="Seach product" style="background-color: #FAFAFA;
                                 width:350px;
                                 border-radius: 30px;
                                 padding-left: 45px;
-                                font-size: 16px;"/>
+                                font-size: 16px;" />
                 <!-- Dropdown Suggestion -->
-                <ul id="search-dropdown"
-                    style="display:none; 
+                <ul id="search-dropdown" style="display:none; 
                             position:absolute; 
                             top:105%; 
                             left:0; 
@@ -90,12 +83,10 @@
             </div>
 
             <!--Notifications, Cart, User-->
-            <div class="d-flex align-items-center" 
-                    style="gap: 10px; 
+            <div class="d-flex align-items-center" style="gap: 10px; 
                         margin:10px 30px 0 0">
                 <!-- Notification -->
-                <button id="bell-button" type="button"  class="position-relative" 
-                    style="background-color: #F7F1D8; 
+                <button id="bell-button" type="button" class="position-relative" style="background-color: #F7F1D8; 
                             border-radius: 50%; 
                             width: 40px; 
                             height: 40px; 
@@ -106,34 +97,35 @@
                             outline:none;
                             box-shadow:none;">
                     <img src="../images/Bell_icon.png" alt="bell" style="width:30px; height:30px;">
-                    <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" 
-                        style="font-size: 10px">
-                        1
+                    <span
+                        class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1"
+                        style="font-size: 10px" id="bell-button" name="bell-button">
+
                     </span>
                 </button>
                 <!-- Cart -->
-                <button type="button"  class="position-relative" 
-                    style="background-color: #69BD76; 
-                            border-radius: 50%; 
-                            width: 40px; 
-                            height: 40px; 
-                            display: flex; 
-                            justify-content: center; 
-                            align-items: center;
-                            border:none;
-                            outline:none;
-                            box-shadow:none;">
-                    <img src="../images/Cart_icon.png" alt="cart" 
-                            style="width: 30px; 
-                                    height:30px;">
-                    <span class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1" 
+                <a href="../pages/05_SHOPPING_CART.html" target="_parent" type="button" class="position-relative" style="background-color: #69BD76; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            border:none;
+            outline:none;
+            box-shadow:none;
+            text-decoration: none;
+            cursor: pointer;">
+                    <img src="../images/Cart_icon.png" alt="cart" style="width: 30px; 
+                    height:30px;">
+                    <span
+                        class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1"
                         style="font-size: 10px">
                         8
                     </span>
-                </button>
+                </a>
                 <!-- User -->
-                <a href="../pages/09_PERSONAL_INFO.html" target="_parent"
-                    style="background-color: #D9D9D9; 
+                <a href="../pages/09_PERSONAL_INFO.html" target="_parent" style="background-color: #D9D9D9; 
                             border-radius: 50%; 
                             width: 40px; 
                             height: 40px; 
@@ -143,64 +135,84 @@
                             border:none;
                             outline:none;
                             box-shadow:none;">
-                    <img src="../images/Profile_icon.png" alt="user" 
-                            style="width:30px; 
+                    <img src="../images/Profile_icon.png" alt="user" style="width:30px; 
                                     height:30px;">
                 </a>
-                </div>
             </div>
+        </div>
         </div>
     </nav>
 
     <script>
-    window.addEventListener("message", (event) => {
-        const { activeNav } = event.data;
-        if (!activeNav) return;
-
-        document.querySelectorAll(".nav-link").forEach(link => {
-        link.classList.remove("active");
+        // Lắng nghe message cập nhật cart badge
+        window.addEventListener('message', (e) => {
+            if (e.data.action === 'updateCartBadge') {
+                const badge = document.querySelector('#cart-button');
+                if (badge) {
+                    badge.textContent = e.data.count;
+                }
+            }
         });
 
-        const activeLink = document.getElementById(activeNav);
-        if (activeLink) {
-        activeLink.classList.add("active");
-        }
-    });
-
-    window.addEventListener("DOMContentLoaded", () => {
-        const currentPage = window.location.pathname.split("/").pop().toLowerCase();
-        document.querySelectorAll(".nav-link").forEach(link => {
-        const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
-        if (currentPage === targetPage) {
-            link.classList.add("active");
-        }
+        // Load số lượng cart khi header được tải
+        window.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.querySelector('#cart-button');
+            if (badge) {
+                badge.textContent = totalItems;
+            }
         });
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-    // --- Xử lý các phần khác như activeNav, logout (đã có) ---
+        // HANDLE SỰ KIỆN BẤM TRÊN MỤC LỤC 
+        window.addEventListener("message", (event) => {
+            const { activeNav } = event.data;
+            if (!activeNav) return;
 
-    // 🟢 XỬ LÝ THANH TÌM KIẾM TOÀN HỆ THỐNG
-    const searchInput = document.querySelector('.form-control');
-    const searchIcon = document.querySelector('img[alt="Search Icon"]');
+            document.querySelectorAll(".nav-link").forEach(link => {
+                link.classList.remove("active");
+            });
 
-    function handleSearch() {
-        const query = searchInput.value.trim();
-        if (query !== "") {
-        // Gửi tin nhắn cho trang cha để chuyển hướng
-        window.parent.postMessage({ action: "search", query }, "*");
-        }
-    }
+            const activeLink = document.getElementById(activeNav);
+            if (activeLink) {
+                activeLink.classList.add("active");
+            }
+        });
 
-    // Khi nhấn Enter
-    searchInput.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") handleSearch();
-    });
+        window.addEventListener("DOMContentLoaded", () => {
+            const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+            document.querySelectorAll(".nav-link").forEach(link => {
+                const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
+                if (currentPage === targetPage) {
+                    link.classList.add("active");
+                }
+            });
+        });
+        window.addEventListener("DOMContentLoaded", () => {
+            // --- Xử lý các phần khác như activeNav, logout (đã có) ---
 
-    // Khi click icon search
-    searchIcon.addEventListener("click", handleSearch);
-    });
+            // 🟢 XỬ LÝ THANH TÌM KIẾM TOÀN HỆ THỐNG
+            const searchInput = document.querySelector('.form-control');
+            const searchIcon = document.querySelector('img[alt="Search Icon"]');
+
+            function handleSearch() {
+                const query = searchInput.value.trim();
+                if (query !== "") {
+                    // Gửi tin nhắn cho trang cha để chuyển hướng
+                    window.parent.postMessage({ action: "search", query }, "*");
+                }
+            }
+
+            // Khi nhấn Enter
+            searchInput.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") handleSearch();
+            });
+
+            // Khi click icon search
+            searchIcon.addEventListener("click", handleSearch);
+        });
     </script>
     <script src="../js/search_bar.js"></script>
     <script src="../js/bell_notification.js"></script>
 </body>
+
 </html>

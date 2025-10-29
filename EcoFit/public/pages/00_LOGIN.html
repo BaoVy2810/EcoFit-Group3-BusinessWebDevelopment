@@ -277,7 +277,6 @@
         z-index: 2 !important;
       }
 
-      /* Override Google button iframe styles */
       #googleSignInBtn > div {
         width: 100% !important;
         height: 100% !important;
@@ -411,7 +410,6 @@
               <span>OR</span>
             </div>
 
-            <!-- Google Sign-In with custom styling -->
             <div id="googleSignInWrapper">
               <div class="btn-google-custom">
                 <img src="../images/google_logo.png" alt="Google" class="google-icon" />
@@ -427,8 +425,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Import Auth Handler trước -->
+    <script src="../js/auth_handler.js"></script>
+    
     <script>
-      // ========== CONFIG ==========
       const GOOGLE_CLIENT_ID = '74994887097-7rnvpb6rl89itjuoj7c0cfrvmfuj29fj.apps.googleusercontent.com';
       const ACCOUNTS_JSON_PATH = '../../dataset/accounts.json';
 
@@ -442,8 +443,13 @@
           return;
         }
 
+        if (!AuthHandler.isValidEmail(email)) {
+          alert("Please enter a valid email address!");
+          return;
+        }
+
         try {
-          console.log('Fetching:', ACCOUNTS_JSON_PATH);
+          console.log('📡 Fetching accounts...');
           const response = await fetch(ACCOUNTS_JSON_PATH);
           
           if (!response.ok) {
@@ -451,7 +457,6 @@
           }
 
           const data = await response.json();
-          console.log('Loaded accounts:', data);
           const profiles = data.profile;
 
           const user = profiles.find(
@@ -468,8 +473,8 @@
             return;
           }
 
-          // Save login info
-          saveUserToLocalStorage(user, "regular");
+          // ✅ SỬ DỤNG AUTH HANDLER để lưu session
+          AuthHandler.saveUserSession(user, "regular");
 
           // Remember me
           const rememberMe = document.getElementById("save_infor").checked;
@@ -481,8 +486,9 @@
             localStorage.removeItem("savedEmail");
           }
 
-          // Redirect
-          redirectUser(user);
+          //  SỬ DỤNG AUTH HANDLER để redirect
+          alert(`Welcome back, ${user.fullname}! 🌿`);
+          AuthHandler.redirectAfterLogin(user);
 
         } catch (error) {
           console.error("Login error:", error);
@@ -493,19 +499,19 @@
       // ========== GOOGLE SIGN-IN ==========
       
       function loadGoogleSignIn() {
-        console.log('🔄 Loading Google Sign-In API...');
+        console.log('Loading Google Sign-In API...');
         const script = document.createElement('script');
         script.src = 'https://accounts.google.com/gsi/client';
         script.async = true;
         script.defer = true;
         
         script.onload = function() {
-          console.log('✅ Google Sign-In API loaded successfully');
+          console.log('Google Sign-In API loaded successfully');
           initializeGoogleSignIn();
         };
         
         script.onerror = function() {
-          console.error('❌ Failed to load Google Sign-In API');
+          console.error('Failed to load Google Sign-In API');
           alert('Failed to load Google Sign-In. Please use regular login or check your internet connection.');
         };
         
@@ -521,7 +527,6 @@
               ux_mode: 'popup'
             });
 
-            // Render invisible Google button
             google.accounts.id.renderButton(
               document.getElementById("googleSignInBtn"),
               { 
@@ -531,7 +536,6 @@
               }
             );
 
-            // Add hover effect to custom button when hovering over wrapper
             const wrapper = document.getElementById('googleSignInWrapper');
             const customBtn = wrapper.querySelector('.btn-google-custom');
             
@@ -547,21 +551,21 @@
               customBtn.style.boxShadow = 'none';
             });
 
-            console.log('✅ Google Sign-In initialized with custom button overlay');
+            console.log('Google Sign-In initialized');
           } else {
-            console.error('❌ Google API not available');
+            console.error('Google API not available');
           }
         } catch (error) {
-          console.error('❌ Error initializing Google Sign-In:', error);
+          console.error('Error initializing Google Sign-In:', error);
         }
       }
 
       async function handleGoogleSignIn(response) {
-        console.log('🟢 Google Sign-In callback triggered');
+        console.log('Google Sign-In callback triggered');
         
         try {
           const userInfo = parseJwt(response.credential);
-          console.log('👤 User info from Google:', userInfo);
+          console.log(' User info from Google:', userInfo);
           
           if (!userInfo || !userInfo.email) {
             throw new Error('Invalid user info from Google');
@@ -600,10 +604,10 @@
                 green_score: 0
               };
               
-              console.log('✅ New user created:', user);
-              alert('Welcome to EcoFit! 🌿\n\nYour account has been created.\n(In production, this would be saved to the database)');
+              console.log(' New user created:', user);
+              alert('Welcome to EcoFit! \n\nYour account has been created.\n(In production, this would be saved to the database)');
             } else {
-              console.log('❌ User declined account creation');
+              console.log('User declined account creation');
               return;
             }
           }
@@ -613,15 +617,19 @@
             return;
           }
           
-          console.log('✅ Login successful for:', user.email);
-          saveUserToLocalStorage(user, "google");
-          redirectUser(user);
+          console.log(' Login successful for:', user.email);
+          
+          //  SỬ DỤNG AUTH HANDLER
+          AuthHandler.saveUserSession(user, "google");
+          alert(`Welcome back, ${user.fullname}! 🌿`);
+          AuthHandler.redirectAfterLogin(user);
           
         } catch (error) {
-          console.error('❌ Error processing Google Sign-In:', error);
+          console.error(' Error processing Google Sign-In:', error);
           alert('An error occurred during Google Sign-In.\n\nError: ' + error.message + '\n\nPlease try regular login instead.');
         }
-      }      
+      }
+
       function parseJwt(token) {
         try {
           const base64Url = token.split('.')[1];
@@ -639,49 +647,24 @@
         }
       }
 
-      function saveUserToLocalStorage(user, method) {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userRole", user.role);
-        localStorage.setItem("userName", user.fullname);
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userId", user.profile_id);
-        localStorage.setItem("loginMethod", method);
-        console.log('💾 User info saved to localStorage');
-      }
-
-      function redirectUser(user) {
-        console.log('🔄 Redirecting user...');
-        console.log('User role:', user.role);
-        
-        alert(`Welcome back, ${user.fullname}! 🌿`);
-        
-        setTimeout(() => {
-          if (user.role === "administrator") {
-            const adminUrl = "../admin_pages/dashboard.html";
-            console.log('→ Redirecting to:', adminUrl);
-            window.location.href = adminUrl;
-          } else if (user.role === "customer") {
-            const homeUrl = "../pages/01_HOMEPAGE.html";
-            console.log('→ Redirecting to:', homeUrl);
-            window.location.href = homeUrl;
-          } else {
-            alert("Unknown user role: " + user.role);
-          }
-        }, 1000);
-      }
+      // ========== PAGE INITIALIZATION ==========
       window.addEventListener('DOMContentLoaded', () => {
-        console.log('🚀 Login page loaded');
-        console.log('📍 Current URL:', window.location.href);
+        console.log('Login page loaded');
         
+        // Load saved email if remember me
         const rememberMe = localStorage.getItem("rememberMe");
         const savedEmail = localStorage.getItem("savedEmail");
         
         if (rememberMe === "true" && savedEmail) {
           document.getElementById("email").value = savedEmail;
           document.getElementById("save_infor").checked = true;
-          console.log('✅ Loaded saved email');
+          console.log(' Loaded saved email');
         }
+        
+        // Load Google Sign-In
         loadGoogleSignIn();
+        
+        // Enable Enter key for login
         document.getElementById('password').addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             process_login();

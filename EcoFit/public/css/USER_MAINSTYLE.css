@@ -20,16 +20,17 @@ iframe.header-frame {
   border: none;
   z-index: 1000;
 }
+
+
+/* Footer iframe */
 iframe.footer-frame {
   width: 100%;
-  height: 385px;
+  height: 400px; /* Điều chỉnh theo nội dung footer thực tế */
   border: none;
-  display: block;
   overflow: hidden;
-  scrollbar-width: none;
-}
-iframe.footer-frame::-webkit-scrollbar {
-  display: none;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
 /*01_HOMEPAGE*/
