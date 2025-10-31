@@ -50,13 +50,11 @@
     ];
     function sendToParent(message) {
         if (CONFIG.isInIframe && window.parent) {
-            if (CONFIG.debug) console.log('🔔 Sending to parent:', message);
             window.parent.postMessage(message, CONFIG.parentOrigin);
         }
     }
     function handleParentMessage(event) {
     const data = event.data;
-    if (CONFIG.debug) console.log('🔔 Received from parent:', data);
     
     switch (data.type) {
         case 'PARENT_READY':
@@ -92,7 +90,6 @@
     }
     function createNotificationPopup() {
         if (CONFIG.isInIframe) {
-            if (CONFIG.debug) console.log('🔔 In iframe mode, skipping popup creation');
             return;
         }
         // Create overlay
@@ -584,7 +581,6 @@
 
     function renderNotifications() {
         if (CONFIG.isInIframe) {
-            // Trong iframe, chỉ cập nhật badge là đủ
             updateBadge();
             return;
         }
@@ -633,11 +629,9 @@
             }
             
             renderNotifications();
-            
-            if (CONFIG.debug) console.log('Clicked notification:', notification.title);
-            
+           
             if (notification.link && !CONFIG.isInIframe) {
-                console.log('Navigate to:', notification.link);
+                // console.log('Navigate to:', notification.link);
             }
         }
     }
@@ -687,7 +681,6 @@
             return;
         }
         
-        console.log('View all notifications:', notifications);
         alert('Navigating to notifications page...');
         closeNotifications();
     }
@@ -794,8 +787,6 @@
     }
     
     function init() {
-        if (CONFIG.debug) console.log('🔔 Notification system initialized - Iframe mode:', CONFIG.isInIframe);
-        
         if (!CONFIG.isInIframe) {
             createNotificationPopup();
         }

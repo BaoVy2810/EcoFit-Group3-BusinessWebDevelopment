@@ -1,4 +1,3 @@
-// parent_handler.js (ĐÃ SỬA LỖI)
 (function() {
     'use strict';
     
@@ -7,79 +6,56 @@
     let currentNotifications = [];
     let headerIframe = null;
     
-    console.log('🔔 Parent handler loading...');
-    
     window.addEventListener('message', function(event) {
         const data = event.data;
-        console.log('🔔 Parent received message:', data);
-        
         switch (data.type) {
             case 'IFRAME_READY':
-                console.log('🔔 Parent: IFRAME_READY received');
                 event.source.postMessage({ type: 'PARENT_READY' }, event.origin);
                 headerIframe = event.source;
                 break;
                 
             case 'BELL_CLICK':
-                console.log('🔔 Parent: BELL_CLICK received', data.bellPosition);
                 handleBellClick(data.bellPosition, data.notifications);
                 break;
                 
             case 'BADGE_UPDATE':
-                console.log('🔔 Parent: BADGE_UPDATE received', data.unreadCount);
                 break;
                 
             case 'NOTIFICATION_READ':
-                console.log('🔔 Parent: NOTIFICATION_READ received');
                 handleNotificationRead(data.notificationId, data.notification);
                 break;
                 
             case 'MARK_ALL_READ':
-                console.log('🔔 Parent: MARK_ALL_READ received');
                 handleMarkAllReadFromIframe();
                 break;
                 
             case 'VIEW_ALL_NOTIFICATIONS':
-                console.log('🔔 Parent: VIEW_ALL_NOTIFICATIONS received');
                 handleViewAllNotificationsFromIframe(data.notifications);
                 break;
                 
             case 'CLOSE_NOTIFICATIONS':
-                console.log('🔔 Parent: CLOSE_NOTIFICATIONS received');
                 closeNotifications();
                 break;
         }
     });
     
     function handleBellClick(bellPosition, notifications = []) {
-        console.log('🔔 Parent: Handling bell click', bellPosition);
-        
         if (notifications && notifications.length > 0) {
             currentNotifications = notifications;
-            console.log('🔔 Parent: Updated notifications', currentNotifications);
         }
         
         if (!notificationPopup) {
-            console.log('🔔 Parent: Creating new popup');
             createNotificationPopup();
-        } else {
-            console.log('🔔 Parent: Using existing popup');
         }
-        
         positionPopup(bellPosition);
         showNotifications();
     }
 
     function createNotificationPopup() {
-        console.log('🔔 Parent: Creating notification popup');
-        
-        // Tạo overlay
         notificationOverlay = document.createElement('div');
         notificationOverlay.id = 'parent-notification-overlay';
         notificationOverlay.className = 'parent-notification-overlay';
         notificationOverlay.onclick = closeNotifications;
-        
-        // Tạo popup container
         notificationPopup = document.createElement('div');
         notificationPopup.id = 'parent-notification-popup';
         notificationPopup.className = 'parent-notification-popup';
@@ -105,27 +81,17 @@
         
         document.body.appendChild(notificationOverlay);
         document.body.appendChild(notificationPopup);
-        
-        console.log('🔔 Parent: Popup elements created and appended');
-        
-        // Thêm event listeners
         document.getElementById('parent-mark-all-read').addEventListener('click', markAllAsRead);
         document.getElementById('parent-view-all').addEventListener('click', viewAllNotifications);
         
         injectParentStyles();
         renderNotifications();
-        
-        console.log('🔔 Parent: Popup creation completed');
     }
     
     function injectParentStyles() {
         if (document.getElementById('parent-notification-styles')) {
-            console.log('🔔 Parent: Styles already injected');
             return;
         }
-        
-        console.log('🔔 Parent: Injecting styles');
-        
         const style = document.createElement('style');
         style.id = 'parent-notification-styles';
         style.textContent = `
@@ -426,14 +392,10 @@
         `;
         
         document.head.appendChild(style);
-        console.log('🔔 Parent: Styles injected successfully');
     }
     
     function positionPopup(bellPosition) {
         if (!notificationPopup) return;
-        
-        console.log('🔔 Parent: Positioning popup at:', bellPosition);
-        
         const popupTop = bellPosition.bottom + 10;
         const popupRight = window.innerWidth - bellPosition.right;
         
@@ -445,7 +407,6 @@
         const arrowRight = (popupLeft + 380) - bellCenter - 8;
         
         updateArrowPosition(arrowRight);
-        console.log('🔔 Parent: Popup positioned');
     }
     
     function updateArrowPosition(arrowRight) {
@@ -464,19 +425,15 @@
     
     function showNotifications() {
         if (!notificationPopup || !notificationOverlay) {
-            console.log('🔔 Parent: Cannot show notifications - popup or overlay missing');
             return;
         }
         
-        console.log('🔔 Parent: Showing notifications');
         notificationPopup.classList.add('show');
         notificationOverlay.classList.add('show');
         renderNotifications();
-        console.log('🔔 Parent: Notifications shown');
     }
     
     function closeNotifications() {
-        console.log('🔔 Parent: Closing notifications');
         if (notificationPopup) notificationPopup.classList.remove('show');
         if (notificationOverlay) notificationOverlay.classList.remove('show');
     }
@@ -484,12 +441,9 @@
     function renderNotifications() {
         const container = document.getElementById('parent-notification-list');
         if (!container) {
-            console.log('🔔 Parent: Notification list container not found');
             return;
         }
-        
-        console.log('🔔 Parent: Rendering notifications', currentNotifications);
-        
+    
         if (currentNotifications.length === 0) {
             container.innerHTML = `
                 <div class="empty-notifications">
@@ -521,12 +475,9 @@
             });
         });
         
-        console.log('🔔 Parent: Notifications rendered');
     }
     
     function markAsRead(notificationId) {
-        console.log('🔔 Parent: Marking notification as read:', notificationId);
-        
         if (headerIframe) {
             headerIframe.postMessage({
                 type: 'NOTIFICATION_READ',
@@ -534,6 +485,7 @@
                 fromParent: true
             }, '*');
         }
+    }
         
         const notif = currentNotifications.find(n => n.id === parseInt(notificationId));
         if (notif) {
@@ -545,11 +497,7 @@
         
         showToast('Notification marked as read');
         closeNotifications();
-    } // ĐÃ THÊM DẤU } Ở ĐÂY
-    
     function markAllAsRead() {
-        console.log('🔔 Parent: Marking all as read');
-        
         if (headerIframe) {
             headerIframe.postMessage({
                 type: 'MARK_ALL_READ',
@@ -567,8 +515,6 @@
     }
     
     function viewAllNotifications() {
-        console.log('🔔 Parent: View all notifications');
-        
         if (headerIframe) {
             headerIframe.postMessage({
                 type: 'VIEW_ALL_NOTIFICATIONS',
@@ -582,8 +528,6 @@
     }
     
     function addNotification(notification) {
-        console.log('🔔 Parent: Adding notification', notification);
-        
         if (headerIframe) {
             headerIframe.postMessage({
                 type: 'ADD_NOTIFICATION',
@@ -608,7 +552,6 @@
     }
     
     function handleNotificationRead(notificationId, notification) {
-        console.log('🔔 Parent: Handling notification read from iframe');
         const notif = currentNotifications.find(n => n.id === notificationId);
         if (notif) {
             notif.read = true;
@@ -620,7 +563,6 @@
     }
     
     function handleMarkAllReadFromIframe() {
-        console.log('🔔 Parent: Handling mark all read from iframe');
         currentNotifications.forEach(notif => notif.read = true);
         
         if (notificationPopup && notificationPopup.classList.contains('show')) {
@@ -631,7 +573,6 @@
     }
     
     function handleViewAllNotificationsFromIframe(notifications) {
-        console.log('🔔 Parent: Handling view all from iframe');
         if (notifications) {
             currentNotifications = notifications;
         }
@@ -641,7 +582,6 @@
     }
     
     function showToast(message) {
-        console.log('🔔 Parent: Showing toast:', message);
         let toast = document.getElementById('parent-notification-toast');
         if (!toast) {
             toast = document.createElement('div');
@@ -675,7 +615,6 @@
     
     window.ParentNotificationHandler = {
         toggleNotificationPopup: function() {
-            console.log('🔔 Parent: Toggle popup called');
             const isOpen = notificationPopup && notificationPopup.classList.contains('show');
             
             if (isOpen) {
@@ -699,15 +638,8 @@
     };
     
     function init() {
-        console.log('🔔 Parent notification handler initialized');
-        
         headerIframe = document.querySelector('iframe[src*="header.html"]');
-        if (!headerIframe) {
-            console.warn('🔔 Parent: Header iframe not found');
-        } else {
-            console.log('🔔 Parent: Header iframe found');
-        }
-        
+       
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeNotifications();
@@ -730,13 +662,11 @@
             link: '#rewards'
         });
     }, 5000);
-        
-        console.log('🔔 Parent: Init completed');
-    }
+}
     
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
-})(); // ĐÃ SỬA DẤU NGOẶC CUỐI
+})(); 
