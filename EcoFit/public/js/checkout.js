@@ -1,4 +1,4 @@
-// checkout.js - Updated version
+// checkout.js - Updated to save complete order data
 document.addEventListener("DOMContentLoaded", function () {
   // === 0. TỰ ĐỘNG ĐIỀN THÔNG TIN NGƯỜI DÙNG ===
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -42,15 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
       '<p style="text-align:center;padding:20px;color:#999;">Giỏ hàng trống</p>';
   } else {
     cartData.forEach((p) => {
-      const img =
-        p.img ||
-        p.image ||
-        "../images/Product_images/organic_cotton_tee.png";
+      const img = p.img || p.image || "../images/Product_images/organic_cotton_tee.png";
       const name = p.product_name || p.name || "Unknown Product";
       const color = p.color || "Default";
       const size = p.size || "M";
-      const price =
-        parseInt(p.price) || parseInt(p.original_price) || 0;
+      const price = parseInt(p.price) || parseInt(p.original_price) || 0;
       const quantity = parseInt(p.quantity) || 1;
 
       subtotal += price * quantity;
@@ -59,15 +55,18 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="order-item">
           <img src="${img}" alt="${name}" 
               style="width:80px;height:80px;object-fit:cover;border-radius:8px;"
-              onerror="this.src='../images/Product_images/organic_cotton_tee.png'">
+              onerror="this.src='../images/product_images/organic_cotton_tee.png'">
           <div class="order-item-info">
-              <h4>${name}</h4>
-              <p>Color: ${color} | Size: ${size}</p>
-              <span class="order-item-price">${formatPrice(price)}</span>
+            <h4>${name}</h4>
+            <p>Color: ${color} | Size: ${size}</p>
+            <span class="order-item-price">${formatPrice(price)}đ</span>
           </div>
           <span class="order-item-qty">x${quantity}</span>
         </div>`;
     });
+    
+    // Thêm <hr/> sau items
+    orderDetail.innerHTML += '<hr/>';
   }
 
   // === 3. CẬP NHẬT TỔNG TIỀN ===
@@ -90,9 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
       promotionsData = cached ? JSON.parse(cached) : { promotion: [] };
     }
 
-    const found = promotionsData.promotion.find(
-      (p) => p.promo_code === code
-    );
+    const found = promotionsData.promotion.find((p) => p.promo_code === code);
 
     if (!found) {
       alert(`❌ Mã "${code}" không tồn tại hoặc hết hạn.`);
@@ -102,76 +99,89 @@ document.addEventListener("DOMContentLoaded", function () {
       appliedPromo = found;
       discount = Math.round((subtotal * found.discount_rate) / 100);
       alert(
-        `✅ Áp dụng mã "${code}" thành công! Giảm ${found.discount_rate}% (${formatPrice(
-          discount
-        )})`
+        `✅ Áp dụng mã "${code}" thành công! Giảm ${found.discount_rate}% (-${formatPrice(discount)}đ)`
       );
     }
     updateSummary();
   });
 
   // === 5. NÚT PLACE ORDER ===
-  document
-    .querySelector(".place-order")
-    .addEventListener("click", () => {
-      const fullname = document.getElementById("fullname").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const address = document.getElementById("address").value.trim();
-      const detail = document.getElementById("detail").value.trim();
+  document.querySelector(".place-order").addEventListener("click", () => {
+    const fullname = document.getElementById("fullname").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
 
-      if (!fullname || !phone || !address || !detail) {
-        alert("⚠️ Vui lòng điền đầy đủ thông tin giao hàng.");
-        return;
-      }
+    if (!fullname || !phone || !address) {
+      alert("⚠️ Vui lòng điền đầy đủ thông tin giao hàng.");
+      return;
+    }
 
-      const delivery = document.querySelector(
-        "input[name='delivery']:checked"
-      );
-      const payment = document.querySelector(
-        "input[name='payment']:checked"
-      );
+    const delivery = document.querySelector("input[name='delivery']:checked");
+    const payment = document.querySelector("input[name='payment']:checked");
 
-      if (!delivery || !payment) {
-        alert("⚠️ Vui lòng chọn phương thức giao hàng và thanh toán.");
-        return;
-      }
+    if (!delivery) {
+      alert("⚠️ Vui lòng chọn phương thức giao hàng.");
+      return;
+    }
+    
+    if (!payment) {
+      alert("⚠️ Vui lòng chọn phương thức thanh toán.");
+      return;
+    }
 
-      const order = {
-        customer: { fullname, phone, address, detail },
-        delivery: delivery.parentElement.textContent.trim(),
-        payment: payment.parentElement.textContent.trim(),
-        items: cartData,
-        subtotal,
-        shippingCost: SHIPPING_COST,
-        discount,
-        total: subtotal + SHIPPING_COST - discount,
-        appliedPromo: appliedPromo ? appliedPromo.promo_code : null,
-        orderDate: new Date().toISOString(),
-      };
+    // Tạo order ID duy nhất
+    const orderId = Math.floor(1000 + Math.random() * 9000);
 
-      localStorage.setItem("checkoutOrder", JSON.stringify(order));
-      alert("✅ Đơn hàng đã được tạo! Chuyển đến trang thanh toán...");
-      window.location.href = "07_PAYMENT1.html";
-    });
+    // Lấy text payment method
+    let paymentMethod = "Transfer via QR code"; // default
+    const paymentLabel = payment.parentElement.textContent.trim();
+    if (paymentLabel.includes("Momo")) {
+      paymentMethod = "Transfer via Momo";
+    } else if (paymentLabel.includes("QR")) {
+      paymentMethod = "Transfer via QR code";
+    }
+
+    // Tạo object order hoàn chỉnh
+    const order = {
+      orderId: orderId,
+      customer: { 
+        fullname, 
+        phone, 
+        address
+      },
+      delivery: delivery.parentElement.textContent.trim(),
+      payment: paymentMethod,
+      items: cartData, // Lưu toàn bộ items
+      subtotal: subtotal,
+      shippingCost: SHIPPING_COST,
+      discount: discount,
+      total: subtotal + SHIPPING_COST - discount,
+      appliedPromo: appliedPromo ? appliedPromo.promo_code : null,
+      orderDate: new Date().toISOString(),
+    };
+
+    // Lưu vào localStorage
+    localStorage.setItem("checkoutOrder", JSON.stringify(order));
+    
+    console.log("Order saved:", order); // Debug
+    
+    // Chuyển hướng
+    window.location.href = "07_PAYMENT1.html";
+  });
 
   // === 6. HÀM HỖ TRỢ ===
   function updateSummary() {
     if (appliedPromo) {
-      discount = Math.round(
-        (subtotal * appliedPromo.discount_rate) / 100
-      );
+      discount = Math.round((subtotal * appliedPromo.discount_rate) / 100);
     }
 
-    subtotalEl.textContent = formatPrice(subtotal);
-    shippingEl.textContent = formatPrice(SHIPPING_COST);
-    discountEl.textContent =
-      discount > 0 ? "-" + formatPrice(discount) : "-";
-    totalEl.textContent = formatPrice(
-      subtotal + SHIPPING_COST - discount
-    );
+    subtotalEl.textContent = formatPrice(subtotal) + "đ";
+    shippingEl.textContent = formatPrice(SHIPPING_COST) + "đ";
+    discountEl.textContent = discount > 0 ? "-" + formatPrice(discount) + "đ" : "-";
+    totalEl.textContent = formatPrice(subtotal + SHIPPING_COST - discount) + "đ";
   }
 
   function formatPrice(price) {
-    return new Intl.NumberFormat("vi-VN").format(price) + "đ";
+    return new Intl.NumberFormat("vi-VN").format(price);
   }
 });
