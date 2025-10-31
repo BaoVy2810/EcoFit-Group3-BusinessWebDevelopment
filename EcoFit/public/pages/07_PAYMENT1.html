@@ -22,7 +22,75 @@
       header.onload = () => {
         header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
       };
+
+      // Load order data from localStorage
+      loadOrderData();
     });
+
+    // Function to load order data from localStorage
+    function loadOrderData() {
+      // Get order data from localStorage
+      const orderData = JSON.parse(localStorage.getItem("orderData") || "{}");
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      
+      // Calculate order summary
+      let subtotal = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+      });
+      
+      const shipping = 30000; // Fixed shipping cost
+      const discount = orderData.discount || 0;
+      const total = subtotal + shipping - discount;
+      
+      // Update Order Detail section
+      const orderDetailContainer = document.querySelector('.order-detail');
+      orderDetailContainer.innerHTML = '<h3 class="order-detail__title">ORDER DETAIL</h3>';
+      
+      if (cart.length === 0) {
+        orderDetailContainer.innerHTML += '<p class="empty-cart">No items in cart</p>';
+      } else {
+        cart.forEach(item => {
+          const itemElement = document.createElement('div');
+          itemElement.className = 'order-detail-item';
+          itemElement.innerHTML = `
+            <div class="order-detail-item__info">
+              <div class="order-detail-item__name">${item.name}</div>
+              <div class="order-detail-item__price">${formatPrice(item.price)}đ x ${item.quantity}</div>
+            </div>
+            <div class="order-detail-item__total">${formatPrice(item.price * item.quantity)}đ</div>
+          `;
+          orderDetailContainer.appendChild(itemElement);
+        });
+      }
+      
+      // Update Order Summary section
+      document.querySelector('.subtotal').textContent = formatPrice(subtotal) + 'đ';
+      document.querySelector('.shipping').textContent = formatPrice(shipping) + 'đ';
+      document.querySelector('.discount').textContent = formatPrice(discount) + 'đ';
+      document.querySelector('.total-value').textContent = formatPrice(total) + 'đ';
+      
+      // Update Payment Detail section
+      document.querySelectorAll('.pd-value')[0].textContent = formatPrice(total) + 'đ';
+      document.querySelectorAll('.pd-value')[1].textContent = formatPrice(total) + 'đ';
+      
+      // Update Transfer Amount
+      document.getElementById('amt').textContent = formatPrice(total) + 'đ';
+      
+      // Update Order ID in multiple places
+      const orderId = orderData.orderId || '1056';
+      document.querySelector('.status-sub').textContent = `Order #${orderId}`;
+      document.getElementById('note').textContent = `ORDER_${orderId}`;
+      
+      // Update Delivery Address
+      const deliveryAddress = orderData.deliveryAddress || '- | -<br>-';
+      document.querySelector('.delivery-text').innerHTML = deliveryAddress;
+    }
+    
+    // Helper function to format price
+    function formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
 
     // 🔹 BỔ SUNG ĐOẠN NÀY ĐỂ NHẬN TÍN HIỆU TỪ HEADER VÀ XỬ LÝ LOGIN/LOGOUT
     window.addEventListener("message", (e) => {
@@ -62,6 +130,7 @@
           }
       }
     });
+    
     document.querySelectorAll('.copy').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-target');
@@ -194,48 +263,37 @@
         </p>
       </div>
     </section>
+    <!-- RIGHT -->
     <div class="checkout-right">
+      <!-- ORDER DETAIL -->
       <div class="order-detail">
         <h3 class="order-detail__title">ORDER DETAIL</h3>
-        <div class="order-item">
-          <img src="../images/Product_images/organic_cotton_tee.png" alt="">
-          <div class="order-item-info">
-            <h4>Organic Cotton T-Shirt</h4>
-            <p>Color: White | Size: XXL</p>
-            <span class="order-item-price">50.000</span>
-          </div>
-          <span class="order-item-qty">x1</span>
-        </div>
-        <hr />
-        <div class="order-item">
-          <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
-          <div class="order-item-info">
-            <h4>Recycled PET Sneakers</h4>
-            <p>Color: Beige | Size: 43</p>
-            <span class="order-item-price">150.000</span>
-          </div>
-          <span class="order-item-qty">x1</span>
-        </div>
+        <!-- Sản phẩm sẽ được load động từ JavaScript -->
       </div>
-      <br />
+      
+      <br/>
+      <!-- ORDER SUMMARY -->
       <div class="order-summary">
         <h2 class="order-summary__title">ORDER SUMMARY</h2>
+        
         <div class="order-summary__row">
           <span>Subtotal Product</span>
-          <span class="order-summary__value">150.000</span>
+          <span class="order-summary__value subtotal">-</span>
         </div>
+        
         <div class="order-summary__row">
           <span>Shipping Cost</span>
-          <span class="order-summary__value">30.000</span>
+          <span class="order-summary__value shipping">30.000đ</span>
         </div>
+        
         <div class="order-summary__row">
           <span>Discount</span>
-          <span class="order-summary__value discount">-15.000</span>
+          <span class="order-summary__value discount">-</span>
         </div>
-
+        
         <div class="order-summary__total">
           <span>Total</span>
-          <span class="total-value">165.000</span>
+          <span class="total-value">-</span>
         </div>
       </div>
     </div>

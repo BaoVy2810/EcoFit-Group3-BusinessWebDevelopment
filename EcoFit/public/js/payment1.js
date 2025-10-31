@@ -1,145 +1,134 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const checkoutOrder = JSON.parse(localStorage.getItem("checkoutOrder") || "{}");
-
-  if (!checkoutOrder || !checkoutOrder.items) {
-    alert("⚠️ Không tìm thấy thông tin đơn hàng. Vui lòng quay lại trang Checkout.");
-    window.location.href = "06_CHECKOUT.html";
-    return;
+// payment1.js - Updated to load data from localStorage
+document.addEventListener("DOMContentLoaded", function () {
+  // === 1. LẤY DỮ LIỆU TỪ LOCALSTORAGE ===
+  let orderData = {};
+  let cartData = [];
+  
+  try {
+    const orderRaw = localStorage.getItem("checkoutOrder");
+    if (orderRaw) {
+      orderData = JSON.parse(orderRaw);
+    }
+    
+    const cartRaw = localStorage.getItem("checkoutCart");
+    if (cartRaw) {
+      cartData = JSON.parse(cartRaw);
+    }
+  } catch (error) {
+    console.error("Error loading data from localStorage:", error);
+    cartData = [];
+    orderData = {};
   }
 
-  const { customer, items, subtotal, shippingCost, discount, total, payment } = checkoutOrder;
-  const orderId = "ORDER_" + Math.floor(1000 + Math.random() * 9000);
-
-  // --- HIỂN THỊ ORDER DETAIL ---
-  const orderDetailContainer = document.querySelector(".order-detail");
-  orderDetailContainer.innerHTML = `<h3 class="order-detail__title">ORDER DETAIL</h3>`;
-  items.forEach(p => {
-    orderDetailContainer.innerHTML += `
-      <div class="order-item">
-        <img src="${p.image || "../images/Product_images/organic_cotton_tee.png"}" alt="">
-        <div class="order-item-info">
-          <h4>${p.product_name || p.name}</h4>
-          <p>Color: ${p.color || "-"} | Size: ${p.size || "-"}</p>
-          <span class="order-item-price">${formatPrice(p.price)}</span>
-        </div>
-        <span class="order-item-qty">x${p.quantity || 1}</span>
-      </div>
-    `;
-  });
-
-  // --- HIỂN THỊ ORDER SUMMARY ---
-  const summary = document.querySelector(".order-summary");
-  summary.innerHTML = `
-    <h2 class="order-summary__title">ORDER SUMMARY</h2>
-    <div class="order-summary__row"><span>Subtotal Product</span><span>${formatPrice(subtotal)}</span></div>
-    <div class="order-summary__row"><span>Shipping Cost</span><span>${formatPrice(shippingCost)}</span></div>
-    <div class="order-summary__row"><span>Discount</span><span>-${formatPrice(discount)}</span></div>
-    <div class="order-summary__total"><span>Total</span><span class="total-value">${formatPrice(total)}</span></div>
-  `;
-
-  // --- HIỂN THỊ PAYMENT DETAIL ---
-  const payDetail = document.querySelector(".payment-detail .pd-list");
-  payDetail.innerHTML = `
-    <div class="pd-row"><div class="pd-label">Total order amount</div><div class="pd-value">${formatPrice(subtotal)}</div></div>
-    <div class="pd-row"><div class="pd-label">Amount due</div><div class="pd-value">${formatPrice(total)}</div></div>
-    <div class="pd-row"><div class="pd-label">Payment method</div><div class="pd-value small">${payment}</div></div>
-  `;
-
-  // --- HIỂN THỊ DELIVERY ADDRESS ---
-  const deliveryBox = document.querySelector(".delivery-box .delivery-text");
-  deliveryBox.innerHTML = `
-    ${customer.fullname || ""} | ${customer.phone || ""}<br>
-    ${customer.detail || ""}, ${customer.address || ""}
-  `;
-
-  // --- HIỂN THỊ QR CODE PHÙ HỢP ---
-  const qrContainer = document.querySelector(".transfer-right .qr-card");
-  const qrImage = qrContainer.querySelector("img");
-
-  if (payment.toLowerCase().includes("momo")) {
-    // QR Momo với số tiền động
-    const momoQR = `https://img.vietqr.io/image/970422-0966666666-MoMo.png?amount=${total}&addInfo=${orderId}`;
-    qrImage.src = momoQR;
+  // === 2. HIỂN THỊ ORDER DETAIL ===
+  const orderDetailContainer = document.querySelector('.order-detail');
+  orderDetailContainer.innerHTML = '<h3 class="order-detail__title">ORDER DETAIL</h3>';
+  
+  if (cartData.length === 0) {
+    orderDetailContainer.innerHTML += '<p class="empty-cart">No items in cart</p>';
   } else {
-    // QR Vietcombank mặc định
-    const bankQR = `https://img.vietqr.io/image/970436-0339667803-Vietcombank.png?amount=${total}&addInfo=${orderId}`;
-    qrImage.src = bankQR;
+    cartData.forEach(item => {
+      const img = item.img || item.image || "../images/Product_images/organic_cotton_tee.png";
+      const name = item.product_name || item.name || "Unknown Product";
+      const color = item.color || "Default";
+      const size = item.size || "M";
+      const price = parseInt(item.price) || parseInt(item.original_price) || 0;
+      const quantity = parseInt(item.quantity) || 1;
+      
+      const itemElement = document.createElement('div');
+      itemElement.className = 'order-detail-item';
+      itemElement.innerHTML = `
+        <div class="order-detail-item__info">
+          <div class="order-detail-item__name">${name}</div>
+          <div class="order-detail-item__variant">Color: ${color} | Size: ${size}</div>
+          <div class="order-detail-item__price">${formatPrice(price)}đ x ${quantity}</div>
+        </div>
+        <div class="order-detail-item__total">${formatPrice(price * quantity)}đ</div>
+      `;
+      orderDetailContainer.appendChild(itemElement);
+    });
   }
 
-  // --- GÁN MÃ ĐƠN & SỐ TIỀN VÀO PHẦN THÔNG TIN CHUYỂN KHOẢN ---
-  document.querySelector(".status-sub").textContent = orderId;
-  document.getElementById("note").textContent = orderId;
-  document.getElementById("amt").textContent = formatPrice(total);
+  // === 3. CẬP NHẬT ORDER SUMMARY ===
+  const subtotal = orderData.subtotal || calculateSubtotal(cartData);
+  const shipping = orderData.shippingCost || 30000;
+  const discount = orderData.discount || 0;
+  const total = orderData.total || (subtotal + shipping - discount);
+  
+  document.querySelector('.subtotal').textContent = formatPrice(subtotal) + 'đ';
+  document.querySelector('.shipping').textContent = formatPrice(shipping) + 'đ';
+  document.querySelector('.discount').textContent = formatPrice(discount) + 'đ';
+  document.querySelector('.total-value').textContent = formatPrice(total) + 'đ';
 
-  // --- XỬ LÝ NÚT UPLOAD VÀ THANH TOÁN ---
-  const proofInput = document.getElementById("proofImage");
-  const fileNameDisplay = document.getElementById("fileName");
-  const payBtn = document.querySelector(".btn-pay");
+  // === 4. CẬP NHẬT PAYMENT DETAILS ===
+  document.querySelectorAll('.pd-value')[0].textContent = formatPrice(total) + 'đ';
+  document.querySelectorAll('.pd-value')[1].textContent = formatPrice(total) + 'đ';
+  
+  // === 5. CẬP NHẬT TRANSFER INFORMATION ===
+  const orderId = generateOrderId();
+  document.querySelector('.status-sub').textContent = `Order #${orderId}`;
+  document.getElementById('note').textContent = `ORDER_${orderId}`;
+  document.getElementById('amt').textContent = formatPrice(total) + 'đ';
 
-  proofInput.addEventListener("change", e => {
-    const file = e.target.files[0];
-    fileNameDisplay.textContent = file ? file.name : "";
+  // === 6. CẬP NHẬT DELIVERY ADDRESS ===
+  if (orderData.customer) {
+    const customer = orderData.customer;
+    const addressText = `
+      ${customer.fullname || '-'} | ${customer.phone || '-'}<br>
+      ${customer.address || '-'}, ${customer.detail || ''}
+    `;
+    document.querySelector('.delivery-text').innerHTML = addressText;
+  }
+
+  // === 7. XỬ LÝ UPLOAD ẢNH CHỨNG TỪ THANH TOÁN ===
+  const proofImageInput = document.getElementById('proofImage');
+  const fileNameSpan = document.getElementById('fileName');
+  
+  proofImageInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      fileNameSpan.textContent = this.files[0].name;
+    } else {
+      fileNameSpan.textContent = '';
+    }
   });
 
-  payBtn.addEventListener("click", () => {
-    if (!proofInput.files.length) {
-      alert("⚠️ Vui lòng tải lên ảnh xác nhận thanh toán!");
+  // === 8. XỬ LÝ NÚT PAY NOW ===
+  document.querySelector('.btn-pay').addEventListener('click', function() {
+    if (!proofImageInput.files || !proofImageInput.files[0]) {
+      alert('Please upload proof of transfer before proceeding.');
       return;
     }
-
-    const reader = new FileReader();
-    reader.onload = e => {
-      const proofBase64 = e.target.result;
-
-      // Tạo payment record
-      const paymentRecord = {
-        payment_id: "PAY" + Math.floor(1000 + Math.random() * 9000),
-        payment_method: payment,
-        payment_status: "Success",
-        transaction_date: new Date().toLocaleString(),
-        order_id: orderId,
-        proof_image: proofBase64
-      };
-
-      // Lưu vào localStorage
-      const payments = JSON.parse(localStorage.getItem("payment")) || [];
-      payments.push(paymentRecord);
-      localStorage.setItem("payment", JSON.stringify(payments));
-
-      // Tạo order record
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const orderData = {
-        order_id: orderId,
-        customer: customer,
-        items: items,
-        shipping_fee: shippingCost,
-        discount: discount,
-        total_amount: total,
-        status: "Processing",
-        order_date: new Date().toISOString(),
-        payment_id: paymentRecord.payment_id
-      };
-      orders.push(orderData);
-      localStorage.setItem("orders", JSON.stringify(orders));
-
-      // Cập nhật localStorage.paymentInfo cho bước xác nhận
-      localStorage.setItem("paymentInfo", JSON.stringify({
-        orderId,
-        total,
-        paymentMethod: payment,
-        paymentStatus: "Success",
-        proofImage: proofBase64
-      }));
-
-      alert("✅ Thanh toán thành công! Chuyển đến trang xác nhận...");
-      localStorage.removeItem("checkoutCart");
-      window.location.href = "08_PAYMENT2.html";
+    
+    // Lưu thông tin thanh toán vào localStorage
+    const paymentData = {
+      orderId: orderId,
+      amount: total,
+      paymentDate: new Date().toISOString(),
+      status: 'pending'
     };
-    reader.readAsDataURL(proofInput.files[0]);
+    
+    localStorage.setItem('paymentData', JSON.stringify(paymentData));
+    
+    // Chuyển hướng đến trang xác nhận thanh toán
+    alert('Payment submitted! Redirecting to confirmation page...');
+    window.location.href = '08_PAYMENT_CONFIRM.html';
   });
 
-  // --- Hàm định dạng giá ---
-  function formatPrice(num) {
-    return new Intl.NumberFormat("vi-VN").format(num) + "đ";
+  // === 9. HÀM HỖ TRỢ ===
+  function calculateSubtotal(cart) {
+    return cart.reduce((sum, item) => {
+      const price = parseInt(item.price) || parseInt(item.original_price) || 0;
+      const quantity = parseInt(item.quantity) || 1;
+      return sum + (price * quantity);
+    }, 0);
+  }
+  
+  function formatPrice(price) {
+    return new Intl.NumberFormat('vi-VN').format(price);
+  }
+  
+  function generateOrderId() {
+    // Tạo ID đơn hàng từ timestamp để đảm bảo duy nhất
+    return Math.floor(1000 + Math.random() * 9000);
   }
 });
