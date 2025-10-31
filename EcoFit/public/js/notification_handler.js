@@ -485,7 +485,7 @@
                 fromParent: true
             }, '*');
         }
-    }
+    
         
         const notif = currentNotifications.find(n => n.id === parseInt(notificationId));
         if (notif) {
@@ -497,6 +497,7 @@
         
         showToast('Notification marked as read');
         closeNotifications();
+    }
     function markAllAsRead() {
         if (headerIframe) {
             headerIframe.postMessage({
