@@ -1,300 +1,145 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Try to read order data from multiple possible keys (be robust)
-  const checkoutOrder = tryParse(localStorage.getItem('checkoutOrder'));
-  const paymentInfo = tryParse(localStorage.getItem('paymentInfo'));
-  const checkoutCart = tryParse(localStorage.getItem('checkoutCart')); // from cart page
-  const checkoutSummary = tryParse(localStorage.getItem('checkoutSummary')); // optional
+document.addEventListener("DOMContentLoaded", () => {
+  const checkoutOrder = JSON.parse(localStorage.getItem("checkoutOrder") || "{}");
 
-  // Decide source of truth for items and summary
-  let items = [];
-  let customer = {};
-  let summary = {};
-
-  if (checkoutOrder && checkoutOrder.items && checkoutOrder.items.length) {
-    items = checkoutOrder.items;
-    customer = checkoutOrder.customer || {};
-    summary = {
-      subtotal: safeNumber(checkoutOrder.subtotal),
-      shipping: safeNumber(checkoutOrder.shippingCost || checkoutOrder.shipping || 30000),
-      discount: safeNumber(checkoutOrder.discount || 0)
-    };
-  } else if (paymentInfo && paymentInfo.cart && paymentInfo.cart.length) {
-    items = paymentInfo.cart;
-    customer = { address: paymentInfo.address || '' };
-    summary = {
-      subtotal: safeNumber(paymentInfo.subtotal || calcSubtotal(paymentInfo.cart)),
-      shipping: safeNumber(paymentInfo.shipping || 30000),
-      discount: safeNumber(paymentInfo.discount || 0)
-    };
-  } else if (checkoutCart && checkoutCart.length) {
-    // checkoutCart items (from cart page) may use fields name/qty/price or quantity
-    items = checkoutCart.map(normalizeItem);
-    // load summary if any
-    summary = {
-      subtotal: safeNumber(checkoutSummary && checkoutSummary.subtotal) || calcSubtotal(items),
-      shipping: safeNumber(checkoutSummary && checkoutSummary.shipping) || 30000,
-      discount: safeNumber(checkoutSummary && checkoutSummary.discount) || 0
-    };
-    customer = {}; // no customer info yet
-  } else {
-    // No data -> redirect back to cart
-    console.warn('No checkout data found in localStorage.');
-    // optional: redirect to cart page
-    // window.location.href = '../pages/05_SHOPPING_CART.html';
+  if (!checkoutOrder || !checkoutOrder.items) {
+    alert("⚠️ Không tìm thấy thông tin đơn hàng. Vui lòng quay lại trang Checkout.");
+    window.location.href = "06_CHECKOUT.html";
+    return;
   }
 
-  // Render order items (right panel)
-  renderOrderItems(items);
+  const { customer, items, subtotal, shippingCost, discount, total, payment } = checkoutOrder;
+  const orderId = "ORDER_" + Math.floor(1000 + Math.random() * 9000);
 
-  // Render order summary (right panel)
-  const subtotal = summary.subtotal || calcSubtotal(items);
-  const shipping = summary.shipping || 30000;
-  const discount = summary.discount || 0;
-  const total = subtotal + shipping - discount;
-  renderOrderSummary(subtotal, shipping, discount, total);
-
-  // Fill payment detail (left panel)
-  fillPaymentDetail(subtotal, total, (checkoutOrder && checkoutOrder.payment) || (paymentInfo && paymentInfo.payment) || (checkoutSummary && checkoutSummary.paymentMethod) || 'Transfer via QR code');
-
-  // Generate or reuse orderId
-  const existingOrderId = (paymentInfo && paymentInfo.orderId) || (checkoutOrder && checkoutOrder.orderId);
-  const orderId = existingOrderId || generateOrderId();
-  const noteEl = document.getElementById('note');
-  const amtEl = document.getElementById('amt');
-  const statusSub = document.querySelector('.status-sub');
-  if (statusSub) statusSub.textContent = orderId;
-  if (noteEl) noteEl.textContent = orderId;
-  if (amtEl) amtEl.textContent = formatNumber(total); // show without currency symbol
-
-  // Delivery address
-  const deliveryContainer = document.querySelector('.delivery-box .delivery-text');
-  const addressText = composeAddress(customer);
-  if (deliveryContainer) deliveryContainer.innerHTML = addressText || 'No delivery address';
-
-  // Save paymentInfo so payment2 can read it
-  const savePayment = {
-    orderId,
-    total,
-    subtotal,
-    shipping,
-    discount,
-    cart: items.map(normalizeItem),
-    address: addressText,
-    paymentMethod: (checkoutOrder && checkoutOrder.payment) || (paymentInfo && paymentInfo.payment) || null,
-    paymentStatus: (paymentInfo && paymentInfo.paymentStatus) || false
-  };
-  localStorage.setItem('paymentInfo', JSON.stringify(savePayment));
-
-  // Copy buttons
-  document.querySelectorAll('.copy').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const id = btn.getAttribute('data-target');
-      const textEl = document.getElementById(id);
-      if (!textEl) return;
-      const text = textEl.textContent.trim();
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(()=> {
-          const old = btn.textContent;
-          btn.textContent = '✓';
-          setTimeout(()=> btn.textContent = old, 900);
-        }, ()=> {
-          alert('Copy failed');
-        });
-      } else {
-        // fallback
-        prompt('Copy this value:', text);
-      }
-    });
+  // --- HIỂN THỊ ORDER DETAIL ---
+  const orderDetailContainer = document.querySelector(".order-detail");
+  orderDetailContainer.innerHTML = `<h3 class="order-detail__title">ORDER DETAIL</h3>`;
+  items.forEach(p => {
+    orderDetailContainer.innerHTML += `
+      <div class="order-item">
+        <img src="${p.image || "../images/Product_images/organic_cotton_tee.png"}" alt="">
+        <div class="order-item-info">
+          <h4>${p.product_name || p.name}</h4>
+          <p>Color: ${p.color || "-"} | Size: ${p.size || "-"}</p>
+          <span class="order-item-price">${formatPrice(p.price)}</span>
+        </div>
+        <span class="order-item-qty">x${p.quantity || 1}</span>
+      </div>
+    `;
   });
 
-  // Pay Now button handler
-  const payBtn = document.querySelector(".btn-pay");
+  // --- HIỂN THỊ ORDER SUMMARY ---
+  const summary = document.querySelector(".order-summary");
+  summary.innerHTML = `
+    <h2 class="order-summary__title">ORDER SUMMARY</h2>
+    <div class="order-summary__row"><span>Subtotal Product</span><span>${formatPrice(subtotal)}</span></div>
+    <div class="order-summary__row"><span>Shipping Cost</span><span>${formatPrice(shippingCost)}</span></div>
+    <div class="order-summary__row"><span>Discount</span><span>-${formatPrice(discount)}</span></div>
+    <div class="order-summary__total"><span>Total</span><span class="total-value">${formatPrice(total)}</span></div>
+  `;
+
+  // --- HIỂN THỊ PAYMENT DETAIL ---
+  const payDetail = document.querySelector(".payment-detail .pd-list");
+  payDetail.innerHTML = `
+    <div class="pd-row"><div class="pd-label">Total order amount</div><div class="pd-value">${formatPrice(subtotal)}</div></div>
+    <div class="pd-row"><div class="pd-label">Amount due</div><div class="pd-value">${formatPrice(total)}</div></div>
+    <div class="pd-row"><div class="pd-label">Payment method</div><div class="pd-value small">${payment}</div></div>
+  `;
+
+  // --- HIỂN THỊ DELIVERY ADDRESS ---
+  const deliveryBox = document.querySelector(".delivery-box .delivery-text");
+  deliveryBox.innerHTML = `
+    ${customer.fullname || ""} | ${customer.phone || ""}<br>
+    ${customer.detail || ""}, ${customer.address || ""}
+  `;
+
+  // --- HIỂN THỊ QR CODE PHÙ HỢP ---
+  const qrContainer = document.querySelector(".transfer-right .qr-card");
+  const qrImage = qrContainer.querySelector("img");
+
+  if (payment.toLowerCase().includes("momo")) {
+    // QR Momo với số tiền động
+    const momoQR = `https://img.vietqr.io/image/970422-0966666666-MoMo.png?amount=${total}&addInfo=${orderId}`;
+    qrImage.src = momoQR;
+  } else {
+    // QR Vietcombank mặc định
+    const bankQR = `https://img.vietqr.io/image/970436-0339667803-Vietcombank.png?amount=${total}&addInfo=${orderId}`;
+    qrImage.src = bankQR;
+  }
+
+  // --- GÁN MÃ ĐƠN & SỐ TIỀN VÀO PHẦN THÔNG TIN CHUYỂN KHOẢN ---
+  document.querySelector(".status-sub").textContent = orderId;
+  document.getElementById("note").textContent = orderId;
+  document.getElementById("amt").textContent = formatPrice(total);
+
+  // --- XỬ LÝ NÚT UPLOAD VÀ THANH TOÁN ---
   const proofInput = document.getElementById("proofImage");
   const fileNameDisplay = document.getElementById("fileName");
+  const payBtn = document.querySelector(".btn-pay");
 
-  // Khi người dùng chọn ảnh
-  proofInput.addEventListener("change", (e) => {
+  proofInput.addEventListener("change", e => {
     const file = e.target.files[0];
-    if (file) {
-      fileNameDisplay.textContent = file.name;
-    } else {
-      fileNameDisplay.textContent = "";
-    }
+    fileNameDisplay.textContent = file ? file.name : "";
   });
 
-
-  payBtn.addEventListener("click", (e) => {
-    e.preventDefault(); // chặn nhảy trang
-
+  payBtn.addEventListener("click", () => {
     if (!proofInput.files.length) {
-      alert("⚠️ Please upload successful transaction image proof!");
+      alert("⚠️ Vui lòng tải lên ảnh xác nhận thanh toán!");
       return;
     }
 
-    // Đọc file ảnh và lưu vào localStorage (base64)
     const reader = new FileReader();
-    reader.onload = function (event) {
-      const proofBase64 = event.target.result;
+    reader.onload = e => {
+      const proofBase64 = e.target.result;
 
-      const paymentData = {
-        cart: items,
-        subtotal,
-        shipping,
-        discount,
-        total,
-        userInfo: customer, 
-        proofImage: proofBase64,
-        orderId: "ORDER_" + Math.floor(Math.random() * 10000),
+      // Tạo payment record
+      const paymentRecord = {
+        payment_id: "PAY" + Math.floor(1000 + Math.random() * 9000),
+        payment_method: payment,
+        payment_status: "Success",
+        transaction_date: new Date().toLocaleString(),
+        order_id: orderId,
+        proof_image: proofBase64
       };
 
-      localStorage.setItem("paymentInfo", JSON.stringify(paymentData));
-      alert("✅ Payment proof uploaded successfully! Redirecting...");
-      window.location.href = "../pages/08_PAYMENT2.html";
+      // Lưu vào localStorage
+      const payments = JSON.parse(localStorage.getItem("payment")) || [];
+      payments.push(paymentRecord);
+      localStorage.setItem("payment", JSON.stringify(payments));
+
+      // Tạo order record
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const orderData = {
+        order_id: orderId,
+        customer: customer,
+        items: items,
+        shipping_fee: shippingCost,
+        discount: discount,
+        total_amount: total,
+        status: "Processing",
+        order_date: new Date().toISOString(),
+        payment_id: paymentRecord.payment_id
+      };
+      orders.push(orderData);
+      localStorage.setItem("orders", JSON.stringify(orders));
+
+      // Cập nhật localStorage.paymentInfo cho bước xác nhận
+      localStorage.setItem("paymentInfo", JSON.stringify({
+        orderId,
+        total,
+        paymentMethod: payment,
+        paymentStatus: "Success",
+        proofImage: proofBase64
+      }));
+
+      alert("✅ Thanh toán thành công! Chuyển đến trang xác nhận...");
+      localStorage.removeItem("checkoutCart");
+      window.location.href = "08_PAYMENT2.html";
     };
     reader.readAsDataURL(proofInput.files[0]);
   });
+
+  // --- Hàm định dạng giá ---
+  function formatPrice(num) {
+    return new Intl.NumberFormat("vi-VN").format(num) + "đ";
+  }
 });
-
-  // ---------------- helper functions ----------------
-  function tryParse(str) {
-    try { return str ? JSON.parse(str) : null; }
-    catch(e) { return null; }
-  }
-
-  // ensure number (strip dots if string)
-  function safeNumber(v) {
-    if (v == null) return 0;
-    if (typeof v === 'number') return v;
-    const s = String(v).replace(/[^\d\-]/g, ''); // remove dots, currency
-    return s === '' ? 0 : Number(s);
-  }
-
-  function normalizeItem(it) {
-    // Accept various shapes: {qty, quantity} and {price:"150.000"|"150000"}
-    const qty = Number(it.qty ?? it.quantity ?? it.count ?? 1);
-    const price = safeNumber(it.price ?? it.unitPrice ?? it.amount ?? 0);
-    return {
-      id: it.id || it.product_id || null,
-      name: it.name || it.product_name || 'Unknown',
-      qty,
-      price,
-      color: it.color || (it.variant && it.variant.color) || '',
-      size: it.size || (it.variant && it.variant.size) || '',
-      image: it.image || it.img || it.imageUrl || '../images/Product_images/organic_cotton_tee.png'
-    };
-  }
-
-  function renderOrderItems(list) {
-    const rd = document.querySelector('.order-detail');
-    if (!rd) return;
-    const normalized = list.map(normalizeItem);
-    if (!normalized.length) {
-      rd.innerHTML = '<p>No items</p>';
-      return;
-    }
-    const html = normalized.map(item => `
-      <div class="order-item">
-        <img src="${item.image}" alt="">
-        <div class="order-item-info">
-          <h4>${escapeHtml(item.name)}</h4>
-          <p>Color: ${escapeHtml(item.color)} | Size: ${escapeHtml(item.size)}</p>
-          <span class="order-item-price">${formatNumber(item.price)}</span>
-        </div>
-        <span class="order-item-qty">x${item.qty}</span>
-      </div>
-    `).join('');
-    rd.innerHTML = `<h3>ORDER DETAIL</h3>${html}<hr/>`;
-  }
-
-  function renderOrderSummary(subtotal, shipping, discount, total) {
-    const summaryEl = document.querySelector('.order-summary');
-    if (!summaryEl) return;
-    
-    summaryEl.innerHTML = `
-        <h2 class="order-summary__title">ORDER SUMMARY</h2>
-        <div class="order-summary__row">
-            <span>Subtotal Product</span>
-            <span class="order-summary__value">${formatNumber(subtotal)}</span>
-        </div>
-        <div class="order-summary__row">
-            <span>Shipping Cost</span>
-            <span class="order-summary__value">${formatNumber(shipping)}</span>
-        </div>
-        <div class="order-summary__row">
-            <span>Discount</span>
-            <span class="order-summary__value discount">-${formatNumber(discount)}</span>
-        </div>
-        <div class="order-summary__total">
-            <span>Total</span>
-            <span class="total-value">${formatNumber(total)}</span>
-        </div>
-    `;
-}
-
-  function fillPaymentDetail(subtotal, total, paymentMethodText) {
-    // small payment detail block on left
-    const pd = document.querySelector('.payment-detail .pd-list');
-    if (pd) {
-      // update the three rows if they exist, else create
-      const rows = pd.querySelectorAll('.pd-row');
-      if (rows.length >= 3) {
-        rows[0].querySelector('.pd-value').textContent = formatNumber(subtotal);
-        rows[1].querySelector('.pd-value').textContent = formatNumber(total);
-        rows[2].querySelector('.pd-value').textContent = paymentMethodText;
-      } else {
-        pd.innerHTML = `
-          <div class="pd-row"><div class="pd-label">Total order amount</div><div class="pd-value">${formatNumber(subtotal)}</div></div>
-          <div class="pd-row"><div class="pd-label">Amount due</div><div class="pd-value">${formatNumber(total)}</div></div>
-          <div class="pd-row"><div class="pd-label">Payment method</div><div class="pd-value small">${escapeHtml(paymentMethodText)}</div></div>
-        `;
-      }
-    }
-  }
-
-  function calcSubtotal(cart) {
-    return normalizeItem({}).price * 0 + cart.reduce((s, it) => s + safeNumber(it.price) * (Number(it.qty ?? it.quantity ?? 1)), 0);
-  }
-
-  function formatNumber(num) {
-    // returns "165.000" for 165000
-    const n = Number(num) || 0;
-    return n.toLocaleString('vi-VN');
-  }
-
-  function generateOrderId() {
-    return 'ORDER_' + Math.floor(1000 + Math.random() * 9000);
-  }
-
-  function composeAddress(customerObj) {
-    if (!customerObj) return '';
-    // customer may have fullname, phone, address, detail OR address string
-    if (customerObj.address && customerObj.detail) {
-      return `${customerObj.fullname ? customerObj.fullname + ' | ' : ''}${customerObj.phone ? customerObj.phone + '<br/>' : ''}${customerObj.detail}, ${customerObj.address}`;
-    }
-    if (customerObj.address) return `${customerObj.fullname ? customerObj.fullname + ' | ' : ''}${customerObj.address}`;
-    return `${customerObj.fullname || ''}${customerObj.phone ? ' | ' + customerObj.phone : ''}`;
-  }
-
-  function escapeHtml(str) {
-    if (!str && str !== 0) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  function pushOrderHistory(paymentData) {
-    try {
-      const hist = tryParse(localStorage.getItem('orders')) || [];
-      hist.push({
-        orderId: paymentData.orderId,
-        total: paymentData.total,
-        items: paymentData.cart,
-        address: paymentData.address,
-        paidAt: new Date().toISOString()
-      });
-      localStorage.setItem('orders', JSON.stringify(hist));
-    } catch (e) { console.warn(e); }
-  }
-
