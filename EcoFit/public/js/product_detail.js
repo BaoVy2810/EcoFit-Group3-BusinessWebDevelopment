@@ -1202,6 +1202,7 @@ style.textContent = `
     }
     
     .cart-message {
+        margin-top:65px;
         font-family: 'Outfit', sans-serif;
         font-weight: 500;
         font-size: 14px;

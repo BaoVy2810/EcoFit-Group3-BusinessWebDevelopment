@@ -499,6 +499,7 @@ style.textContent = `
         font-weight: 500;
         font-size: 14px;
         letter-spacing: 0.3px;
+        margin-top:65px;
     }
 
     .product-card {
