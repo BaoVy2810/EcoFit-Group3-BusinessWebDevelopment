@@ -21,11 +21,9 @@ iframe.header-frame {
   z-index: 1000;
 }
 
-
-/* Footer iframe */
 iframe.footer-frame {
   width: 100%;
-  height: 400px; /* Điều chỉnh theo nội dung footer thực tế */
+  height: 380px; 
   border: none;
   overflow: hidden;
   display: block;
