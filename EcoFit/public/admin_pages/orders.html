@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+      <script src="./dataManager.js"></script>
+      <script src="./script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
   // Toggle Sidebar
@@ -60,9 +63,9 @@
       </nav>
     </aside>
 
+
     <!-- Main Content -->
     <div class="main-content">
-      <!-- Header - giữ nguyên -->
       <header class="header">
         <div class="header-left">
           <button class="menu-toggle"><i data-lucide="menu"></i></button>
@@ -72,10 +75,13 @@
           <button class="notification-btn">
             <i data-lucide="bell"></i><span class="notification-dot"></span>
           </button>
+          <button class="logout-btn" onclick="handleLogout()">
+            <i data-lucide="log-out"></i>
+          </button>
           <div class="user-profile">
             <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
+              <p class="user-name"></p>
+              <p class="user-role">Administrator</p>
             </div>
             <img src="../images/admin.png" alt="Admin" />
           </div>
@@ -334,7 +340,7 @@
   <script src="script.js"></script>
 
 
-<script>
+ <script>
 let orders = [];
 let currentEditOrderId = null;
 let statusChart = null;
@@ -363,19 +369,22 @@ function getCustomerName(customerId) {
   return acc ? (acc.fullname || acc.name || `Customer #${customerId}`) : `Customer #${customerId}`;
 }
 
-// Load dữ liệu orders
+// ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
 async function loadOrdersData() {
   try {
-    const storedData = localStorage.getItem('orders');
-    if (storedData) {
-      const data = JSON.parse(storedData);
-      orders = data.orders;
-    } else {
-      const response = await fetch("../../dataset/orders.json");
-      const data = await response.json();
-      orders = data.orders;
-      localStorage.setItem('orders', JSON.stringify(data));
+    console.log('🛒 Loading orders data from DataManager...');
+    
+    // Lấy dữ liệu từ DataManager
+    orders = window.DataManager.getOrders();
+    accounts = window.DataManager.getAccounts();
+    
+    if (!orders || orders.length === 0) {
+      console.warn('⚠️ No orders found');
+      return;
     }
+
+    console.log('✅ Orders loaded:', orders.length);
+    console.log('✅ Accounts loaded:', accounts.length);
 
     // Update stats
     document.getElementById("total-orders").textContent = orders.length;
@@ -435,18 +444,8 @@ async function loadOrdersData() {
     loadStatusChart();
     loadRevenueChart();
 
-    // Try to load accounts
-    try {
-      const resp = await fetch("../../dataset/accounts.json");
-      const accData = await resp.json();
-      accounts = Array.isArray(accData.profile) ? accData.profile : [];
-    } catch (e) {
-      console.warn('Could not load accounts.json for customer names:', e);
-      accounts = [];
-    }
-
   } catch (error) {
-    console.error("Error loading orders data:", error);
+    console.error("❌ Error loading orders:", error);
   }
 }
 
@@ -620,7 +619,7 @@ function loadRevenueChart() {
   });
 }
 
-//  HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
+// HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
 function handleOrderFilter() {
   const searchValue = safeLower(document.getElementById("searchInput").value);
   const statusValue = document.getElementById("statusFilter").value;
@@ -645,7 +644,7 @@ function handleOrderFilter() {
     return matchSearch && matchStatus && matchMonth;
   });
 
-  // Render bảng với logic đầy đủ
+  // Render bảng
   renderTable(filtered, "table tbody", "table tbody tr.template", (row, order) => {
     row.querySelector('[name="order-id"]').textContent = order.order_id;
     row.querySelector('[name="order-date"]').textContent = formatDate(order.order_date);
@@ -753,15 +752,20 @@ function closeEditModal() {
   document.getElementById("editStatusModal").classList.remove("show");
 }
 
-// Lưu thay đổi trạng thái
+// ✅ LƯU THAY ĐỔI TRẠNG THÁI - SỬ DỤNG DATAMANAGER
 function saveStatusChange() {
   if (!currentEditOrderId) return;
+  
   const newStatus = document.getElementById("newStatusSelect").value;
   const orderIndex = orders.findIndex(o => o.order_id === currentEditOrderId);
   if (orderIndex === -1) return;
 
+  console.log('💾 Saving order status change...');
+
   orders[orderIndex].status = newStatus;
-  localStorage.setItem("orders", JSON.stringify({ orders }));
+  
+  // Lưu vào DataManager
+  window.DataManager.saveOrders(orders);
 
   // Cập nhật lại bảng và biểu đồ
   handleOrderFilter();
@@ -776,11 +780,16 @@ function saveStatusChange() {
   document.getElementById("processing-orders").textContent = processingOrders.length;
 
   closeEditModal();
+  console.log('✅ Order status updated successfully');
 }
 
-// ✅ KHỞI TẠO KHI LOAD TRANG
+// ✅ INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
+  console.log('🚀 Initializing orders page...');
+  
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
   
   loadOrdersData().then(() => {
     // Render bảng lần đầu
@@ -792,26 +801,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("monthFilter").addEventListener("change", handleOrderFilter);
   });
 
-  // Kiểm tra tài khoản admin đăng nhập
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const userRole = localStorage.getItem("userRole");
-
-  if (!isLoggedIn || userRole !== "administrator") {
-    alert("Please login as administrator to access this page.");
-    window.location.href = "../pages/00_LOGIN.html";
-    return;
-  }
-
-  // Display admin name
-  const userName = localStorage.getItem("userName");
-  if (userName) {
-    const userNameElement = document.querySelector(".user-name");
-    if (userNameElement) {
-      userNameElement.textContent = userName;
-    }
-  }
+  console.log('✅ Orders page initialized');
 });
-</script>
+  </script>
 </body>
 
 </html>

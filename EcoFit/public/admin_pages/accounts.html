@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Account Management - Admin Dashboard</title>
-  <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
   <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+
+      <script src="./dataManager.js"></script>
+      <script src="./script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-  // Toggle Sidebar
-  const menuToggle = document.querySelector('.menu-toggle');
-  const sidebar = document.querySelector('.sidebar');
-  const mainContent = document.querySelector('.main-content');
+      // Toggle Sidebar
+      const menuToggle = document.querySelector('.menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
 
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('expanded');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          mainContent.classList.toggle('expanded');
+        });
+      }
+
     });
-  }
-
-});
   </script>
 </head>
 
@@ -34,7 +36,8 @@
   <div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+      <div
+        style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
         <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
         <div>
           <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
@@ -52,16 +55,24 @@
         <button class="menu-item" onclick="location.href='products.html'">
           <i data-lucide="package"></i><span>Products</span>
         </button>
-        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order Lists</span></button>
+        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order
+            Lists</span></button>
+        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
 
-        <div class="pages-divider"><p>PAGES</p></div>
+        <div class="pages-divider">
+          <p>PAGES</p>
+        </div>
 
-        <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
-        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
-        <button class="menu-item" onclick="location.href='to-do.html'"><i data-lucide="check-square"></i><span>To-Do</span></button>
+        <button class="menu-item" onclick="location.href='promotions.html'"><i
+            data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i
+            data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item" onclick="location.href='to-do.html'"><i
+            data-lucide="check-square"></i><span>To-Do</span></button>
 
       </nav>
     </aside>
+
 
     <!-- Main Content -->
     <div class="main-content">
@@ -74,10 +85,13 @@
           <button class="notification-btn">
             <i data-lucide="bell"></i><span class="notification-dot"></span>
           </button>
+          <button class="logout-btn" onclick="handleLogout()">
+            <i data-lucide="log-out"></i>
+          </button>
           <div class="user-profile">
             <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
+              <p class="user-name"></p>
+              <p class="user-role">Administrator</p>
             </div>
             <img src="../images/admin.png" alt="Admin" />
           </div>
@@ -152,12 +166,12 @@
             </div>
           </div>
         </div>
-
         <!-- Table -->
         <div class="chart-container" style="padding: 24px;">
           <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Accounts</h3>
 
-          <div style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+          <div
+            style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
             <div style="flex: 1; display: flex; gap: 12px;">
               <div class="search-box">
                 <i data-lucide="search" style="width: 20px; height: 20px;"></i>
@@ -188,31 +202,36 @@
   border: 1px solid #e5e7eb; 
   border-radius: 8px;
 ">
-  <table style="width: 100%; border-collapse: collapse;">
+            <table style="width: 100%; border-collapse: collapse;">
 
               <thead>
                 <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
-                  <th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-<tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
-  <td style="padding: 16px;"></td>
-  <td style="padding: 16px;"><span name="name"></span></td>
-  <td style="padding: 16px;" name="email"></td>
-  <td style="padding: 16px;"><span name="role"></span></td>
-  <td style="padding: 16px;"><span name="status"></span></td>
-<td >
-  <div class="action-buttons">
-    <button title="Edit">
-      <i data-lucide="edit" style="width: 24px; height: 24px;"></i>
-    </button>
-    <button title="Delete">
-      <i data-lucide="trash-2" style="width: 24px; height: 24px;"></i>
-    </button>
-  </div>
-  </td>
-</tr>
+                <tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
+                  <td style="padding: 16px;"></td>
+                  <td style="padding: 16px;"><span name="name"></span></td>
+                  <td style="padding: 16px;" name="email"></td>
+                  <td style="padding: 16px;"><span name="role"></span></td>
+                  <td style="padding: 16px;"><span name="status"></span></td>
+                  <td style="padding: 16px;">
+                    <button
+                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;">
+                      <i data-lucide="edit"></i>
+                    </button>
+                    <button
+                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -220,296 +239,168 @@
       </main>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script>
+    let accounts = [];
 
-  <SCRIPT>
-    // tạo icons SAU KHI render bảng xong
-function renderIcons() {
-  if (window.lucide && typeof lucide.createIcons === "function") {
-    lucide.createIcons();
-  }
-}
-let accounts = [];
+    // ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
+    async function loadAccountsData() {
+      try {
+        console.log('📊 Loading accounts data from DataManager...');
 
-async function loadAccountsData() {
-  try {
-    // Try to read from localStorage first
-    const storedData = localStorage.getItem('accounts');
-    if (storedData) {
-      const data = JSON.parse(storedData);
-      accounts = data.profile;
-    } else {
-      // If localStorage is empty, fetch from JSON file
-      const response = await fetch("../../dataset/accounts.json");
-      const data = await response.json();
-      accounts = data.profile;
-      // Save to localStorage for future use
-      localStorage.setItem('accounts', JSON.stringify(data));
-    }
+        // Lấy dữ liệu từ DataManager thay vì fetch
+        accounts = window.DataManager.getAccounts();
 
-    const activeUsers = accounts.filter((a) => a.status === "active");
-    const inactiveUsers = accounts.filter((a) => a.status === "inactive");
-
-    const now = new Date();
-    const newThisMonth = accounts.filter((acc) => {
-      const d = new Date(acc.created_at);
-      return (
-        d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
-      );
-    }).length;
-
-    document.getElementById("total-accounts").textContent = accounts.length;
-    document.getElementById("active-users").textContent = activeUsers.length;
-    document.getElementById("inactive-users").textContent = inactiveUsers.length;
-    document.getElementById("new-users").textContent = newThisMonth;
-
-    if (typeof applyMonthlyGrowth === "function") {
-      applyMonthlyGrowth("user", accounts, "created_at");
-      applyMonthlyGrowth("active-users", activeUsers, "created_at");
-      applyMonthlyGrowth(
-        "new-users",
-        accounts.filter((a) => a.role === "customer"),
-        "created_at"
-      );
-      applyMonthlyGrowth("inactive-users", inactiveUsers, "created_at");
-    }
-  } catch (error) {
-    console.error("Lỗi khi tải dữ liệu tài khoản:", error);
-  }
-}
-
-async function loadAccounts() {
-  try {
-    // ƯU TIÊN ĐỌC DỮ LIỆU TỪ LOCALSTORAGE
-    const storedData = localStorage.getItem("accounts");
-    if (storedData) {
-      const data = JSON.parse(storedData);
-      accounts = data.profile;
-      updateTable(accounts);
-      return;
-    }
-
-    // Nếu chưa có thì đọc từ file JSON gốc
-    const response = await fetch("../../dataset/accounts.json");
-    const data = await response.json();
-    accounts = data.profile;
-    updateTable(accounts);
-  } catch (error) {
-    console.error("Error loading accounts:", error);
-  }
-}
-
-function updateTable(filteredAccounts) {
-  renderTable(filteredAccounts, "table tbody", "table tbody tr.template", (row, acc) => {
-    const itemId = acc.id || acc.profile_id;
-    
-    row.querySelector("td:nth-child(1)").textContent = `#${itemId}`;
-    row.querySelector('[name="name"]').textContent = acc.fullname;
-    row.querySelector('[name="email"]').textContent = acc.email;
-
-    const roleSpan = row.querySelector('[name="role"]');
-    roleSpan.textContent = acc.role.charAt(0).toUpperCase() + acc.role.slice(1);
-    
-    if (acc.role === "administrator") {
-      roleSpan.style.cssText = `
-        padding: 6px 16px;
-        background: linear-gradient(2000deg, #53C15C 0%, #7DE579 100%);
-        color: white;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-      `;
-    } else {
-      roleSpan.style.cssText = `
-        padding: 6px 16px;
-        background: linear-gradient(2000deg, #265BD4 0%, #4880FF 100%);
-        color: white;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-      `;
-    }
-
-    const statusSpan = row.querySelector('[name="status"]');
-    statusSpan.textContent = acc.status.charAt(0).toUpperCase() + acc.status.slice(1);
-    statusSpan.style.background = acc.status === "active" ? "#f0fdf4" : "#f3f4f6";
-    statusSpan.style.color = acc.status === "active" ? "#22c55e" : "#6b7280";
-    statusSpan.style.padding = "4px 12px";
-    statusSpan.style.borderRadius = "12px";
-    statusSpan.style.fontSize = "12px";
-    statusSpan.style.fontWeight = "500";
-
-    // THÊM EVENT CHO NÚT EDIT VÀ DELETE
-    const editBtn = row.querySelector('button[title="Edit"]') || row.querySelectorAll('button')[0];
-    const deleteBtn = row.querySelector('button[title="Delete"]') || row.querySelectorAll('button')[1];
-    
-    if (editBtn) {
-      editBtn.onclick = () => openEditModal(itemId, 'accounts', 'id');
-    }
-    
-    if (deleteBtn) {
-      deleteBtn.onclick = () => deleteItem(itemId, 'accounts', 'id');
-    }
-  });
-  renderIcons();
-}
-
-  
-
-function handleFilterChange() {
-  const searchValue = safeLower(document.getElementById("searchInput").value);
-  const roleValue = document.getElementById("roleFilter").value;
-  const statusValue = document.getElementById("statusFilter").value;
-
-  const filtered = accounts.filter((acc) => {
-    // Tìm kiếm theo tên hoặc email
-    const matchSearch = 
-      searchValue === "" ||
-      safeLower(acc.fullname).includes(searchValue) ||
-      safeLower(acc.email).includes(searchValue);
-
-    // Lọc theo role
-    const matchRole = roleValue === "all" || acc.role === roleValue;
-
-    // Lọc theo status
-    const matchStatus = statusValue === "all" || acc.status === statusValue;
-
-    return matchSearch && matchRole && matchStatus;
-  });
-
-
-
-
-  updateTable(filtered);
-}
-
-
-  
-  loadAccounts();
-  loadAccountsData();
-
-  // Gắn event cho search (tìm kiếm realtime khi gõ)
-  document.getElementById("searchInput").addEventListener("input", handleFilterChange);
-  
-  // Gắn event cho các select filter
-  document.getElementById("roleFilter").addEventListener("change", handleFilterChange);
-  document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
-  
-  // Thêm event Enter cho ô search
-  document.getElementById("searchInput").addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      handleFilterChange();
-    }
-  });
-
-
-
-
-
-
-// Giả sử accountsData đã load từ accounts.json (mảng profile[])
-function renderActiveInactiveChart(accountsData) {
-    // Gom nhóm theo tháng (YYYY-MM)
-    const monthlyStats = {};  // { "2025-09": { active: 3, inactive: 1 }, ... }
-
-    accounts.forEach(acc => {
-        const month = acc.created_at.slice(0, 7); // "2025-09"
-        if (!monthlyStats[month]) {
-            monthlyStats[month] = { active: 0, inactive: 0 };
+        if (!accounts || accounts.length === 0) {
+          console.warn('⚠️ No accounts found');
+          return;
         }
-        if (acc.status === "active") {
-            monthlyStats[month].active++;
+
+        console.log('✅ Accounts loaded:', accounts.length);
+
+        // Tính toán statistics
+        const activeUsers = accounts.filter((a) => a.status === "active");
+        const inactiveUsers = accounts.filter((a) => a.status === "inactive");
+
+        const now = new Date();
+        const newThisMonth = accounts.filter((acc) => {
+          const d = new Date(acc.created_at);
+          return (
+            d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
+          );
+        }).length;
+
+        // Update UI
+        document.getElementById("total-accounts").textContent = accounts.length;
+        document.getElementById("active-users").textContent = activeUsers.length;
+        document.getElementById("inactive-users").textContent = inactiveUsers.length;
+        document.getElementById("new-users").textContent = newThisMonth;
+
+        // Apply growth calculations
+        if (typeof applyMonthlyGrowth === "function") {
+          applyMonthlyGrowth("user", accounts, "created_at");
+          applyMonthlyGrowth("active-users", activeUsers, "created_at");
+          applyMonthlyGrowth(
+            "new-users",
+            accounts.filter((a) => a.role === "customer"),
+            "created_at"
+          );
+          applyMonthlyGrowth("inactive-users", inactiveUsers, "created_at");
+        }
+      } catch (error) {
+        console.error("❌ Error loading accounts:", error);
+      }
+    }
+
+    // ✅ LOAD VÀ RENDER TABLE
+    async function loadAccounts() {
+      try {
+        console.log('📋 Loading accounts for table...');
+
+        // Lấy từ DataManager
+        accounts = window.DataManager.getAccounts();
+
+        if (!accounts || accounts.length === 0) {
+          console.warn('⚠️ No accounts to display');
+          return;
+        }
+
+        updateTable(accounts);
+        console.log('✅ Accounts table rendered');
+      } catch (error) {
+        console.error("❌ Error loading accounts:", error);
+      }
+    }
+
+    // Render table
+    function updateTable(filteredAccounts) {
+      renderTable(filteredAccounts, "table tbody", "table tbody tr.template", (row, acc) => {
+        row.querySelector("td:nth-child(1)").textContent = `#${acc.id || acc.profile_id}`;
+        row.querySelector('[name="name"]').textContent = acc.fullname;
+        row.querySelector('[name="email"]').textContent = acc.email;
+
+        const roleSpan = row.querySelector('[name="role"]');
+        roleSpan.textContent = acc.role.charAt(0).toUpperCase() + acc.role.slice(1);
+
+        if (acc.role === "administrator") {
+          roleSpan.style.cssText = `
+        padding: 6px 16px;
+        background: linear-gradient(135deg, #53C15C 0%, #7DE579 100%);
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      `;
         } else {
-            monthlyStats[month].inactive++;
+          roleSpan.style.cssText = `
+        padding: 6px 16px;
+        background: linear-gradient(135deg, #265BD4 0%, #4880FF 100%);
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      `;
         }
-    });
 
-    // Tách dữ liệu thành mảng cho Chart.js
-    const labels = Object.keys(monthlyStats).sort(); // ["2025-09", "2025-10", ...]
-    const activeData = labels.map(m => monthlyStats[m].active);
-    const inactiveData = labels.map(m => monthlyStats[m].inactive);
-
-    const ctx = document.getElementById("userActivityChart").getContext("2d");
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: "Active Users",
-                    data: activeData,
-                    backgroundColor: "rgb(34, 197, 94)",
-                                        borderWidth: 0,
-                    borderRadius: 8,
-                    spacing: 4,
-                    font: {
-                      size: 14,
-                      family: 'Outfit'
-                    },
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                },
-                {
-                    label: "Inactive Users",
-                    data: inactiveData,
-                    backgroundColor: "rgb(59, 130, 246)"
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    position: 'bottom',
-                    text: "Active / Inactive User Ratio by Month",
-                    font: {
-                                size: 14,
-                                family: 'Outfit'
-                            },
-                }
-            },
-            scales: {
-                x: { stacked: true },
-                y: { stacked: true, beginAtZero: true }
-            }
-        }
-    });
-}
-
-
-// Cập nhật phần gọi hàm (thay thế đoạn loadAccountsData().then)
-loadAccountsData().then(() => {
-  renderActiveInactiveChart(); // Thêm dòng này
-  renderIcons();
-});
-
-  //Kiểm tra tài khoản admin đăng nhập
-window.addEventListener("DOMContentLoaded", () => {
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const userRole = localStorage.getItem("userRole");
-
-  if (!isLoggedIn || userRole !== "administrator") {
-    // Redirect to login if not authenticated or not admin
-    alert("Please login as administrator to access this page.");
-    window.location.href = "../pages/00_LOGIN.html";
-    return;
-  }
-
-  // Display admin name
-  const userName = localStorage.getItem("userName");
-  if (userName) {
-    const userNameElement = document.querySelector(".user-name");
-    if (userNameElement) {
-      userNameElement.textContent = userName;
+        const statusSpan = row.querySelector('[name="status"]');
+        statusSpan.textContent = acc.status.charAt(0).toUpperCase() + acc.status.slice(1);
+        statusSpan.style.background = acc.status === "active" ? "#f0fdf4" : "#f3f4f6";
+        statusSpan.style.color = acc.status === "active" ? "#22c55e" : "#6b7280";
+        statusSpan.style.padding = "4px 12px";
+        statusSpan.style.borderRadius = "12px";
+        statusSpan.style.fontSize = "12px";
+        statusSpan.style.fontWeight = "500";
+      });
     }
-  }
-});
-</script>
 
+    // Filter handler
+    function handleFilterChange() {
+      const searchValue = safeLower(document.getElementById("searchInput").value);
+      const roleValue = document.getElementById("roleFilter").value;
+      const statusValue = document.getElementById("statusFilter").value;
 
+      const filtered = accounts.filter((acc) => {
+        const matchSearch =
+          searchValue === "" ||
+          safeLower(acc.fullname).includes(searchValue) ||
+          safeLower(acc.email).includes(searchValue);
+
+        const matchRole = roleValue === "all" || acc.role === roleValue;
+        const matchStatus = statusValue === "all" || acc.status === statusValue;
+
+        return matchSearch && matchRole && matchStatus;
+      });
+
+      updateTable(filtered);
+    }
+
+    // ✅ INITIALIZATION
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log('🚀 Initializing accounts page...');
+
+      // Initialize Lucide icons
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+
+      // Load data
+      loadAccounts();
+      loadAccountsData();
+
+      // Setup event listeners
+      document.getElementById("searchInput").addEventListener("input", handleFilterChange);
+      document.getElementById("roleFilter").addEventListener("change", handleFilterChange);
+      document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
+
+      document.getElementById("searchInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          handleFilterChange();
+        }
+      });
+
+      console.log('✅ Accounts page initialized');
+    });
+  </script>
 </body>
 </html>

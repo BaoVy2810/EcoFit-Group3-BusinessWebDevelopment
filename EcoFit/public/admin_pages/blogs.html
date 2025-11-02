@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+
+      <script src="./dataManager.js"></script>
+      <script src="./script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const menuToggle = document.querySelector('.menu-toggle');
@@ -62,6 +66,7 @@
       </nav>
     </aside>
 
+
     <!-- Main Content -->
     <div class="main-content">
       <header class="header">
@@ -73,10 +78,13 @@
           <button class="notification-btn">
             <i data-lucide="bell"></i><span class="notification-dot"></span>
           </button>
+          <button class="logout-btn" onclick="handleLogout()">
+            <i data-lucide="log-out"></i>
+          </button>
           <div class="user-profile">
             <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
+              <p class="user-name"></p>
+              <p class="user-role">Administrator</p>
             </div>
             <img src="../images/admin.png" alt="Admin" />
           </div>
@@ -293,392 +301,385 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
-  <script>
-    let sectionCounter = 0;
+ 
+ <script> 
 
-    // Render icons
-    function renderIcons() {
-      if (window.lucide && typeof lucide.createIcons === "function") {
-        lucide.createIcons();
-      }
+let sectionCounter = 0;
+let blogs = [];
+
+// Render icons
+function renderIcons() {
+  if (window.lucide && typeof lucide.createIcons === "function") {
+    lucide.createIcons();
+  }
+}
+
+// ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
+function loadBlogs() {
+  try {
+    console.log('📝 Loading blogs from DataManager...');
+    
+    // Lấy dữ liệu từ DataManager
+    blogs = window.DataManager.getBlogs();
+    
+    if (!blogs || blogs.length === 0) {
+      console.warn('⚠️ No blogs found');
+      blogs = [];
     }
 
-    let blogs = [];
-    const STORAGE_KEY = 'blogs';
+    console.log('✅ Blogs loaded:', blogs.length);
+    
+    updateStats();
+    updateTable(blogs);
+  } catch (error) {
+    console.error("❌ Error loading blogs:", error);
+  }
+}
 
-    // Initialize blog data from JSON
-    function initializeBlogData() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) {
-        fetch('../../dataset/blogs.json')
-          .then(response => response.json())
-          .then(data => {
-            // Add status field to each blog
-            const blogsWithStatus = data.map(blog => ({
-              ...blog,
-              status: 'published' // Default all to published
-            }));
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(blogsWithStatus));
-            loadBlogs();
-          })
-          .catch(error => console.error('Error loading blogs:', error));
-      }
-    }
+// Update statistics
+function updateStats() {
+  const total = blogs.length;
+  const published = blogs.filter(b => b.status === "published").length;
+  const draft = blogs.filter(b => b.status === "draft").length;
+  
+  const now = new Date();
+  const currentMonth = blogs.filter(blog => {
+    const blogDate = new Date(blog.date);
+    return blogDate.getMonth() === now.getMonth() && 
+           blogDate.getFullYear() === now.getFullYear();
+  }).length;
 
-    // Load blogs data
-    function loadBlogs() {
-      try {
-        const storedData = localStorage.getItem(STORAGE_KEY);
-        if (storedData) {
-          blogs = JSON.parse(storedData);
-          updateStats();
-          updateTable(blogs);
-        }
-      } catch (error) {
-        console.error("Error loading blogs:", error);
-      }
-    }
+  document.getElementById("total-blogs").textContent = total;
+  document.getElementById("published-blogs").textContent = published;
+  document.getElementById("monthly-blogs").textContent = currentMonth;
+  document.getElementById("draft-blogs").textContent = draft;
+}
 
-    // Update statistics
-    function updateStats() {
-      const total = blogs.length;
-      const published = blogs.filter(b => b.status === "published").length;
-      const draft = blogs.filter(b => b.status === "draft").length;
-      
-      const now = new Date();
-      const currentMonth = blogs.filter(blog => {
-        const blogDate = new Date(blog.date);
-        return blogDate.getMonth() === now.getMonth() && 
-               blogDate.getFullYear() === now.getFullYear();
-      }).length;
+// Update table
+function updateTable(filteredBlogs) {
+  renderTable(filteredBlogs, "table tbody", "table tbody tr.template", (row, blog) => {
+    row.querySelector('[name="id"]').textContent = `#${blog.id}`;
+    row.querySelector('[name="title"]').textContent = blog.title;
+    
+    // Preview text from first content section
+    const preview = blog.content && blog.content[0] 
+      ? (blog.content[0].text || blog.content[0].heading || '').substring(0, 80) + '...'
+      : 'No content available';
+    row.querySelector('[name="preview"]').textContent = preview;
+    
+    row.querySelector('[name="date"]').textContent = blog.date;
+    
+    const sectionsSpan = row.querySelector('[name="sections"]');
+    sectionsSpan.textContent = blog.content ? blog.content.length : 0;
+    sectionsSpan.style.cssText = `
+      padding: 6px 12px;
+      background: #f3f4f6;
+      color: #374151;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+    `;
 
-      document.getElementById("total-blogs").textContent = total;
-      document.getElementById("published-blogs").textContent = published;
-      document.getElementById("monthly-blogs").textContent = currentMonth;
-      document.getElementById("draft-blogs").textContent = draft;
-    }
-
-    // Update table
-    function updateTable(filteredBlogs) {
-      renderTable(filteredBlogs, "table tbody", "table tbody tr.template", (row, blog) => {
-        row.querySelector('[name="id"]').textContent = `#${blog.id}`;
-        row.querySelector('[name="title"]').textContent = blog.title;
-        
-        // Preview text from first content section
-        const preview = blog.content && blog.content[0] 
-          ? (blog.content[0].text || blog.content[0].heading || '').substring(0, 80) + '...'
-          : 'No content available';
-        row.querySelector('[name="preview"]').textContent = preview;
-        
-        row.querySelector('[name="date"]').textContent = blog.date;
-        
-        const sectionsSpan = row.querySelector('[name="sections"]');
-        sectionsSpan.textContent = blog.content ? blog.content.length : 0;
-        sectionsSpan.style.cssText = `
-          padding: 6px 12px;
-          background: #f3f4f6;
-          color: #374151;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 13px;
-        `;
-
-        const statusSpan = row.querySelector('[name="status"]');
-        statusSpan.textContent = (blog.status || 'published').charAt(0).toUpperCase() + (blog.status || 'published').slice(1);
-        
-        if ((blog.status || 'published') === "published") {
-          statusSpan.style.cssText = `
-            padding: 6px 12px;
-            background: #f0fdf4;
-            color: #22c55e;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-          `;
-        } else {
-          statusSpan.style.cssText = `
-            padding: 6px 12px;
-            background: #fef9c3;
-            color: #854d0e;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-          `;
-        }
-
-        const viewBtn = row.querySelector('.view-btn');
-        const editBtn = row.querySelector('.edit-btn');
-        const deleteBtn = row.querySelector('.delete-btn');
-        
-        if (viewBtn) viewBtn.onclick = () => viewBlog(blog);
-        if (editBtn) editBtn.onclick = () => openEditModal(blog);
-        if (deleteBtn) deleteBtn.onclick = () => deleteBlog(blog.id);
-      });
-      renderIcons();
-    }
-
-    // Filter handler
-    function handleFilterChange() {
-      const searchValue = safeLower(document.getElementById("searchInput").value);
-      const statusValue = document.getElementById("statusFilter").value;
-
-      const filtered = blogs.filter((blog) => {
-        const matchSearch = 
-          searchValue === "" ||
-          safeLower(blog.title).includes(searchValue);
-
-        const matchStatus = statusValue === "all" || (blog.status || 'published') === statusValue;
-
-        return matchSearch && matchStatus;
-      });
-
-      updateTable(filtered);
-    }
-
-    // View blog details
-    function viewBlog(blog) {
-      document.getElementById("viewBlogTitle").textContent = blog.title;
-      
-      let contentHtml = `
-        <div style="margin-bottom: 16px;">
-          <strong>Date:</strong> ${blog.date}<br>
-          <strong>Status:</strong> ${(blog.status || 'published').charAt(0).toUpperCase() + (blog.status || 'published').slice(1)}<br>
-          <strong>Sections:</strong> ${blog.content ? blog.content.length : 0}
-        </div>
-        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+    const statusSpan = row.querySelector('[name="status"]');
+    statusSpan.textContent = (blog.status || 'published').charAt(0).toUpperCase() + (blog.status || 'published').slice(1);
+    
+    if ((blog.status || 'published') === "published") {
+      statusSpan.style.cssText = `
+        padding: 6px 12px;
+        background: #f0fdf4;
+        color: #22c55e;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
       `;
-      
-      if (blog.content && blog.content.length > 0) {
-        blog.content.forEach((section, index) => {
-          contentHtml += `
-            <div style="margin-bottom: 24px;">
-              ${section.heading ? `<h4 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px;">${section.heading}</h4>` : ''}
-              <p style="color: #374151; line-height: 1.6; white-space: pre-wrap;">${section.text || ''}</p>
-            </div>
-          `;
-        });
-      }
-      
-      document.getElementById("viewBlogContent").innerHTML = contentHtml;
-      document.getElementById("viewBlogModal").classList.add("show");
-      renderIcons();
+    } else {
+      statusSpan.style.cssText = `
+        padding: 6px 12px;
+        background: #fef9c3;
+        color: #854d0e;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+      `;
     }
 
-    // Close view modal
-    function closeViewModal() {
-      document.getElementById("viewBlogModal").classList.remove("show");
-    }
+    const buttons = row.querySelectorAll('.action-buttons button');
+    const viewBtn = buttons[0];
+    const editBtn = buttons[1];
+    const deleteBtn = buttons[2];
+    
+    if (viewBtn) viewBtn.onclick = () => viewBlog(blog);
+    if (editBtn) editBtn.onclick = () => openEditModal(blog);
+    if (deleteBtn) deleteBtn.onclick = () => deleteBlog(blog.id);
+  });
+  renderIcons();
+}
 
-    // Add content section
-    function addContentSection(heading = '', text = '') {
-      const container = document.getElementById("contentSections");
-      const sectionId = `section-${sectionCounter++}`;
-      
-      const sectionDiv = document.createElement('div');
-      sectionDiv.className = 'content-section';
-      sectionDiv.id = sectionId;
-      sectionDiv.style.cssText = 'padding: 16px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;';
-      
-      sectionDiv.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <strong style="color: #111827;">Section ${sectionCounter}</strong>
-          <button type="button" onclick="removeSection('${sectionId}')" style="padding: 4px 8px; background: #ef4444; font-size: 12px;">
-            <i data-lucide="x"></i>Remove
-          </button>
-        </div>
-        <div class="form-group" style="margin-bottom: 12px;">
-          <label>Heading (optional)</label>
-          <input type="text" class="section-heading" placeholder="Section heading" value="${heading}" />
-        </div>
-        <div class="form-group">
-          <label>Text <span class="required">*</span></label>
-          <textarea class="section-text" placeholder="Section content" rows="4" required>${text}</textarea>
+// Filter handler
+function handleFilterChange() {
+  const searchValue = safeLower(document.getElementById("searchInput").value);
+  const statusValue = document.getElementById("statusFilter").value;
+
+  const filtered = blogs.filter((blog) => {
+    const matchSearch = 
+      searchValue === "" ||
+      safeLower(blog.title).includes(searchValue);
+
+    const matchStatus = statusValue === "all" || (blog.status || 'published') === statusValue;
+
+    return matchSearch && matchStatus;
+  });
+
+  updateTable(filtered);
+}
+
+// View blog details
+function viewBlog(blog) {
+  document.getElementById("viewBlogTitle").textContent = blog.title;
+  
+  let contentHtml = `
+    <div style="margin-bottom: 16px;">
+      <strong>Date:</strong> ${blog.date}<br>
+      <strong>Status:</strong> ${(blog.status || 'published').charAt(0).toUpperCase() + (blog.status || 'published').slice(1)}<br>
+      <strong>Sections:</strong> ${blog.content ? blog.content.length : 0}
+    </div>
+    <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+  `;
+  
+  if (blog.content && blog.content.length > 0) {
+    blog.content.forEach((section, index) => {
+      contentHtml += `
+        <div style="margin-bottom: 24px;">
+          ${section.heading ? `<h4 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px;">${section.heading}</h4>` : ''}
+          <p style="color: #374151; line-height: 1.6; white-space: pre-wrap;">${section.text || ''}</p>
         </div>
       `;
-      
-      container.appendChild(sectionDiv);
-      renderIcons();
-    }
+    });
+  }
+  
+  document.getElementById("viewBlogContent").innerHTML = contentHtml;
+  document.getElementById("viewBlogModal").classList.add("show");
+  renderIcons();
+}
 
-    // Remove section
-    function removeSection(sectionId) {
-      const section = document.getElementById(sectionId);
-      if (section) section.remove();
-    }
+// Close view modal
+function closeViewModal() {
+  document.getElementById("viewBlogModal").classList.remove("show");
+}
 
-    // Open modal for adding
-    function openAddModal() {
-      document.getElementById("modalTitle").textContent = "Add New Blog";
-      document.getElementById("blogForm").reset();
-      document.getElementById("blogId").value = "";
-      document.getElementById("contentSections").innerHTML = "";
-      sectionCounter = 0;
-      addContentSection(); // Add one default section
-      document.getElementById("errorMessage").classList.remove("show");
-      document.getElementById("blogModal").classList.add("show");
-      renderIcons();
-    }
+// Add content section
+function addContentSection(heading = '', text = '') {
+  const container = document.getElementById("contentSections");
+  const sectionId = `section-${sectionCounter++}`;
+  
+  const sectionDiv = document.createElement('div');
+  sectionDiv.className = 'content-section';
+  sectionDiv.id = sectionId;
+  sectionDiv.style.cssText = 'padding: 16px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;';
+  
+  sectionDiv.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <strong style="color: #111827;">Section ${sectionCounter}</strong>
+      <button type="button" onclick="removeSection('${sectionId}')" style="padding: 4px 8px; background: #ef4444; font-size: 12px;">
+        <i data-lucide="x"></i>Remove
+      </button>
+    </div>
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label>Heading (optional)</label>
+      <input type="text" class="section-heading" placeholder="Section heading" value="${heading}" />
+    </div>
+    <div class="form-group">
+      <label>Text <span class="required">*</span></label>
+      <textarea class="section-text" placeholder="Section content" rows="4" required>${text}</textarea>
+    </div>
+  `;
+  
+  container.appendChild(sectionDiv);
+  renderIcons();
+}
 
-    // Open modal for editing
-    function openEditModal(blog) {
-      document.getElementById("modalTitle").textContent = "Edit Blog";
-      document.getElementById("blogId").value = blog.id;
-      document.getElementById("blogTitle").value = blog.title;
-      document.getElementById("blogDate").value = blog.date;
-      document.getElementById("blogImage").value = blog.image || '';
-      document.getElementById("blogStatus").value = blog.status || 'published';
-      
-      // Load content sections
-      document.getElementById("contentSections").innerHTML = "";
-      sectionCounter = 0;
-      if (blog.content && blog.content.length > 0) {
-        blog.content.forEach(section => {
-          addContentSection(section.heading || '', section.text || '');
-        });
-      } else {
-        addContentSection();
+// Remove section
+function removeSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (section) section.remove();
+}
+
+// Open modal for adding
+function openAddModal() {
+  document.getElementById("modalTitle").textContent = "Add New Blog";
+  document.getElementById("blogForm").reset();
+  document.getElementById("blogId").value = "";
+  document.getElementById("contentSections").innerHTML = "";
+  sectionCounter = 0;
+  addContentSection(); // Add one default section
+  document.getElementById("errorMessage").classList.remove("show");
+  document.getElementById("blogModal").classList.add("show");
+  renderIcons();
+}
+
+// Open modal for editing
+function openEditModal(blog) {
+  document.getElementById("modalTitle").textContent = "Edit Blog";
+  document.getElementById("blogId").value = blog.id;
+  document.getElementById("blogTitle").value = blog.title;
+  document.getElementById("blogDate").value = blog.date;
+  document.getElementById("blogImage").value = blog.image || '';
+  document.getElementById("blogStatus").value = blog.status || 'published';
+  
+  // Load content sections
+  document.getElementById("contentSections").innerHTML = "";
+  sectionCounter = 0;
+  if (blog.content && blog.content.length > 0) {
+    blog.content.forEach(section => {
+      addContentSection(section.heading || '', section.text || '');
+    });
+  } else {
+    addContentSection();
+  }
+  
+  document.getElementById("errorMessage").classList.remove("show");
+  document.getElementById("blogModal").classList.add("show");
+  renderIcons();
+}
+
+// Close modal
+function closeModal() {
+  document.getElementById("blogModal").classList.remove("show");
+}
+
+// ✅ SAVE BLOG - SỬ DỤNG DATAMANAGER
+function saveBlog() {
+  const id = document.getElementById("blogId").value;
+  const title = document.getElementById("blogTitle").value.trim();
+  const date = document.getElementById("blogDate").value.trim();
+  const image = document.getElementById("blogImage").value.trim();
+  const status = document.getElementById("blogStatus").value;
+
+  if (!title || !date) {
+    showError("Please fill in all required fields!");
+    return;
+  }
+
+  // Collect content sections
+  const sections = [];
+  const sectionElements = document.querySelectorAll('.content-section');
+  sectionElements.forEach(section => {
+    const heading = section.querySelector('.section-heading').value.trim();
+    const text = section.querySelector('.section-text').value.trim();
+    if (text) {
+      const sectionObj = { text };
+      if (heading) sectionObj.heading = heading;
+      sections.push(sectionObj);
+    }
+  });
+
+  if (sections.length === 0) {
+    showError("Please add at least one content section!");
+    return;
+  }
+
+  try {
+    console.log('💾 Saving blog...');
+    
+    // Lấy dữ liệu hiện tại
+    let blogsData = window.DataManager.getBlogs() || [];
+    
+    if (id) {
+      // Edit existing
+      const index = blogsData.findIndex(b => b.id === parseInt(id));
+      if (index !== -1) {
+        blogsData[index] = {
+          ...blogsData[index],
+          title,
+          date,
+          image: image || blogsData[index].image,
+          status,
+          content: sections
+        };
       }
-      
-      document.getElementById("errorMessage").classList.remove("show");
-      document.getElementById("blogModal").classList.add("show");
-      renderIcons();
-    }
-
-    // Close modal
-    function closeModal() {
-      document.getElementById("blogModal").classList.remove("show");
-    }
-
-    // Save blog
-    function saveBlog() {
-      const id = document.getElementById("blogId").value;
-      const title = document.getElementById("blogTitle").value.trim();
-      const date = document.getElementById("blogDate").value.trim();
-      const image = document.getElementById("blogImage").value.trim();
-      const status = document.getElementById("blogStatus").value;
-
-      if (!title || !date) {
-        showError("Please fill in all required fields!");
-        return;
-      }
-
-      // Collect content sections
-      const sections = [];
-      const sectionElements = document.querySelectorAll('.content-section');
-      sectionElements.forEach(section => {
-        const heading = section.querySelector('.section-heading').value.trim();
-        const text = section.querySelector('.section-text').value.trim();
-        if (text) {
-          const sectionObj = { text };
-          if (heading) sectionObj.heading = heading;
-          sections.push(sectionObj);
-        }
+    } else {
+      // Add new
+      const newId = blogsData.length > 0 ? Math.max(...blogsData.map(b => b.id)) + 1 : 1;
+      blogsData.push({
+        id: newId,
+        title,
+        date,
+        image: image || "36d4873da38afe804bb9f98407500327ca28985b.png",
+        status,
+        content: sections
       });
-
-      if (sections.length === 0) {
-        showError("Please add at least one content section!");
-        return;
-      }
-
-      try {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        
-        if (id) {
-          // Edit existing
-          const index = storedData.findIndex(b => b.id === parseInt(id));
-          if (index !== -1) {
-            storedData[index] = {
-              ...storedData[index],
-              title,
-              date,
-              image: image || storedData[index].image,
-              status,
-              content: sections
-            };
-          }
-        } else {
-          // Add new
-          const newId = storedData.length > 0 ? Math.max(...storedData.map(b => b.id)) + 1 : 1;
-          storedData.push({
-            id: newId,
-            title,
-            date,
-            image: image || "36d4873da38afe804bb9f98407500327ca28985b.png",
-            status,
-            content: sections
-          });
-        }
-
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData));
-        closeModal();
-        loadBlogs();
-        alert(id ? "Blog updated successfully!" : "Blog added successfully!");
-      } catch (error) {
-        console.error("Error saving blog:", error);
-        showError("Failed to save blog!");
-      }
     }
 
-    // Delete blog
-    function deleteBlog(blogId) {
-      if (!confirm("Are you sure you want to delete this blog?")) return;
+    // Lưu vào DataManager
+    window.DataManager.saveBlogs(blogsData);
+    
+    closeModal();
+    loadBlogs();
+    alert(id ? "Blog updated successfully!" : "Blog added successfully!");
+    
+    console.log('✅ Blog saved successfully');
+  } catch (error) {
+    console.error("❌ Error saving blog:", error);
+    showError("Failed to save blog!");
+  }
+}
 
-      try {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        const filteredData = storedData.filter(b => b.id !== blogId);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredData));
-        loadBlogs();
-        alert("Blog deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting blog:", error);
-        alert("Failed to delete blog!");
-      }
-    }
+// ✅ DELETE BLOG - SỬ DỤNG DATAMANAGER
+function deleteBlog(blogId) {
+  if (!confirm("Are you sure you want to delete this blog?")) return;
 
-    // Show error message
-    function showError(message) {
-      const errorEl = document.getElementById("errorMessage");
-      errorEl.textContent = message;
-      errorEl.classList.add("show");
-      setTimeout(() => errorEl.classList.remove("show"), 3000);
-    }
+  try {
+    console.log('🗑️ Deleting blog:', blogId);
+    
+    // Lấy dữ liệu hiện tại
+    let blogsData = window.DataManager.getBlogs() || [];
+    
+    // Xóa blog
+    blogsData = blogsData.filter(b => b.id !== blogId);
+    
+    // Lưu vào DataManager
+    window.DataManager.saveBlogs(blogsData);
+    
+    loadBlogs();
+    alert("Blog deleted successfully!");
+    
+    console.log('✅ Blog deleted successfully');
+  } catch (error) {
+    console.error("❌ Error deleting blog:", error);
+    alert("Failed to delete blog!");
+  }
+}
 
-    // Event listeners
-    document.getElementById("searchInput").addEventListener("input", handleFilterChange);
-    document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
-    document.getElementById("addBlogBtn").addEventListener("click", openAddModal);
+// Show error message
+function showError(message) {
+  const errorEl = document.getElementById("errorMessage");
+  errorEl.textContent = message;
+  errorEl.classList.add("show");
+  setTimeout(() => errorEl.classList.remove("show"), 3000);
+}
 
-    // Close modals on outside click
-    document.getElementById("blogModal").addEventListener("click", (e) => {
-      if (e.target.id === "blogModal") closeModal();
-    });
-    document.getElementById("viewBlogModal").addEventListener("click", (e) => {
-      if (e.target.id === "viewBlogModal") closeViewModal();
-    });
+// ✅ EVENT LISTENERS
+document.getElementById("searchInput").addEventListener("input", handleFilterChange);
+document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
+document.getElementById("addBlogBtn").addEventListener("click", openAddModal);
 
-    // Initialize
-    window.addEventListener("DOMContentLoaded", () => {
-      // Check admin authentication
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
-      const userRole = localStorage.getItem("userRole");
+// Close modals on outside click
+document.getElementById("blogModal").addEventListener("click", (e) => {
+  if (e.target.id === "blogModal") closeModal();
+});
+document.getElementById("viewBlogModal").addEventListener("click", (e) => {
+  if (e.target.id === "viewBlogModal") closeViewModal();
+});
 
-      if (!isLoggedIn || userRole !== "administrator") {
-        alert("Please login as administrator to access this page.");
-        window.location.href = "../pages/00_LOGIN.html";
-        return;
-      }
-
-      const userName = localStorage.getItem("userName");
-      if (userName) {
-        const userNameElement = document.querySelector(".user-name");
-        if (userNameElement) userNameElement.textContent = userName;
-      }
-
-      initializeBlogData();
-      loadBlogs();
-      renderIcons();
-    });
+// ✅ INITIALIZATION
+window.addEventListener("DOMContentLoaded", () => {
+  console.log('🚀 Initializing blogs page...');
+  
+  loadBlogs();
+  renderIcons();
+  
+  console.log('✅ Blogs page initialized');
+});
   </script>
 </body>
 </html>

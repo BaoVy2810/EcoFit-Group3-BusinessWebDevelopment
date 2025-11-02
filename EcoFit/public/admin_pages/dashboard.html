@@ -11,24 +11,30 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Recharts via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+
+      <script src="./dataManager.js"></script>
+      <script src="./script.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-  // Toggle Sidebar
-  const menuToggle = document.querySelector('.menu-toggle');
-  const sidebar = document.querySelector('.sidebar');
-  const mainContent = document.querySelector('.main-content');
+      // Toggle Sidebar
+      const menuToggle = document.querySelector('.menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main-content');
 
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('expanded');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          mainContent.classList.toggle('expanded');
+        });
+      }
+
     });
-  }
-
-});
   </script>
 </head>
 
@@ -54,16 +60,18 @@
         <button class="menu-item" onclick="location.href='products.html'">
           <i data-lucide="package"></i><span>Products</span>
         </button>
-        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order Lists</span></button>
+        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order
+            Lists</span></button>
 
         <div class="pages-divider">
           <p>PAGES</p>
         </div>
-
-        <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
-        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
-        <button class="menu-item" onclick="location.href='to-do.html'"><i data-lucide="check-square"></i><span>To-Do</span></button>
-
+        <button class="menu-item" onclick="location.href='promotions.html'"><i
+            data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i
+            data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item" onclick="location.href='to-do.html'"><i
+            data-lucide="check-square"></i><span>To-Do</span></button>
       </nav>
     </aside>
 
@@ -78,10 +86,13 @@
           <button class="notification-btn">
             <i data-lucide="bell"></i><span class="notification-dot"></span>
           </button>
+          <button class="logout-btn" onclick="handleLogout()">
+            <i data-lucide="log-out"></i>
+          </button>
           <div class="user-profile">
             <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
+              <p class="user-name"></p>
+              <p class="user-role">Administrator</p>
             </div>
             <img src="../images/admin.png" alt="Admin" />
           </div>
@@ -184,217 +195,345 @@
   </div>
 
   <script>
-    async function loadDashboardData() {
-      try {
+// ✅ LOAD DASHBOARD DATA TỪ DATAMANAGER
+async function loadDashboardData() {
+  try {
+    console.log('📊 Loading dashboard data from DataManager...');
 
-        // lấy đường dẫn đến dataset
-        const profileURL = "../../dataset/accounts.json";
-        const ordersURL = "../../dataset/orders.json";
+    // Lấy dữ liệu từ DataManager
+    const profiles = window.DataManager.getData('accounts');
+    const ordersData = window.DataManager.getData('orders');
 
-        // Đọc dữ liệu JSON song song
-        const [profileRes, orderRes] = await Promise.all([
-          fetch(profileURL),
-          fetch(ordersURL),
-        ]);
-
-        const profiles = await profileRes.json();
-        const orders = await orderRes.json();
-
-        // ---- Tính toán dữ liệu cơ bản ----
-        thisMonth = new Date().getMonth();
-        const totalUsers = profiles.profile ? profiles.profile.length : 0;
-        const totalOrders = orders.orders.filter(order => new Date(order.order_date).getMonth() === thisMonth).length;
-
-        // ---- Cập nhật vào giao diện ----
-        document.getElementById("total-user").textContent = totalUsers.toLocaleString();
-        document.getElementById("total-order").textContent = totalOrders.toLocaleString();
-
-        // ---- Tính growth số đơn hàng theo tháng ----
-        applyMonthlyGrowth(
-          "order",
-          orders.orders,
-          "order_date",
-          order => order.status === "Completed"
-        );
-
-        // ---- Tính growth doanh thu theo tháng ----
-        const completedOrders = orders.orders.filter(o => o.status === "Completed");
-
-        const now = new Date();
-        const currentMonth = now.getMonth();
-        const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        const currentYear = now.getFullYear();
-
-        // Tổng doanh thu tháng hiện tại
-        const currentSales = completedOrders
-          .filter(o => {
-            const d = new Date(o.order_date);
-            return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-          })
-          .reduce((sum, o) => sum + o.items.reduce((acc, i) => acc + i.quantity * i.unit_price, 0), 0);
-
-        // Tổng doanh thu tháng trước
-        const previousSales = completedOrders
-          .filter(o => {
-            const d = new Date(o.order_date);
-            const prevYear = previousMonth === 11 ? currentYear - 1 : currentYear;
-            return d.getMonth() === previousMonth && d.getFullYear() === prevYear;
-          })
-          .reduce((sum, o) => sum + o.items.reduce((acc, i) => acc + i.quantity * i.unit_price, 0), 0);
-
-        // Hiển thị tổng doanh thu
-        document.getElementById("total-sales").textContent = "$" + currentSales.toLocaleString();
-
-        // Chuẩn bị mảng dữ liệu cho applyMonthlyGrowth
-        const salesData = [
-          { value: currentSales, month: currentMonth },
-          { value: previousSales, month: previousMonth }
-        ];
-
-        // Gọi hàm cập nhật growth cho doanh thu
-        applyMonthlyGrowth("sales", salesData, "value");
-
-      } catch (error) {
-        console.error("Lỗi khi tải dữ liệu dashboard:", error);
-      }
+    if (!profiles || !ordersData) {
+      console.error('❌ Required data not found');
+      return;
     }
 
-    // Gọi hàm khi load trang
-    window.addEventListener('DOMContentLoaded', () => {
-      loadDashboardData();
-      if (typeof lucide !== "undefined" && lucide.createIcons) lucide.createIcons(); // vẽ lại icon 
-    });
-  </script>
+    const orders = ordersData.orders;
+    const thisMonth = new Date().getMonth();
+    
+    // Tính toán dữ liệu cơ bản
+    const totalUsers = profiles.profile ? profiles.profile.length : 0;
+    const totalOrders = orders.filter(order => new Date(order.order_date).getMonth() === thisMonth).length;
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    const monthSelect = document.getElementById('monthSelect');
-    let salesChart;
-    let currentMonth = monthSelect.value;
+    console.log('✅ Dashboard stats calculated');
+    console.log(`- Total users: ${totalUsers}`);
+    console.log(`- Orders this month: ${totalOrders}`);
 
-    // Hàm load và tính tổng doanh thu theo tuần trong tháng
-    async function loadMonthlySales(monthName) {
-      const response = await fetch('../../dataset/orders.json');
-      const data = await response.json();
-      const orders = data.orders;
+    // Cập nhật vào giao diện
+    document.getElementById("total-user").textContent = totalUsers.toLocaleString();
+    document.getElementById("total-order").textContent = totalOrders.toLocaleString();
 
-      // Tạo map tháng → số (để lọc dữ liệu theo order_date)
-      const monthMap = {
-        January: 1, February: 2, March: 3, April: 4,
-        May: 5, June: 6, July: 7, August: 8,
-        September: 9, October: 10, November: 11, December: 12
-      };
+    // Tính growth số đơn hàng theo tháng
+    if (typeof applyMonthlyGrowth === "function") {
+      applyMonthlyGrowth(
+        "order",
+        orders,
+        "order_date",
+        order => order.status === "Completed"
+      );
+    }
 
-      const selectedMonth = monthMap[monthName];
-      const currentYear = new Date().getFullYear();
+    // Tính growth doanh thu theo tháng
+    const completedOrders = orders.filter(o => o.status === "Completed");
 
-      // Lọc các đơn hàng của tháng đã chọn
-      const filteredOrders = orders.filter(o => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const currentYear = now.getFullYear();
+
+    // Tổng doanh thu tháng hiện tại
+    const currentSales = completedOrders
+      .filter(o => {
         const d = new Date(o.order_date);
-        return d.getMonth() + 1 === selectedMonth && d.getFullYear() === currentYear;
-      });
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      })
+      .reduce((sum, o) => sum + o.items.reduce((acc, i) => acc + i.quantity * i.unit_price, 0), 0);
 
-      // Chia doanh thu theo tuần trong tháng
-      const weeklyRevenue = [0, 0, 0, 0];
-      filteredOrders.forEach(o => {
-        const day = new Date(o.order_date).getDate();
-        const weekIndex = Math.min(Math.floor((day - 1) / 7), 3);
-        if (o.status === "Completed") {
-          weeklyRevenue[weekIndex] += o.total_amount;
-        }
-      });
+    // Tổng doanh thu tháng trước
+    const previousSales = completedOrders
+      .filter(o => {
+        const d = new Date(o.order_date);
+        const prevYear = previousMonth === 11 ? currentYear - 1 : currentYear;
+        return d.getMonth() === previousMonth && d.getFullYear() === prevYear;
+      })
+      .reduce((sum, o) => sum + o.items.reduce((acc, i) => acc + i.quantity * i.unit_price, 0), 0);
 
-      return weeklyRevenue;
+    // Hiển thị tổng doanh thu
+    document.getElementById("total-sales").textContent = "$" + currentSales.toLocaleString();
+
+    console.log(`✅ Current month revenue: $${currentSales.toLocaleString()}`);
+    console.log(`✅ Previous month revenue: $${previousSales.toLocaleString()}`);
+
+    // Chuẩn bị mảng dữ liệu cho applyMonthlyGrowth
+    const salesData = [
+      { value: currentSales, month: currentMonth },
+      { value: previousSales, month: previousMonth }
+    ];
+
+    // Gọi hàm cập nhật growth cho doanh thu
+    if (typeof applyMonthlyGrowth === "function") {
+      applyMonthlyGrowth("sales", salesData, "value");
     }
 
-    // Hàm tạo chart
-    function createChart(month, weeklyRevenue) {
-      return new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-          datasets: [{
-            label: `Revenue in ${month}`,
-            data: weeklyRevenue,
-            borderColor: 'rgba(61,165,71,100)',
-            backgroundColor: 'rgba(61,165,71,0.1)',
-            fill: true,
-            tension: 0.4,
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            pointBackgroundColor: 'rgba(61,165,71,100)'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              mode: 'index',
-              intersect: false,
-              callbacks: {
-                label: context => 'Revenue: $' + context.parsed.y.toLocaleString()
-              }
-            }
-          },
-          scales: {
-            x: { grid: { display: false } },
-            y: {
-              grid: { color: 'rgba(200,200,200,0.1)' },
-              ticks: { callback: value => '$' + value.toLocaleString() }
-            }
+    console.log('✅ Dashboard data loaded successfully');
+
+  } catch (error) {
+    console.error("❌ Error loading dashboard data:", error);
+  }
+}
+
+// ✅ LOAD VÀ RENDER SALES CHART TỪ DATAMANAGER
+const ctx = document.getElementById('salesChart').getContext('2d');
+const monthSelect = document.getElementById('monthSelect');
+let salesChart;
+let currentMonth = monthSelect.value;
+
+// Hàm load và tính tổng doanh thu theo tuần trong tháng
+async function loadMonthlySales(monthName) {
+  console.log(`📈 Loading sales data for ${monthName}...`);
+  
+  // Lấy dữ liệu từ DataManager
+  const ordersData = window.DataManager.getData('orders');
+  if (!ordersData) {
+    console.error('❌ Orders data not found');
+    return [0, 0, 0, 0];
+  }
+
+  const orders = ordersData.orders;
+
+  // Tạo map tháng → số (để lọc dữ liệu theo order_date)
+  const monthMap = {
+    January: 1, February: 2, March: 3, April: 4,
+    May: 5, June: 6, July: 7, August: 8,
+    September: 9, October: 10, November: 11, December: 12
+  };
+
+  const selectedMonth = monthMap[monthName];
+  const currentYear = new Date().getFullYear();
+
+  // Lọc các đơn hàng của tháng đã chọn
+  const filteredOrders = orders.filter(o => {
+    const d = new Date(o.order_date);
+    return d.getMonth() + 1 === selectedMonth && d.getFullYear() === currentYear;
+  });
+
+  console.log(`✅ Found ${filteredOrders.length} orders for ${monthName}`);
+
+  // Chia doanh thu theo tuần trong tháng
+  const weeklyRevenue = [0, 0, 0, 0];
+  filteredOrders.forEach(o => {
+    const day = new Date(o.order_date).getDate();
+    const weekIndex = Math.min(Math.floor((day - 1) / 7), 3);
+    if (o.status === "Completed") {
+      weeklyRevenue[weekIndex] += o.total_amount;
+    }
+  });
+
+  console.log('✅ Weekly revenue calculated:', weeklyRevenue);
+  return weeklyRevenue;
+}
+
+// Hàm tạo chart
+function createChart(month, weeklyRevenue) {
+  return new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+      datasets: [{
+        label: `Revenue in ${month}`,
+        data: weeklyRevenue,
+        borderColor: 'rgba(61,165,71,100)',
+        backgroundColor: 'rgba(61,165,71,0.1)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: 'rgba(61,165,71,100)'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            label: context => 'Revenue: $' + context.parsed.y.toLocaleString()
           }
         }
-      });
-    }
-
-    // Khởi tạo chart mặc định theo tháng đang chọn
-    async function initChart() {
-      const monthlyRevenue = await loadMonthlySales(currentMonth);
-      salesChart = createChart(currentMonth, monthlyRevenue);
-    }
-
-    // Chỉ cập nhật khi chọn tháng mới
-    monthSelect.addEventListener('change', async () => {
-      const newMonth = monthSelect.value;
-      if (newMonth !== currentMonth) {
-        currentMonth = newMonth;
-        const monthlyRevenue = await loadMonthlySales(newMonth);
-        salesChart.destroy();
-        salesChart = createChart(newMonth, monthlyRevenue);
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          grid: { color: 'rgba(200,200,200,0.1)' },
+          ticks: { callback: value => '$' + value.toLocaleString() }
+        }
       }
-    });
+    }
+  });
+}
 
-    // Load chart đầu tiên
-    initChart();
+// Khởi tạo chart mặc định theo tháng đang chọn
+async function initChart() {
+  console.log('📊 Initializing sales chart...');
+  const monthlyRevenue = await loadMonthlySales(currentMonth);
+  salesChart = createChart(currentMonth, monthlyRevenue);
+  console.log('✅ Sales chart initialized');
+}
 
-    // Check authentication and display user info
-window.addEventListener("DOMContentLoaded", () => {
-  // Check if user is logged in
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const userRole = localStorage.getItem("userRole");
+// Chỉ cập nhật khi chọn tháng mới
+monthSelect.addEventListener('change', async () => {
+  const newMonth = monthSelect.value;
+  if (newMonth !== currentMonth) {
+    console.log(`🔄 Changing chart to ${newMonth}...`);
+    currentMonth = newMonth;
+    const monthlyRevenue = await loadMonthlySales(newMonth);
+    salesChart.destroy();
+    salesChart = createChart(newMonth, monthlyRevenue);
+    console.log('✅ Chart updated');
+  }
+});
 
-  if (!isLoggedIn || userRole !== "administrator") {
-    // Redirect to login if not authenticated or not admin
-    alert("Please login as administrator to access this page.");
-    window.location.href = "../pages/00_LOGIN.html";
+// ✅ INITIALIZATION
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('🚀 Initializing dashboard...');
+  
+  // Load dashboard data
+  loadDashboardData();
+  
+  // Initialize chart
+  initChart();
+  
+  // Initialize Lucide icons
+  if (typeof lucide !== "undefined" && lucide.createIcons) {
+    lucide.createIcons();
+  }
+
+  console.log('✅ Dashboard initialized');
+});
+  </script>
+
+  <script>
+/**
+ * =============================================
+ * DASHBOARD AUTO DATA LOADER
+ * =============================================
+ * Mục tiêu:
+ * - Tự động load toàn bộ JSON data bằng DataManager
+ * - Dùng cache LocalStorage nếu đã load trước đó
+ * - Chỉ dùng DataManager, không ràng buộc login
+ */
+
+async function initDashboard() {
+  console.log('🚀 Initializing Dashboard...');
+
+  // Đảm bảo DataManager tồn tại
+  if (!window.DataManager) {
+    console.error('❌ DataManager not found! Check script import order.');
     return;
   }
 
-  // Display admin name
-  const userName = localStorage.getItem("userName");
-  if (userName) {
-    const userNameElement = document.querySelector(".user-name");
-    if (userNameElement) {
-      userNameElement.textContent = userName;
+  // 1️⃣ Kiểm tra nếu data chưa được load
+  if (!DataManager.isDataLoaded()) {
+    console.log('📦 Data not loaded yet → Loading all JSON data...');
+    const success = await DataManager.loadAllData();
+    if (!success) {
+      alert('❌ Failed to load data from JSON files. Please check console.');
+      return;
     }
+  } else {
+    console.log('✅ Data already cached in localStorage');
   }
-});
-  </script>
-  <script src="script.js"></script>
-  
+
+  // 2️⃣ Lấy dữ liệu sau khi load
+  const accounts = DataManager.getAccounts();
+  const products = DataManager.getProducts();
+  const orders = DataManager.getOrders();
+  const blogs = DataManager.getBlogs();
+  const promotions = DataManager.getPromotions();
+
+  console.log('📊 Loaded datasets:', {
+    accounts: accounts?.length,
+    products: products?.length,
+    orders: orders?.length,
+    blogs: blogs?.length,
+    promotions: promotions?.length,
+  });
+
+  // 3️⃣ Render dashboard UI
+  renderDashboardStats({ accounts, products, orders });
+  initCharts({ orders });
+
+  // 4️⃣ Render icons (Lucide)
+  if (typeof lucide !== "undefined" && lucide.createIcons) {
+    lucide.createIcons();
+  }
+
+  console.log('✅ Dashboard ready!');
+}
+
+/**
+ * Render thống kê tổng quan
+ */
+function renderDashboardStats({ accounts, products, orders }) {
+  const userCountEl = document.getElementById('total-user');
+  const orderCountEl = document.getElementById('total-order');
+  const salesEl = document.getElementById('total-sales');
+
+  if (userCountEl) userCountEl.textContent = accounts.length.toLocaleString();
+  if (orderCountEl) orderCountEl.textContent = orders.length.toLocaleString();
+  if (salesEl) salesEl.textContent = "$" + orders
+    .filter(o => o.status === "Completed")
+    .reduce((sum, o) => sum + (o.total_amount || 0), 0)
+    .toLocaleString();
+}
+
+
+/**
+ * Render biểu đồ
+ */
+function initCharts({ orders }) {
+  if (typeof Chart === "undefined") {
+    console.warn("⚠️ Chart.js not loaded. Skipping chart rendering.");
+    return;
+  }
+
+  const ctx = document.getElementById("orderChart");
+  if (!ctx) return;
+
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const orderCounts = months.map((m) =>
+    orders.filter((o) => new Date(o.order_date).getMonth() + 1 === m).length
+  );
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: months.map((m) => `Tháng ${m}`),
+      datasets: [
+        {
+          label: "Số đơn hàng",
+          data: orderCounts,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: "Thống kê đơn hàng theo tháng" },
+      },
+    },
+  });
+}
+
+window.addEventListener("DOMContentLoaded", initDashboard);
+</script>
+
+
 </body>
 
 </html>

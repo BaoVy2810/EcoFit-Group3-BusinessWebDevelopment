@@ -9,289 +9,12 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    .todo-container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+      <script src="./dataManager.js"></script>
+      <script src="./script.js"></script>
 
-    .todo-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-
-    .todo-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .todo-item {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      transition: all 0.2s;
-      border: 2px solid transparent;
-    }
-
-    .todo-item:hover {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .todo-item.completed {
-      background: linear-gradient(135deg, #69bd76, #3da547);
-      color: white;
-    }
-
-    .todo-checkbox {
-      width: 24px;
-      height: 24px;
-      border: 2px solid #d1d5db;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
-
-    .todo-item.completed .todo-checkbox {
-      background: white;
-      border-color: white;
-      color:black;
-    }
-
-    .todo-checkbox:hover {
-      border-color:linear-gradient(135deg, #69bd76, #3da547);;
-    }
-
-    .todo-content {
-      flex: 1;
-      font-size: 16px;
-      color: #111827;
-    }
-
-    .todo-item.completed .todo-content {
-      color: white;
-      text-decoration: line-through;
-      opacity: 0.9;
-    }
-
-    .todo-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .star-btn {
-      padding: 8px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      color: #d1d5db;
-    }
-
-    .star-btn:hover {
-      background: #f3f4f6;
-    }
-
-    .todo-item.completed .star-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .star-btn.starred {
-      color: #fbbf24;
-    }
-
-    .star-btn i {
-      width: 20px;
-      height: 20px;
-    }
-
-    .delete-btn {
-      padding: 8px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      color: #9ca3af;
-    }
-
-    .delete-btn:hover {
-      background: #fef2f2;
-      color: #ef4444;
-    }
-
-    .todo-item.completed .delete-btn {
-      color: white;
-    }
-
-    .todo-item.completed .delete-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .delete-btn i {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      animation: fadeIn 0.2s;
-    }
-
-    .modal.show {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 16px;
-      padding: 32px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-      animation: slideUp 0.3s;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid #e5e7eb;
-    }
-
-    .modal-header h3 {
-      font-size: 24px;
-      font-weight: bold;
-      color: #111827;
-      margin: 0;
-    }
-
-    .close-modal {
-      padding: 8px;
-      border: none;
-      background: #f3f4f6;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-
-    .close-modal:hover {
-      background: #e5e7eb;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 8px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      font-size: 14px;
-      color: #111827;
-      transition: all 0.2s;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: linear-gradient(135deg, #69bd76, #3da547);;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      margin-top: 24px;
-    }
-
-
-    .btn-cancel {
-      padding: 12px 24px;
-      background: #f3f4f6;
-      color: #374151;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-cancel:hover {
-      background: #e5e7eb;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #9ca3af;
-    }
-
-    .empty-state i {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-
-    .empty-state p {
-      font-size: 18px;
-      font-weight: 500;
-    }
-  </style>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const menuToggle = document.querySelector('.menu-toggle');
@@ -347,6 +70,7 @@
       </nav>
     </aside>
 
+
     <!-- Main Content -->
     <div class="main-content">
       <header class="header">
@@ -358,10 +82,13 @@
           <button class="notification-btn">
             <i data-lucide="bell"></i><span class="notification-dot"></span>
           </button>
+          <button class="logout-btn" onclick="handleLogout()">
+            <i data-lucide="log-out"></i>
+          </button>
           <div class="user-profile">
             <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
+              <p class="user-name"></p>
+              <p class="user-role">Administrator</p>
             </div>
             <img src="../images/admin.png" alt="Admin" />
           </div>
