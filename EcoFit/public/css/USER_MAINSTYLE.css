@@ -2019,22 +2019,24 @@ h1 {
 /*05_SHOPPING_CART*/
 .cart-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  max-width: 1600px;
   margin: 60px auto;
   padding: 0 80px;
-  gap: 50px;
 }
 .cart-container {
-  display: grid;
-  grid-template-columns: 1fr 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 60px;
+  width: 100%;
+  max-width: 1400px;
 }
 .cart-left {
   border-radius: 20px;
   padding: 40px;
   flex: 2;
+  border: 2px solid #e5e5e5;
 }
 .cart-table {
   width: 100%;
@@ -2211,6 +2213,7 @@ h1 {
   height: max-content;
   align-items: flex-start;
   width: 380px;
+  flex-shrink: 0;
 }
 .order-summary,
 .order-detail,

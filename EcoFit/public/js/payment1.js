@@ -192,8 +192,8 @@ function loadPaymentData() {
       }
 
       if (statusBox) {
-        statusBox.style.borderColor = "white";
-        statusBox.style.background ="#3DA547";
+        statusBox.style.borderColor = "#3DA547";
+        statusBox.style.background ="#F0F8F0";
       }
 
       // Show success popup
