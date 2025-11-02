@@ -54,9 +54,7 @@
         <button class="menu-item" onclick="location.href='products.html'">
           <i data-lucide="package"></i><span>Products</span>
         </button>
-        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order
-            Lists</span></button>
-        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
+        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order Lists</span></button>
 
         <div class="pages-divider">
           <p>PAGES</p>
@@ -64,7 +62,7 @@
 
         <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
         <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
-        <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
+        <button class="menu-item" onclick="location.href='to-do.html'"><i data-lucide="check-square"></i><span>To-Do</span></button>
 
       </nav>
     </aside>
@@ -267,9 +265,8 @@
       if (typeof lucide !== "undefined" && lucide.createIcons) lucide.createIcons(); // vẽ lại icon 
     });
   </script>
-  </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> /*Load thư viện vẽ Chart của JS*/
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     const ctx = document.getElementById('salesChart').getContext('2d');
     const monthSelect = document.getElementById('monthSelect');
