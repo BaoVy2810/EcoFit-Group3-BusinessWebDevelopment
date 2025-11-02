@@ -71,34 +71,22 @@ function clearCart() {
   localStorage.removeItem('cart');
   updateCartBadge();
 }
-
-/**
- * Cập nhật badge số lượng giỏ hàng trên header
- */
 function updateCartBadge() {
   const cart = getCart();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   
-  // Cập nhật badge trong header iframe
   const headerFrame = document.getElementById('header-frame');
-  if (headerFrame && headerFrame.contentWindow) {
-    headerFrame.contentWindow.postMessage({
+  if (window.parent !== window) {
+    window.parent.postMessage({
       action: 'updateCartBadge',
       count: totalItems
     }, '*');
   }
 }
 
-/**
- * Format giá tiền
- */
 function formatPrice(amount) {
   return new Intl.NumberFormat('vi-VN').format(amount);
 }
-
-/**
- * Load cart từ storage và render
- */
 function loadCartFromStorage() {
   const cart = CartHandler.getCart();
   const cartContainer = document.getElementById('cart-items-container');
@@ -113,26 +101,35 @@ function loadCartFromStorage() {
   // Render cart items
   let cartHTML = '';
   cart.forEach((item, index) => {
-    // Sửa lỗi undefined product name - sử dụng name hoặc product_name
     const productName = item.name || item.product_name || 'Unknown Product';
+    const productId = item.product_id || 'P001'; // ✅ THÊM: Lấy product_id
     
     cartHTML += `
       <div class="cart-item">
         <div class="cart-item__left">
           <input type="checkbox" class="cart-checkbox" checked data-index="${index}">
-          <div class="cart-item__image">
-            <img 
-              src="${item.image || '../images/default-placeholder.png'}" 
-              alt="${productName}"
-              onerror="this.src='../images/default-placeholder.png'"
-            >
-          </div>
+          
+          <!-- ✅ THÊM: Link cho ảnh sản phẩm -->
+          <a href="../pages/04_PRODUCT_Detail.html?id=${productId}" class="cart-item__image-link">
+            <div class="cart-item__image">
+              <img 
+                src="${item.image || '../images/default-placeholder.png'}" 
+                alt="${productName}"
+                onerror="this.src='../images/default-placeholder.png'"
+              >
+            </div>
+          </a>
+          
           <div class="cart-item__info">
-            <h3 class="cart-item__name">${productName}</h3>
+            <!-- ✅ THÊM: Link cho tên sản phẩm -->
+            <a href="../pages/04_PRODUCT_Detail.html?id=${productId}" class="cart-item__name-link">
+              <h3 class="cart-item__name">${productName}</h3>
+            </a>
             <p class="cart-item__detail">Color: ${item.color}</p>
             <p class="cart-item__detail">Size: ${item.size}</p>
           </div>
         </div>
+        
         <div class="cart-item__quantity">
           <div class="quantity-control">
             <button class="qty-btn minus" data-index="${index}">−</button>
@@ -140,8 +137,8 @@ function loadCartFromStorage() {
             <button class="qty-btn plus" data-index="${index}">+</button>
           </div>
         </div>
+        
         <div class="cart-item__subtotal">
-          <!-- Sửa: Hiển thị đơn giá cố định thay vì subtotal thay đổi -->
           <span class="price">${formatPrice(item.price)}</span>
           <button class="remove-btn" data-index="${index}">×</button>
         </div>
@@ -158,9 +155,6 @@ function loadCartFromStorage() {
   updateCartTotal();
 }
 
-/**
- * Quantity controls
- */
 function attachQuantityControls() {
   document.querySelectorAll('.qty-btn.plus').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -186,16 +180,12 @@ function attachQuantityControls() {
         input.value = newValue;
         
         CartHandler.updateCartItemQuantity(index, newValue);
-        // ĐÃ XÓA: không còn updateItemSubtotal vì subtotal không thay đổi
         updateCartTotal();
       }
     });
   });
 }
 
-/**
- * Remove buttons
- */
 function attachRemoveButtons() {
   document.querySelectorAll('.remove-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -221,18 +211,12 @@ function attachRemoveButtons() {
   });
 }
 
-/**
- * Checkboxes
- */
 function attachCheckboxes() {
   document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
     checkbox.addEventListener('change', updateCartTotal);
   });
 }
 
-/**
- * Update cart total
- */
 function updateCartTotal() {
   const cartItems = document.querySelectorAll('.cart-item');
   const cart = CartHandler.getCart();
@@ -257,9 +241,6 @@ function updateCartTotal() {
   document.getElementById('total-amount').textContent = formatPrice(total);
 }
 
-/**
- * Show empty cart
- */
 function showEmptyCart() {
   const cartContainer = document.getElementById('cart-items-container');
   if (cartContainer) {
@@ -273,10 +254,6 @@ function showEmptyCart() {
   document.getElementById('subtotal-amount').textContent = '0';
   document.getElementById('total-amount').textContent = '0';
 }
-
-/**
- * Checkout validation
- */
 function attachCheckoutValidation() {
   const checkoutBtn = document.querySelector('.checkout-btn');
   if (checkoutBtn) {
@@ -289,7 +266,6 @@ function attachCheckoutValidation() {
         return;
       }
 
-      // Save selected items to checkout
       const cart = CartHandler.getCart();
       const cartData = [];
       
@@ -297,7 +273,6 @@ function attachCheckoutValidation() {
         const index = parseInt(checkbox.dataset.index);
         const item = cart[index];
         if (item) {
-          // Sửa lỗi undefined name trong checkout data
           const productName = item.name || item.product_name || 'Unknown Product';
           cartData.push({
             ...item,
@@ -311,17 +286,11 @@ function attachCheckoutValidation() {
   }
 }
 
-/**
- * Initialize cart page
- */
 function initializeCartPage() {
   loadCartFromStorage();
   attachCheckoutValidation();
 }
 
-/**
- * Export functions
- */
 if (typeof window !== 'undefined') {
   window.CartHandler = {
     getCart,
@@ -343,13 +312,20 @@ if (typeof window !== 'undefined') {
   };
 }
 
-// ==========================================
-// SHOPPING_CART.JS - Quản lý giỏ hàng
-// ==========================================
-
 document.addEventListener('DOMContentLoaded', function() {
-  // Khởi tạo trang giỏ hàng
   if (document.getElementById('cart-items-container')) {
     initializeCartPage();
+  }
+});
+window.addEventListener('DOMContentLoaded', function() {
+  updateCartBadge();
+});
+window.addEventListener('message', function(e) {
+  if (e.data.action === 'updateCartBadge') {
+    const badge = document.querySelector('a[href*="05_SHOPPING_CART"] .badge');
+    if (badge) {
+      badge.textContent = e.data.count;
+      badge.style.display = e.data.count > 0 ? 'inline-block' : 'none';
+    }
   }
 });

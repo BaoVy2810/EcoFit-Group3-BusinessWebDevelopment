@@ -926,7 +926,7 @@ function addToCart(productId, event) {
         
         cart.push({
             product_id: product.product_id,
-            product_name: product.product_name,
+            name: product.product_name,
             price: discountedPrice,
             original_price: product.price_original,
             quantity: quantity,
@@ -990,7 +990,7 @@ function updateCartCount() {
     const headerFrame = document.getElementById('header-frame');
     if (headerFrame && headerFrame.contentWindow) {
         headerFrame.contentWindow.postMessage({ 
-            action: 'updateCartCount', 
+            action: 'updateCartBadge',
             count: totalItems 
         }, '*');
     }

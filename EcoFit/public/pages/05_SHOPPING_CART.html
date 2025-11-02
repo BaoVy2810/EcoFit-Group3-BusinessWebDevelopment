@@ -36,15 +36,15 @@
                     <h2 class="order-summary__title">ORDER SUMMARY</h2>
                     <div class="order-summary__row">
                         <span>Subtotal Product</span>
-                        <span class="order-summary__value" id="subtotal-amount">150.000</span>
+                        <span class="order-summary__value" id="subtotal-amount">0</span>
                     </div>
                     <div class="order-summary__row">
                         <span>Shipping Cost</span>
-                        <span class="order-summary__value">30.000</span>
+                        <span class="order-summary__value"  id="shipping-cost">30.000</span>
                     </div>
                     <div class="order-summary__total">
                         <span>Total</span>
-                        <span class="total-value" id="total-amount">180.000</span>
+                        <span class="total-value" id="total-amount">0</span>
                     </div>
                     <a href="../pages/06_CHECKOUT.html" class="checkout-btn">
                         CHECKOUT →
@@ -70,7 +70,12 @@
         header.onload = () => {
             header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
         };
-
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            header.contentWindow.postMessage({ 
+                action: 'updateCartBadge', 
+                count: totalItems 
+            }, "*");
         // Load footer
         document.getElementById("footer-frame").src = "../template/footer.html";
     });

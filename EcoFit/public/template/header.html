@@ -121,7 +121,7 @@
                     <span
                         class="badge bg-dark text-white rounded-pill position-absolute top-0 start-100 translate-middle p-1"
                         style="font-size: 10px">
-                        8
+                        0
                     </span>
                 </a>
                 <!-- User -->
@@ -142,74 +142,84 @@
         </div>
         </div>
     </nav>
-
     <script>
-        // Lắng nghe message cập nhật cart badge
-        window.addEventListener('message', (e) => {
-            if (e.data.action === 'updateCartBadge') {
-                const badge = document.querySelector('#cart-button');
-                if (badge) {
-                    badge.textContent = e.data.count;
-                }
+    function updateCartBadgeInHeader() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        const cartBadge = document.querySelector('a[href*="05_SHOPPING_CART"] .badge');
+        
+        if (cartBadge) {
+            cartBadge.textContent = totalItems;
+            cartBadge.style.display = totalItems > 0 ? 'inline-block' : 'none';
+        }
+    }
+    window.addEventListener('message', (event) => {
+        if (!event.data) return;
+        
+        const { action, activeNav, count, query } = event.data;
+        
+        // ✅ Cập nhật cart badge khi nhận message
+        if (action === 'updateCartBadge') {
+            const cartBadge = document.querySelector('a[href*="05_SHOPPING_CART"] .badge');
+            if (cartBadge) {
+                cartBadge.textContent = count;
+                cartBadge.style.display = count > 0 ? 'inline-block' : 'none';
             }
-        });
-
-        // Load số lượng cart khi header được tải
-        window.addEventListener('DOMContentLoaded', () => {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const badge = document.querySelector('#cart-button');
-            if (badge) {
-                badge.textContent = totalItems;
-            }
-        });
-        // HANDLE SỰ KIỆN BẤM TRÊN MỤC LỤC 
-        window.addEventListener("message", (event) => {
-            const { activeNav } = event.data;
-            if (!activeNav) return;
-
+        }
+        
+        if (activeNav) {
             document.querySelectorAll(".nav-link").forEach(link => {
                 link.classList.remove("active");
             });
-
             const activeLink = document.getElementById(activeNav);
             if (activeLink) {
                 activeLink.classList.add("active");
             }
-        });
-
-        window.addEventListener("DOMContentLoaded", () => {
-            const currentPage = window.location.pathname.split("/").pop().toLowerCase();
-            document.querySelectorAll(".nav-link").forEach(link => {
-                const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
-                if (currentPage === targetPage) {
-                    link.classList.add("active");
-                }
-            });
-        });
-        window.addEventListener("DOMContentLoaded", () => {
-            // --- Xử lý các phần khác như activeNav, logout (đã có) ---
-
-            // 🟢 XỬ LÝ THANH TÌM KIẾM TOÀN HỆ THỐNG
-            const searchInput = document.querySelector('.form-control');
-            const searchIcon = document.querySelector('img[alt="Search Icon"]');
-
-            function handleSearch() {
-                const query = searchInput.value.trim();
-                if (query !== "") {
-                    // Gửi tin nhắn cho trang cha để chuyển hướng
-                    window.parent.postMessage({ action: "search", query }, "*");
-                }
+        }
+        
+        if (action === 'search' && query) {
+            console.log('Search query:', query);
+        }
+    });
+    window.addEventListener("DOMContentLoaded", () => {
+        updateCartBadgeInHeader();
+        
+        setInterval(updateCartBadgeInHeader, 2000);
+        
+        const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+        document.querySelectorAll(".nav-link").forEach(link => {
+            const targetPage = link.getAttribute("href").split("/").pop().toLowerCase();
+            if (currentPage === targetPage) {
+                link.classList.add("active");
             }
+        });
+        
+        const searchInput = document.querySelector('.form-control');
+        const searchIcon = document.querySelector('img[alt="Search Icon"]');
 
-            // Khi nhấn Enter
+        function handleSearch() {
+            const query = searchInput?.value.trim();
+            if (query) {
+                window.parent.postMessage({ action: "search", query }, "*");
+            }
+        }
+
+        if (searchInput) {
             searchInput.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") handleSearch();
             });
+        }
 
-            // Khi click icon search
+        if (searchIcon) {
             searchIcon.addEventListener("click", handleSearch);
-        });
+        }
+    });
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'cart') {
+            updateCartBadgeInHeader();
+        }
+    });
     </script>
     <script src="../js/search_bar.js"></script>
     <script src="../js/bell_notification.js"></script>
