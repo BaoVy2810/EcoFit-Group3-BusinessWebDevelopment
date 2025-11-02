@@ -1,364 +1,485 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Promotion Management - Admin Dashboard</title>
-  <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const menuToggle = document.querySelector('.menu-toggle');
-      const sidebar = document.querySelector('.sidebar');
-      const mainContent = document.querySelector('.main-content');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promotion Management - Admin Dashboard</title>
+    <link
+      rel="icon"
+      href="../images/ecofit_logo3.png"
+      sizes="32x32"
+      type="image/png"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const sidebar = document.querySelector(".sidebar");
+        const mainContent = document.querySelector(".main-content");
 
-      if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-          sidebar.classList.toggle('collapsed');
-          mainContent.classList.toggle('expanded');
-        });
-      }
-    });
-  </script>
-</head>
+        if (menuToggle) {
+          menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("collapsed");
+            mainContent.classList.toggle("expanded");
+          });
+        }
+      });
+    </script>
+  </head>
 
-<body>
-  <div class="dashboard-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
-        <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
-        <div>
-          <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
-          <p style="margin: 0; font-size: 16px;">Admin Panel</p>
-        </div>
-      </div>
-
-      <nav class="nav-menu">
-        <button class="menu-item" onclick="location.href='dashboard.html'">
-          <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
-        </button>
-        <button class="menu-item" onclick="location.href='accounts.html'">
-          <i data-lucide="square-user-round"></i><span>Accounts</span>
-        </button>
-        <button class="menu-item" onclick="location.href='products.html'">
-          <i data-lucide="package"></i><span>Products</span>
-        </button>
-        <button class="menu-item" onclick="location.href='orders.html'">
-          <i data-lucide="list"></i><span>Order Lists</span>
-        </button>
-        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
-
-        <div class="pages-divider"><p>PAGES</p></div>
-
-        <button class="menu-item active"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
-        <button class="menu-item"  onclick="location.href='blogs.html'"><i data-lucide="calendar"></i><span>Blogs</span></button>
-        <button class="menu-item"><i data-lucide="check-square"></i><span>To-Do</span></button>
-
-      </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="main-content">
-      <header class="header">
-        <div class="header-left">
-          <button class="menu-toggle"><i data-lucide="menu"></i></button>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 20px 0;
+          "
+        >
+          <div class="logo">
+            <img src="../images/EcoFit_logo_white.png" width="30" />
+          </div>
+          <div>
+            <h1 style="font-size: 28px; margin: 0">
+              Eco<span style="color: #3da547">Fit</span>
+            </h1>
+            <p style="margin: 0; font-size: 16px">Admin Panel</p>
+          </div>
         </div>
 
-        <div class="header-right">
-          <button class="notification-btn">
-            <i data-lucide="bell"></i><span class="notification-dot"></span>
+        <nav class="nav-menu">
+          <button class="menu-item" onclick="location.href='dashboard.html'">
+            <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
           </button>
-          <div class="user-profile">
-            <div class="user-info">
-              <p class="user-name">Moni Roy</p>
-              <p class="user-role">Admin</p>
-            </div>
-            <img src="../images/admin.png" alt="Admin" />
+          <button class="menu-item" onclick="location.href='accounts.html'">
+            <i data-lucide="square-user-round"></i><span>Accounts</span>
+          </button>
+          <button class="menu-item" onclick="location.href='products.html'">
+            <i data-lucide="package"></i><span>Products</span>
+          </button>
+          <button class="menu-item" onclick="location.href='orders.html'">
+            <i data-lucide="list"></i><span>Order Lists</span>
+          </button>
+
+          <div class="pages-divider"><p>PAGES</p></div>
+
+          <button
+            class="menu-item active"
+            onclick="location.href='promotions.html'"
+          >
+            <i data-lucide="gift"></i><span>Promotions</span>
+          </button>
+          <button class="menu-item" onclick="location.href='blogs.html'">
+            <i data-lucide="calendar"></i><span>Blogs</span>
+          </button>
+          <button class="menu-item" onclick="location.href='to-do.html'">
+            <i data-lucide="check-square"></i><span>To-Do</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <header class="header">
+          <div class="header-left">
+            <button class="menu-toggle"><i data-lucide="menu"></i></button>
           </div>
+
+          <div class="header-right">
+            <button class="notification-btn">
+              <i data-lucide="bell"></i><span class="notification-dot"></span>
+            </button>
+            <div class="user-profile">
+              <div class="user-info">
+                <p class="user-name">Moni Roy</p>
+                <p class="user-role">Admin</p>
+              </div>
+              <img src="../images/admin.png" alt="Admin" />
+            </div>
+          </div>
+        </header>
+
+        <!-- Promotion Management -->
+        <main class="content">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 32px;
+            "
+          >
+            <h2 class="page-title" style="margin-bottom: 0">
+              Promotion Management
+            </h2>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid" style="margin-bottom: 32px">
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-info">
+                  <p class="stat-label">Total Promotions</p>
+                  <h3 class="stat-value" id="total-promotions">--</h3>
+                </div>
+                <div class="stat-icon blue-icon">
+                  <i data-lucide="gift"></i>
+                </div>
+              </div>
+              <div class="stat-growth positive">
+                <i data-lucide="trending-up"></i>
+                <span class="growth-value">12.5%</span>
+                <span class="growth-text"> active promotions</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-info">
+                  <p class="stat-label">Active Promos</p>
+                  <h3 class="stat-value" id="active-promotions">--</h3>
+                </div>
+                <div class="stat-icon green-icon">
+                  <i data-lucide="check-circle"></i>
+                </div>
+              </div>
+              <div class="stat-growth positive">
+                <i data-lucide="trending-up"></i>
+                <span class="growth-value">8.2%</span>
+                <span class="growth-text"> currently running</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-info">
+                  <p class="stat-label">Avg Discount</p>
+                  <h3 class="stat-value" id="avg-discount">--</h3>
+                </div>
+                <div class="stat-icon yellow-icon">
+                  <i data-lucide="percent"></i>
+                </div>
+              </div>
+              <div class="stat-growth">
+                <i data-lucide="move-right"></i>
+                <span class="growth-value">0%</span>
+                <span class="growth-text"> discount rate</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-info">
+                  <p class="stat-label">Expired</p>
+                  <h3 class="stat-value" id="expired-promotions">--</h3>
+                </div>
+                <div class="stat-icon red-icon">
+                  <i data-lucide="x-circle"></i>
+                </div>
+              </div>
+              <div class="stat-growth negative">
+                <i data-lucide="trending-down"></i>
+                <span class="growth-value">3.1%</span>
+                <span class="growth-text"> need review</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="chart-container" style="padding: 24px">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold">
+              All Promotions
+            </h3>
+
+            <div
+              style="
+                margin-bottom: 24px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                margin-top: 14px;
+                flex-wrap: wrap;
+              "
+            >
+              <div style="flex: 1; display: flex; gap: 12px">
+                <div class="search-box">
+                  <i data-lucide="search" style="width: 20px; height: 20px"></i>
+                  <input
+                    id="searchInput"
+                    placeholder="Search by code or description"
+                  />
+                </div>
+                <select id="statusFilter">
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="expired">Expired</option>
+                </select>
+              </div>
+
+              <button id="addPromotionBtn">
+                <i data-lucide="plus" style="width: 20px; height: 20px"></i>Add
+                New Promotion
+              </button>
+            </div>
+
+            <div
+              style="
+                max-height: 500px;
+                overflow-y: auto;
+                overflow-x: auto;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+              "
+            >
+              <table style="width: 100%; border-collapse: collapse">
+                <thead>
+                  <tr
+                    style="border-bottom: 2px solid #e5e7eb; text-align: left"
+                  >
+                    <th style="padding: 16px">ID</th>
+                    <th style="padding: 16px">Promo Code</th>
+                    <th style="padding: 16px">Description</th>
+                    <th style="padding: 16px">Discount</th>
+                    <th style="padding: 16px">Status</th>
+                    <th style="padding: 16px">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="template"
+                    style="
+                      display: none !important;
+                      border-bottom: 1px solid #f3f4f6;
+                    "
+                  >
+                    <td style="padding: 16px" name="id"></td>
+                    <td style="padding: 16px"><span name="code"></span></td>
+                    <td style="padding: 16px" name="description"></td>
+                    <td style="padding: 16px"><span name="discount"></span></td>
+                    <td style="padding: 16px"><span name="status"></span></td>
+                    <td style="padding: 16px">
+                      <button
+                        class="edit-btn"
+                        style="
+                          padding: 8px;
+                          border: none;
+                          background: transparent;
+                          cursor: pointer;
+                          color: #3b82f6;
+                        "
+                        title="Edit"
+                      >
+                        <i data-lucide="edit"></i>
+                      </button>
+                      <button
+                        class="delete-btn"
+                        style="
+                          padding: 8px;
+                          border: none;
+                          background: transparent;
+                          cursor: pointer;
+                          color: #ef4444;
+                        "
+                        title="Delete"
+                      >
+                        <i data-lucide="trash-2"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Modal Add/Edit Promotion -->
+    <div id="promotionModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Add New Promotion</h3>
+          <button class="close-modal" onclick="closeModal()">
+            <i data-lucide="x"></i>
+          </button>
         </div>
-      </header>
+        <div class="modal-body">
+          <div class="error-message" id="errorMessage"></div>
+          <form id="promotionForm">
+            <input type="hidden" id="promotionId" />
 
-      <!-- Promotion Management -->
-      <main class="content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-          <h2 class="page-title" style="margin-bottom: 0;">Promotion Management</h2>
-        </div>
+            <div class="form-group">
+              <label>Promo Code <span class="required">*</span></label>
+              <input
+                type="text"
+                id="promoCode"
+                placeholder="e.g. SAVE20"
+                required
+              />
+            </div>
 
-        <!-- Stats -->
-        <div class="stats-grid" style="margin-bottom: 32px;">
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-info">
-                <p class="stat-label">Total Promotions</p>
-                <h3 class="stat-value" id="total-promotions">--</h3>
-              </div>
-              <div class="stat-icon blue-icon"><i data-lucide="gift"></i></div>
+            <div class="form-group">
+              <label>Description <span class="required">*</span></label>
+              <textarea
+                id="promoDescription"
+                placeholder="Enter promotion description"
+                required
+              ></textarea>
             </div>
-            <div class="stat-growth positive">
-              <i data-lucide="trending-up"></i>
-              <span class="growth-value">12.5%</span>
-              <span class="growth-text"> active promotions</span>
-            </div>
-          </div>
 
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-info">
-                <p class="stat-label">Active Promos</p>
-                <h3 class="stat-value" id="active-promotions">--</h3>
-              </div>
-              <div class="stat-icon green-icon"><i data-lucide="check-circle"></i></div>
+            <div class="form-group">
+              <label>Discount Rate (%) <span class="required">*</span></label>
+              <input
+                type="number"
+                id="discountRate"
+                placeholder="e.g. 15"
+                min="0"
+                max="100"
+                step="0.1"
+                required
+              />
             </div>
-            <div class="stat-growth positive">
-              <i data-lucide="trending-up"></i>
-              <span class="growth-value">8.2%</span>
-              <span class="growth-text"> currently running</span>
-            </div>
-          </div>
 
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-info">
-                <p class="stat-label">Avg Discount</p>
-                <h3 class="stat-value" id="avg-discount">--</h3>
-              </div>
-              <div class="stat-icon yellow-icon"><i data-lucide="percent"></i></div>
-            </div>
-            <div class="stat-growth">
-              <i data-lucide="move-right"></i>
-              <span class="growth-value">0%</span>
-              <span class="growth-text"> discount rate</span>
-            </div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-header">
-              <div class="stat-info">
-                <p class="stat-label">Expired</p>
-                <h3 class="stat-value" id="expired-promotions">--</h3>
-              </div>
-              <div class="stat-icon red-icon"><i data-lucide="x-circle"></i></div>
-            </div>
-            <div class="stat-growth negative">
-              <i data-lucide="trending-down"></i>
-              <span class="growth-value">3.1%</span>
-              <span class="growth-text"> need review</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Table -->
-        <div class="chart-container" style="padding: 24px;">
-          <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Promotions</h3>
-
-          <div style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
-            <div style="flex: 1; display: flex; gap: 12px;">
-              <div class="search-box">
-                <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                <input id="searchInput" placeholder="Search by code or description" />
-              </div>
-              <select id="statusFilter">
-                <option value="all">All Status</option>
+            <div class="form-group">
+              <label>Status <span class="required">*</span></label>
+              <select id="promoStatus" required>
                 <option value="active">Active</option>
                 <option value="expired">Expired</option>
               </select>
             </div>
-
-            <button id="addPromotionBtn">
-              <i data-lucide="plus" style="width: 20px; height: 20px;"></i>Add New Promotion
-            </button>
-          </div>
-
-          <div style="max-height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
-            <table style="width: 100%; border-collapse: collapse;">
-              <thead>
-                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
-                  <th style="padding: 16px;">ID</th>
-                  <th style="padding: 16px;">Promo Code</th>
-                  <th style="padding: 16px;">Description</th>
-                  <th style="padding: 16px;">Discount</th>
-                  <th style="padding: 16px;">Status</th>
-                  <th style="padding: 16px;">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
-                  <td style="padding: 16px;" name="id"></td>
-                  <td style="padding: 16px;"><span name="code"></span></td>
-                  <td style="padding: 16px;" name="description"></td>
-                  <td style="padding: 16px;"><span name="discount"></span></td>
-                  <td style="padding: 16px;"><span name="status"></span></td>
-                  <td style="padding: 16px;">
-                    <button class="edit-btn" style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;" title="Edit">
-                      <i data-lucide="edit"></i>
-                    </button>
-                    <button class="delete-btn" style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;" title="Delete">
-                      <i data-lucide="trash-2"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          </form>
         </div>
-      </main>
-    </div>
-  </div>
-
-  <!-- Modal Add/Edit Promotion -->
-  <div id="promotionModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modalTitle">Add New Promotion</h3>
-        <button class="close-modal" onclick="closeModal()">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="error-message" id="errorMessage"></div>
-        <form id="promotionForm">
-          <input type="hidden" id="promotionId" />
-          
-          <div class="form-group">
-            <label>Promo Code <span class="required">*</span></label>
-            <input type="text" id="promoCode" placeholder="e.g. SAVE20" required />
-          </div>
-
-          <div class="form-group">
-            <label>Description <span class="required">*</span></label>
-            <textarea id="promoDescription" placeholder="Enter promotion description" required></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>Discount Rate (%) <span class="required">*</span></label>
-            <input type="number" id="discountRate" placeholder="e.g. 15" min="0" max="100" step="0.1" required />
-          </div>
-
-          <div class="form-group">
-            <label>Status <span class="required">*</span></label>
-            <select id="promoStatus" required>
-              <option value="active">Active</option>
-              <option value="expired">Expired</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        <button class="btn-save" onclick="savePromotion()">
-          <i data-lucide="save"></i>Save Promotion
-        </button>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+          <button class="btn-save" onclick="savePromotion()">
+            <i data-lucide="save"></i>Save Promotion
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
-  <script>
-    // Render icons after table render
-    function renderIcons() {
-      if (window.lucide && typeof lucide.createIcons === "function") {
-        lucide.createIcons();
-      }
-    }
-
-    let promotions = [];
-    const STORAGE_KEY = 'promotions';
-
-    // Initialize promotion data
-    function initializePromotionData() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) {
-        const defaultData = {
-          "promotion": [
-            {
-              "promotion_id": "PR001",
-              "promo_description": "10% off all eco-friendly shirts this week!",
-              "promo_code": "ECO10",
-              "discount_rate": 10.0,
-              "status": "active",
-              "applied_to": ["C001"]
-            },
-            {
-              "promotion_id": "PR002",
-              "promo_description": "15% discount on orders over 500,000đ",
-              "promo_code": "SAVE15",
-              "discount_rate": 15.0,
-              "status": "active",
-              "applied_to": ["ALL"]
-            },
-            {
-              "promotion_id": "PR003",
-              "promo_description": "20% off pants and accessories this month!",
-              "promo_code": "GREEN20",
-              "discount_rate": 20.0,
-              "status": "expired",
-              "applied_to": ["C002", "C004"]
-            },
-            {
-              "promotion_id": "PR004",
-              "promo_description": "25% off selected dresses for limited time.",
-              "promo_code": "STYLE25",
-              "discount_rate": 25.0,
-              "status": "active",
-              "applied_to": ["C003"]
-            },
-            {
-              "promotion_id": "PR005",
-              "promo_description": "40% off clearance eco products.",
-              "promo_code": "CLEAR40",
-              "discount_rate": 40.0,
-              "status": "expired",
-              "applied_to": ["C004"]
-            }
-          ]
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
-      }
-    }
-
-    // Load promotions data
-    function loadPromotions() {
-      try {
-        const storedData = localStorage.getItem(STORAGE_KEY);
-        if (storedData) {
-          const data = JSON.parse(storedData);
-          promotions = data.promotion || [];
-          updateStats();
-          updateTable(promotions);
+    <script src="script.js"></script>
+    <script>
+      // Render icons after table render
+      function renderIcons() {
+        if (window.lucide && typeof lucide.createIcons === "function") {
+          lucide.createIcons();
         }
-      } catch (error) {
-        console.error("Error loading promotions:", error);
       }
-    }
 
-    // Update statistics
-    function updateStats() {
-      const total = promotions.length;
-      const active = promotions.filter(p => p.status === "active").length;
-      const expired = promotions.filter(p => p.status === "expired").length;
-      const avgDiscount = total > 0 
-        ? (promotions.reduce((sum, p) => sum + p.discount_rate, 0) / total).toFixed(1)
-        : 0;
+      let promotions = [];
+      const STORAGE_KEY = "promotions";
 
-      document.getElementById("total-promotions").textContent = total;
-      document.getElementById("active-promotions").textContent = active;
-      document.getElementById("avg-discount").textContent = avgDiscount + "%";
-      document.getElementById("expired-promotions").textContent = expired;
-    }
+      // Initialize promotion data
+      function initializePromotionData() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) {
+          const defaultData = {
+            promotion: [
+              {
+                promotion_id: "PR001",
+                promo_description: "10% off all eco-friendly shirts this week!",
+                promo_code: "ECO10",
+                discount_rate: 10.0,
+                status: "active",
+                applied_to: ["C001"],
+              },
+              {
+                promotion_id: "PR002",
+                promo_description: "15% discount on orders over 500,000đ",
+                promo_code: "SAVE15",
+                discount_rate: 15.0,
+                status: "active",
+                applied_to: ["ALL"],
+              },
+              {
+                promotion_id: "PR003",
+                promo_description: "20% off pants and accessories this month!",
+                promo_code: "GREEN20",
+                discount_rate: 20.0,
+                status: "expired",
+                applied_to: ["C002", "C004"],
+              },
+              {
+                promotion_id: "PR004",
+                promo_description: "25% off selected dresses for limited time.",
+                promo_code: "STYLE25",
+                discount_rate: 25.0,
+                status: "active",
+                applied_to: ["C003"],
+              },
+              {
+                promotion_id: "PR005",
+                promo_description: "40% off clearance eco products.",
+                promo_code: "CLEAR40",
+                discount_rate: 40.0,
+                status: "expired",
+                applied_to: ["C004"],
+              },
+            ],
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
+        }
+      }
 
-    // Update table
-    function updateTable(filteredPromotions) {
-      renderTable(filteredPromotions, "table tbody", "table tbody tr.template", (row, promo) => {
-        row.querySelector('[name="id"]').textContent = promo.promotion_id;
-        
-        const codeSpan = row.querySelector('[name="code"]');
-        codeSpan.textContent = promo.promo_code;
-        codeSpan.style.cssText = `
+      // Load promotions data
+      function loadPromotions() {
+        try {
+          const storedData = localStorage.getItem(STORAGE_KEY);
+          if (storedData) {
+            const data = JSON.parse(storedData);
+            promotions = data.promotion || [];
+            updateStats();
+            updateTable(promotions);
+          }
+        } catch (error) {
+          console.error("Error loading promotions:", error);
+        }
+      }
+
+      // Update statistics
+      function updateStats() {
+        const total = promotions.length;
+        const active = promotions.filter((p) => p.status === "active").length;
+        const expired = promotions.filter((p) => p.status === "expired").length;
+        const avgDiscount =
+          total > 0
+            ? (
+                promotions.reduce((sum, p) => sum + p.discount_rate, 0) / total
+              ).toFixed(1)
+            : 0;
+
+        document.getElementById("total-promotions").textContent = total;
+        document.getElementById("active-promotions").textContent = active;
+        document.getElementById("avg-discount").textContent = avgDiscount + "%";
+        document.getElementById("expired-promotions").textContent = expired;
+      }
+
+      // Update table
+      function updateTable(filteredPromotions) {
+        renderTable(
+          filteredPromotions,
+          "table tbody",
+          "table tbody tr.template",
+          (row, promo) => {
+            row.querySelector('[name="id"]').textContent = promo.promotion_id;
+
+            const codeSpan = row.querySelector('[name="code"]');
+            codeSpan.textContent = promo.promo_code;
+            codeSpan.style.cssText = `
           padding: 6px 12px;
           background: #eff6ff;
           color: #3b82f6;
@@ -368,11 +489,12 @@
           font-size: 13px;
         `;
 
-        row.querySelector('[name="description"]').textContent = promo.promo_description;
-        
-        const discountSpan = row.querySelector('[name="discount"]');
-        discountSpan.textContent = promo.discount_rate + "%";
-        discountSpan.style.cssText = `
+            row.querySelector('[name="description"]').textContent =
+              promo.promo_description;
+
+            const discountSpan = row.querySelector('[name="discount"]');
+            discountSpan.textContent = promo.discount_rate + "%";
+            discountSpan.style.cssText = `
           padding: 6px 12px;
           background: linear-gradient(135deg, #fef9c3, #fde047);
           color: #854d0e;
@@ -381,11 +503,12 @@
           font-size: 14px;
         `;
 
-        const statusSpan = row.querySelector('[name="status"]');
-        statusSpan.textContent = promo.status.charAt(0).toUpperCase() + promo.status.slice(1);
-        
-        if (promo.status === "active") {
-          statusSpan.style.cssText = `
+            const statusSpan = row.querySelector('[name="status"]');
+            statusSpan.textContent =
+              promo.status.charAt(0).toUpperCase() + promo.status.slice(1);
+
+            if (promo.status === "active") {
+              statusSpan.style.cssText = `
             padding: 6px 12px;
             background: #f0fdf4;
             color: #22c55e;
@@ -393,8 +516,8 @@
             font-size: 12px;
             font-weight: 600;
           `;
-        } else {
-          statusSpan.style.cssText = `
+            } else {
+              statusSpan.style.cssText = `
             padding: 6px 12px;
             background: #fef2f2;
             color: #ef4444;
@@ -402,171 +525,198 @@
             font-size: 12px;
             font-weight: 600;
           `;
-        }
+            }
 
-        const editBtn = row.querySelector('.edit-btn');
-        const deleteBtn = row.querySelector('.delete-btn');
-        
-        if (editBtn) editBtn.onclick = () => openEditModal(promo);
-        if (deleteBtn) deleteBtn.onclick = () => deletePromotion(promo.promotion_id);
-      });
-      renderIcons();
-    }
+            const editBtn = row.querySelector(".edit-btn");
+            const deleteBtn = row.querySelector(".delete-btn");
 
-    // Filter handler
-    function handleFilterChange() {
-      const searchValue = safeLower(document.getElementById("searchInput").value);
-      const statusValue = document.getElementById("statusFilter").value;
-
-      const filtered = promotions.filter((promo) => {
-        const matchSearch = 
-          searchValue === "" ||
-          safeLower(promo.promo_code).includes(searchValue) ||
-          safeLower(promo.promo_description).includes(searchValue);
-
-        const matchStatus = statusValue === "all" || promo.status === statusValue;
-
-        return matchSearch && matchStatus;
-      });
-
-      updateTable(filtered);
-    }
-
-    // Open modal for adding
-    function openAddModal() {
-      document.getElementById("modalTitle").textContent = "Add New Promotion";
-      document.getElementById("promotionForm").reset();
-      document.getElementById("promotionId").value = "";
-      document.getElementById("errorMessage").classList.remove("show");
-      document.getElementById("promotionModal").classList.add("show");
-      renderIcons();
-    }
-
-    // Open modal for editing
-    function openEditModal(promo) {
-      document.getElementById("modalTitle").textContent = "Edit Promotion";
-      document.getElementById("promotionId").value = promo.promotion_id;
-      document.getElementById("promoCode").value = promo.promo_code;
-      document.getElementById("promoDescription").value = promo.promo_description;
-      document.getElementById("discountRate").value = promo.discount_rate;
-      document.getElementById("promoStatus").value = promo.status;
-      document.getElementById("errorMessage").classList.remove("show");
-      document.getElementById("promotionModal").classList.add("show");
-      renderIcons();
-    }
-
-    // Close modal
-    function closeModal() {
-      document.getElementById("promotionModal").classList.remove("show");
-    }
-
-    // Save promotion
-    function savePromotion() {
-      const id = document.getElementById("promotionId").value;
-      const code = document.getElementById("promoCode").value.trim();
-      const description = document.getElementById("promoDescription").value.trim();
-      const discount = parseFloat(document.getElementById("discountRate").value);
-      const status = document.getElementById("promoStatus").value;
-
-      if (!code || !description || !discount) {
-        showError("Please fill in all required fields!");
-        return;
+            if (editBtn) editBtn.onclick = () => openEditModal(promo);
+            if (deleteBtn)
+              deleteBtn.onclick = () => deletePromotion(promo.promotion_id);
+          }
+        );
+        renderIcons();
       }
 
-      try {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        
-        if (id) {
-          // Edit existing
-          const index = storedData.promotion.findIndex(p => p.promotion_id === id);
-          if (index !== -1) {
-            storedData.promotion[index] = {
-              ...storedData.promotion[index],
+      // Filter handler
+      function handleFilterChange() {
+        const searchValue = safeLower(
+          document.getElementById("searchInput").value
+        );
+        const statusValue = document.getElementById("statusFilter").value;
+
+        const filtered = promotions.filter((promo) => {
+          const matchSearch =
+            searchValue === "" ||
+            safeLower(promo.promo_code).includes(searchValue) ||
+            safeLower(promo.promo_description).includes(searchValue);
+
+          const matchStatus =
+            statusValue === "all" || promo.status === statusValue;
+
+          return matchSearch && matchStatus;
+        });
+
+        updateTable(filtered);
+      }
+
+      // Open modal for adding
+      function openAddModal() {
+        document.getElementById("modalTitle").textContent = "Add New Promotion";
+        document.getElementById("promotionForm").reset();
+        document.getElementById("promotionId").value = "";
+        document.getElementById("errorMessage").classList.remove("show");
+        document.getElementById("promotionModal").classList.add("show");
+        renderIcons();
+      }
+
+      // Open modal for editing
+      function openEditModal(promo) {
+        document.getElementById("modalTitle").textContent = "Edit Promotion";
+        document.getElementById("promotionId").value = promo.promotion_id;
+        document.getElementById("promoCode").value = promo.promo_code;
+        document.getElementById("promoDescription").value =
+          promo.promo_description;
+        document.getElementById("discountRate").value = promo.discount_rate;
+        document.getElementById("promoStatus").value = promo.status;
+        document.getElementById("errorMessage").classList.remove("show");
+        document.getElementById("promotionModal").classList.add("show");
+        renderIcons();
+      }
+
+      // Close modal
+      function closeModal() {
+        document.getElementById("promotionModal").classList.remove("show");
+      }
+
+      // Save promotion
+      function savePromotion() {
+        const id = document.getElementById("promotionId").value;
+        const code = document.getElementById("promoCode").value.trim();
+        const description = document
+          .getElementById("promoDescription")
+          .value.trim();
+        const discount = parseFloat(
+          document.getElementById("discountRate").value
+        );
+        const status = document.getElementById("promoStatus").value;
+
+        if (!code || !description || !discount) {
+          showError("Please fill in all required fields!");
+          return;
+        }
+
+        try {
+          const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+          if (id) {
+            // Edit existing
+            const index = storedData.promotion.findIndex(
+              (p) => p.promotion_id === id
+            );
+            if (index !== -1) {
+              storedData.promotion[index] = {
+                ...storedData.promotion[index],
+                promo_code: code,
+                promo_description: description,
+                discount_rate: discount,
+                status: status,
+              };
+            }
+          } else {
+            // Add new
+            const newId =
+              "PR" + String(storedData.promotion.length + 1).padStart(3, "0");
+            storedData.promotion.push({
+              promotion_id: newId,
               promo_code: code,
               promo_description: description,
               discount_rate: discount,
-              status: status
-            };
+              status: status,
+              applied_to: [],
+            });
           }
-        } else {
-          // Add new
-          const newId = "PR" + String(storedData.promotion.length + 1).padStart(3, '0');
-          storedData.promotion.push({
-            promotion_id: newId,
-            promo_code: code,
-            promo_description: description,
-            discount_rate: discount,
-            status: status,
-            applied_to: []
-          });
+
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData));
+          closeModal();
+          loadPromotions();
+          alert(
+            id
+              ? "Promotion updated successfully!"
+              : "Promotion added successfully!"
+          );
+        } catch (error) {
+          console.error("Error saving promotion:", error);
+          showError("Failed to save promotion!");
+        }
+      }
+
+      // Delete promotion
+      function deletePromotion(promoId) {
+        if (!confirm("Are you sure you want to delete this promotion?")) return;
+
+        try {
+          const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          storedData.promotion = storedData.promotion.filter(
+            (p) => p.promotion_id !== promoId
+          );
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData));
+          loadPromotions();
+          alert("Promotion deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting promotion:", error);
+          alert("Failed to delete promotion!");
+        }
+      }
+
+      // Show error message
+      function showError(message) {
+        const errorEl = document.getElementById("errorMessage");
+        errorEl.textContent = message;
+        errorEl.classList.add("show");
+        setTimeout(() => errorEl.classList.remove("show"), 3000);
+      }
+
+      // Event listeners
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", handleFilterChange);
+      document
+        .getElementById("statusFilter")
+        .addEventListener("change", handleFilterChange);
+      document
+        .getElementById("addPromotionBtn")
+        .addEventListener("click", openAddModal);
+
+      // Close modal on outside click
+      document
+        .getElementById("promotionModal")
+        .addEventListener("click", (e) => {
+          if (e.target.id === "promotionModal") closeModal();
+        });
+
+      // Initialize
+      window.addEventListener("DOMContentLoaded", () => {
+        // Check admin authentication
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const userRole = localStorage.getItem("userRole");
+
+        if (!isLoggedIn || userRole !== "administrator") {
+          alert("Please login as administrator to access this page.");
+          window.location.href = "../pages/00_LOGIN.html";
+          return;
         }
 
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData));
-        closeModal();
+        const userName = localStorage.getItem("userName");
+        if (userName) {
+          const userNameElement = document.querySelector(".user-name");
+          if (userNameElement) userNameElement.textContent = userName;
+        }
+
+        initializePromotionData();
         loadPromotions();
-        alert(id ? "Promotion updated successfully!" : "Promotion added successfully!");
-      } catch (error) {
-        console.error("Error saving promotion:", error);
-        showError("Failed to save promotion!");
-      }
-    }
-
-    // Delete promotion
-    function deletePromotion(promoId) {
-      if (!confirm("Are you sure you want to delete this promotion?")) return;
-
-      try {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        storedData.promotion = storedData.promotion.filter(p => p.promotion_id !== promoId);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData));
-        loadPromotions();
-        alert("Promotion deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting promotion:", error);
-        alert("Failed to delete promotion!");
-      }
-    }
-
-    // Show error message
-    function showError(message) {
-      const errorEl = document.getElementById("errorMessage");
-      errorEl.textContent = message;
-      errorEl.classList.add("show");
-      setTimeout(() => errorEl.classList.remove("show"), 3000);
-    }
-
-    // Event listeners
-    document.getElementById("searchInput").addEventListener("input", handleFilterChange);
-    document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
-    document.getElementById("addPromotionBtn").addEventListener("click", openAddModal);
-
-    // Close modal on outside click
-    document.getElementById("promotionModal").addEventListener("click", (e) => {
-      if (e.target.id === "promotionModal") closeModal();
-    });
-
-    // Initialize
-    window.addEventListener("DOMContentLoaded", () => {
-      // Check admin authentication
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
-      const userRole = localStorage.getItem("userRole");
-
-      if (!isLoggedIn || userRole !== "administrator") {
-        alert("Please login as administrator to access this page.");
-        window.location.href = "../pages/00_LOGIN.html";
-        return;
-      }
-
-      const userName = localStorage.getItem("userName");
-      if (userName) {
-        const userNameElement = document.querySelector(".user-name");
-        if (userNameElement) userNameElement.textContent = userName;
-      }
-
-      initializePromotionData();
-      loadPromotions();
-      renderIcons();
-    });
-  </script>
-</body>
+        renderIcons();
+      });
+    </script>
+  </body>
 </html>
