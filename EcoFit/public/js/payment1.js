@@ -1,173 +1,267 @@
-    window.addEventListener("DOMContentLoaded", () => {
-      const header = document.getElementById("header-frame");
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-      header.src = isLoggedIn
-        ? "../template/header.html"
-        : "../template/header0.html";
+window.addEventListener("DOMContentLoaded", () => {
+  const header = document.getElementById("header-frame");
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  header.src = isLoggedIn
+    ? "../template/header.html"
+    : "../template/header0.html";
 
-      header.onload = () => {
-        header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
-      };
+  header.onload = () => {
+    header.contentWindow.postMessage({ activeNav: "nav-shop" }, "*");
+  };
+  loadPaymentData();
+});
 
-      // Load order data from localStorage
-      loadPaymentData();
-    });
+function loadPaymentData() {
+  const checkoutOrder = JSON.parse(
+    localStorage.getItem("checkoutOrder") || "{}"
+  );
 
-    // Function to load order data from localStorage
-    function loadPaymentData() {
-      // Get order data from localStorage
-      const paymentData = JSON.parse(localStorage.getItem("checkoutOrder") || "{}");
-      //const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      
-
-      
-      const shipping = 30000; // Fixed shipping cost
-      const discount = paymentData.discount || 0;
-      const total = paymentData.total;
-      const subtotal= paymentData.subtotal;
-      
-  // === 2. CẬP NHẬT ORDER DETAILS ===
-        const orderDetail = document.querySelector(".order-detail");
-    paymentData.items.forEach((p) => {
-      const img = p.img || p.image || "../images/Product_images/organic_cotton_tee.png";
-      const name = p.product_name || p.name || "Unknown Product";
-      const color = p.color || "Default";
-      const size = p.size || "M";
-      const price = parseInt(p.price) || parseInt(p.original_price) || 0;
-      const quantity = parseInt(p.quantity) || 1;
-      orderDetail.innerHTML += `
-        <div class="order-item"
-            style="display:flex;
-                    align-items:center;
-                    justify-content:space-between;
-                    margin-bottom:20px;">
-          <div style="display:flex;
-                      align-items:center;
-                      gap:12px;
-                      flex:1;">
-             <a href="../pages/04_PRODUCT_Detail.html?id=${p.product_id || ''}" 
-                style="display:block;">
-                <img src="${img}" alt="${name}" 
-                    style="width:80px;
-                          height:80px;
-                          object-fit:cover;
-                          border-radius:8px;"
-                    onerror="this.src='../images/product_images/organic_cotton_tee.png'">
-              </a>
-            <div class="order-item-info" style="flex:1; min-width:0;">
-              <h4 style="margin:0;
-                          white-space:nowrap;
-                          overflow:hidden;
-                          text-overflow:ellipsis;
-                          font-size:15px;
-                          font-weight:600;
-                          max-width:100%;">
-                ${name}
-              </h4>
-              <p style="margin:4px 0; color:#666;">Color: ${color} | Size: ${size}</p>
-              <span class="order-item-price"
-                    style="font-weight:500;">${formatPrice(price)}đ</span>
-            </div>
-          </div>
-
-          <span class="order-item-qty"
-                style="min-width:45px;
-                      text-align:right;
-                      font-weight:600;
-                      color:#333;">
-            x${quantity}
-          </span>
-        </div>`;
-    });
-    orderDetail.innerHTML += '<hr/>';
-  
-  // === 3. CẬP NHẬT ORDER SUMMARY ===
-      document.querySelector('.subtotal').textContent = formatPrice(subtotal) + 'đ';
-      document.querySelector('.shipping').textContent = formatPrice(shipping) + 'đ';
-      document.querySelector('.discount').textContent = '-' + formatPrice(discount) + 'đ';
-      document.querySelector('.total-value').textContent = formatPrice(total) + 'đ';
-      // Update Transfer Amount
-      document.getElementById('amt').textContent = formatPrice(total) + 'đ';
-      
-      // Update Order ID in multiple places
-      const orderId = paymentData.orderId || '1056';
-      document.querySelector('.status-sub').textContent = `Order #${orderId}`;
-      document.getElementById('note').textContent = `ORDER_${orderId}`;
-    }
-    // Helper function to format price
-    function formatPrice(price) {
-      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-      const paymentData = JSON.parse(localStorage.getItem("checkoutOrder") || "{}");
-      const total = paymentData.total;
-
-  // === 5. CẬP NHẬT PAYMENT DETAIL (BÊN TRÁI) ===
-  const pdValues = document.querySelectorAll('.pd-value.total, .pd-value.due, .pd-value.method');
-    pdValues[0].textContent = formatPrice(total) + 'đ'; // Total order amount
-    pdValues[1].textContent = formatPrice(total) + 'đ'; // Amount due
-    pdValues[2].textContent = paymentData.payment || 'Transfer via QR code';
-
-    
-  // === 6. CẬP NHẬT TRANSFER INFO ===
-
-  const statusSub = document.querySelector('.status-sub');
-  if (statusSub) statusSub.textContent = `Order #${paymentData.orderId}`;
-
-  const noteEl = document.getElementById('note');
-  if (noteEl) noteEl.textContent = `ORDER_${paymentData.orderId}`;
-
-  const amtEl = document.getElementById('amt');
-  if (amtEl) amtEl.textContent = formatPrice(total) + 'đ';
-
-  // === 7. CẬP NHẬT DELIVERY ADDRESS ===
-  if (paymentData.customer) {
-    const c = paymentData.customer;
-    const addrHTML = `
-      ${c.fullname || '-'} | ${c.phone || '-'}<br>
-      ${c.address || '-'}
-    `;
-    const deliveryText = document.querySelector('.delivery-text');
-    if (deliveryText) deliveryText.innerHTML = addrHTML;
+  if (!checkoutOrder.orderId) {
+    alert("⚠️ Order not found! Redirecting to Checkout...");
+    window.location.href = "06_CHECKOUT.html";
+    return;
   }
-    
-  // === 8. XỬ LÝ UPLOAD ẢNH CHỨNG TỪ ===
-  const proofInput = document.getElementById('proofImage');
-  const fileNameSpan = document.getElementById('fileName');
+
+  const paymentData = {
+    orderId: checkoutOrder.orderId,
+    customer: checkoutOrder.customer || {},
+    items: checkoutOrder.items || [],
+    subtotal: checkoutOrder.subtotal || 0,
+    discount: checkoutOrder.discount || 0,
+    total: checkoutOrder.total || 0,
+    payment: checkoutOrder.payment || "Transfer via QR code",
+  };
+
+  const shipping = 30000;
+
+  // === 1. UPDATE ORDER DETAILS ===
+  const orderDetail = document.querySelector(".order-detail");
+  paymentData.items.forEach((p) => {
+    const img =
+      p.img || p.image || "../images/Product_images/organic_cotton_tee.png";
+    const name = p.product_name || p.name || "Unknown Product";
+    const color = p.color || "Default";
+    const size = p.size || "M";
+    const price = parseInt(p.price) || parseInt(p.original_price) || 0;
+    const quantity = parseInt(p.quantity) || 1;
+
+    orderDetail.innerHTML += `
+      <div class="order-item"
+          style="display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  margin-bottom:20px;">
+        <div style="display:flex;
+                    align-items:center;
+                    gap:12px;
+                    flex:1;">
+          <a href="../pages/04_PRODUCT_Detail.html?id=${p.product_id || ""}" 
+              style="display:block;">
+            <img src="${img}" alt="${name}" 
+                style="width:80px;
+                      height:80px;
+                      object-fit:cover;
+                      border-radius:8px;"
+                onerror="this.src='../images/product_images/organic_cotton_tee.png'">
+          </a>
+          <div class="order-item-info" style="flex:1; min-width:0;">
+            <h4 style="margin:0;
+                        white-space:nowrap;
+                        overflow:hidden;
+                        text-overflow:ellipsis;
+                        font-size:15px;
+                        font-weight:600;
+                        max-width:100%;">
+              ${name}
+            </h4>
+            <p style="margin:4px 0; color:#666;">Color: ${color} | Size: ${size}</p>
+            <span class="order-item-price"
+                  style="font-weight:500;">${formatPrice(price)}đ</span>
+          </div>
+        </div>
+
+        <span class="order-item-qty"
+              style="min-width:45px;
+                    text-align:right;
+                    font-weight:600;
+                    color:#333;">
+          x${quantity}
+        </span>
+      </div>`;
+  });
+  orderDetail.innerHTML += "<hr/>";
+
+  // === 2. UPDATE ORDER SUMMARY ===
+  document.querySelector(".subtotal").textContent =
+    formatPrice(paymentData.subtotal) + "đ";
+  document.querySelector(".shipping").textContent = formatPrice(shipping) + "đ";
+  document.querySelector(".discount").textContent =
+    "-" + formatPrice(paymentData.discount) + "đ";
+  document.querySelector(".total-value").textContent =
+    formatPrice(paymentData.total) + "đ";
+
+  // === 3. UPDATE PAYMENT DETAIL ===
+  const pdValues = document.querySelectorAll(
+    ".pd-value.total, .pd-value.due, .pd-value.method"
+  );
+  pdValues[0].textContent = formatPrice(paymentData.total) + "đ";
+  pdValues[1].textContent = formatPrice(paymentData.total) + "đ";
+  pdValues[2].textContent = paymentData.payment;
+
+  // === 4. UPDATE TRANSFER INFO ===
+  const statusSub = document.querySelector(".status-sub");
+  statusSub.textContent = `Order #${paymentData.orderId}`;
+  statusSub.style.fontWeight = "500";
+
+  document.getElementById("note").textContent = `ORDER_${paymentData.orderId}`;
+  document.getElementById("amt").textContent =
+    formatPrice(paymentData.total) + "đ";
+
+  // === 5. UPDATE DELIVERY ADDRESS ===
+  const deliveryText = document.querySelector(".delivery-text");
+  if (deliveryText && paymentData.customer) {
+    const c = paymentData.customer;
+    deliveryText.innerHTML = `
+      ${c.fullname || "-"} | ${c.phone || "-"}<br>
+      ${c.address || "-"}
+    `;
+  }
+
+  // === 6. HANDLE COPY BUTTONS ===
+  document.querySelectorAll(".copy").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-target");
+      const textElement = document.getElementById(targetId);
+      const text = textElement.textContent.trim();
+
+      if (navigator.clipboard) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            const originalHTML = btn.innerHTML;
+
+            btn.innerHTML =
+              '<span style="color:#2e7d32;font-weight:600;font-size:12px;">✓</span>';
+            btn.style.cursor = "default";
+
+            setTimeout(() => {
+              btn.innerHTML = originalHTML;
+              btn.style.cursor = "pointer";
+            }, 5000);
+          })
+          .catch(() => {
+            alert("❌ Copy failed!");
+          });
+      } else {
+        alert("⚠️ Copy not supported on this browser");
+      }
+    });
+  });
+
+  // === 7. HANDLE PROOF UPLOAD ===
+  const proofInput = document.getElementById("proofImage");
+  const fileNameSpan = document.getElementById("fileName");
 
   if (proofInput && fileNameSpan) {
-    proofInput.addEventListener('change', () => {
-      fileNameSpan.textContent = proofInput.files[0]?.name || '';
+    proofInput.addEventListener("change", () => {
+      const file = proofInput.files[0];
+      if (!file) return;
+
+      fileNameSpan.textContent = file.name;
+
+      // 🟢 CHANGE STATUS TO "PAYMENT SUCCESS" IMMEDIATELY
+      const statusTitle = document.querySelector(".status-title");
+      const statusSub = document.querySelector(".status-sub");
+      const statusIcon = document.querySelector(".status-icon img");
+      const statusBox = document.querySelector(".status-box");
+
+      if (statusTitle) {
+        statusTitle.textContent = "Payment Success";
+        statusTitle.style.color = "#3DA547";
+        statusTitle.style.fontWeight = "600";
+      }
+
+      if (statusSub) {
+        statusSub.style.color = "#2e7d32";
+        statusSub.style.fontWeight = "600";
+      }
+
+      if (statusIcon) {
+        statusIcon.style.filter =
+          "brightness(0) saturate(100%) invert(44%) sepia(96%) saturate(502%) hue-rotate(75deg) brightness(94%) contrast(88%)";
+      }
+
+      if (statusBox) {
+        statusBox.style.borderColor = "white";
+        statusBox.style.background ="#3DA547";
+      }
+
+      // Show success popup
+      const popup = document.createElement("div");
+      popup.textContent =
+        "✅ Payment proof uploaded successfully! Verifying payment...";
+      Object.assign(popup.style, {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "white",
+        padding: "20px 30px",
+        borderRadius: "10px",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+        fontWeight: "600",
+        color: "#3DA547",
+        zIndex: "9999",
+        textAlign: "center",
+        transition: "opacity 0.5s ease",
+        fontSize: "15px",
+        maxWidth: "600px",
+      });
+      document.body.appendChild(popup);
+
+      // 🟢 SAVE DATA TO localStorage
+      const paymentInfo = {
+        orderId: paymentData.orderId,
+        customer: paymentData.customer,
+        cart: paymentData.items,
+        subtotal: paymentData.subtotal,
+        shipping: shipping,
+        discount: paymentData.discount,
+        total: paymentData.total,
+        address: paymentData.customer
+          ? `${paymentData.customer.fullname} | ${paymentData.customer.phone}<br>${paymentData.customer.address}`
+          : "-",
+        proofFileName: file.name,
+        uploadedAt: new Date().toISOString(),
+      };
+      localStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
+
+      // Redirect after 3 seconds
+      setTimeout(() => {
+        popup.style.opacity = "0";
+        setTimeout(() => {
+          popup.remove();
+          window.location.href = "../pages/08_PAYMENT2.html";
+        }, 500);
+      }, 3000);
     });
   }
 
-  // === 9. XỬ LÝ NÚT PAY NOW ===
-  const payBtn = document.querySelector('.btn-pay');
+  // === 8. HANDLE PAY NOW BUTTON ===
+  const payBtn = document.querySelector(".btn-pay");
   if (payBtn) {
-    payBtn.addEventListener('click', (e) => {
+    payBtn.addEventListener("click", (e) => {
       e.preventDefault();
 
       if (!proofInput?.files?.[0]) {
-        alert('Vui lòng upload ảnh chứng từ thanh toán!');
+        alert("⚠️ Please upload your payment proof first!");
         return;
       }
-
-      const paymentData = {
-        orderId,
-        amount: total,
-        paymentDate: new Date().toISOString(),
-        status: 'pending',
-        proofFileName: proofInput.files[0].name
-      };
-
-      localStorage.setItem('paymentData', JSON.stringify(paymentData));
-      alert('Thanh toán đã được gửi! Đang chuyển hướng...');
-      setTimeout(() => {
-        window.location.href = '08_PAYMENT_CONFIRM.html';
-      }, 500);
     });
   }
+}
 
-  // === 10. HÀM HỖ TRỢ ===
-  function formatPrice(num) {
-    return new Intl.NumberFormat('vi-VN').format(num);
-  }
+// === HELPER FUNCTION ===
+function formatPrice(num) {
+  return new Intl.NumberFormat("vi-VN").format(num);
+}
