@@ -23,10 +23,19 @@ function process_login() {
             if (ac == null) {
                 alert("Login failed, contact ADMIN");
             } else {
+                // ✅ Lưu toàn bộ thông tin user
                 let string_json = JSON.stringify(ac);
                 localStorage.setItem("login_infor", string_json);
                 localStorage.setItem("save_infor", my_form.save_infor.checked);
-                localStorage.setItem("isLoggedIn", "true"); // ✅ lưu trạng thái đăng nhập
+                localStorage.setItem("isLoggedIn", "true");
+
+                // ✅ Lưu riêng các thông tin cơ bản để các trang khác dùng
+                localStorage.setItem("userName", ac.fullname || "");
+                localStorage.setItem("userPhone", ac.phone || "");
+                localStorage.setItem("userAddress", ac.address || "");
+                localStorage.setItem("userEmail", ac.email || "");
+                localStorage.setItem("userRole", ac.role || "user");
+                localStorage.setItem("userId", ac.profile_id || "");
 
                 // ✅ Gửi tín hiệu login thành công sang trang cha (home.js sẽ nhận)
                 window.parent.postMessage({ action: "loginSuccess" }, "*");

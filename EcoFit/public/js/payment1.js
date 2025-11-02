@@ -35,23 +35,50 @@
       const size = p.size || "M";
       const price = parseInt(p.price) || parseInt(p.original_price) || 0;
       const quantity = parseInt(p.quantity) || 1;
-
-
       orderDetail.innerHTML += `
-        <div class="order-item">
-          <img src="${img}" alt="${name}" 
-              style="width:80px;height:80px;object-fit:cover;border-radius:8px;"
-              onerror="this.src='../images/product_images/organic_cotton_tee.png'">
-          <div class="order-item-info">
-            <h4>${name}</h4>
-            <p>Color: ${color} | Size: ${size}</p>
-            <span class="order-item-price">${formatPrice(price)}đ</span>
+        <div class="order-item"
+            style="display:flex;
+                    align-items:center;
+                    justify-content:space-between;
+                    margin-bottom:20px;">
+          <div style="display:flex;
+                      align-items:center;
+                      gap:12px;
+                      flex:1;">
+             <a href="../pages/04_PRODUCT_Detail.html?id=${p.product_id || ''}" 
+                style="display:block;">
+                <img src="${img}" alt="${name}" 
+                    style="width:80px;
+                          height:80px;
+                          object-fit:cover;
+                          border-radius:8px;"
+                    onerror="this.src='../images/product_images/organic_cotton_tee.png'">
+              </a>
+            <div class="order-item-info" style="flex:1; min-width:0;">
+              <h4 style="margin:0;
+                          white-space:nowrap;
+                          overflow:hidden;
+                          text-overflow:ellipsis;
+                          font-size:15px;
+                          font-weight:600;
+                          max-width:100%;">
+                ${name}
+              </h4>
+              <p style="margin:4px 0; color:#666;">Color: ${color} | Size: ${size}</p>
+              <span class="order-item-price"
+                    style="font-weight:500;">${formatPrice(price)}đ</span>
+            </div>
           </div>
-          <span class="order-item-qty">x${quantity}</span>
+
+          <span class="order-item-qty"
+                style="min-width:45px;
+                      text-align:right;
+                      font-weight:600;
+                      color:#333;">
+            x${quantity}
+          </span>
         </div>`;
     });
-    
-    // Thêm <hr/> sau items
     orderDetail.innerHTML += '<hr/>';
   
   // === 3. CẬP NHẬT ORDER SUMMARY ===
@@ -59,10 +86,6 @@
       document.querySelector('.shipping').textContent = formatPrice(shipping) + 'đ';
       document.querySelector('.discount').textContent = '-' + formatPrice(discount) + 'đ';
       document.querySelector('.total-value').textContent = formatPrice(total) + 'đ';
-    
-
-
-      
       // Update Transfer Amount
       document.getElementById('amt').textContent = formatPrice(total) + 'đ';
       
@@ -70,8 +93,6 @@
       const orderId = paymentData.orderId || '1056';
       document.querySelector('.status-sub').textContent = `Order #${orderId}`;
       document.getElementById('note').textContent = `ORDER_${orderId}`;
-      
-
     }
     // Helper function to format price
     function formatPrice(price) {

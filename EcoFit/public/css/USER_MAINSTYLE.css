@@ -2017,20 +2017,24 @@ h1 {
 }
 
 /*05_SHOPPING_CART*/
-/* Shopping Cart Styles */
 .cart-section {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 60px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1600px;
+  margin: 60px auto;
+  padding: 0 80px;
+  gap: 50px;
 }
 .cart-container {
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 60px;
 }
-/* Left Side - Cart Items */
 .cart-left {
-  width: 100%;
+  border-radius: 20px;
+  padding: 40px;
+  flex: 2;
 }
 .cart-table {
   width: 100%;
@@ -2734,7 +2738,7 @@ a {
   background: #f6f6f6;
   border-radius: 10px;
   padding: 25px;
-  width: 550px;
+  width: 500px;
   flex: 1;
 }
 .transfer-title {
@@ -2829,14 +2833,6 @@ a {
 hr {
   border-top: 1px solid #e2e6e8;
   margin-top: 20px;
-  margin-bottom: 20px;
-}
-.order-detail,
-.order-summary {
-  background-color: white;
-  border: 2px solid #e5e5e5;
-  border-radius: 20px;
-  padding: 40px;
   margin-bottom: 20px;
 }
 

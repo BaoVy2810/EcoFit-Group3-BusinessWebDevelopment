@@ -17,7 +17,7 @@
         <div class="cart-container">
             <!-- Left Side - Cart Items -->
             <div class="cart-left">
-                <h1 class="cart-title">SHOPPING CART</h1>
+                <h2 class="cart-title">SHOPPING CART</h2>
                 <div class="cart-table">
                     <div class="cart-table__header">
                         <div class="col-item">Item</div>
@@ -25,13 +25,12 @@
                         <div class="col-subtotal">Subtotal</div>
                     </div>
                     
-                    <!-- Cart items will be dynamically loaded here -->
                     <div id="cart-items-container"></div>
                 </div>
             </div>
 
             <!-- Right Side - Order Summary -->
-            <div class="cart-right">
+            <div class="checkout-right">
                 <div class="order-summary">
                     <h2 class="order-summary__title">ORDER SUMMARY</h2>
                     <div class="order-summary__row">
@@ -46,9 +45,9 @@
                         <span>Total</span>
                         <span class="total-value" id="total-amount">0</span>
                     </div>
-                    <a href="../pages/06_CHECKOUT.html" class="checkout-btn">
-                        CHECKOUT →
-                    </a>
+                    <button class="checkout-btn">
+                    <a href="06_CHECKOUT.html" target="_self">CHECKOUT →</a>
+                </button>
                 </div>
             </div>
         </div>

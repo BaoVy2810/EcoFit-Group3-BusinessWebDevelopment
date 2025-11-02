@@ -126,54 +126,41 @@
                     </div>
                 </div>
             </section>
-            <!--RIGHT-->
+            <!-- RIGHT -->
             <div class="checkout-right">
-                <div class="order-detail">
-                    <h3 class="order-detail__title">ORDER DETAIL</h3>
-                    <div class="order-item">
-                        <img src="../images/Product_images/organic_cotton_tee.png" alt="">
-                        <div class="order-item-info">
-                            <h4>Organic Cotton T-Shirt</h4>
-                            <p>Color: White | Size: XXL</p>
-                            <span class="order-item-price">50.000</span>
-                        </div>
-                        <span class="order-item-qty">x1</span>
-                    </div>
-                    <hr/>
-                    <div class="order-item">
-                        <img src="../images/Product_images/recycled_pet_sneakers.png" alt="">
-                        <div class="order-item-info">
-                            <h4>Recycled PET Sneakers</h4>
-                            <p>Color: Beige | Size: 43</p>
-                            <span class="order-item-price">150.000</span>
-                        </div>
-                        <span class="order-item-qty">x1</span>
-                    </div>
+            <!-- ORDER DETAIL -->
+            <div class="order-detail">
+                <h3 class="order-detail__title">ORDER DETAIL</h3>
+            </div>
+            
+            <br/>
+            <!-- ORDER SUMMARY -->
+            <div class="order-summary">
+                <h2 class="order-summary__title">ORDER SUMMARY</h2>
+                
+                <div class="order-summary__row">
+                <span>Subtotal Product</span>
+                <span class="order-summary__value subtotal">-</span>
                 </div>
-                <br/>
-                <div class="checkout-right">
-                    <div class="order-summary">
-                        <h2 class="order-summary__title">ORDER SUMMARY</h2>
-                        <div class="order-summary__row">
-                            <span>Subtotal Product</span>
-                            <span class="order-summary__value">-</span>
-                        </div>
-                        <div class="order-summary__row">
-                            <span>Shipping Cost</span>
-                            <span class="order-summary__value">-</span>
-                        </div>
-                        <div class="order-summary__row">
-                            <span>Discount</span>
-                            <span class="order-summary__value discount">-</span>
-                        </div>
-                        <div class="order-summary__total">
-                            <span>Total</span>
-                            <span class="total-value">-</span>
-                        </div>
-                    </div>
+                
+                <div class="order-summary__row">
+                <span>Shipping Cost</span>
+                <span class="order-summary__value shipping">30.000đ</span>
+                </div>
+                
+                <div class="order-summary__row">
+                <span>Discount</span>
+                <span class="order-summary__value discount">-</span>
+                </div>
+                
+                <div class="order-summary__total">
+                <span>Total</span>
+                <span class="total-value">-</span>
                 </div>
             </div>
+            </div>
         </main>
+        <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
         <script src="../js/payment1.js"></script>
 </body>
 </html>

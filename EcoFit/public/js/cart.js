@@ -1,30 +1,16 @@
-// ==========================================
-// CART_HANDLER.JS - Quản lý giỏ hàng
-// ==========================================
-
-/**
- * Lấy cart từ localStorage
- */
 function getCart() {
   const cart = localStorage.getItem('cart');
   return cart ? JSON.parse(cart) : [];
 }
 
-/**
- * Lưu cart vào localStorage
- */
 function saveCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartBadge();
 }
 
-/**
- * Thêm sản phẩm vào giỏ hàng
- */
 function addToCart(product) {
   const cart = getCart();
   
-  // Kiểm tra sản phẩm đã tồn tại chưa (cùng id, color, size)
   const existingIndex = cart.findIndex(item => 
     item.product_id === product.product_id && 
     item.color === product.color && 
@@ -32,10 +18,8 @@ function addToCart(product) {
   );
   
   if (existingIndex !== -1) {
-    // Nếu đã có, tăng quantity
     cart[existingIndex].quantity += product.quantity;
   } else {
-    // Nếu chưa có, thêm mới
     cart.push(product);
   }
   
@@ -44,18 +28,12 @@ function addToCart(product) {
   return true;
 }
 
-/**
- * Xóa sản phẩm khỏi giỏ hàng
- */
 function removeFromCart(index) {
   const cart = getCart();
   cart.splice(index, 1);
   saveCart(cart);
 }
 
-/**
- * Cập nhật số lượng sản phẩm
- */
 function updateCartItemQuantity(index, quantity) {
   const cart = getCart();
   if (cart[index]) {
@@ -102,14 +80,13 @@ function loadCartFromStorage() {
   let cartHTML = '';
   cart.forEach((item, index) => {
     const productName = item.name || item.product_name || 'Unknown Product';
-    const productId = item.product_id || 'P001'; // ✅ THÊM: Lấy product_id
+    const productId = item.product_id || 'P001';
     
     cartHTML += `
       <div class="cart-item">
         <div class="cart-item__left">
           <input type="checkbox" class="cart-checkbox" checked data-index="${index}">
           
-          <!-- ✅ THÊM: Link cho ảnh sản phẩm -->
           <a href="../pages/04_PRODUCT_Detail.html?id=${productId}" class="cart-item__image-link">
             <div class="cart-item__image">
               <img 
@@ -121,7 +98,6 @@ function loadCartFromStorage() {
           </a>
           
           <div class="cart-item__info">
-            <!-- ✅ THÊM: Link cho tên sản phẩm -->
             <a href="../pages/04_PRODUCT_Detail.html?id=${productId}" class="cart-item__name-link">
               <h3 class="cart-item__name">${productName}</h3>
             </a>
@@ -132,7 +108,7 @@ function loadCartFromStorage() {
         
         <div class="cart-item__quantity">
           <div class="quantity-control">
-            <button class="qty-btn minus" data-index="${index}">−</button>
+            <button class="qty-btn minus" data-index="${index}">-</button>
             <input type="number" value="${item.quantity}" min="1" class="qty-input" readonly data-index="${index}">
             <button class="qty-btn plus" data-index="${index}">+</button>
           </div>
@@ -164,7 +140,6 @@ function attachQuantityControls() {
       input.value = newValue;
       
       CartHandler.updateCartItemQuantity(index, newValue);
-      // ĐÃ XÓA: không còn updateItemSubtotal vì subtotal không thay đổi
       updateCartTotal();
     });
   });
@@ -245,11 +220,24 @@ function showEmptyCart() {
   const cartContainer = document.getElementById('cart-items-container');
   if (cartContainer) {
     cartContainer.innerHTML = `
-      <div style="text-align: center; padding: 60px 20px; color: #999;">
-        <p style="font-size: 18px; margin-bottom: 20px;">🛒 Your cart is empty</p>
-        <a href="02_PRODUCT_CATEGORY.html" style="display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%); color: white; text-decoration: none; border-radius: 30px; font-weight: 600;">Continue Shopping</a>
+      <div style="text-align: center;
+                  color: #999;
+                  ">
+        <p style="font-size: 18px;
+                  margin-bottom: 20px;">
+                  🛒 Your cart is empty
+        </p>
+        <a href="02_PRODUCT_CATEGORY.html" style="display: inline-block; 
+                                                  padding: 12px 30px; 
+                                                  background: linear-gradient(135deg, #69BD76 0%, #3DA547 100%); 
+                                                  color: white; text-decoration: none; 
+                                                  border-radius: 30px; 
+                                                  font-weight: 600;">
+                                                  Continue Shopping</a>
       </div>
     `;
+    cartContainer.style.minHeight = "300px";
+    cartContainer.style.minWidth = "770px";
   }
   document.getElementById('subtotal-amount').textContent = '0';
   document.getElementById('total-amount').textContent = '0';

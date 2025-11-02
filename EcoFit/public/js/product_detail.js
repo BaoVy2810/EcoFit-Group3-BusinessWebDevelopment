@@ -1443,6 +1443,40 @@ function trackProductView() {
 if (currentProduct) {
     trackProductView();
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const addBtn = document.querySelector(".add-to-cart-btn");
+  if (!addBtn) return;
+
+  addBtn.addEventListener("click", () => {
+    const color = document.querySelector("#color")?.value || "Default";
+    const size = document.querySelector("#size")?.value || "M";
+    const quantity = parseInt(document.querySelector("#quantity")?.value) || 1;
+
+    const productId = currentProduct.product_id;
+    const productName = currentProduct.product_name;
+    const price = currentProduct.price_discounted || currentProduct.price_original;
+    const image =
+      currentProduct.product_images?.[0] || "../images/Product_images/organic_cotton_tee.png";
+
+    const item = {
+      product_id: productId,
+      product_name: productName,
+      price: price,
+      color: color,
+      size: size,
+      quantity: quantity,
+      image: image,
+    };
+
+    if (typeof addToCart === "function") {
+      addToCart(item);
+      alert(`✅ Đã thêm vào giỏ: ${productName}\nMàu: ${color} | Size: ${size}`);
+    } else {
+      console.warn("⚠️ addToCart() function not found.");
+    }
+  });
+});
+
 
 // Export functions for use in HTML onclick attributes
 window.addToCart = addToCart;

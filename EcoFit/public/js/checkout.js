@@ -51,21 +51,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
       subtotal += price * quantity;
 
-      orderDetail.innerHTML += `
-        <div class="order-item">
-          <img src="${img}" alt="${name}" 
-              style="width:80px;height:80px;object-fit:cover;border-radius:8px;"
-              onerror="this.src='../images/product_images/organic_cotton_tee.png'">
-          <div class="order-item-info">
-            <h4>${name}</h4>
-            <p>Color: ${color} | Size: ${size}</p>
-            <span class="order-item-price">${formatPrice(price)}đ</span>
+    orderDetail.innerHTML += `
+      <div class="order-item"
+          style="display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  margin-bottom:20px;">
+        <div style="display:flex;
+                    align-items:center;
+                    gap:12px;
+                    flex:1;">
+            <a href="../pages/04_PRODUCT_Detail.html?id=${p.product_id || ''}" 
+              style="display:block;">
+              <img src="${img}" alt="${name}" 
+                  style="width:80px;
+                        height:80px;
+                        object-fit:cover;
+                        border-radius:8px;"
+                  onerror="this.src='../images/product_images/organic_cotton_tee.png'">
+            </a>
+          <div class="order-item-info" style="flex:1; min-width:0;">
+            <h4 style="margin:0;
+                        white-space:nowrap;
+                        overflow:hidden;
+                        text-overflow:ellipsis;
+                        font-size:15px;
+                        font-weight:600;
+                        max-width:100%;">
+              ${name}
+            </h4>
+            <p style="margin:4px 0; color:#666;">Color: ${color} | Size: ${size}</p>
+            <span class="order-item-price"
+                  style="font-weight:500;">${formatPrice(price)}đ</span>
           </div>
-          <span class="order-item-qty">x${quantity}</span>
-        </div>`;
-    });
-    
-    // Thêm <hr/> sau items
+        </div>
+
+        <span class="order-item-qty"
+              style="min-width:45px;
+                    text-align:right;
+                    font-weight:600;
+                    color:#333;">
+          x${quantity}
+        </span>
+      </div>`;
+  });
     orderDetail.innerHTML += '<hr/>';
   }
 
@@ -133,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderId = Math.floor(1000 + Math.random() * 9000);
 
     // Lấy text payment method
-    let paymentMethod = "Transfer via QR code"; // default
+    let paymentMethod = "Transfer via QR code";
     const paymentLabel = payment.parentElement.textContent.trim();
     if (paymentLabel.includes("Momo")) {
       paymentMethod = "Transfer via Momo";

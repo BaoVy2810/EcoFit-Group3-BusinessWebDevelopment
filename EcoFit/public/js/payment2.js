@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ---------------- đọc dữ liệu từ localStorage ----------------
   const paymentInfo = tryParse(localStorage.getItem('paymentInfo'));
   const checkoutOrder = tryParse(localStorage.getItem('checkoutOrder'));
   const checkoutCart = tryParse(localStorage.getItem('checkoutCart'));
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // ---------------- chuẩn bị dữ liệu ----------------
   const items = paymentInfo.cart || [];
   const customer = (checkoutOrder && checkoutOrder.customer) || {};
   const subtotal = safeNumber(paymentInfo.subtotal) || calcSubtotal(items);
@@ -20,25 +18,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const total = safeNumber(paymentInfo.total) || subtotal + shipping - discount;
   const orderId = paymentInfo.orderId || generateOrderId();
 
-  // ---------------- hiển thị thông tin đơn hàng ----------------
-  // Mã đơn hàng
   const orderSpan = document.querySelector(".page-title span");
   if (orderSpan) orderSpan.textContent = `#${orderId}`;
 
-  // Hiển thị địa chỉ giao hàng
-  const deliveryBox = document.querySelector(".delivery-box .delivery-text");
-  if (deliveryBox) {
-    const addressText = composeAddress(customer);
-    deliveryBox.innerHTML = addressText || 'No delivery address';
+const deliveryBox = document.querySelector(".delivery-box .delivery-text");
+if (deliveryBox) {
+  let fullname = "-";
+  let phone = "-";
+  let address = "-";
+
+  if (customer && (customer.fullname || customer.address)) {
+    fullname = customer.fullname || fullname;
+    phone = customer.phone || phone;
+    address = customer.address || address;
+  } 
+  else if (localStorage.getItem("isLoggedIn") === "true") {
+    const nameLS = localStorage.getItem("userName");
+    const phoneLS = localStorage.getItem("userPhone");
+    const addressLS = localStorage.getItem("userAddress");
+    if (nameLS || addressLS) {
+      fullname = nameLS || fullname;
+      phone = phoneLS || phone;
+      address = addressLS || address;
+    }
   }
 
-  // Hiển thị danh sách sản phẩm
+  deliveryBox.innerHTML = `
+    ${fullname} | ${phone}<br>
+    ${address}
+  `;
+}
+
   renderOrderItems(items);
-
-  // Hiển thị tóm tắt đơn hàng
   renderOrderSummary(subtotal, shipping, discount, total);
-
-  // ---------------- lưu vào lịch sử đơn hàng ----------------
   pushOrderHistory({
     orderId,
     total,
@@ -47,8 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-
-// ---------------- helper functions ----------------
 function tryParse(str) {
   try { return str ? JSON.parse(str) : null; }
   catch(e) { return null; }
@@ -91,35 +101,113 @@ function composeAddress(customerObj) {
 function renderOrderItems(list) {
   const rd = document.querySelector('.order-detail');
   if (!rd) return;
+
   const normalized = list.map(normalizeItem);
   if (!normalized.length) {
-    rd.innerHTML = '<p>No items</p>';
+    rd.innerHTML = '<p style="text-align:center;padding:20px;color:#999;">No items</p>';
     return;
   }
-  const html = normalized.map(item => `
-    <div class="order-item">
-      <img src="${item.image}" alt="">
-      <div class="order-item-info">
-        <h4>${escapeHtml(item.name)}</h4>
-        <p>Color: ${escapeHtml(item.color)} | Size: ${escapeHtml(item.size)}</p>
-        <span class="order-item-price">${formatNumber(item.price)}</span>
-      </div>
-      <span class="order-item-qty">x${item.qty}</span>
-    </div>
-  `).join('');
-  rd.innerHTML = `<h3>ORDER DETAIL</h3>${html}<hr/>`;
-}
 
+  let html = '<h3 style="margin-bottom:12px;">ORDER DETAIL</h3>';
+
+  normalized.forEach(item => {
+    html += `
+      <div class="order-item"
+           style="display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  padding:8px 0;
+                  border-bottom:1px solid #eee;">
+        <div style="display:flex;
+                    align-items:center;
+                    gap:12px;
+                    flex:1;">
+          <a href="../pages/04_PRODUCT_Detail.html?id=${escapeHtml(item.id || '')}" 
+             style="display:block;">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}"
+                 style="width:70px;
+                        height:70px;
+                        object-fit:cover;
+                        border-radius:8px;"
+                 onerror="this.src='../images/Product_images/default.png'">
+          </a>
+
+          <div class="order-item-info" style="flex:1; min-width:0;">
+            <a href="../pages/04_PRODUCT_Detail.html?id=${escapeHtml(item.id || '')}"
+               style="text-decoration:none;color:#222;">
+              <h4 style="margin:0;
+                         white-space:nowrap;
+                         overflow:hidden;
+                         text-overflow:ellipsis;
+                         font-size:15px;
+                         font-weight:600;
+                         max-width:100%;">
+                ${escapeHtml(item.name)}
+              </h4>
+            </a>
+            <p style="margin:2px 0; color:#666; font-size:14px;">
+              Color: ${escapeHtml(item.color)} | Size: ${escapeHtml(item.size)}
+            </p>
+            <span class="order-item-price"
+                  style="font-weight:500; font-size:14px;">${formatNumber(item.price)}đ</span>
+          </div>
+        </div>
+
+        <span class="order-item-qty"
+              style="min-width:40px;
+                     text-align:right;
+                     font-weight:600;
+                     color:#333;
+                     font-size:14px;">
+          x${item.qty}
+        </span>
+      </div>`;
+  });
+
+  rd.innerHTML = html + '<hr style="border:none;border-top:1px solid #ccc;margin-top:10px;">';
+}
 function renderOrderSummary(subtotal, shipping, discount, total) {
   const summaryEl = document.querySelector('.order-summary');
   if (!summaryEl) return;
+
   summaryEl.innerHTML = `
-    <h3>ORDER SUMMARY</h3>
-    <div class="summary-item"><span>Subtotal Product</span><span>${formatNumber(subtotal)}</span></div>
-    <div class="summary-item"><span>Shipping Cost</span><span>${formatNumber(shipping)}</span></div>
-    <div class="summary-item"><span>Discount</span><span>-${formatNumber(discount)}</span></div>
-    <hr/>
-    <div class="total"><span>Total</span><span>${formatNumber(total)}</span></div>
+    <h3 style="margin-bottom:12px;">ORDER SUMMARY</h3>
+    <div class="summary-item" 
+         style="display:flex; 
+                justify-content:space-between; 
+                margin:6px 0; 
+                color:#444;">
+      <span>Subtotal Product</span>
+      <span>${formatNumber(subtotal)}đ</span>
+    </div>
+    <div class="summary-item" 
+         style="display:flex; 
+                justify-content:space-between; 
+                margin:6px 0; 
+                color:#444;">
+      <span>Shipping Cost</span>
+      <span>${formatNumber(shipping)}đ</span>
+    </div>
+    <div class="summary-item" 
+         style="display:flex; 
+                justify-content:space-between; 
+                margin:6px 0; 
+                color:#444;">
+      <span>Discount</span>
+      <span style="color:#d33;">-${formatNumber(discount)}đ</span>
+    </div>
+    <hr style="margin:10px 0; 
+              border:none; 
+              border-top:1px solid #ccc;"/>
+    <div class="total" 
+         style="display:flex; 
+                justify-content:space-between; 
+                font-weight:700; 
+                font-size:16px; 
+                color:#000;">
+      <span>Total</span>
+      <span>${formatNumber(total)}đ</span>
+    </div>
   `;
 }
 
