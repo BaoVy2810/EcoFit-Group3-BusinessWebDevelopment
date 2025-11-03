@@ -3114,8 +3114,7 @@ h1 span {
 .form-group label {
   flex: 0 0 180px;
   font-size: 16px;
-  color: #000;
-  font-weight: 500;
+  color: #999;
   padding-top: 12px;
   margin-right: 30px;
 }
