@@ -168,8 +168,8 @@
                     <button class="qty-btn">+</button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn-outline">Add to cart</button>
-                    <button class="btn-fill">Buy now</button>
+                    <button class="btn-outline" onclick="addToCart(null, event)">Add to cart</button>
+                    <button class="btn-fill" onclick="buyNow(null, event)">Buy now</button>
                 </div>
             </div>
             <div class="product-share">
@@ -657,43 +657,6 @@
             </div>
         </div>
     </section>
-    <script>
-// Xử lý nút Add to Cart
-document.addEventListener('DOMContentLoaded', () => {
-  const addToCartBtn = document.querySelector('.btn-outline');
-  
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener('click', () => {
-      // Lấy thông tin sản phẩm từ trang
-      const productId = new URLSearchParams(window.location.search).get('id') || 'P002';
-      const productName = document.querySelector('.product-title').textContent.trim().split('\n')[0].trim();
-      const priceText = document.querySelector('.product-price p').textContent.trim();
-      const price = parseInt(priceText.replace(/[.,đ]/g, ''));
-      const size = document.getElementById('size').value;
-      const color = document.getElementById('color').value;
-      const quantity = parseInt(document.querySelector('.quantity input').value);
-      const image = document.querySelector('.gallery-main img').src;
-      
-      // Tạo object sản phẩm
-      const product = {
-        product_id: productId,
-        name: productName,
-        price: price,
-        size: size,
-        color: color,
-        quantity: quantity,
-        image: image
-      };
-      
-      // Thêm vào giỏ hàng
-      if (CartHandler.addToCart(product)) {
-        // Hiển thị thông báo thành công
-        alert(`✅ Added "${productName}" to cart!\nSize: ${size} | Color: ${color} | Qty: ${quantity}`);
-      }
-    });
-  }
-});
-</script>
     <iframe src="../template/footer.html" id="footer-frame" class="footer-frame"></iframe>
     <script src="../js/product_detail.js"></script>
 </body>

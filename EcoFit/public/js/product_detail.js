@@ -745,8 +745,8 @@ function displayRelatedProductsForPage() {
                         <span class="bought">${product.number_bought}</span>
                     </p>
                     <div class="btn-group">
-                        <button class="btn-outline" onclick="addToCart('${product.product_id}', event)">Add to cart</button>
-                        <button class="btn-fill" onclick="buyNow('${product.product_id}', event)">Buy now</button>
+                        <button class="btn-outline" onclick="event.stopPropagation(); addToCart('${product.product_id}', event)">Add to cart</button>
+                        <button class="btn-fill" onclick="event.stopPropagation(); buyNow('${product.product_id}', event)">Buy now</button>
                     </div>
                 </div>
             </div>
@@ -760,11 +760,12 @@ function displayRelatedProductsForPage() {
 function setupRelatedProductsClick() {
     document.querySelectorAll('.related_products .product-card').forEach(card => {
         card.addEventListener('click', function(e) {
-            // Don't navigate if clicking on buttons
-            if (!e.target.closest('button')) {
-                const productId = this.dataset.productId;
-                window.location.href = `04_PRODUCT_Detail.html?id=${productId}`;
+            if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.btn-group')) {
+                return;
             }
+            
+            const productId = this.dataset.productId;
+            window.location.href = `04_PRODUCT_Detail.html?id=${productId}`;
         });
     });
 }
@@ -865,11 +866,10 @@ function setupQuantityControls() {
     });
 }
 
-// Add to cart function
 function addToCart(productId, event) {
-    // Prevent event propagation if called from button
     if (event) {
         event.stopPropagation();
+        event.preventDefault();
     }
     
     const product = productId ? productsData.product.find(p => p.product_id === productId) : currentProduct;
@@ -920,8 +920,8 @@ function addToCart(productId, event) {
         cart[existingIndex].quantity = newQuantity;
     } else {
         // Add new item to cart
-        const productImage = product.review_images && product.review_images.length > 0 
-            ? product.review_images[0] 
+        const productImage = product.product_images && product.product_images.length > 0 
+            ? product.product_images[0] 
             : '../../dataset/product_images/placeholder.png';
         
         cart.push({
@@ -943,8 +943,11 @@ function addToCart(productId, event) {
     // Show success message
     showAddToCartMessage(`✓ ${product.product_name} added to cart!`);
     
-    // Update cart count in header if exists
+    // Update cart count in header
     updateCartCount();
+    
+    // ✅ Debug log
+    console.log('✅ Added to cart:', product.product_name, 'Quantity:', quantity);
 }
 
 // Show add to cart message
@@ -996,11 +999,10 @@ function updateCartCount() {
     }
 }
 
-// Buy now function
 function buyNow(productId, event) {
-    // Prevent event propagation if called from button
     if (event) {
         event.stopPropagation();
+        event.preventDefault();
     }
     
     addToCart(productId, event);
@@ -1013,28 +1015,7 @@ function buyNow(productId, event) {
 
 // Setup product action buttons
 function setupProductActions() {
-    const addToCartBtn = document.querySelector('.product-actions .btn-outline');
-    const buyNowBtn = document.querySelector('.product-actions .btn-fill');
-    
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', () => {
-            if (currentProduct && currentProduct.quantity_available > 0) {
-                addToCart(null, null);
-            } else {
-                alert('Sorry, this product is out of stock!');
-            }
-        });
-    }
-    
-    if (buyNowBtn) {
-        buyNowBtn.addEventListener('click', () => {
-            if (currentProduct && currentProduct.quantity_available > 0) {
-                buyNow(null, null);
-            } else {
-                alert('Sorry, this product is out of stock!');
-            }
-        });
-    }
+
 }
 
 // Setup review action buttons
@@ -1207,6 +1188,23 @@ style.textContent = `
         font-weight: 500;
         font-size: 14px;
         letter-spacing: 0.3px;
+    }
+    .product-card .btn-group {
+        pointer-events: auto;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .product-card .btn-group button {
+        pointer-events: auto;
+    }
+    
+    .product-card {
+        cursor: pointer;
+    }
+    
+    .product-card .btn-group button {
+        cursor: pointer;
     }
 `;
 document.head.appendChild(style);
@@ -1443,40 +1441,6 @@ function trackProductView() {
 if (currentProduct) {
     trackProductView();
 }
-document.addEventListener("DOMContentLoaded", () => {
-  const addBtn = document.querySelector(".add-to-cart-btn");
-  if (!addBtn) return;
-
-  addBtn.addEventListener("click", () => {
-    const color = document.querySelector("#color")?.value || "Default";
-    const size = document.querySelector("#size")?.value || "M";
-    const quantity = parseInt(document.querySelector("#quantity")?.value) || 1;
-
-    const productId = currentProduct.product_id;
-    const productName = currentProduct.product_name;
-    const price = currentProduct.price_discounted || currentProduct.price_original;
-    const image =
-      currentProduct.product_images?.[0] || "../images/Product_images/organic_cotton_tee.png";
-
-    const item = {
-      product_id: productId,
-      product_name: productName,
-      price: price,
-      color: color,
-      size: size,
-      quantity: quantity,
-      image: image,
-    };
-
-    if (typeof addToCart === "function") {
-      addToCart(item);
-      alert(`✅ Đã thêm vào giỏ: ${productName}\nMàu: ${color} | Size: ${size}`);
-    } else {
-      console.warn("⚠️ addToCart() function not found.");
-    }
-  });
-});
-
 
 // Export functions for use in HTML onclick attributes
 window.addToCart = addToCart;
