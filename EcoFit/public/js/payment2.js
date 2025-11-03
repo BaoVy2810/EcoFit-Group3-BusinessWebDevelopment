@@ -33,14 +33,71 @@ document.addEventListener("DOMContentLoaded", () => {
   renderOrderItems(items);
   renderOrderSummary(subtotal, shipping, discount, total);
 
-  // Lưu đơn hàng vào lịch sử (nếu cần)
+  // Lưu đơn hàng vào lịch sử
   pushOrderHistory({
     orderId,
     total,
     cart: items,
     address: paymentInfo.address,
   });
+
+  // 🟢 XÓA SẢN PHẨM ĐÃ THANH TOÁN KHỎI CART
+  removePaidItemsFromCart(items);
 });
+
+// ======================= XÓA SẢN PHẨM ĐÃ THANH TOÁN =======================
+function removePaidItemsFromCart(paidItems) {
+  try {
+    const cart = tryParse(localStorage.getItem("cart")) || [];
+    
+    // Tạo Set các sản phẩm đã thanh toán để so sánh nhanh
+    const paidItemsSet = new Set(
+      paidItems.map(item => 
+        `${item.product_id || item.id}_${item.color}_${item.size}`
+      )
+    );
+
+    // Lọc ra những sản phẩm CHƯA thanh toán
+    const remainingCart = cart.filter(item => {
+      const itemKey = `${item.product_id || item.id}_${item.color}_${item.size}`;
+      return !paidItemsSet.has(itemKey);
+    });
+
+    // Cập nhật lại cart
+    localStorage.setItem("cart", JSON.stringify(remainingCart));
+    
+    // Cập nhật cart badge
+    updateCartBadgeAfterPayment(remainingCart);
+    
+    console.log(`✅ Removed ${paidItems.length} paid items from cart`);
+    console.log(`📦 Remaining items in cart: ${remainingCart.length}`);
+    
+  } catch (e) {
+    console.error("Error removing paid items:", e);
+  }
+}
+
+// ======================= CẬP NHẬT CART BADGE =======================
+function updateCartBadgeAfterPayment(cart) {
+  const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  
+  // Gửi message đến parent window (nếu trong iframe)
+  if (window.parent !== window) {
+    window.parent.postMessage({
+      action: 'updateCartBadge',
+      count: totalItems
+    }, '*');
+  }
+  
+  // Cập nhật badge trực tiếp nếu có
+  const badge = document.querySelector('a[href*="05_SHOPPING_CART"] .badge');
+  if (badge) {
+    badge.textContent = totalItems;
+    badge.style.display = totalItems > 0 ? 'inline-block' : 'none';
+  }
+  
+  console.log(`🔔 Cart badge updated: ${totalItems} items`);
+}
 
 // ======================= HÀM HỖ TRỢ =======================
 function tryParse(str) {
@@ -148,13 +205,13 @@ function normalizeItem(it) {
   const qty = Number(it.qty ?? it.quantity ?? 1);
   const price = safeNumber(it.price ?? 0);
   return {
-    id: it.id || "",
-    name: it.name || "Unknown",
+    id: it.product_id || it.id || "",
+    name: it.product_name || it.name || "Unknown",
     qty,
     price,
     color: it.color || "",
     size: it.size || "",
-    image: it.image || "../images/Product_images/default.png",
+    image: it.image || it.img || "../images/Product_images/default.png",
   };
 }
 function generateOrderId() {
