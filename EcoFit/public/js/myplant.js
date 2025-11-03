@@ -7,20 +7,60 @@
   // =====================================================
   function getCurrentUser() {
     try {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      if (!isLoggedIn) {
+        console.log("⚠️ User not logged in (isLoggedIn = false)");
+        return null;
+      }
+
       const raw = localStorage.getItem("login_infor");
-      return raw ? JSON.parse(raw) : null;
-    } catch (_) {
+      if (!raw) {
+        console.log("⚠️ No login_infor found in localStorage");
+        return null;
+      }
+
+      const user = JSON.parse(raw);
+      console.log("✅ Found login_infor:", user);
+      return user;
+    } catch (error) {
+      console.error("❌ Error parsing login_infor:", error);
       return null;
     }
   }
 
-  const currentUser = getCurrentUser();
-  const userId =
-    currentUser &&
-    (currentUser.id || currentUser.profile_id || currentUser.email)
-      ? currentUser.id || currentUser.profile_id || currentUser.email
-      : "guest";
-  const userKey = `myplant_user_${userId}`;
+  // Use let instead of const so we can re-initialize
+  let currentUser = null;
+  let userId = "guest";
+  let userKey = "myplant_user_guest";
+
+  function initializeUser() {
+    currentUser = getCurrentUser();
+    // Đảm bảo lấy profile_id và convert sang string
+    userId =
+      currentUser &&
+      (currentUser.id || currentUser.profile_id || currentUser.email)
+        ? String(currentUser.id || currentUser.profile_id || currentUser.email)
+        : "guest";
+    userKey = `myplant_user_${userId}`;
+
+    // Debug log
+    console.log("🔍 MyPlant Debug Info:");
+    console.log("  - isLoggedIn:", localStorage.getItem("isLoggedIn"));
+    console.log("  - login_infor raw:", localStorage.getItem("login_infor"));
+    console.log("  - Current User:", currentUser);
+    console.log("  - User ID:", userId);
+    console.log("  - User Key:", userKey);
+
+    // Alert if guest mode for debugging
+    if (userId === "guest") {
+      console.warn("⚠️ RUNNING IN GUEST MODE - No account data will be loaded");
+    }
+
+    return userId;
+  }
+
+  // Initialize user on script load
+  initializeUser();
 
   // =====================================================
   // 🎯 DOM ELEMENT REFERENCES
@@ -72,7 +112,69 @@
   // 💾 DATA PERSISTENCE (localStorage + JSON sync)
   // =====================================================
 
-  // Load initial state from localStorage
+  // Load initial state from attendance.json first, then fallback to localStorage
+  async function loadStateFromAttendance() {
+    console.log(`🔄 Loading attendance data for userId: ${userId}`);
+
+    try {
+      // First try to load from attendance.json
+      const response = await fetch("../../dataset/attendance.json");
+      if (response.ok) {
+        const attendanceData = await response.json();
+
+        console.log("📦 Attendance data loaded");
+        console.log(`🔍 Looking for user ${userId}...`);
+        console.log(
+          "   Available users:",
+          Object.keys(attendanceData.users || {})
+        );
+
+        // Check if user data exists in attendance.json
+        if (attendanceData.users && attendanceData.users[userId]) {
+          const userData = attendanceData.users[userId];
+          claimedDates = userData.claimedDates.map((s) => new Date(s));
+          streak = Number(userData.streak || 0);
+          greenScore = Number(userData.greenScore || 0);
+          plantStage = userData.plantStage || "Seed";
+          dailyPoints = userData.dailyPoints || {};
+
+          console.log(`✅ Loaded attendance data for user ${userId}:`);
+          console.log(`   - Streak: ${streak} days`);
+          console.log(`   - Green Score: ${greenScore} points`);
+          console.log(`   - Plant Stage: ${plantStage}`);
+          console.log(`   - Claimed Dates: ${claimedDates.length} days`);
+          return true;
+        } else {
+          console.warn(`⚠️ User ${userId} not found in attendance.json`);
+        }
+      }
+    } catch (error) {
+      console.warn("⚠️ Could not load from attendance.json:", error.message);
+    }
+
+    // Fallback to localStorage
+    try {
+      const saved = JSON.parse(localStorage.getItem(userKey) || "null");
+      if (saved && Array.isArray(saved.claimedDates)) {
+        claimedDates = saved.claimedDates.map((s) => new Date(s));
+        streak = Number(saved.streak || 0);
+        greenScore = Number(saved.greenScore || 0);
+        plantStage = saved.plantStage || "Seed";
+        dailyPoints = saved.dailyPoints || {};
+        console.log(
+          `✅ Loaded attendance data for user ${userId} from localStorage`
+        );
+        return true;
+      }
+    } catch (_) {}
+
+    console.log(
+      `ℹ️ No existing attendance data found for user ${userId}, starting fresh`
+    );
+    return false;
+  }
+
+  // Legacy function for backwards compatibility
   function loadState() {
     try {
       const saved = JSON.parse(localStorage.getItem(userKey) || "null");
@@ -150,26 +252,54 @@
 
       attendanceData.lastUpdated = data.updatedAt;
 
-      // Note: In a real app, you would send this to a backend server
-      // For now, we'll save it to localStorage as a simulation
+      // Save to localStorage as simulation
       localStorage.setItem("attendance_data", JSON.stringify(attendanceData));
 
-      console.log("✅ Attendance data synced successfully", attendanceData);
+      console.log("✅ Attendance data synced to localStorage");
 
-      // Attempt to write to file (will work with a backend server)
-      // This is a placeholder - in production, use a POST request to your API
-      /*
-      await fetch("../../dataset/attendance.json", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(attendanceData),
-      });
-      */
+      // Also sync green_score back to accounts.json
+      await syncToAccountsJson(data.greenScore);
     } catch (error) {
       console.warn(
         "⚠️ Could not sync to file (expected in browser):",
         error.message
       );
+    }
+  }
+
+  // Sync green_score back to accounts.json
+  async function syncToAccountsJson(newGreenScore) {
+    if (userId === "guest") return; // Don't sync for guest
+
+    try {
+      const response = await fetch("../../dataset/accounts.json");
+      if (!response.ok) return;
+
+      const accountsData = await response.json();
+      const profiles = accountsData.profile || [];
+
+      // Find and update the user's profile
+      const userProfile = profiles.find(
+        (p) => String(p.profile_id) === String(userId)
+      );
+      if (userProfile) {
+        userProfile.green_score = newGreenScore;
+
+        // Save to localStorage as simulation
+        localStorage.setItem("accounts_data", JSON.stringify(accountsData));
+
+        // Update login_infor as well
+        if (currentUser) {
+          currentUser.green_score = newGreenScore;
+          localStorage.setItem("login_infor", JSON.stringify(currentUser));
+        }
+
+        console.log(
+          `✅ Green score ${newGreenScore} synced to accounts.json for user ${userId}`
+        );
+      }
+    } catch (error) {
+      console.warn("⚠️ Could not sync to accounts.json:", error.message);
     }
   }
 
@@ -374,10 +504,28 @@
   // =====================================================
 
   function updatePlantVisuals() {
-    // Calculate total green score from all claimed dates
-    greenScore = Object.values(dailyPoints).reduce((sum, pts) => sum + pts, 0);
+    // ONLY recalculate if greenScore is 0 or dailyPoints changed
+    // Otherwise keep the loaded greenScore from attendance.json
+    const calculatedScore = Object.values(dailyPoints).reduce(
+      (sum, pts) => sum + pts,
+      0
+    );
 
-    if (greenScoreElem) greenScoreElem.textContent = String(greenScore);
+    // If we have a loaded greenScore (from attendance.json), use it
+    // Only recalculate if it's 0 or doesn't match
+    if (greenScore === 0 || calculatedScore !== greenScore) {
+      greenScore = calculatedScore;
+      console.log("🔄 Recalculated green score:", greenScore);
+    }
+
+    console.log("🌱 Updating Plant Visuals:");
+    console.log("  - Green Score:", greenScore);
+    console.log("  - Daily Points:", dailyPoints);
+
+    if (greenScoreElem) {
+      greenScoreElem.textContent = String(greenScore);
+      console.log("  - Updated Green Score Element:", greenScore);
+    }
     checkScoreMilestone(greenScore);
 
     const prevStage = plantStage;
@@ -401,7 +549,12 @@
       percent = (greenScore / 20) * 100;
     }
 
-    if (periodElem) periodElem.textContent = plantStage;
+    console.log("  - Plant Stage:", plantStage);
+
+    if (periodElem) {
+      periodElem.textContent = plantStage;
+      console.log("  - Updated Period Element:", plantStage);
+    }
 
     const plantImg = document.getElementById("plant-img");
     if (plantImg) {
@@ -412,13 +565,17 @@
         "Guardian Tree": "../images/old_tree.png",
       };
       plantImg.src = stages[plantStage] || stages.Seed;
+      console.log("  - Updated Plant Image:", plantImg.src);
     }
 
     // Update progress ring
     progressPercent = Math.max(0, Math.min(100, Math.round(percent)));
     const ring = document.getElementById("progress-ring");
     const txt = document.getElementById("progress-percent");
-    if (txt) txt.textContent = String(progressPercent);
+    if (txt) {
+      txt.textContent = String(progressPercent);
+      console.log("  - Progress Percent:", progressPercent);
+    }
     if (ring) {
       const radius = Number(ring.getAttribute("r") || 42);
       const circumference = 2 * Math.PI * radius;
@@ -429,7 +586,7 @@
     }
 
     // Level up celebration
-    if (prevStage !== plantStage) {
+    if (prevStage !== plantStage && prevStage !== "Seed") {
       showLevelUpPopup(plantStage);
     }
   }
@@ -497,6 +654,9 @@
     const dateStr = dateToString(date);
     const points = calculateRewardPoints(date);
 
+    console.log("🎯 Claiming date:", dateStr);
+    console.log("  - Points earned:", points);
+
     // Add to claimed dates
     claimedDates.push(normalizeDate(date));
     claimedDates.sort((a, b) => a - b);
@@ -504,9 +664,18 @@
     // Store points for this specific date
     dailyPoints[dateStr] = points;
 
+    console.log("  - Total claimed dates:", claimedDates.length);
+    console.log("  - Daily points:", dailyPoints);
+
     // Recalculate streak and update visuals
     recalcStreak();
+    console.log("  - New streak:", streak);
+
     updatePlantVisuals();
+    console.log("  - New green score:", greenScore);
+    console.log("  - New plant stage:", plantStage);
+
+    // Save state immediately
     saveState();
 
     // Show appropriate feedback
@@ -519,6 +688,44 @@
     }
 
     return true;
+  }
+
+  // =====================================================
+  // 👤 USER DISPLAY FUNCTIONS
+  // =====================================================
+
+  /**
+   * Display user information and handle non-logged-in state
+   */
+  function displayUserInfo() {
+    // Re-check user in case it changed
+    initializeUser();
+
+    const isGuest = userId === "guest";
+    const userFullname = currentUser
+      ? currentUser.fullname || currentUser.email
+      : "Guest";
+
+    console.log("📊 Display User Info:");
+    console.log("  - Is Guest:", isGuest);
+    console.log("  - User ID:", userId);
+    console.log("  - Fullname:", userFullname);
+    console.log("  - Streak:", streak);
+    console.log("  - Green Score:", greenScore);
+
+    if (isGuest) {
+      // Show guest alert
+      console.log("⚠️ User is not logged in. Showing guest mode.");
+      alert(
+        "👋 Welcome, Guest!\n\nYour progress is being saved locally. Please login to sync across devices and unlock all features!"
+      );
+    } else {
+      // User is logged in
+      console.log(`✅ Welcome back, ${userFullname}! (User ID: ${userId})`);
+      console.log(
+        `Current Streak: ${streak} days | Green Score: ${greenScore} points`
+      );
+    }
   }
 
   // =====================================================
@@ -550,11 +757,19 @@
     daysContainer.innerHTML = "";
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const claimedSet = new Set(
-      claimedDates
-        .filter((d) => d.getFullYear() === year && d.getMonth() === month)
-        .map((d) => d.getDate())
+
+    const claimedDatesThisMonth = claimedDates.filter(
+      (d) => d.getFullYear() === year && d.getMonth() === month
     );
+
+    console.log(`📅 Rendering Calendar for ${monthNames[month]} ${year}:`);
+    console.log(`  - Total Claimed Dates: ${claimedDates.length}`);
+    console.log(
+      `  - Claimed Dates This Month: ${claimedDatesThisMonth.length}`,
+      claimedDatesThisMonth
+    );
+
+    const claimedSet = new Set(claimedDatesThisMonth.map((d) => d.getDate()));
 
     const cells = [];
 
@@ -657,12 +872,51 @@
   // 🚀 INITIALIZATION
   // =====================================================
 
-  window.addEventListener("load", () => {
-    loadState();
+  window.addEventListener("load", async () => {
+    console.log("🚀 Initializing MyPlant system...");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+    // Re-initialize user in case login happened
+    const detectedUserId = initializeUser();
+    console.log(`👤 Detected User ID: ${detectedUserId}`);
+
+    // Load user's attendance data from attendance.json first
+    console.log("📥 Loading attendance data...");
+    const loadedFromAttendance = await loadStateFromAttendance();
+
+    if (!loadedFromAttendance) {
+      console.log(
+        "⚠️ No data loaded from attendance.json, user may be new or guest"
+      );
+    }
+
+    // Normalize and process dates
+    console.log("🔄 Processing dates...");
     claimedDates = claimedDates.map((d) => normalizeDate(new Date(d)));
+
+    // Calculate streak
+    console.log("📈 Calculating streak...");
     recalcStreak();
+
+    // Update plant visuals
+    console.log("🌱 Updating plant visuals...");
     updatePlantVisuals();
+
+    // Render calendar
+    console.log("📅 Rendering calendar...");
     renderCalendar(currentDate);
+
+    // Display user info if logged in
+    console.log("👋 Displaying user info...");
+    displayUserInfo();
+
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("✅ MyPlant initialization complete!");
+    console.log(`   User: ${detectedUserId}`);
+    console.log(`   Streak: ${streak} days`);
+    console.log(`   Green Score: ${greenScore} points`);
+    console.log(`   Plant Stage: ${plantStage}`);
+    console.log(`   Claimed Dates: ${claimedDates.length}`);
   });
 
   // Month navigation
