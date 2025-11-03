@@ -56,7 +56,6 @@
         <button class="menu-item" onclick="location.href='orders.html'">
           <i data-lucide="list"></i><span>Order Lists</span>
         </button>
-        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
 
         <div class="pages-divider"><p>PAGES</p></div>
 
@@ -325,7 +324,7 @@
         const userNameElement = document.querySelector(".user-name");
         if (userNameElement) userNameElement.textContent = userName;
       }
-
+      checkAuthentication();
       initializeTodoData();
       loadTodos();
       renderIcons();
