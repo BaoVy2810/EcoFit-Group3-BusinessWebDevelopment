@@ -427,8 +427,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Import Auth Handler trước -->
+    <script src="../admin_pages/dataManager.js"></script>
     <script src="../js/auth_handler.js"></script>
     
     <script>
@@ -451,7 +450,7 @@
         }
 
         try {
-          console.log('📡 Fetching accounts...');
+          console.log('🔄 Fetching accounts...');
           const response = await fetch(ACCOUNTS_JSON_PATH);
           
           if (!response.ok) {
@@ -475,8 +474,20 @@
             return;
           }
 
-          // ✅ SỬ DỤNG AUTH HANDLER để lưu session
+          // ✅ Save user session
           AuthHandler.saveUserSession(user, "regular");
+
+          // ✅ LOAD ALL DATA TO LOCALSTORAGE
+          console.log('🔄 Loading all application data...');
+          const dataLoaded = await window.DataManager.loadAllData();
+          
+          if (!dataLoaded) {
+            alert("Failed to load application data. Please try again.");
+            handleLogout();
+            return;
+          }
+          
+          console.log('✅ All data loaded successfully');
 
           // Remember me
           const rememberMe = document.getElementById("save_infor").checked;
@@ -488,7 +499,7 @@
             localStorage.removeItem("savedEmail");
           }
 
-          //  SỬ DỤNG AUTH HANDLER để redirect
+          // Redirect
           alert(`Welcome back, ${user.fullname}! 🌿`);
           AuthHandler.redirectAfterLogin(user);
 
@@ -497,7 +508,6 @@
           alert(`An error occurred during login: ${error.message}\nCheck Console (F12) for details.`);
         }
       }
-
       // ========== GOOGLE SIGN-IN ==========
       
       function loadGoogleSignIn() {
@@ -563,75 +573,87 @@
       }
 
       async function handleGoogleSignIn(response) {
-        console.log('Google Sign-In callback triggered');
+  console.log('Google Sign-In callback triggered');
+  
+  try {
+    const userInfo = parseJwt(response.credential);
+    console.log('📧 User info from Google:', userInfo);
+    
+    if (!userInfo || !userInfo.email) {
+      throw new Error('Invalid user info from Google');
+    }
+    
+    const accountsResponse = await fetch(ACCOUNTS_JSON_PATH);
+    
+    if (!accountsResponse.ok) {
+      throw new Error('Failed to load accounts database');
+    }
+    
+    const data = await accountsResponse.json();
+    const profiles = data.profile;
+    
+    let user = profiles.find(profile => profile.email === userInfo.email);
+    
+    if (!user) {
+      console.log('⚠️ User not found in database');
+      const confirmRegister = confirm(
+        `No EcoFit account found for:\n${userInfo.email}\n\nWould you like to create a new account?`
+      );
+      
+      if (confirmRegister) {
+        user = {
+          profile_id: Date.now().toString(),
+          fullname: userInfo.name || 'Google User',
+          email: userInfo.email,
+          phone: '',
+          password: '',
+          gender: '',
+          dob: '',
+          address: '',
+          created_at: new Date().toISOString(),
+          status: 'active',
+          role: 'customer',
+          green_score: 0
+        };
         
-        try {
-          const userInfo = parseJwt(response.credential);
-          console.log(' User info from Google:', userInfo);
-          
-          if (!userInfo || !userInfo.email) {
-            throw new Error('Invalid user info from Google');
-          }
-          
-          const accountsResponse = await fetch(ACCOUNTS_JSON_PATH);
-          
-          if (!accountsResponse.ok) {
-            throw new Error('Failed to load accounts database');
-          }
-          
-          const data = await accountsResponse.json();
-          const profiles = data.profile;
-          
-          let user = profiles.find(profile => profile.email === userInfo.email);
-          
-          if (!user) {
-            console.log('⚠️ User not found in database');
-            const confirmRegister = confirm(
-              `No EcoFit account found for:\n${userInfo.email}\n\nWould you like to create a new account?`
-            );
-            
-            if (confirmRegister) {
-              user = {
-                profile_id: Date.now().toString(),
-                fullname: userInfo.name || 'Google User',
-                email: userInfo.email,
-                phone: '',
-                password: '',
-                gender: '',
-                dob: '',
-                address: '',
-                created_at: new Date().toISOString(),
-                status: 'active',
-                role: 'customer',
-                green_score: 0
-              };
-              
-              console.log(' New user created:', user);
-              alert('Welcome to EcoFit! \n\nYour account has been created.\n(In production, this would be saved to the database)');
-            } else {
-              console.log('User declined account creation');
-              return;
-            }
-          }
-          
-          if (user.status !== 'active') {
-            alert('Your account is inactive. Please contact support at admin@ecofit.vn');
-            return;
-          }
-          
-          console.log(' Login successful for:', user.email);
-          
-          //  SỬ DỤNG AUTH HANDLER
-          AuthHandler.saveUserSession(user, "google");
-          alert(`Welcome back, ${user.fullname}! 🌿`);
-          AuthHandler.redirectAfterLogin(user);
-          
-        } catch (error) {
-          console.error(' Error processing Google Sign-In:', error);
-          alert('An error occurred during Google Sign-In.\n\nError: ' + error.message + '\n\nPlease try regular login instead.');
-        }
+        console.log('👤 New user created:', user);
+        alert('Welcome to EcoFit! \n\nYour account has been created.\n(In production, this would be saved to the database)');
+      } else {
+        console.log('User declined account creation');
+        return;
       }
-
+    }
+    
+    if (user.status !== 'active') {
+      alert('Your account is inactive. Please contact support at admin@ecofit.vn');
+      return;
+    }
+    
+    console.log('✅ Login successful for:', user.email);
+    
+    // ✅ Save session
+    AuthHandler.saveUserSession(user, "google");
+    
+    // ✅ LOAD ALL DATA TO LOCALSTORAGE
+    console.log('🔄 Loading all application data...');
+    const dataLoaded = await window.DataManager.loadAllData();
+    
+    if (!dataLoaded) {
+      alert("Failed to load application data. Please try again.");
+      handleLogout();
+      return;
+    }
+    
+    console.log('✅ All data loaded successfully');
+    
+    alert(`Welcome back, ${user.fullname}! 🌿`);
+    AuthHandler.redirectAfterLogin(user);
+    
+  } catch (error) {
+    console.error('❌ Error processing Google Sign-In:', error);
+    alert('An error occurred during Google Sign-In.\n\nError: ' + error.message + '\n\nPlease try regular login instead.');
+  }
+}
       function parseJwt(token) {
         try {
           const base64Url = token.split('.')[1];
