@@ -84,7 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const img = document.getElementById("blog-image");
 
       if (blog.image && blog.image.trim() !== "") {
-        img.src = blog.image; // nếu blog có ảnh riêng trong JSON
+        // Thêm path đầy đủ nếu chỉ có tên file
+        if (!blog.image.includes("/")) {
+          img.src = `../../dataset/banner/${blog.image}`;
+        } else {
+          img.src = blog.image;
+        }
       } else {
         img.src = "../../dataset/banner/blog_banner.png"; // banner mặc định
       }

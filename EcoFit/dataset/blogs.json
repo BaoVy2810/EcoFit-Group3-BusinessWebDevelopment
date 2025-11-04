@@ -3,7 +3,7 @@
     "id": 1,
     "title": "5 Easy Ways to Go Plastic-Free at Home",
     "date": "1 Jan 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_plastic_free.png",
     "content": [
       {
         "heading": "1. Start with Small Swaps",
@@ -31,7 +31,7 @@
     "id": 2,
     "title": "How to Choose Eco-Friendly Products",
     "date": "5 Jan 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_eco_product.png",
     "content": [
       {
         "heading": "1. Understand the Product Lifecycle",
@@ -51,7 +51,7 @@
     "id": 3,
     "title": "Meet Our Green Partners",
     "date": "23 Feb 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_green_partners.png",
     "content": [
       {
         "text": "At EcoFit, we believe that creating a sustainable future requires collaboration.That's why we've partnered with brands and organizations that share our commitment to environmental responsibility and ethical practices. Every partner in our network has been carefully vetted to ensure they meet our rigorous sustainability standards. Here's who we work with and why they matter."
@@ -74,7 +74,7 @@
     "id": 4,
     "title": "The Green Routine: Everyday Habits for a Cleaner Planet",
     "date": "3 Mar 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_green_routine.png",
     "content": [
       {
         "text": "Saving the planet doesn't require grand gestures or a complete lifestyle overhaul. Real change happens through small, consistent habits that add up over time. By building a green routine into your daily life, you can significantly reduce your environmental footprint while inspiring others to do the same. Here are practical habits you can start today."
@@ -97,7 +97,7 @@
     "id": 5,
     "title": "The Truth About Greenwashing: How to Spot Fake \"Eco\" Claims",
     "date": "17 Apr 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_green_washing.png",
     "content": [
       {
         "text": "As consumers become more environmentally conscious, companies are racing to appear “green” — but not all of them are being honest. Greenwashing is the practice of making misleading or unsubstantiated environmental claims to attract eco-conscious buyers. It's everywhere, from vague labels to carefully designed packaging that suggests sustainability without delivering it. Here's how to see through the deception and identify genuinely sustainable products."
@@ -120,7 +120,7 @@
     "id": 6,
     "title": "Sustainable Fashion: Why Material Matters",
     "date": "13 May 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_sustainable_fashion.png",
     "content": [
       {
         "text": "The fashion industry is one of the world's largest polluters. It is responsible for massive water consumption, chemical pollution, and greenhouse gas emissions. But not all clothing is created equal. The materials used to make your clothes have a profound impact on the environment, workers, and even your own health. Understanding fabric choices is the first step toward building a more sustainable wardrobe."
@@ -143,7 +143,7 @@
     "id": 7,
     "title": "Zero-Waste Living: Start Small, Think Big",
     "date": "12 July 2025",
-    "image": "../../../src/blog_banner.png",
+    "image": "blog_zero_waste.png",
     "content": [
       {
         "text": "Every year, the average person generates over 2,000 pounds of trash. Most of it ends up in landfills or polluting natural ecosystems. The environmental toll is staggering: overflowing landfills releasing methane, plastic choking marine life, and toxic chemicals leaching into soil and groundwater. But zero-waste living isn't about perfection — it's about making conscious choices that add up to meaningful change. You don't need to transform your life overnight. Start small, think big, and discover how simple swaps can lead to a lighter footprint on the planet."
@@ -166,7 +166,7 @@
     "id": 8,
     "title": "The Power of Local: Why Buying Nearby Is Greener",
     "date": "2 Oct 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_local_power.png",
     "content": [
       {
         "text": "In our globalized economy, everything travels far before reaching you. Your morning coffee, your vegetables, even your clothing — they cross continents before arriving at your home. While international trade brings convenience, it also comes with a massive environmental price tag: carbon emissions from transport, excessive packaging, and the decline of local economies. But there's a powerful alternative — buying local. Supporting nearby businesses isn’t just good for your community; it’s one of the most effective ways to reduce your carbon footprint and build a sustainable future."
@@ -189,7 +189,7 @@
     "id": 9,
     "title": "The Future of Sustainable Tech: AI for a Greener World",
     "date": "4 Oct 2025",
-    "image": "36d4873da38afe804bb9f98407500327ca28985b.png",
+    "image": "blog_AI_green.png",
     "content": [
       {
         "text": "Technology is often seen as part of the problem — but AI may be part of the solution. From optimizing energy grids to predicting environmental disasters, artificial intelligence is emerging as a powerful tool in the fight against climate change. The question isn’t whether technology can help save the planet, but how quickly we can harness its potential while minimizing its environmental footprint."

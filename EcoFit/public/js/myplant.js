@@ -112,29 +112,29 @@
   // 💾 DATA PERSISTENCE (localStorage + JSON sync)
   // =====================================================
 
-  // Load initial state from attendance.json first, then fallback to localStorage
+  // Load initial state from accounts.json first, then fallback to localStorage
   async function loadStateFromAttendance() {
     console.log(`🔄 Loading attendance data for userId: ${userId}`);
 
     try {
-      // First try to load from attendance.json
-      const response = await fetch("../../dataset/attendance.json");
+      // Load from accounts.json (attendance data is now embedded in profiles)
+      const response = await fetch("../../dataset/accounts.json");
       if (response.ok) {
-        const attendanceData = await response.json();
+        const accountsData = await response.json();
 
-        console.log("📦 Attendance data loaded");
-        console.log(`🔍 Looking for user ${userId}...`);
-        console.log(
-          "   Available users:",
-          Object.keys(attendanceData.users || {})
+        console.log("📦 Accounts data loaded");
+        console.log(`🔍 Looking for profile_id ${userId}...`);
+
+        // Find user profile by profile_id
+        const userProfile = accountsData.profile.find(
+          (p) => p.profile_id === userId || p.profile_id === String(userId)
         );
 
-        // Check if user data exists in attendance.json
-        if (attendanceData.users && attendanceData.users[userId]) {
-          const userData = attendanceData.users[userId];
-          claimedDates = userData.claimedDates.map((s) => new Date(s));
+        if (userProfile && userProfile.attendance) {
+          const userData = userProfile.attendance;
+          claimedDates = (userData.claimedDates || []).map((s) => new Date(s));
           streak = Number(userData.streak || 0);
-          greenScore = Number(userData.greenScore || 0);
+          greenScore = Number(userData.greenScore || userProfile.green_score || 0);
           plantStage = userData.plantStage || "Seed";
           dailyPoints = userData.dailyPoints || {};
 
@@ -145,11 +145,11 @@
           console.log(`   - Claimed Dates: ${claimedDates.length} days`);
           return true;
         } else {
-          console.warn(`⚠️ User ${userId} not found in attendance.json`);
+          console.warn(`⚠️ User ${userId} not found or no attendance data in accounts.json`);
         }
       }
     } catch (error) {
-      console.warn("⚠️ Could not load from attendance.json:", error.message);
+      console.warn("⚠️ Could not load from accounts.json:", error.message);
     }
 
     // Fallback to localStorage
@@ -224,82 +224,63 @@
     await syncToAttendanceFile(data);
   }
 
-  // Sync data to attendance.json file
+  // Sync data to accounts.json file
   async function syncToAttendanceFile(data) {
     try {
-      // First, load existing data from attendance.json
-      const response = await fetch("../../dataset/attendance.json");
-      let attendanceData = {};
+      // First, load existing data from accounts.json
+      const response = await fetch("../../dataset/accounts.json");
+      let accountsData = { profile: [] };
 
       if (response.ok) {
-        attendanceData = await response.json();
+        accountsData = await response.json();
       }
 
-      // Update or create user's attendance record
-      if (!attendanceData.users) {
-        attendanceData.users = {};
+      // Find the user profile
+      const profileIndex = accountsData.profile.findIndex(
+        (p) => p.profile_id === userId || p.profile_id === String(userId)
+      );
+
+      if (profileIndex !== -1) {
+        // Update attendance data in the profile
+        accountsData.profile[profileIndex].attendance = {
+          updatedAt: data.updatedAt,
+          claimedDates: data.claimedDates,
+          streak: data.streak,
+          plantStage: data.plantStage,
+          dailyPoints: data.dailyPoints,
+        };
+
+        // Update green_score directly in profile
+        accountsData.profile[profileIndex].green_score = data.greenScore;
+
+        // Save to localStorage as simulation
+        localStorage.setItem("accounts_data", JSON.stringify(accountsData));
+
+        console.log("✅ Attendance & Green Score synced to localStorage:");
+        console.log("   - Profile ID:", userId);
+        console.log("   - Green Score:", data.greenScore);
+        console.log("   - Claimed Dates:", data.claimedDates.length);
+
+        // Update login_infor green_score
+        const loginInfoStr = localStorage.getItem("login_infor");
+        if (loginInfoStr) {
+          try {
+            const loginInfo = JSON.parse(loginInfoStr);
+            loginInfo.green_score = data.greenScore;
+            localStorage.setItem("login_infor", JSON.stringify(loginInfo));
+            console.log("✅ Updated login_infor green_score");
+          } catch (e) {
+            console.warn("Could not update login_infor:", e);
+          }
+        }
+      } else {
+        console.warn(`⚠️ Profile ${userId} not found in accounts data`);
       }
-
-      attendanceData.users[userId] = {
-        userId,
-        updatedAt: data.updatedAt,
-        claimedDates: data.claimedDates,
-        streak: data.streak,
-        greenScore: data.greenScore,
-        plantStage: data.plantStage,
-        dailyPoints: data.dailyPoints,
-      };
-
-      attendanceData.lastUpdated = data.updatedAt;
-
-      // Save to localStorage as simulation
-      localStorage.setItem("attendance_data", JSON.stringify(attendanceData));
-
-      console.log("✅ Attendance data synced to localStorage");
-
-      // Also sync green_score back to accounts.json
-      await syncToAccountsJson(data.greenScore);
     } catch (error) {
       console.warn(
         "⚠️ Could not sync to file (expected in browser):",
         error.message
       );
-    }
-  }
-
-  // Sync green_score back to accounts.json
-  async function syncToAccountsJson(newGreenScore) {
-    if (userId === "guest") return; // Don't sync for guest
-
-    try {
-      const response = await fetch("../../dataset/accounts.json");
-      if (!response.ok) return;
-
-      const accountsData = await response.json();
-      const profiles = accountsData.profile || [];
-
-      // Find and update the user's profile
-      const userProfile = profiles.find(
-        (p) => String(p.profile_id) === String(userId)
-      );
-      if (userProfile) {
-        userProfile.green_score = newGreenScore;
-
-        // Save to localStorage as simulation
-        localStorage.setItem("accounts_data", JSON.stringify(accountsData));
-
-        // Update login_infor as well
-        if (currentUser) {
-          currentUser.green_score = newGreenScore;
-          localStorage.setItem("login_infor", JSON.stringify(currentUser));
-        }
-
-        console.log(
-          `✅ Green score ${newGreenScore} synced to accounts.json for user ${userId}`
-        );
-      }
-    } catch (error) {
-      console.warn("⚠️ Could not sync to accounts.json:", error.message);
     }
   }
 
