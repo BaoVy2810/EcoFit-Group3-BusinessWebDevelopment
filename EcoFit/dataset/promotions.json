@@ -5,35 +5,40 @@
       "promo_description": "10% off all eco-friendly shirts this week!",
       "promo_code": "ECO10",
       "discount_rate": 10.0,
-      "applied_to": ["C001"]
+      "applied_to": ["C001"],
+      "status": "active"
     },
     {
       "promotion_id": "PR002",
       "promo_description": "15% discount on orders over 500,000đ",
       "promo_code": "SAVE15",
       "discount_rate": 15.0,
-      "applied_to": ["ALL"]
+      "applied_to": ["ALL"],
+      "status": "active"
     },
     {
       "promotion_id": "PR003",
       "promo_description": "20% off pants and accessories this month!",
       "promo_code": "GREEN20",
       "discount_rate": 20.0,
-      "applied_to": ["C002", "C004"]
+      "applied_to": ["C002", "C004"],
+      "status": "active"
     },
     {
       "promotion_id": "PR004",
       "promo_description": "25% off selected dresses for limited time.",
       "promo_code": "STYLE25",
       "discount_rate": 25.0,
-      "applied_to": ["C003"]
+      "applied_to": ["C003"],
+      "status": "active"
     },
     {
       "promotion_id": "PR005",
       "promo_description": "40% off clearance eco products.",
       "promo_code": "CLEAR40",
       "discount_rate": 40.0,
-      "applied_to": ["C004"]
+      "applied_to": ["C004"],
+      "status": "active"
     }
   ]
 }

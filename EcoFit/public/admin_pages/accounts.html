@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
 
-      <script src="./dataManager.js"></script>
-      <script src="./script.js"></script>
+  <script src="./dataManager.js"></script>
+  <script src="./script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // Toggle Sidebar
@@ -197,8 +197,8 @@
 
           <div style="
   max-height: 500px;       
-  overflow-y: auto;        /* bật scroll dọc */
-  overflow-x: auto;        /* vẫn cho phép scroll ngang nếu cần */
+  overflow-y: auto;
+  overflow-x: auto;
   border: 1px solid #e5e7eb; 
   border-radius: 8px;
 ">
@@ -223,11 +223,15 @@
                   <td style="padding: 16px;"><span name="status"></span></td>
                   <td style="padding: 16px;">
                     <button
-                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;">
+                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;"
+                      onclick="handleEditAccount(this)"
+                      data-account-id="">
                       <i data-lucide="edit"></i>
                     </button>
                     <button
-                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;">
+                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;"
+                      onclick="handleDeleteAccount(this)"
+                      data-account-id="">
                       <i data-lucide="trash-2"></i>
                     </button>
                   </td>
@@ -239,15 +243,254 @@
       </main>
     </div>
   </div>
+
+  <!-- CUSTOM CONFIRM BOX -->
+  <div id="confirmBox" class="confirm-box">
+    <div class="confirm-content">
+      <div class="confirm-icon">
+        <i data-lucide="alert-triangle" style="width: 32px; height: 32px; color: #ef4444"></i>
+      </div>
+      <h3 class="confirm-title">Confirm Delete</h3>
+      <p class="confirm-message" id="confirmMessage">Are you sure you want to delete this account?</p>
+      <div class="confirm-actions">
+        <button onclick="closeConfirmBox()" class="confirm-btn btn-outline">Cancel</button>
+        <button id="confirmDeleteBtn" class="confirm-btn btn-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT ACCOUNT MODAL -->
+  <div id="editAccountModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Account Information</h3>
+        <button onclick="closeEditModal()">
+          <i data-lucide="x" style="width: 24px; height: 24px"></i>
+        </button>
+      </div>
+
+      <form id="editAccountForm" class="modal-form">
+        <input type="hidden" id="edit_account_id" />
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Full Name</label>
+            <input type="text" id="edit_fullname" required />
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Email</label>
+            <input type="email" id="edit_email" required />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Role</label>
+            <select id="edit_role" required>
+              <option value="customer">Customer</option>
+              <option value="administrator">Administrator</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Status</label>
+            <select id="edit_status" required>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" onclick="closeEditModal()" class="modal-cancel-button">Cancel</button>
+          <button type="submit" class="modal-button">
+            Save Changes
+            <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     let accounts = [];
+    let accountToDelete = null;
+
+    // ✅ XỬ LÝ EDIT ACCOUNT
+    function handleEditAccount(button) {
+      const accountId = button.getAttribute('data-account-id');
+      if (accountId) {
+        editAccount(accountId);
+      }
+    }
+
+    function editAccount(accountId) {
+      const account = accounts.find(acc => (acc.id || acc.profile_id) === accountId);
+      if (!account) return;
+
+      document.getElementById("edit_account_id").value = accountId;
+      document.getElementById("edit_fullname").value = account.fullname;
+      document.getElementById("edit_email").value = account.email;
+      document.getElementById("edit_role").value = account.role;
+      document.getElementById("edit_status").value = account.status;
+
+      document.getElementById("editAccountModal").style.display = "flex";
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    function closeEditModal() {
+      document.getElementById("editAccountModal").style.display = "none";
+      document.getElementById("editAccountForm").reset();
+    }
+
+    document.getElementById("editAccountForm").onsubmit = function (e) {
+      e.preventDefault();
+
+      const accountId = document.getElementById("edit_account_id").value;
+      const accountIndex = accounts.findIndex(acc => (acc.id || acc.profile_id) === accountId);
+
+      if (accountIndex === -1) {
+        showToast("Account not found!", "error");
+        return;
+      }
+
+      console.log("💾 Saving account changes...");
+
+      // Update account information
+      accounts[accountIndex] = {
+        ...accounts[accountIndex],
+        fullname: document.getElementById("edit_fullname").value,
+        email: document.getElementById("edit_email").value,
+        role: document.getElementById("edit_role").value,
+        status: document.getElementById("edit_status").value,
+      };
+
+      // Save to DataManager
+      let accountsData = window.DataManager.getData('accounts');
+      accountsData.profile = accounts;
+      window.DataManager.saveData('accounts', accountsData);
+
+      // Update UI
+      loadAccountsData();
+      handleFilterChange();
+      closeEditModal();
+      showToast("Account updated successfully!", "success");
+      console.log("✅ Account updated successfully");
+    };
+
+    // ✅ XỬ LÝ DELETE ACCOUNT
+    function handleDeleteAccount(button) {
+      const accountId = button.getAttribute('data-account-id');
+      if (accountId) {
+        deleteAccount(accountId);
+      }
+    }
+
+    function deleteAccount(accountId) {
+      accountToDelete = accountId;
+      const account = accounts.find(acc => (acc.id || acc.profile_id) === accountId);
+
+      document.getElementById("confirmMessage").textContent = 
+        `Are you sure you want to delete "${account?.fullname}"?`;
+
+      document.getElementById("confirmBox").style.display = "flex";
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    document.getElementById("confirmDeleteBtn").onclick = function () {
+      if (!accountToDelete) return;
+
+      try {
+        console.log("🗑️ Deleting account:", accountToDelete);
+
+        // Remove from accounts array
+        accounts = accounts.filter(acc => (acc.id || acc.profile_id) !== accountToDelete);
+
+        // Save to DataManager
+        let accountsData = window.DataManager.getData('accounts');
+        accountsData.profile = accounts;
+        window.DataManager.saveData('accounts', accountsData);
+
+        // Update UI
+        loadAccountsData();
+        handleFilterChange();
+
+        closeConfirmBox();
+        showToast("Account deleted successfully!", "success");
+
+        console.log("✅ Account deleted successfully");
+      } catch (error) {
+        console.error("❌ Error deleting account:", error);
+        showToast("An error occurred while deleting account!", "error");
+      }
+    };
+
+    function closeConfirmBox() {
+      document.getElementById("confirmBox").style.display = "none";
+      accountToDelete = null;
+    }
+
+    // Toast notification
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      const bgColor = type === "success" ? "#22c55e" : "#ef4444";
+
+      toast.style.cssText = `
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        background: ${bgColor};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+      `;
+      toast.textContent = message;
+
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.animation = "slideOut 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // ✅ INITIALIZATION
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log('🚀 Initializing accounts page...');
+
+      // Initialize Lucide icons
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+
+      // Load data
+      loadAccounts();
+      loadAccountsData();
+checkAuthentication();
+      // Setup event listeners
+      document.getElementById("searchInput").addEventListener("input", handleFilterChange);
+      document.getElementById("roleFilter").addEventListener("change", handleFilterChange);
+      document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
+
+      document.getElementById("searchInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          handleFilterChange();
+        }
+      });
+
+      console.log('✅ Accounts page initialized');
+    });
 
     // ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
     async function loadAccountsData() {
       try {
         console.log('📊 Loading accounts data from DataManager...');
 
-        // Lấy dữ liệu từ DataManager thay vì fetch
         accounts = window.DataManager.getAccounts();
 
         if (!accounts || accounts.length === 0) {
@@ -296,7 +539,6 @@
       try {
         console.log('📋 Loading accounts for table...');
 
-        // Lấy từ DataManager
         accounts = window.DataManager.getAccounts();
 
         if (!accounts || accounts.length === 0) {
@@ -314,7 +556,9 @@
     // Render table
     function updateTable(filteredAccounts) {
       renderTable(filteredAccounts, "table tbody", "table tbody tr.template", (row, acc) => {
-        row.querySelector("td:nth-child(1)").textContent = `#${acc.id || acc.profile_id}`;
+        const accountId = acc.id || acc.profile_id;
+        
+        row.querySelector("td:nth-child(1)").textContent = `#${accountId}`;
         row.querySelector('[name="name"]').textContent = acc.fullname;
         row.querySelector('[name="email"]').textContent = acc.email;
 
@@ -351,6 +595,13 @@
         statusSpan.style.borderRadius = "12px";
         statusSpan.style.fontSize = "12px";
         statusSpan.style.fontWeight = "500";
+
+        // Set account ID cho các button
+        const editBtn = row.querySelector('button[onclick*="handleEditAccount"]');
+        const deleteBtn = row.querySelector('button[onclick*="handleDeleteAccount"]');
+        
+        if (editBtn) editBtn.setAttribute('data-account-id', accountId);
+        if (deleteBtn) deleteBtn.setAttribute('data-account-id', accountId);
       });
     }
 
@@ -375,32 +626,19 @@
       updateTable(filtered);
     }
 
-    // ✅ INITIALIZATION
-    document.addEventListener("DOMContentLoaded", () => {
-      console.log('🚀 Initializing accounts page...');
-
-      // Initialize Lucide icons
-      if (typeof lucide !== "undefined") {
-        lucide.createIcons();
+    // Animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
       }
-
-      // Load data
-      loadAccounts();
-      loadAccountsData();
-
-      // Setup event listeners
-      document.getElementById("searchInput").addEventListener("input", handleFilterChange);
-      document.getElementById("roleFilter").addEventListener("change", handleFilterChange);
-      document.getElementById("statusFilter").addEventListener("change", handleFilterChange);
-
-      document.getElementById("searchInput").addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          handleFilterChange();
-        }
-      });
-
-      console.log('✅ Accounts page initialized');
-    });
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>

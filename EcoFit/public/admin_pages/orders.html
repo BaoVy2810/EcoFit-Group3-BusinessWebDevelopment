@@ -790,7 +790,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
-  
+  checkAuthentication();
   loadOrdersData().then(() => {
     // Render bảng lần đầu
     handleOrderFilter();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,12 +47,14 @@
 
           <div class="form-group">
             <label for="quantity_available">Quantity Available<span class="required">*</span></label>
-            <input type="number" id="quantity_available" name="quantity_available" required placeholder="Enter quantity" min="0" />
+            <input type="number" id="quantity_available" name="quantity_available" required placeholder="Enter quantity"
+              min="0" />
           </div>
 
           <div class="form-group">
             <label for="green_score">Green Score (0-100)<span class="required">*</span></label>
-            <input type="number" id="green_score" name="green_score" required placeholder="Enter green score" min="0" max="100" />
+            <input type="number" id="green_score" name="green_score" required placeholder="Enter green score" min="0"
+              max="100" />
           </div>
 
           <div class="form-group">
@@ -64,25 +67,25 @@
             <textarea id="description" name="description" required placeholder="Enter product description"></textarea>
           </div>
 
-<div class="form-group full-width">
-  <label for="image_upload">Product Images</label>
-  <input type="file" id="image_upload" name="image_upload" accept="image/*" multiple 
-         style="padding: 10px; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer;" />
-  <small style="color: #6b7280; font-size: 12px; display: block; margin-top: 8px;">
-    You can select multiple images for this product
-  </small>
-</div>
+          <div class="form-group full-width">
+            <label for="image_upload">Product Images</label>
+            <input type="file" id="image_upload" name="image_upload" accept="image/*" multiple
+              style="padding: 10px; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer;" />
+            <small style="color: #6b7280; font-size: 12px; display: block; margin-top: 8px;">
+              You can select multiple images for this product
+            </small>
+          </div>
 
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="goBack()">
-            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary">
-            <i data-lucide="check" style="width: 18px; height: 18px;"></i>
-            Save Product
-          </button>
-        </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="goBack()">
+              <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+              Cancel
+            </button>
+            <button type="submit" class="button">
+              <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+              Save Product
+            </button>
+          </div>
       </form>
     </div>
   </div>
@@ -90,78 +93,70 @@
   <script>
     lucide.createIcons();
 
-    let categories = [];
-
-    // Load categories for dropdown
-    async function loadCategories() {
-      try {
-        const storedData = localStorage.getItem('products');
-        if (storedData) {
-          const data = JSON.parse(storedData);
-          categories = data.category;
-        } else {
-          const response = await fetch('../../dataset/products.json');
-          const data = await response.json();
-          categories = data.category;
-        }
-
-        const categorySelect = document.getElementById('category_id');
-        categories.forEach(cat => {
-          const option = document.createElement('option');
-          option.value = cat.category_id;
-          option.textContent = cat.category_name;
-          categorySelect.appendChild(option);
-        });
-      } catch (error) {
-        console.error('Error loading categories:', error);
+    // 🔹 Hàm lấy dữ liệu từ localStorage
+    function getLocalData() {
+      const storedData = localStorage.getItem('products');
+      if (storedData) {
+        return JSON.parse(storedData);
+      } else {
+        // Nếu chưa có dữ liệu thì tạo cấu trúc rỗng
+        const defaultData = { product: [], category: [] };
+        localStorage.setItem('products', JSON.stringify(defaultData));
+        return defaultData;
       }
     }
 
+    // 🔹 Tải danh mục vào dropdown
+    function loadCategories() {
+      const data = getLocalData();
+      const categorySelect = document.getElementById('category_id');
+      categorySelect.innerHTML = '<option value="">Select category</option>';
+
+      data.category.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.category_id;
+        option.textContent = cat.category_name;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    // 🔹 Sinh ID sản phẩm mới dựa trên danh sách hiện có
+    function generateNewProductId() {
+      const data = getLocalData();
+      const products = data.product;
+      if (products.length === 0) return "P001";
+
+      const maxNum = Math.max(
+        ...products.map(p => parseInt(p.product_id.replace(/\D/g, '')) || 0)
+      );
+      return `P${String(maxNum + 1).padStart(3, '0')}`;
+    }
+
+    // 🔹 Quay lại trang chính
     function goBack() {
       window.location.href = 'products.html';
     }
 
-    function showError(message) {
-      const errorDiv = document.getElementById('errorMessage');
-      errorDiv.textContent = message;
-      errorDiv.classList.add('show');
-      setTimeout(() => {
-        errorDiv.classList.remove('show');
-      }, 5000);
+    // 🔹 Hiển thị thông báo
+    function showError(msg) {
+      const el = document.getElementById('errorMessage');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
     }
 
-    function showSuccess(message) {
-      const successDiv = document.getElementById('successMessage');
-      successDiv.textContent = message;
-      successDiv.classList.add('show');
+    function showSuccess(msg) {
+      const el = document.getElementById('successMessage');
+      el.textContent = msg;
+      el.classList.add('show');
       setTimeout(() => {
-        successDiv.classList.remove('show');
+        el.classList.remove('show');
         goBack();
-      }, 2000);
+      }, 1500);
     }
 
-    async function generateNewProductId() {
-      try {
-        const response = await fetch('../../dataset/products.json');
-        const data = await response.json();
-        const products = data.product;
-        
-        if (products.length === 0) return "P001";
-        
-        // Extract numeric part and find max
-        const maxNum = Math.max(...products.map(p => {
-          const match = p.product_id.match(/\d+$/);
-          return match ? parseInt(match[0]) : 0;
-        }));
-        
-        return `P${String(maxNum + 1).padStart(3, '0')}`;
-      } catch (error) {
-        console.error('Error generating ID:', error);
-        return `P${Date.now()}`;
-      }
-    }
-
-    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+    // 🔹 Xử lý khi thêm sản phẩm mới
+    document.getElementById('addProductForm').addEventListener('submit', (e) => {
       e.preventDefault();
 
       const formData = new FormData(e.target);
@@ -169,78 +164,53 @@
       const quantity = parseInt(formData.get('quantity_available'));
       const greenScore = parseInt(formData.get('green_score'));
 
-      // Validation
-      if (price <= 0) {
-        showError('Price must be greater than 0');
-        return;
-      }
+      // Validate
+      if (price <= 0) return showError('Price must be greater than 0');
+      if (quantity < 0) return showError('Quantity cannot be negative');
+      if (greenScore < 0 || greenScore > 100)
+        return showError('Green score must be between 0 and 100');
 
-      if (quantity < 0) {
-        showError('Quantity cannot be negative');
-        return;
-      }
+      // Lấy dữ liệu hiện tại
+      const data = getLocalData();
+      const products = data.product;
 
-      if (greenScore < 0 || greenScore > 100) {
-        showError('Green score must be between 0 and 100');
-        return;
-      }
+      const newId = generateNewProductId();
 
-      try {
-        const response = await fetch('../../dataset/products.json');
-        const data = await response.json();
-        const products = data.product;
+      // Lưu danh sách ảnh
+      const imageFiles = document.getElementById('image_upload').files;
+      const imageNames = Array.from(imageFiles).map(file => file.name);
 
-        const newProductId = await generateNewProductId();
+      const newProduct = {
+        product_id: newId,
+        product_name: formData.get('product_name'),
+        description: formData.get('description'),
+        price_original: price,
+        price: price,
+        category_id: formData.get('category_id'),
+        quantity_available: quantity,
+        green_score: {
+          value: greenScore,
+          breakdown: {}
+        },
+        material: formData.get('material') || "",
+        product_images: imageNames
+      };
 
-// Xử lý upload images
-const imageFiles = document.getElementById('image_upload').files;
-const imageNames = [];
+      // Cập nhật localStorage
+      products.push(newProduct);
+      localStorage.setItem('products', JSON.stringify({
+        product: products,
+        category: data.category
+      }));
 
-if (imageFiles.length > 0) {
-  for (let i = 0; i < imageFiles.length; i++) {
-    imageNames.push(imageFiles[i].name);
-  }
-  console.log('Selected images:', imageNames);
-}
-
-const newProduct = {
-  product_id: newProductId,
-  product_name: formData.get('product_name'),
-  description: formData.get('description'),
-  price_original: price,
-  price: price,
-  category_id: formData.get('category_id'),
-  quantity_available: quantity,
-  green_score: {
-    value: greenScore,
-    breakdown: {}
-  },
-  material: formData.get('material') || "",
-  product_images: imageNames
-};
-
-        products.push(newProduct);
-
-        const updatedData = {
-          product: products,
-          category: data.category
-        };
-
-        localStorage.setItem('products', JSON.stringify(updatedData));
-
-        console.log('New product created:', newProduct);
-        showSuccess('Product created successfully!');
-
-      } catch (error) {
-        console.error('Error saving product:', error);
-        showError('Failed to create product. Please try again.');
-      }
+      console.log('✅ Product added:', newProduct);
+      showSuccess('Product created successfully!');
     });
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      loadCategories();
-    });
+    // 🔹 Khi trang load, tải danh mục
+    document.addEventListener('DOMContentLoaded', loadCategories);
   </script>
+
 </body>
+
 </html>
