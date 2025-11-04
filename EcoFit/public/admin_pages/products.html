@@ -814,8 +814,8 @@ function editProduct(productId) {
   document.getElementById("edit_green_score").value = product.green_score.value;
   document.getElementById("edit_category_id").value = product.category_id;
 
-  // 🔹 Hiển thị modal
   document.getElementById("editProductModal").style.display = "flex";
+
   if (typeof lucide !== "undefined") lucide.createIcons();
 }
 
