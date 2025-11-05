@@ -1,235 +1,208 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Management - Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="icon"
-      href="../images/ecofit_logo3.png"
-      sizes="32x32"
-      type="image/png"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="./dataManager.js"></script>
-    <script src="./script.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        toggleSidebar();
-      });
-    </script>
-  </head>
 
-  <body>
-    <div class="dashboard-container">
-      <aside class="sidebar">
-        <div
-          style="
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Management - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="./dataManager.js"></script>
+  <script src="./script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      toggleSidebar();
+    });
+  </script>
+</head>
+
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div style="
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             width: 100%;
             padding: 20px 0;
-          "
-        >
-          <div class="logo">
-            <img src="../images/EcoFit_logo_white.png" width="30" />
-          </div>
-          <div>
-            <h1 style="font-size: 28px; margin: 0">
-              Eco<span style="color: #3da547">Fit</span>
-            </h1>
-            <p style="margin: 0; font-size: 16px">Admin Panel</p>
-          </div>
+          ">
+        <div class="logo">
+          <img src="../images/EcoFit_logo_white.png" width="30" />
+        </div>
+        <div>
+          <h1 style="font-size: 28px; margin: 0">
+            Eco<span style="color: #3da547">Fit</span>
+          </h1>
+          <p style="margin: 0; font-size: 16px">Admin Panel</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="menu-item" onclick="location.href='dashboard.html' ">
+          <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
+        </button>
+        <button class="menu-item" onclick="location.href='accounts.html'">
+          <i data-lucide="square-user-round"></i><span>Accounts</span>
+        </button>
+        <button class="menu-item active" onclick="location.href='products.html'">
+          <i data-lucide="package"></i><span>Products</span>
+        </button>
+        <button class="menu-item" onclick="location.href='orders.html'">
+          <i data-lucide="list"></i><span>Order Lists</span>
+        </button>
+
+        <div class="pages-divider">
+          <p>PAGES</p>
+        </div>
+        <button class="menu-item" onclick="location.href='promotions.html'">
+          <i data-lucide="gift"></i><span>Promotions</span>
+        </button>
+        <button class="menu-item" onclick="location.href='blogs.html'">
+          <i data-lucide="calendar"></i><span>Blogs</span>
+        </button>
+        <button class="menu-item" onclick="location.href='to-do.html'">
+          <i data-lucide="check-square"></i><span>To-Do</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header class="header">
+        <div class="header-left">
+          <button class="menu-toggle"><i data-lucide="menu"></i></button>
         </div>
 
-        <nav class="nav-menu">
-          <button class="menu-item" onclick="location.href='dashboard.html' ">
-            <i data-lucide="bar-chart-3"></i><span>Dashboard</span>
+        <div class="header-right">
+          <button class="notification-btn">
+            <i data-lucide="bell"></i><span class="notification-dot"></span>
           </button>
-          <button class="menu-item" onclick="location.href='accounts.html'">
-            <i data-lucide="square-user-round"></i><span>Accounts</span>
+          <button class="logout-btn" onclick="handleLogout()">
+            <i data-lucide="log-out"></i>
           </button>
-          <button
-            class="menu-item active"
-            onclick="location.href='products.html'"
-          >
-            <i data-lucide="package"></i><span>Products</span>
-          </button>
-          <button class="menu-item" onclick="location.href='orders.html'">
-            <i data-lucide="list"></i><span>Order Lists</span>
-          </button>
-
-          <div class="pages-divider">
-            <p>PAGES</p>
-          </div>
-          <button class="menu-item" onclick="location.href='promotions.html'">
-            <i data-lucide="gift"></i><span>Promotions</span>
-          </button>
-          <button class="menu-item" onclick="location.href='blogs.html'">
-            <i data-lucide="calendar"></i><span>Blogs</span>
-          </button>
-          <button class="menu-item" onclick="location.href='to-do.html'">
-            <i data-lucide="check-square"></i><span>To-Do</span>
-          </button>
-        </nav>
-      </aside>
-
-      <!-- Main Content -->
-      <div class="main-content">
-        <header class="header">
-          <div class="header-left">
-            <button class="menu-toggle"><i data-lucide="menu"></i></button>
-          </div>
-
-          <div class="header-right">
-            <button class="notification-btn">
-              <i data-lucide="bell"></i><span class="notification-dot"></span>
-            </button>
-            <button class="logout-btn" onclick="handleLogout()">
-              <i data-lucide="log-out"></i>
-            </button>
-            <div class="user-profile">
-              <div class="user-info">
-                <p class="user-name"></p>
-                <p class="user-role">Administrator</p>
-              </div>
-              <img src="../images/admin.png" alt="Admin" />
+          <div class="user-profile">
+            <div class="user-info">
+              <p class="user-name"></p>
+              <p class="user-role">Administrator</p>
             </div>
+            <img src="../images/admin.png" alt="Admin" />
           </div>
-        </header>
-        <!-- Product Management Content -->
-        <main class="content">
-          <div
-            style="
+        </div>
+      </header>
+      <!-- Product Management Content -->
+      <main class="content">
+        <div style="
               display: flex;
               justify-content: space-between;
               align-items: center;
               margin-bottom: 32px;
-            "
-          >
-            <h2 class="page-title" style="margin-bottom: 0">
-              Product Management
-            </h2>
-          </div>
+            ">
+          <h2 class="page-title" style="margin-bottom: 0">
+            Product Management
+          </h2>
+        </div>
 
-          <!-- Stats -->
-          <div class="stats-grid" style="margin-bottom: 32px">
-            <div class="stat-card">
-              <div class="stat-header">
-                <div class="stat-info">
-                  <p class="stat-label">Total Products</p>
-                  <h3 class="stat-value" id="total-products">--</h3>
-                </div>
-                <div class="stat-icon blue-icon">
-                  <i data-lucide="package"></i>
-                </div>
+        <!-- Stats -->
+        <div class="stats-grid" style="margin-bottom: 32px">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total Products</p>
+                <h3 class="stat-value" id="total-products">--</h3>
               </div>
-              <div class="stat-growth positive">
-                <i data-lucide="trending-up"></i>
-                <span class="growth-value">8.5%</span>
-                <span class="growth-text"> from last month</span>
+              <div class="stat-icon blue-icon">
+                <i data-lucide="package"></i>
               </div>
             </div>
-
-            <div class="stat-card">
-              <div class="stat-header">
-                <div class="stat-info">
-                  <p class="stat-label">Total Categories</p>
-                  <h3 class="stat-value" id="total-categories">--</h3>
-                </div>
-                <div class="stat-icon green-icon">
-                  <i data-lucide="list"></i>
-                </div>
-              </div>
-              <div class="stat-growth positive">
-                <i data-lucide="move-right"></i>
-                <span class="growth-value">0%</span>
-                <span class="growth-text"> no changes</span>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-header">
-                <div class="stat-info">
-                  <p class="stat-label">Avg Green Score</p>
-                  <h3 class="stat-value" id="avg-green-score">--</h3>
-                </div>
-                <div class="stat-icon yellow-icon">
-                  <i data-lucide="leaf"></i>
-                </div>
-              </div>
-              <div class="stat-growth positive">
-                <i data-lucide="trending-up"></i>
-                <span class="growth-value">3.2%</span>
-                <span class="growth-text"> improvement</span>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-header">
-                <div class="stat-info">
-                  <p class="stat-label">Low Stock Items</p>
-                  <h3 class="stat-value" id="low-stock">--</h3>
-                </div>
-                <div class="stat-icon red-icon">
-                  <i data-lucide="alert-circle"></i>
-                </div>
-              </div>
-              <div class="stat-growth negative">
-                <i data-lucide="trending-down"></i>
-                <span class="growth-value">2</span>
-                <span class="growth-text"> items below 30</span>
-              </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value">8.5%</span>
+              <span class="growth-text"> from last month</span>
             </div>
           </div>
-          <!-- ==================== CHARTS SECTION - ĐẶT TRƯỚC TABLE ==================== -->
-          <div
-            style="
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Total Categories</p>
+                <h3 class="stat-value" id="total-categories">--</h3>
+              </div>
+              <div class="stat-icon green-icon">
+                <i data-lucide="list"></i>
+              </div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="move-right"></i>
+              <span class="growth-value">0%</span>
+              <span class="growth-text"> no changes</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Avg Green Score</p>
+                <h3 class="stat-value" id="avg-green-score">--</h3>
+              </div>
+              <div class="stat-icon yellow-icon">
+                <i data-lucide="leaf"></i>
+              </div>
+            </div>
+            <div class="stat-growth positive">
+              <i data-lucide="trending-up"></i>
+              <span class="growth-value">3.2%</span>
+              <span class="growth-text"> improvement</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-info">
+                <p class="stat-label">Low Stock Items</p>
+                <h3 class="stat-value" id="low-stock">--</h3>
+              </div>
+              <div class="stat-icon red-icon">
+                <i data-lucide="alert-circle"></i>
+              </div>
+            </div>
+            <div class="stat-growth negative">
+              <i data-lucide="trending-down"></i>
+              <span class="growth-value">2</span>
+              <span class="growth-text"> items below 30</span>
+            </div>
+          </div>
+        </div>
+        <!-- ==================== CHARTS SECTION - ĐẶT TRƯỚC TABLE ==================== -->
+        <div style="
               display: grid;
               grid-template-columns: 1fr 1fr;
               gap: 24px;
               margin-bottom: 32px;
-            "
-          >
-            <!-- Category Distribution Chart -->
-            <div class="chart-container" style="padding: 24px">
-              <h3
-                style="margin-bottom: 24px; font-size: 20px; font-weight: bold"
-              >
-                Category Distribution
-              </h3>
-              <canvas id="categoryChart" style="max-height: 300px"></canvas>
-            </div>
+            ">
+          <!-- Category Distribution Chart -->
+          <div class="chart-container" style="padding: 24px">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold">
+              Category Distribution
+            </h3>
+            <canvas id="categoryChart" style="max-height: 300px"></canvas>
+          </div>
 
-            <!-- Top 5 Best Selling Products -->
-            <div class="chart-container" style="padding: 24px">
-              <h3
-                style="margin-bottom: 24px; font-size: 20px; font-weight: bold"
-              >
-                Top 5 Best Selling Products
-              </h3>
-              <div
-                id="topProductsList"
-                style="display: flex; flex-direction: column; gap: 16px"
-              >
-                <!-- Template row -->
-                <div
-                  class="top-product-item template"
-                  style="display: none !important"
-                >
-                  <div style="display: flex; align-items: center; gap: 12px">
-                    <div
-                      style="
+          <!-- Top 5 Best Selling Products -->
+          <div class="chart-container" style="padding: 24px">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold">
+              Top 5 Best Selling Products
+            </h3>
+            <div id="topProductsList" style="display: flex; flex-direction: column; gap: 16px">
+              <!-- Template row -->
+              <div class="top-product-item template" style="display: none !important">
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <div style="
                         width: 32px;
                         height: 32px;
                         border-radius: 8px;
@@ -240,39 +213,27 @@
                         justify-content: center;
                         font-weight: bold;
                         font-size: 14px;
-                      "
-                      name="rank"
-                    ></div>
-                    <div style="flex: 1">
-                      <div
-                        style="
+                      " name="rank"></div>
+                  <div style="flex: 1">
+                    <div style="
                           font-weight: 600;
                           color: #111827;
                           margin-bottom: 4px;
-                        "
-                        name="product-name"
-                      ></div>
-                      <div style="font-size: 12px; color: #6b7280">
-                        <span name="sold-count"></span> sold •
-                        <span
-                          name="revenue"
-                          style="color: #22c55e; font-weight: 600"
-                        ></span>
-                      </div>
+                        " name="product-name"></div>
+                    <div style="font-size: 12px; color: #6b7280">
+                      <span name="sold-count"></span> sold •
+                      <span name="revenue" style="color: #22c55e; font-weight: 600"></span>
                     </div>
-                    <div style="width: 60px; text-align: right">
-                      <div
-                        style="
+                  </div>
+                  <div style="width: 60px; text-align: right">
+                    <div style="
                           width: 100%;
                           height: 6px;
                           background: #e5e7eb;
                           border-radius: 3px;
                           overflow: hidden;
-                        "
-                      >
-                        <div
-                          name="progress-bar"
-                          style="
+                        ">
+                      <div name="progress-bar" style="
                             height: 100%;
                             background: linear-gradient(
                               90deg,
@@ -280,23 +241,21 @@
                               #2563eb
                             );
                             border-radius: 3px;
-                          "
-                        ></div>
-                      </div>
+                          "></div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Table -->
-          <div class="chart-container" style="padding: 24px">
-            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold">
-              All Products
-            </h3>
+        </div>
+        <!-- Table -->
+        <div class="chart-container" style="padding: 24px">
+          <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold">
+            All Products
+          </h3>
 
-            <div
-              style="
+          <div style="
                 margin-bottom: 24px;
                 display: flex;
                 justify-content: space-between;
@@ -304,100 +263,79 @@
                 gap: 12px;
                 margin-top: 14px;
                 flex-wrap: wrap;
-              "
-            >
-              <div style="flex: 1; display: flex; gap: 12px">
-                <div class="search-box">
-                  <i data-lucide="search" style="width: 20px; height: 20px"></i>
-                  <input
-                    id="searchInput"
-                    placeholder="Search by name or description"
-                  />
-                </div>
-
-                <select id="categoryFilter">
-                  <option value="all">All Categories</option>
-                </select>
-
-                <select id="stockFilter">
-                  <option value="all">All Stock</option>
-                  <option value="in-stock">In Stock (>30)</option>
-                  <option value="low-stock">Low Stock (≤30)</option>
-                  <option value="out-of-stock">Out of Stock (0)</option>
-                </select>
+              ">
+            <div style="flex: 1; display: flex; gap: 12px">
+              <div class="search-box">
+                <i data-lucide="search" style="width: 20px; height: 20px"></i>
+                <input id="searchInput" placeholder="Search by name or description" />
               </div>
 
-              <button onclick="location.href='new_product.html'" class="button">
-                <i data-lucide="plus" style="width: 20px; height: 20px"></i>
-                Add New Product     
-              </button>
+              <select id="categoryFilter">
+                <option value="all">All Categories</option>
+              </select>
+
+              <select id="stockFilter">
+                <option value="all">All Stock</option>
+                <option value="in-stock">In Stock (>30)</option>
+                <option value="low-stock">Low Stock (≤30)</option>
+                <option value="out-of-stock">Out of Stock (0)</option>
+              </select>
             </div>
 
-            <div
-              style="
+            <button onclick="location.href='new_product.html'" class="button">
+              <i data-lucide="plus" style="width: 20px; height: 20px"></i>
+              Add New Product
+            </button>
+          </div>
+
+          <div style="
                 max-height: 500px;
                 overflow-y: auto;
                 overflow-x: auto;
                 border: 1px solid #e5e7eb;
                 border-radius: 8px;
-              "
-            >
-              <table style="width: 100%; border-collapse: collapse">
-                <thead>
-                  <tr
-                    style="border-bottom: 2px solid #e5e7eb; text-align: left"
-                  >
-                    <th>ID</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Green Score</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="template"
-                    style="
+              ">
+            <table style="width: 100%; border-collapse: collapse">
+              <thead>
+                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left">
+                  <th>ID</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Green Score</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="template" style="
                       display: none !important;
                       border-bottom: 1px solid #f3f4f6;
-                    "
-                  >
-                    <td style="padding: 16px"></td>
-                    <td style="padding: 16px">
-                      <div>
-                        <div
-                          style="font-weight: 600; color: #111827"
-                          name="product-name"
-                        ></div>
-                        <div
-                          style="
+                    ">
+                  <td style="padding: 16px"></td>
+                  <td style="padding: 16px">
+                    <div>
+                      <div style="font-weight: 600; color: #111827" name="product-name"></div>
+                      <div style="
                             font-size: 12px;
                             color: #6b7280;
                             margin-top: 4px;
-                          "
-                          name="description"
-                        ></div>
-                      </div>
-                    </td>
-                    <td style="padding: 16px"><span name="category"></span></td>
-                    <td style="padding: 16px" name="price"></td>
-                    <td style="padding: 16px"><span name="stock"></span></td>
-                    <td style="padding: 16px">
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <div
-                          style="
+                          " name="description"></div>
+                    </div>
+                  </td>
+                  <td style="padding: 16px"><span name="category"></span></td>
+                  <td style="padding: 16px" name="price"></td>
+                  <td style="padding: 16px"><span name="stock"></span></td>
+                  <td style="padding: 16px">
+                    <div style="display: flex; align-items: center; gap: 8px">
+                      <div style="
                             flex: 1;
                             height: 8px;
                             background: #e5e7eb;
                             border-radius: 4px;
                             overflow: hidden;
-                          "
-                        >
-                          <div
-                            name="green-score-bar"
-                            style="
+                          ">
+                        <div name="green-score-bar" style="
                               height: 100%;
                               background: linear-gradient(
                                 90deg,
@@ -405,281 +343,228 @@
                                 #3da547
                               );
                               border-radius: 4px;
-                            "
-                          ></div>
-                        </div>
-                        <span
-                          name="green-score-value"
-                          style="
+                            "></div>
+                      </div>
+                      <span name="green-score-value" style="
                             font-weight: 600;
                             color: #22c55e;
                             min-width: 35px;
-                          "
-                        ></span>
-                      </div>
-                    </td>
-                    <td style="padding: 16px;">
-                      <button
-                        style="
-                          padding: 8px;
-                          border: none;
-                          background: transparent;
-                          cursor: pointer;
-                          color: #3b82f6;
-                        "
-                        onclick="editProduct(this.dataset.productId)"
-                        data-product-id=""
-                      >
-                        <i data-lucide="edit"></i>
-                      </button>
-                      <button
-                        style="
-                          padding: 8px;
-                          border: none;
-                          background: transparent;
-                          cursor: pointer;
-                          color: #ef4444;
-                        "
-                        onclick="deleteProduct(this.dataset.productId)"
-                        data-product-id=""
-                      >
-                        <i data-lucide="trash-2"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                          "></span>
+                    </div>
+                  </td>
+                  <td style="padding: 16px;">
+                    <div class="action-buttons" style="gap: 3px">
+                    <button title='Edit' class="edit-btn" onclick="editProduct(this.dataset.productId)" data-product-id="">
+                      <i data-lucide="edit"></i>
+                    </button>
+                    <button class="delete-btn" title="Delete" onclick="deleteProduct(this.dataset.productId)" data-product-id="">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </main>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- CUSTOM CONFIRM BOX -->
+  <div id="confirmBox" class="confirm-box">
+    <div class="confirm-content">
+      <div class="confirm-icon">
+        <i data-lucide="alert-triangle" style="width: 32px; height: 32px; color: #ef4444"></i>
+      </div>
+      <h3 class="confirm-title">Confirm Delete</h3>
+      <p class="confirm-message" id="confirmMessage">Are you sure you want to delete this product?</p>
+      <div class="confirm-actions">
+        <button onclick="closeConfirmBox()" class="confirm-btn btn-outline">Cancel</button>
+        <button id="confirmDeleteBtn" class="confirm-btn btn-delete">Delete</button>
       </div>
     </div>
+  </div>
 
-    <!-- CUSTOM CONFIRM BOX -->
-    <div id="confirmBox" class="confirm-box">
-      <div class="confirm-content">
-        <div class="confirm-icon">
-          <i data-lucide="alert-triangle" style="width: 32px; height: 32px; color: #ef4444"></i>
-        </div>
-        <h3 class="confirm-title">Confirm Delete</h3>
-        <p class="confirm-message" id="confirmMessage">Are you sure you want to delete this product?</p>
-        <div class="confirm-actions">
-          <button onclick="closeConfirmBox()" class="confirm-btn btn-outline">Cancel</button>
-          <button id="confirmDeleteBtn" class="confirm-btn btn-delete">Delete</button>
-        </div>
+  <!-- EDIT PRODUCT MODAL -->
+  <div id="editProductModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Product Information</h3>
+        <button onclick="closeEditModal()">
+          <i data-lucide="x" style="width: 24px; height: 24px"></i>
+        </button>
       </div>
-    </div>
+      <div class="product-image-viewer">
+        <img id="product-img" src="" alt="Product image">
+        <button id="prev-img" class="image-nav-btn"><i data-lucide="arrow-left"></i></button>
+        <button id="next-img" class="image-nav-btn"><i data-lucide="arrow-right"></i></button>
 
-    <!-- EDIT PRODUCT MODAL -->
-    <div id="editProductModal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Edit Product Information</h3>
-          <button onclick="closeEditModal()">
-            <i data-lucide="x" style="width: 24px; height: 24px"></i>
-          </button>
-        </div>
-<div class="product-image-viewer">
-  <img id="product-img" src="" alt="Product image">
-<button id="prev-img" class="image-nav-btn"><i data-lucide="arrow-left"></i></button>
-<button id="next-img" class="image-nav-btn"><i data-lucide="arrow-right"></i></button>
+        <div id="image-counter" class="image-counter">1 / 1</div>
+      </div>
 
-  <div id="image-counter" class="image-counter">1 / 1</div>
-</div>
+      <form id="editProductForm" class="modal-form">
+        <input type="hidden" id="edit_product_id" />
 
-        <form id="editProductForm" class="modal-form">
-          <input type="hidden" id="edit_product_id" />
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
-            <div>
-              <label>Product name</label>
-              <input
-                type="text"
-                id="edit_product_name"
-                required
-              />
-            </div>
-
-            <div>
-              <label>Category</label>
-              <select id="edit_category_id" required>
-                <option value="">Choose Category</option>
-              </select>
-            </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+          <div>
+            <label>Product name</label>
+            <input type="text" id="edit_product_name" required />
           </div>
 
           <div>
-            <label>Description</label>
-            <textarea
-              id="edit_description"
-              required
-              rows="3"
-            ></textarea>
+            <label>Category</label>
+            <select id="edit_category_id" required>
+              <option value="">Choose Category</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label>Description</label>
+          <textarea id="edit_description" required rows="3"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px">
+          <div>
+            <label>Price (VNĐ)</label>
+            <input type="number" id="edit_price" required min="0" step="1000" />
           </div>
 
-          <div
-            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px"
-          >
-            <div>
-              <label>Price (VNĐ)</label>
-              <input
-                type="number"
-                id="edit_price"
-                required
-                min="0"
-                step="1000"
-              />
-            </div>
-
-            <div>
-              <label>Quantity</label>
-              <input
-                type="number"
-                id="edit_quantity"
-                required
-                min="0"
-              />
-            </div>
-
-            <div>
-              <label>Green Score</label>
-              <input
-                type="number"
-                id="edit_green_score"
-                required
-                min="0"
-                max="100"
-              />
-            </div>
+          <div>
+            <label>Quantity</label>
+            <input type="number" id="edit_quantity" required min="0" />
           </div>
 
-          <div class="modal-actions">
-            <button
-              type="button"
-              onclick="closeEditModal()"
-              class="modal-cancel-button"
-            >
-              Cancel
-            </button>
+          <div>
+            <label>Green Score</label>
+            <input type="number" id="edit_green_score" required min="0" max="100" />
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" onclick="closeEditModal()" class="modal-cancel-button">
+            Cancel
+          </button>
           <button type="submit" class="button">
             <i data-lucide="check" style="width: 18px; height: 18px;"></i>
             Save changes
           </button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-    
-    <script>
-      let products = [];
-      let categories = [];
-      let productToDelete = null;
+  </div>
 
-      // Format tiền VND
-      function formatCurrency(amount) {
-        return new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(amount);
-      }
+  <script>
+    let products = [];
+    let categories = [];
+    let productToDelete = null;
 
-      // ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
-      async function loadProductsData() {
-        try {
-          console.log("📦 Loading products data from DataManager...");
+    // Format tiền VND
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+    }
 
-          // Lấy dữ liệu từ DataManager
-          products = window.DataManager.getProducts();
-          categories = window.DataManager.getCategories();
+    // ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
+    async function loadProductsData() {
+      try {
+        console.log("📦 Loading products data from DataManager...");
 
-          if (!products || products.length === 0) {
-            console.warn("⚠️ No products found");
-            return;
-          }
+        // Lấy dữ liệu từ DataManager
+        products = window.DataManager.getProducts();
+        categories = window.DataManager.getCategories();
 
-          console.log("✅ Products loaded:", products.length);
-          console.log("✅ Categories loaded:", categories.length);
-
-          // Update statistics
-          document.getElementById("total-products").textContent =
-            products.length;
-          document.getElementById("total-categories").textContent =
-            categories.length;
-
-          const avgScore = (
-            products.reduce((sum, p) => sum + p.green_score.value, 0) /
-            products.length
-          ).toFixed(1);
-          document.getElementById("avg-green-score").textContent = avgScore;
-
-          const lowStock = products.filter(
-            (p) => p.quantity_available <= 30
-          ).length;
-          document.getElementById("low-stock").textContent = lowStock;
-
-          // Populate category filter
-          const categoryFilter = document.getElementById("categoryFilter");
-          categoryFilter.innerHTML =
-            '<option value="all">All Categories</option>';
-          categories.forEach((cat) => {
-            const option = document.createElement("option");
-            option.value = cat.category_id;
-            option.textContent = cat.category_name;
-            categoryFilter.appendChild(option);
-          });
-        } catch (error) {
-          console.error("❌ Error loading products:", error);
+        if (!products || products.length === 0) {
+          console.warn("⚠️ No products found");
+          return;
         }
+
+        console.log("✅ Products loaded:", products.length);
+        console.log("✅ Categories loaded:", categories.length);
+
+        // Update statistics
+        document.getElementById("total-products").textContent =
+          products.length;
+        document.getElementById("total-categories").textContent =
+          categories.length;
+
+        const avgScore = (
+          products.reduce((sum, p) => sum + p.green_score.value, 0) /
+          products.length
+        ).toFixed(1);
+        document.getElementById("avg-green-score").textContent = avgScore;
+
+        const lowStock = products.filter(
+          (p) => p.quantity_available <= 30
+        ).length;
+        document.getElementById("low-stock").textContent = lowStock;
+
+        // Populate category filter
+        const categoryFilter = document.getElementById("categoryFilter");
+        categoryFilter.innerHTML =
+          '<option value="all">All Categories</option>';
+        categories.forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat.category_id;
+          option.textContent = cat.category_name;
+          categoryFilter.appendChild(option);
+        });
+      } catch (error) {
+        console.error("❌ Error loading products:", error);
       }
+    }
 
-      // ✅ LOAD VÀ RENDER TABLE
-      async function loadProducts() {
-        try {
-          console.log("📋 Loading products for table...");
+    // ✅ LOAD VÀ RENDER TABLE
+    async function loadProducts() {
+      try {
+        console.log("📋 Loading products for table...");
 
-          // Lấy từ DataManager
-          products = window.DataManager.getProducts();
-          categories = window.DataManager.getCategories();
+        // Lấy từ DataManager
+        products = window.DataManager.getProducts();
+        categories = window.DataManager.getCategories();
 
-          if (!products || products.length === 0) {
-            console.warn("⚠️ No products to display");
-            return;
-          }
-
-          updateTable(products);
-          console.log("✅ Products table rendered");
-        } catch (error) {
-          console.error("❌ Error loading products:", error);
+        if (!products || products.length === 0) {
+          console.warn("⚠️ No products to display");
+          return;
         }
+
+        updateTable(products);
+        console.log("✅ Products table rendered");
+      } catch (error) {
+        console.error("❌ Error loading products:", error);
       }
+    }
 
-      // Render table
-      function updateTable(filteredProducts) {
-        renderTable(
-          filteredProducts,
-          "table tbody",
-          "table tbody tr.template",
-          (row, product) => {
-            row.querySelector(
-              "td:nth-child(1)"
-            ).textContent = `#${product.product_id}`;
+    // Render table
+    function updateTable(filteredProducts) {
+      renderTable(
+        filteredProducts,
+        "table tbody",
+        "table tbody tr.template",
+        (row, product) => {
+          row.querySelector(
+            "td:nth-child(1)"
+          ).textContent = `#${product.product_id}`;
 
-            row.querySelector('[name="product-name"]').textContent =
-              product.product_name;
-            const descText =
-              product.description && product.description.length > 60
-                ? product.description.substring(0, 60) + "..."
-                : product.description || "";
-            row.querySelector('[name="description"]').textContent = descText;
+          row.querySelector('[name="product-name"]').textContent =
+            product.product_name;
+          const descText =
+            product.description && product.description.length > 60
+              ? product.description.substring(0, 60) + "..."
+              : product.description || "";
+          row.querySelector('[name="description"]').textContent = descText;
 
-            const category = categories.find(
-              (c) => c.category_id === product.category_id
-            );
-            const categorySpan = row.querySelector('[name="category"]');
-            categorySpan.textContent = category
-              ? category.category_name
-              : "N/A";
-            categorySpan.style.cssText = `
+          const category = categories.find(
+            (c) => c.category_id === product.category_id
+          );
+          const categorySpan = row.querySelector('[name="category"]');
+          categorySpan.textContent = category
+            ? category.category_name
+            : "N/A";
+          categorySpan.style.cssText = `
       padding: 6px 12px;
       background: linear-gradient(135deg, #3b82f6, #2563eb);
       color: white;
@@ -689,14 +574,14 @@
       display: inline-block;
     `;
 
-            row.querySelector('[name="price"]').textContent = formatCurrency(
-              product.price_original
-            );
+          row.querySelector('[name="price"]').textContent = formatCurrency(
+            product.price_original
+          );
 
-            const stockSpan = row.querySelector('[name="stock"]');
-            stockSpan.textContent = product.quantity_available;
-            if (product.quantity_available <= 30) {
-              stockSpan.style.cssText = `
+          const stockSpan = row.querySelector('[name="stock"]');
+          stockSpan.textContent = product.quantity_available;
+          if (product.quantity_available <= 30) {
+            stockSpan.style.cssText = `
         padding: 4px 12px;
         background: #fef2f2;
         color: #ef4444;
@@ -704,8 +589,8 @@
         font-size: 12px;
         font-weight: 600;
       `;
-            } else if (product.quantity_available === 0) {
-              stockSpan.style.cssText = `
+          } else if (product.quantity_available === 0) {
+            stockSpan.style.cssText = `
         padding: 4px 12px;
         background: #fef2f2;
         color: #ef4444;
@@ -713,8 +598,8 @@
         font-size: 12px;
         font-weight: 600;
       `;
-            } else {
-              stockSpan.style.cssText = `
+          } else {
+            stockSpan.style.cssText = `
         padding: 4px 12px;
         background: #f0fdf4;
         color: #22c55e;
@@ -722,200 +607,200 @@
         font-size: 12px;
         font-weight: 600;
       `;
-            }
-
-            const scoreBar = row.querySelector('[name="green-score-bar"]');
-            const scoreValue = row.querySelector('[name="green-score-value"]');
-            const score = Number(product.green_score.value) || 0;
-            scoreBar.style.width = `${score}%`;
-            scoreValue.innerHTML = `${score}`;
-
-            const buttons = row.querySelectorAll("button");
-            const editBtn = buttons[0];
-            const deleteBtn = buttons[1];
-
-            if (editBtn) {
-              editBtn.dataset.productId = product.product_id;
-            }
-            if (deleteBtn) {
-              deleteBtn.dataset.productId = product.product_id;
-            }
           }
-        );
+
+          const scoreBar = row.querySelector('[name="green-score-bar"]');
+          const scoreValue = row.querySelector('[name="green-score-value"]');
+          const score = Number(product.green_score.value) || 0;
+          scoreBar.style.width = `${score}%`;
+          scoreValue.innerHTML = `${score}`;
+
+          const buttons = row.querySelectorAll("button");
+          const editBtn = buttons[0];
+          const deleteBtn = buttons[1];
+
+          if (editBtn) {
+            editBtn.dataset.productId = product.product_id;
+          }
+          if (deleteBtn) {
+            deleteBtn.dataset.productId = product.product_id;
+          }
+        }
+      );
+    }
+
+    // ✅ DELETE PRODUCT
+    function deleteProduct(productId) {
+      productToDelete = productId;
+      const product = products.find((p) => p.product_id === productId);
+
+      document.getElementById(
+        "confirmMessage"
+      ).textContent = `Are you sure you want to delete "${product?.product_name}"?`;
+
+      document.getElementById("confirmBox").style.display = "flex";
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    document.getElementById("confirmDeleteBtn").onclick = async function () {
+      if (!productToDelete) return;
+
+      try {
+        console.log("🗑️ Deleting product:", productToDelete);
+
+        // Remove from products array
+        products = products.filter((p) => p.product_id !== productToDelete);
+
+        // Save to DataManager
+        window.DataManager.saveProducts(products, categories);
+
+        // ✅ Đóng modal trước
+        closeConfirmBox();
+
+        // ✅ Đợi UI refresh hoàn tất
+        await refreshUI();
+
+        showToast("Product deleted successfully!", "success");
+
+        console.log("✅ Product deleted successfully");
+      } catch (error) {
+        console.error("❌ Error deleting product:", error);
+        showToast("An error occurred while deleting product!", "error");
       }
+    };
 
-      // ✅ DELETE PRODUCT
-      function deleteProduct(productId) {
-        productToDelete = productId;
-        const product = products.find((p) => p.product_id === productId);
+    function closeConfirmBox() {
+      document.getElementById("confirmBox").style.display = "none";
+      productToDelete = null;
+    }
 
-        document.getElementById(
-          "confirmMessage"
-        ).textContent = `Are you sure you want to delete "${product?.product_name}"?`;
+    let currentImageIndex = 0;
+    let currentImages = [];
 
-        document.getElementById("confirmBox").style.display = "flex";
-        if (typeof lucide !== "undefined") lucide.createIcons();
-      }
+    function editProduct(productId) {
+      const product = products.find((p) => p.product_id === productId);
+      if (!product) return;
 
-      document.getElementById("confirmDeleteBtn").onclick = async function () {
-  if (!productToDelete) return;
+      // 🔹 Lưu danh sách ảnh
+      currentImages = Array.isArray(product.product_images)
+        ? product.product_images
+        : [product.product_images];
+      currentImageIndex = 0;
 
-  try {
-    console.log("🗑️ Deleting product:", productToDelete);
-
-    // Remove from products array
-    products = products.filter((p) => p.product_id !== productToDelete);
-
-    // Save to DataManager
-    window.DataManager.saveProducts(products, categories);
-
-    // ✅ Đóng modal trước
-    closeConfirmBox();
-
-    // ✅ Đợi UI refresh hoàn tất
-    await refreshUI();
-    
-    showToast("Product deleted successfully!", "success");
-
-    console.log("✅ Product deleted successfully");
-  } catch (error) {
-    console.error("❌ Error deleting product:", error);
-    showToast("An error occurred while deleting product!", "error");
-  }
-};
-
-      function closeConfirmBox() {
-        document.getElementById("confirmBox").style.display = "none";
-        productToDelete = null;
-      }
-
-     let currentImageIndex = 0;
-let currentImages = [];
-
-function editProduct(productId) {
-  const product = products.find((p) => p.product_id === productId);
-  if (!product) return;
-
-  // 🔹 Lưu danh sách ảnh
-  currentImages = Array.isArray(product.product_images)
-    ? product.product_images
-    : [product.product_images];
-  currentImageIndex = 0;
-
-  // 🔹 Hiển thị ảnh đầu tiên
-  updateProductImage();
-
-  // 🔹 Điền dữ liệu form
-  document.getElementById("edit_product_id").value = product.product_id;
-  document.getElementById("edit_product_name").value = product.product_name;
-  document.getElementById("edit_description").value = product.description;
-  document.getElementById("edit_price").value = product.price_original;
-  document.getElementById("edit_quantity").value = product.quantity_available;
-  document.getElementById("edit_green_score").value = product.green_score.value;
-  document.getElementById("edit_category_id").value = product.category_id;
-
-  document.getElementById("editProductModal").style.display = "flex";
-
-  if (typeof lucide !== "undefined") lucide.createIcons();
-}
-
-function updateProductImage() {
-  const imgEl = document.getElementById("product-img");
-  const counterEl = document.getElementById("image-counter");
-
-  if (!imgEl || currentImages.length === 0) return;
-
-  // 🔹 Lấy base path chuẩn cho dataset
-  const base = window.location.origin + "/EcoFit/dataset/product_images/";
-  const filename = currentImages[currentImageIndex].split("/").pop();
-  const imagePath = base + filename;
-
-  // 🔹 Hiệu ứng mượt
-  imgEl.classList.remove("show");
-  imgEl.src = imagePath;
-  imgEl.onload = () => imgEl.classList.add("show");
-
-  // 🔹 Cập nhật chỉ số
-  if (counterEl)
-    counterEl.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
-}
-
-// ✅ Gắn sự kiện sau khi DOM đã sẵn sàng
-document.addEventListener("DOMContentLoaded", () => {
-  const nextBtn = document.getElementById("next-img");
-  const prevBtn = document.getElementById("prev-img");
-
-  if (nextBtn && prevBtn) {
-    nextBtn.addEventListener("click", () => {
-      if (currentImages.length === 0) return;
-      currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+      // 🔹 Hiển thị ảnh đầu tiên
       updateProductImage();
+
+      // 🔹 Điền dữ liệu form
+      document.getElementById("edit_product_id").value = product.product_id;
+      document.getElementById("edit_product_name").value = product.product_name;
+      document.getElementById("edit_description").value = product.description;
+      document.getElementById("edit_price").value = product.price_original;
+      document.getElementById("edit_quantity").value = product.quantity_available;
+      document.getElementById("edit_green_score").value = product.green_score.value;
+      document.getElementById("edit_category_id").value = product.category_id;
+
+      document.getElementById("editProductModal").style.display = "flex";
+
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
+
+    function updateProductImage() {
+      const imgEl = document.getElementById("product-img");
+      const counterEl = document.getElementById("image-counter");
+
+      if (!imgEl || currentImages.length === 0) return;
+
+      // 🔹 Lấy base path chuẩn cho dataset
+      const base = window.location.origin + "/EcoFit/dataset/product_images/";
+      const filename = currentImages[currentImageIndex].split("/").pop();
+      const imagePath = base + filename;
+
+      // 🔹 Hiệu ứng mượt
+      imgEl.classList.remove("show");
+      imgEl.src = imagePath;
+      imgEl.onload = () => imgEl.classList.add("show");
+
+      // 🔹 Cập nhật chỉ số
+      if (counterEl)
+        counterEl.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+    }
+
+    // ✅ Gắn sự kiện sau khi DOM đã sẵn sàng
+    document.addEventListener("DOMContentLoaded", () => {
+      const nextBtn = document.getElementById("next-img");
+      const prevBtn = document.getElementById("prev-img");
+
+      if (nextBtn && prevBtn) {
+        nextBtn.addEventListener("click", () => {
+          if (currentImages.length === 0) return;
+          currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+          updateProductImage();
+        });
+
+        prevBtn.addEventListener("click", () => {
+          if (currentImages.length === 0) return;
+          currentImageIndex =
+            (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+          updateProductImage();
+        });
+      }
     });
 
-    prevBtn.addEventListener("click", () => {
-      if (currentImages.length === 0) return;
-      currentImageIndex =
-        (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-      updateProductImage();
-    });
-  }
-});
 
 
+    function closeEditModal() {
+      document.getElementById("editProductModal").style.display = "none";
+      document.getElementById("editProductForm").reset();
+    }
 
-      function closeEditModal() {
-        document.getElementById("editProductModal").style.display = "none";
-        document.getElementById("editProductForm").reset();
+    document.getElementById("editProductForm").onsubmit = async function (e) {
+      e.preventDefault();
+
+      const productId = document.getElementById("edit_product_id").value;
+      const productIndex = products.findIndex(
+        (p) => p.product_id === productId
+      );
+
+      if (productIndex === -1) {
+        showToast("Product not found!", "error");
+        return;
       }
 
-      document.getElementById("editProductForm").onsubmit = async function (e) {
-  e.preventDefault();
+      console.log("💾 Saving product changes...");
 
-  const productId = document.getElementById("edit_product_id").value;
-  const productIndex = products.findIndex(
-    (p) => p.product_id === productId
-  );
+      // Update product information
+      products[productIndex] = {
+        ...products[productIndex],
+        product_name: document.getElementById("edit_product_name").value,
+        description: document.getElementById("edit_description").value,
+        price_original: parseInt(document.getElementById("edit_price").value),
+        quantity_available: parseInt(
+          document.getElementById("edit_quantity").value
+        ),
+        green_score: {
+          value: parseInt(document.getElementById("edit_green_score").value),
+        },
+        category_id: document.getElementById("edit_category_id").value,
+      };
 
-  if (productIndex === -1) {
-    showToast("Product not found!", "error");
-    return;
-  }
+      // Save to DataManager
+      window.DataManager.saveProducts(products, categories);
 
-  console.log("💾 Saving product changes...");
+      // ✅ Đóng modal trước
+      closeEditModal();
 
-  // Update product information
-  products[productIndex] = {
-    ...products[productIndex],
-    product_name: document.getElementById("edit_product_name").value,
-    description: document.getElementById("edit_description").value,
-    price_original: parseInt(document.getElementById("edit_price").value),
-    quantity_available: parseInt(
-      document.getElementById("edit_quantity").value
-    ),
-    green_score: {
-      value: parseInt(document.getElementById("edit_green_score").value),
-    },
-    category_id: document.getElementById("edit_category_id").value,
-  };
+      // ✅ Đợi refresh hoàn tất
+      await refreshUI();
 
-  // Save to DataManager
-  window.DataManager.saveProducts(products, categories);
+      showToast("Product updated successfully!", "success");
+      console.log("✅ Product updated successfully");
+    };
 
-  // ✅ Đóng modal trước
-  closeEditModal();
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      const bgColor = type === "success" ? "#22c55e" : "#ef4444";
 
-  // ✅ Đợi refresh hoàn tất
-  await refreshUI();
-  
-  showToast("Product updated successfully!", "success");
-  console.log("✅ Product updated successfully");
-};
-
-      function showToast(message, type = "success") {
-  const toast = document.createElement("div");
-  const bgColor = type === "success" ? "#22c55e" : "#ef4444";
-
-  toast.style.cssText = `
+      toast.style.cssText = `
     position: fixed;
     top: 80px;  /* ✅ Thay đổi từ 24px → 80px (hoặc cao hơn tùy header) */
     right: 24px;
@@ -928,329 +813,330 @@ document.addEventListener("DOMContentLoaded", () => {
     z-index: 10000;
     animation: slideIn 0.3s ease;
   `;
-  toast.textContent = message;
+      toast.textContent = message;
 
-  document.body.appendChild(toast);
+      document.body.appendChild(toast);
 
-  setTimeout(() => {
-    toast.style.animation = "slideOut 0.3s ease";
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
+      setTimeout(() => {
+        toast.style.animation = "slideOut 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
 
-      // Load categories into edit form
-      function loadCategoriesIntoEditForm() {
-        const select = document.getElementById("edit_category_id");
-        select.innerHTML = '<option value="">Select category</option>';
+    // Load categories into edit form
+    function loadCategoriesIntoEditForm() {
+      const select = document.getElementById("edit_category_id");
+      select.innerHTML = '<option value="">Select category</option>';
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat.category_id;
+        option.textContent = cat.category_name;
+        select.appendChild(option);
+      });
+    }
+
+
+    let categoryChart = null;
+
+    async function loadCategoryChart() {
+      try {
+        products = window.DataManager.getProducts();
+        categories = window.DataManager.getCategories();
+
+        // Count products by category
+        const categoryCount = {};
         categories.forEach((cat) => {
-          const option = document.createElement("option");
-          option.value = cat.category_id;
-          option.textContent = cat.category_name;
-          select.appendChild(option);
+          categoryCount[cat.category_id] = {
+            name: cat.category_name,
+            count: 0,
+          };
         });
-      }
 
-
-let categoryChart = null;
-
-async function loadCategoryChart() {
-  try {
-    products = window.DataManager.getProducts();
-    categories = window.DataManager.getCategories();
-
-    // Count products by category
-    const categoryCount = {};
-    categories.forEach((cat) => {
-      categoryCount[cat.category_id] = {
-        name: cat.category_name,
-        count: 0,
-      };
-    });
-
-    products.forEach((product) => {
-      if (categoryCount[product.category_id]) {
-        categoryCount[product.category_id].count++;
-      }
-    });
-
-    // Prepare data for chart
-    const labels = Object.values(categoryCount).map((c) => c.name);
-    const counts = Object.values(categoryCount).map((c) => c.count);
-    const colors = ["#3b82f6", "#22c55e", "#f59e0b", "#ef4444"];
-
-    // ✅ LẤY CANVAS ELEMENT
-    const canvas = document.getElementById("categoryChart");
-    const ctx = canvas.getContext("2d");
-
-    // ✅ DESTROY CHART CŨ VÀ CLEAR CANVAS
-    if (categoryChart) {
-      categoryChart.destroy();
-      categoryChart = null;
-      
-      // ✅ Clear canvas hoàn toàn
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // ✅ Đợi một chút để DOM update
-      await new Promise(res => setTimeout(res, 100));
-    }
-
-    // ✅ TẠO CHART MỚI
-    categoryChart = new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            data: counts,
-            backgroundColor: colors,
-            borderWidth: 0,
-            borderRadius: 8,
-            spacing: 4,
-          },
-        ],
-      },
-      options: {
-        // ✅ BẬT ANIMATION
-        animation: {
-          animateRotate: true,
-          animateScale: true,    // ✅ Thêm scale animation
-          duration: 1200,
-          easing: 'easeOutQuart'
-        },
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              padding: 20,
-              font: {
-                size: 14,
-                family: "Outfit",
-              },
-              usePointStyle: true,
-              pointStyle: "circle",
-            },
-          },
-          tooltip: {
-            backgroundColor: "#111827",
-            padding: 12,
-            titleFont: {
-              size: 14,
-              family: "Outfit",
-            },
-            bodyFont: {
-              size: 13,
-              family: "Outfit",
-            },
-            cornerRadius: 8,
-            callbacks: {
-              label: function (context) {
-                const total = context.dataset.data.reduce(
-                  (a, b) => a + b,
-                  0
-                );
-                const percentage = (
-                  (context.parsed / total) *
-                  100
-                ).toFixed(1);
-                return ` ${context.parsed} products (${percentage}%)`;
-              },
-            },
-          },
-        },
-        cutout: "70%",
-      },
-    });
-
-    console.log("✅ Category chart rendered with animation");
-    
-  } catch (error) {
-    console.error("Error loading category chart:", error);
-  }
-}
-      // Load Top 5 Best Selling Products from orders.json
-      function loadTopProducts() {
-        try {
-          products = window.DataManager.getProducts();
-          orders = window.DataManager.getOrders();
-
-          // Calculate total quantity sold for each product
-          const productSales = {};
-
-          orders.forEach((order) => {
-            if (order.status === "Completed") {
-              order.items.forEach((item) => {
-                if (!productSales[item.product_id]) {
-                  productSales[item.product_id] = {
-                    product_id: item.product_id,
-                    product_name: item.product_name,
-                    total_sold: 0,
-                    revenue: 0,
-                  };
-                }
-                productSales[item.product_id].total_sold += item.quantity;
-                productSales[item.product_id].revenue +=
-                  item.quantity * item.unit_price;
-              });
-            }
-          });
-
-          // Convert to array and sort by quantity sold
-          const sortedProducts = Object.values(productSales)
-            .sort((a, b) => b.total_sold - a.total_sold)
-            .slice(0, 5);
-
-          // Find max to calculate % for progress bar
-          const maxSold = sortedProducts[0]?.total_sold || 1;
-
-          // Render list
-          renderTopProducts(sortedProducts, maxSold);
-        } catch (error) {
-          console.error("Error loading top products:", error);
-        }
-      }
-
-      // Render top products list
-      function renderTopProducts(products, maxSold) {
-        const container = document.getElementById("topProductsList");
-        const template = container.querySelector(".top-product-item.template");
-
-        if (!template) return;
-
-        const templateClone = template.cloneNode(true);
-
-        // Remove all old items (except template)
-        const oldItems = container.querySelectorAll(
-          ".top-product-item:not(.template)"
-        );
-        oldItems.forEach((item) => item.remove());
-
-        // Render new products
-        products.forEach((product, index) => {
-          const item = templateClone.cloneNode(true);
-          item.classList.remove("template");
-          item.style.display = "";
-
-          // Rank
-          item.querySelector('[name="rank"]').textContent = index + 1;
-
-          // Product name
-          item.querySelector('[name="product-name"]').textContent =
-            product.product_name;
-
-          // Sold count
-          item.querySelector('[name="sold-count"]').textContent =
-            product.total_sold;
-
-          // Revenue
-          const revenueFormatted = new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          }).format(product.revenue);
-          item.querySelector('[name="revenue"]').textContent = revenueFormatted;
-
-          // Progress bar
-          const percentage = (product.total_sold / maxSold) * 100;
-          item.querySelector(
-            '[name="progress-bar"]'
-          ).style.width = `${percentage}%`;
-
-          // Gradient color by rank
-          const rankEl = item.querySelector('[name="rank"]');
-          if (index === 0) {
-            rankEl.style.background =
-              "linear-gradient(135deg, #fbbf24, #f59e0b)"; // Gold
-          } else if (index === 1) {
-            rankEl.style.background =
-              "linear-gradient(135deg, #d1d5db, #9ca3af)"; // Silver
-          } else if (index === 2) {
-            rankEl.style.background =
-              "linear-gradient(135deg, #fb923c, #f97316)"; // Bronze
+        products.forEach((product) => {
+          if (categoryCount[product.category_id]) {
+            categoryCount[product.category_id].count++;
           }
-
-          container.appendChild(item);
         });
+
+        // Prepare data for chart
+        const labels = Object.values(categoryCount).map((c) => c.name);
+        const counts = Object.values(categoryCount).map((c) => c.count);
+        const colors = ["#3b82f6", "#22c55e", "#f59e0b", "#ef4444"];
+
+        // ✅ LẤY CANVAS ELEMENT
+        const canvas = document.getElementById("categoryChart");
+        const ctx = canvas.getContext("2d");
+
+        // ✅ DESTROY CHART CŨ VÀ CLEAR CANVAS
+        if (categoryChart) {
+          categoryChart.destroy();
+          categoryChart = null;
+
+          // ✅ Clear canvas hoàn toàn
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // ✅ Đợi một chút để DOM update
+          await new Promise(res => setTimeout(res, 100));
+        }
+
+        // ✅ TẠO CHART MỚI
+        categoryChart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                data: counts,
+                backgroundColor: colors,
+                borderWidth: 0,
+                borderRadius: 8,
+                spacing: 4,
+              },
+            ],
+          },
+          options: {
+            // ✅ BẬT ANIMATION
+            animation: {
+              animateRotate: true,
+              animateScale: true,    // ✅ Thêm scale animation
+              duration: 1200,
+              easing: 'easeOutQuart'
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  padding: 20,
+                  font: {
+                    size: 14,
+                    family: "Outfit",
+                  },
+                  usePointStyle: true,
+                  pointStyle: "circle",
+                },
+              },
+              tooltip: {
+                backgroundColor: "#111827",
+                padding: 12,
+                titleFont: {
+                  size: 14,
+                  family: "Outfit",
+                },
+                bodyFont: {
+                  size: 13,
+                  family: "Outfit",
+                },
+                cornerRadius: 8,
+                callbacks: {
+                  label: function (context) {
+                    const total = context.dataset.data.reduce(
+                      (a, b) => a + b,
+                      0
+                    );
+                    const percentage = (
+                      (context.parsed / total) *
+                      100
+                    ).toFixed(1);
+                    return ` ${context.parsed} products (${percentage}%)`;
+                  },
+                },
+              },
+            },
+            cutout: "70%",
+          },
+        });
+
+        console.log("✅ Category chart rendered with animation");
+
+      } catch (error) {
+        console.error("Error loading category chart:", error);
       }
-function handleFilterChange() {
-  const searchValue = document
-    .getElementById("searchInput")
-    .value.toLowerCase()
-    .trim();
-  const categoryValue = document.getElementById("categoryFilter").value;
-  const stockValue = document.getElementById("stockFilter").value;
+    }
+    // Load Top 5 Best Selling Products from orders.json
+    function loadTopProducts() {
+      try {
+        products = window.DataManager.getProducts();
+        orders = window.DataManager.getOrders();
 
-  const filtered = products.filter((product) => {
-    // 🔍 Lọc theo từ khóa (tên hoặc mô tả)
-    const matchSearch =
-      searchValue === "" ||
-      product.product_name.toLowerCase().includes(searchValue) ||
-      (product.description &&
-        product.description.toLowerCase().includes(searchValue));
+        // Calculate total quantity sold for each product
+        const productSales = {};
 
-    // 📂 Lọc theo danh mục
-    const matchCategory =
-      categoryValue === "all" || product.category_id === categoryValue;
+        orders.forEach((order) => {
+          if (order.status === "Completed") {
+            order.items.forEach((item) => {
+              if (!productSales[item.product_id]) {
+                productSales[item.product_id] = {
+                  product_id: item.product_id,
+                  product_name: item.product_name,
+                  total_sold: 0,
+                  revenue: 0,
+                };
+              }
+              productSales[item.product_id].total_sold += item.quantity;
+              productSales[item.product_id].revenue +=
+                item.quantity * item.unit_price;
+            });
+          }
+        });
 
-    // 📦 Lọc theo tình trạng tồn kho
-    let matchStock = true;
-    if (stockValue === "in-stock") {
-      matchStock = product.quantity_available > 30;
-    } else if (stockValue === "low-stock") {
-      matchStock =
-        product.quantity_available > 0 && product.quantity_available <= 30;
-    } else if (stockValue === "out-of-stock") {
-      matchStock = product.quantity_available === 0;
+        // Convert to array and sort by quantity sold
+        const sortedProducts = Object.values(productSales)
+          .sort((a, b) => b.total_sold - a.total_sold)
+          .slice(0, 5);
+
+        // Find max to calculate % for progress bar
+        const maxSold = sortedProducts[0]?.total_sold || 1;
+
+        // Render list
+        renderTopProducts(sortedProducts, maxSold);
+      } catch (error) {
+        console.error("Error loading top products:", error);
+      }
     }
 
-    return matchSearch && matchCategory && matchStock;
-  });
+    // Render top products list
+    function renderTopProducts(products, maxSold) {
+      const container = document.getElementById("topProductsList");
+      const template = container.querySelector(".top-product-item.template");
 
-  updateTable(filtered);
-}
+      if (!template) return;
 
+      const templateClone = template.cloneNode(true);
 
-      // ✅ INITIALIZATION: initialization function when page is loaded
-      document.addEventListener("DOMContentLoaded", () => {
-        console.log("🚀 Initializing products page...");
+      // Remove all old items (except template)
+      const oldItems = container.querySelectorAll(
+        ".top-product-item:not(.template)"
+      );
+      oldItems.forEach((item) => item.remove());
 
-        if (typeof lucide !== "undefined") {
-          lucide.createIcons();
+      // Render new products
+      products.forEach((product, index) => {
+        const item = templateClone.cloneNode(true);
+        item.classList.remove("template");
+        item.style.display = "";
+
+        // Rank
+        item.querySelector('[name="rank"]').textContent = index + 1;
+
+        // Product name
+        item.querySelector('[name="product-name"]').textContent =
+          product.product_name;
+
+        // Sold count
+        item.querySelector('[name="sold-count"]').textContent =
+          product.total_sold;
+
+        // Revenue
+        const revenueFormatted = new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(product.revenue);
+        item.querySelector('[name="revenue"]').textContent = revenueFormatted;
+
+        // Progress bar
+        const percentage = (product.total_sold / maxSold) * 100;
+        item.querySelector(
+          '[name="progress-bar"]'
+        ).style.width = `${percentage}%`;
+
+        // Gradient color by rank
+        const rankEl = item.querySelector('[name="rank"]');
+        if (index === 0) {
+          rankEl.style.background =
+            "linear-gradient(135deg, #fbbf24, #f59e0b)"; // Gold
+        } else if (index === 1) {
+          rankEl.style.background =
+            "linear-gradient(135deg, #d1d5db, #9ca3af)"; // Silver
+        } else if (index === 2) {
+          rankEl.style.background =
+            "linear-gradient(135deg, #fb923c, #f97316)"; // Bronze
         }
-        checkAuthentication(); // Check user authentication + show admin name
-        loadProducts();
-        loadProductsData();
-        loadCategoriesIntoEditForm();
-        loadCategoryChart();
-        loadTopProducts();
-        document
-          .getElementById("searchInput")
-          .addEventListener("input", handleFilterChange);
-        document
-          .getElementById("categoryFilter")
-          .addEventListener("change", handleFilterChange);
-        document
-          .getElementById("stockFilter")
-          .addEventListener("change", handleFilterChange);
 
-        document
-          .getElementById("searchInput")
-          .addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-              handleFilterChange();
-            }
-          });
+        container.appendChild(item);
+      });
+    }
+    function handleFilterChange() {
+      const searchValue = document
+        .getElementById("searchInput")
+        .value.toLowerCase()
+        .trim();
+      const categoryValue = document.getElementById("categoryFilter").value;
+      const stockValue = document.getElementById("stockFilter").value;
 
-        console.log("✅ Products page initialized");
+      const filtered = products.filter((product) => {
+        // 🔍 Lọc theo từ khóa (tên hoặc mô tả)
+        const matchSearch =
+          searchValue === "" ||
+          product.product_name.toLowerCase().includes(searchValue) ||
+          (product.description &&
+            product.description.toLowerCase().includes(searchValue));
+
+        // 📂 Lọc theo danh mục
+        const matchCategory =
+          categoryValue === "all" || product.category_id === categoryValue;
+
+        // 📦 Lọc theo tình trạng tồn kho
+        let matchStock = true;
+        if (stockValue === "in-stock") {
+          matchStock = product.quantity_available > 30;
+        } else if (stockValue === "low-stock") {
+          matchStock =
+            product.quantity_available > 0 && product.quantity_available <= 30;
+        } else if (stockValue === "out-of-stock") {
+          matchStock = product.quantity_available === 0;
+        }
+
+        return matchSearch && matchCategory && matchStock;
       });
 
-async function refreshUI() {
-  await checkAuthentication();
-  await loadProductsData();
-  handleFilterChange();
-  await loadCategoryChart(); // ✅ Đợi chart vẽ xong
-  loadTopProducts();
-}
-    </script>
-  </body>
+      updateTable(filtered);
+    }
+
+
+    // ✅ INITIALIZATION: initialization function when page is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("🚀 Initializing products page...");
+
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+      checkAuthentication(); // Check user authentication + show admin name
+      loadProducts();
+      loadProductsData();
+      loadCategoriesIntoEditForm();
+      loadCategoryChart();
+      loadTopProducts();
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", handleFilterChange);
+      document
+        .getElementById("categoryFilter")
+        .addEventListener("change", handleFilterChange);
+      document
+        .getElementById("stockFilter")
+        .addEventListener("change", handleFilterChange);
+
+      document
+        .getElementById("searchInput")
+        .addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            handleFilterChange();
+          }
+        });
+
+      console.log("✅ Products page initialized");
+    });
+
+    async function refreshUI() {
+      await checkAuthentication();
+      await loadProductsData();
+      handleFilterChange();
+      await loadCategoryChart(); // ✅ Đợi chart vẽ xong
+      loadTopProducts();
+    }
+  </script>
+</body>
+
 </html>

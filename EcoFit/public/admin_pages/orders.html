@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,24 +11,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
-      <script src="./dataManager.js"></script>
-      <script src="./script.js"></script>
+  <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
+  <script src="./dataManager.js"></script>
+  <script src="./script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-  // Toggle Sidebar
-  const menuToggle = document.querySelector('.menu-toggle');
-  const sidebar = document.querySelector('.sidebar');
-  const mainContent = document.querySelector('.main-content');
-
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      mainContent.classList.toggle('expanded');
+      toggleSidebar();
     });
-  }
-
-});
   </script>
 </head>
 
@@ -35,7 +25,8 @@
   <div class="dashboard-container">
     <!-- Sidebar - giữ nguyên -->
     <aside class="sidebar">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
+      <div
+        style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 0;">
         <div class="logo"><img src="../images/EcoFit_logo_white.png" width="30" /></div>
         <div>
           <h1 style="font-size: 28px; margin: 0;">Eco<span style="color: #3DA547">Fit</span></h1>
@@ -56,10 +47,15 @@
         <button class="menu-item active">
           <i data-lucide="list"></i><span>Order Lists</span>
         </button>
-        <div class="pages-divider"><p>PAGES</p></div>
-        <button class="menu-item"  onclick="location.href='promotions.html'"><i data-lucide="gift"></i><span>Promotions</span></button>
-        <button class="menu-item" onclick="location.href='blogs.html'"><i data-lucide="calendar" ></i><span>Blogs</span></button>
-        <button class="menu-item" onclick="location.href='to-do.html'"><i data-lucide="check-square"></i><span>To-Do</span></button>
+        <div class="pages-divider">
+          <p>PAGES</p>
+        </div>
+        <button class="menu-item" onclick="location.href='promotions.html'"><i
+            data-lucide="gift"></i><span>Promotions</span></button>
+        <button class="menu-item" onclick="location.href='blogs.html'"><i
+            data-lucide="calendar"></i><span>Blogs</span></button>
+        <button class="menu-item" onclick="location.href='to-do.html'"><i
+            data-lucide="check-square"></i><span>To-Do</span></button>
       </nav>
     </aside>
 
@@ -159,7 +155,7 @@
 
         <!-- Charts Section -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
-          
+
           <!-- Order Status Distribution -->
           <div class="chart-container" style="padding: 24px;">
             <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">Order Status Distribution</h3>
@@ -178,13 +174,14 @@
         <div class="chart-container" style="padding: 24px;">
           <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Orders</h3>
 
-          <div style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+          <div
+            style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
             <div style="flex: 1; display: flex; gap: 12px;">
               <div class="search-box">
                 <i data-lucide="search" style="width: 20px; height: 20px;"></i>
                 <input id="searchInput" placeholder="Search by order ID or customer" />
               </div>
-              
+
               <select id="statusFilter">
                 <option value="all">All Status</option>
                 <option value="Completed">Completed</option>
@@ -199,7 +196,8 @@
             </div>
           </div>
 
-          <div style="max-height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
+          <div
+            style="max-height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px;">
             <table style="width: 100%; border-collapse: collapse;">
               <thead>
                 <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
@@ -228,15 +226,15 @@
                   <td>
 
 
-  <div class="action-buttons" style="gap:3px">
-    <button title="View">
-      <i data-lucide="eye" style="width: 24px; height: 24px;"></i>
-    </button>
-    <button title="Edit">
-      <i data-lucide="Edit" style="width: 24px; height: 24px;"></i>
-    </button>
-  </div>
-                    
+                    <div class="action-buttons" style="gap:3px">
+                      <button title="View">
+                        <i data-lucide="eye" style="width: 24px; height: 24px;"></i>
+                      </button>
+                      <button title="Edit">
+                        <i data-lucide="Edit" style="width: 24px; height: 24px;"></i>
+                      </button>
+                    </div>
+
                   </td>
                 </tr>
               </tbody>
@@ -277,7 +275,7 @@
           <span class="order-detail-label">Status:</span>
           <span class="order-detail-value" id="modal-status"></span>
         </div>
-        
+
         <div style="margin-top: 20px;">
           <div style="font-weight: 600; color: #111827; margin-bottom: 12px;">Order Items:</div>
           <div class="order-items-list" id="modal-items-list"></div>
@@ -315,10 +313,11 @@
       </div>
       <div class="modal-body">
         <div style="margin-bottom: 16px;">
-          <div style="font-weight: 600; color: #111827; margin-bottom: 8px;">Order ID: <span id="edit-order-id"></span></div>
+          <div style="font-weight: 600; color: #111827; margin-bottom: 8px;">Order ID: <span id="edit-order-id"></span>
+          </div>
           <div style="font-size: 14px; color: #6b7280;">Current Status: <span id="edit-current-status"></span></div>
         </div>
-        
+
         <div style="margin-bottom: 24px;">
           <label style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px;">New Status:</label>
           <select id="newStatusSelect" class="status-select">
@@ -340,469 +339,467 @@
   <script src="script.js"></script>
 
 
- <script>
-let orders = [];
-let currentEditOrderId = null;
-let statusChart = null;
-let revenueChart = null;
-let accounts = [];
+  <script>
+    let orders = [];
+    let currentEditOrderId = null;
+    let statusChart = null;
+    let revenueChart = null;
+    let accounts = [];
 
-// Format tiền VND
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('vi-VN', { 
-    style: 'currency', 
-    currency: 'VND' 
-  }).format(amount);
-}
-
-// Format date
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('vi-VN');
-}
-
-// Helper: get customer fullname by id
-function getCustomerName(customerId) {
-  if (!accounts || accounts.length === 0) return `Customer #${customerId}`;
-  const idStr = customerId != null ? customerId.toString() : "";
-  const acc = accounts.find(a => (a.id && a.id.toString() === idStr) || (a.profile_id && a.profile_id.toString() === idStr));
-  return acc ? (acc.fullname || acc.name || `Customer #${customerId}`) : `Customer #${customerId}`;
-}
-
-// ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
-async function loadOrdersData() {
-  try {
-    console.log('🛒 Loading orders data from DataManager...');
-    
-    // Lấy dữ liệu từ DataManager
-    orders = window.DataManager.getOrders();
-    accounts = window.DataManager.getAccounts();
-    
-    if (!orders || orders.length === 0) {
-      console.warn('⚠️ No orders found');
-      return;
+    // Format tiền VND
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+      }).format(amount);
     }
 
-    console.log('✅ Orders loaded:', orders.length);
-    console.log('✅ Accounts loaded:', accounts.length);
-
-    // Update stats
-    document.getElementById("total-orders").textContent = orders.length;
-    
-    const completedOrders = orders.filter(o => o.status === "Completed");
-    document.getElementById("completed-orders").textContent = completedOrders.length;
-    
-    const processingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
-    document.getElementById("processing-orders").textContent = processingOrders.length;
-    
-    const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total_amount, 0);
-    document.getElementById("total-revenue").textContent = formatCurrency(totalRevenue);
-
-    // Apply growth calculations
-    if (typeof applyMonthlyGrowth === "function") {
-      applyMonthlyGrowth("orders", orders, "order_date");
-      applyMonthlyGrowth("completed", completedOrders, "order_date");
-      
-      // Custom growth calculation for revenue
-      const now = new Date();
-      const currentMonth = now.getMonth();
-      const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-      const currentYear = now.getFullYear();
-      
-      const currentRevenue = completedOrders
-        .filter(o => {
-          const d = new Date(o.order_date);
-          return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-        })
-        .reduce((sum, o) => sum + o.total_amount, 0);
-      
-      const previousRevenue = completedOrders
-        .filter(o => {
-          const d = new Date(o.order_date);
-          const prevYear = previousMonth === 11 ? currentYear - 1 : currentYear;
-          return d.getMonth() === previousMonth && d.getFullYear() === prevYear;
-        })
-        .reduce((sum, o) => sum + o.total_amount, 0);
-      
-      let revenueGrowth = 0;
-      if (previousRevenue === 0) {
-        revenueGrowth = currentRevenue === 0 ? 0 : 100;
-      } else {
-        revenueGrowth = Math.abs(((currentRevenue - previousRevenue) / previousRevenue * 100).toFixed(1));
-      }
-      
-      const revenueGrowthEl = document.getElementById("revenue-growth");
-      if (revenueGrowthEl) {
-        revenueGrowthEl.textContent = `${revenueGrowth}%`;
-      }
+    // Format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN');
     }
 
-    // Load month filter options
-    loadMonthFilter();
-    
-    // Load charts
-    loadStatusChart();
-    loadRevenueChart();
-
-  } catch (error) {
-    console.error("❌ Error loading orders:", error);
-  }
-}
-
-// Load month filter
-function loadMonthFilter() {
-  const monthFilter = document.getElementById("monthFilter");
-  const months = new Set();
-  
-  orders.forEach(order => {
-    const date = new Date(order.order_date);
-    const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    months.add(monthYear);
-  });
-
-  Array.from(months).sort().reverse().forEach(monthYear => {
-    const [year, month] = monthYear.split('-');
-    const date = new Date(year, month - 1);
-    const monthName = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    
-    const option = document.createElement("option");
-    option.value = monthYear;
-    option.textContent = monthName;
-    monthFilter.appendChild(option);
-  });
-}
-
-// Load Status Chart
-function loadStatusChart() {
-  const statusCount = {
-    Completed: 0,
-    Processing: 0,
-    Pending: 0,
-    Cancelled: 0
-  };
-
-  orders.forEach(order => {
-    if (statusCount[order.status] !== undefined) {
-      statusCount[order.status]++;
+    // Helper: get customer fullname by id
+    function getCustomerName(customerId) {
+      if (!accounts || accounts.length === 0) return `Customer #${customerId}`;
+      const idStr = customerId != null ? customerId.toString() : "";
+      const acc = accounts.find(a => (a.id && a.id.toString() === idStr) || (a.profile_id && a.profile_id.toString() === idStr));
+      return acc ? (acc.fullname || acc.name || `Customer #${customerId}`) : `Customer #${customerId}`;
     }
-  });
 
-  const ctx = document.getElementById('statusChart').getContext('2d');
-  
-  if (statusChart) statusChart.destroy();
+    // ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
+    async function loadOrdersData() {
+      try {
+        console.log('🛒 Loading orders data from DataManager...');
 
-  statusChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Completed', 'Processing', 'Pending', 'Cancelled'],
-      datasets: [{
-        data: [statusCount.Completed, statusCount.Processing, statusCount.Pending, statusCount.Cancelled],
-        backgroundColor: ['#22c55e', '#f59e0b', '#3b82f6', '#ef4444'],
-        borderWidth: 0,
-        borderRadius: 8,
-        spacing: 4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            padding: 20,
-            font: { size: 14, family: 'Outfit' },
-            usePointStyle: true,
-            pointStyle: 'circle'
+        // Lấy dữ liệu từ DataManager
+        orders = window.DataManager.getOrders();
+        accounts = window.DataManager.getAccounts();
+
+        if (!orders || orders.length === 0) {
+          console.warn('⚠️ No orders found');
+          return;
+        }
+
+        console.log('✅ Orders loaded:', orders.length);
+        console.log('✅ Accounts loaded:', accounts.length);
+
+        // Update stats
+        document.getElementById("total-orders").textContent = orders.length;
+
+        const completedOrders = orders.filter(o => o.status === "Completed");
+        document.getElementById("completed-orders").textContent = completedOrders.length;
+
+        const processingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
+        document.getElementById("processing-orders").textContent = processingOrders.length;
+
+        const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total_amount, 0);
+        document.getElementById("total-revenue").textContent = formatCurrency(totalRevenue);
+
+        // Apply growth calculations
+        if (typeof applyMonthlyGrowth === "function") {
+          applyMonthlyGrowth("orders", orders, "order_date");
+          applyMonthlyGrowth("completed", completedOrders, "order_date");
+
+          // Custom growth calculation for revenue
+          const now = new Date();
+          const currentMonth = now.getMonth();
+          const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+          const currentYear = now.getFullYear();
+
+          const currentRevenue = completedOrders
+            .filter(o => {
+              const d = new Date(o.order_date);
+              return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            })
+            .reduce((sum, o) => sum + o.total_amount, 0);
+
+          const previousRevenue = completedOrders
+            .filter(o => {
+              const d = new Date(o.order_date);
+              const prevYear = previousMonth === 11 ? currentYear - 1 : currentYear;
+              return d.getMonth() === previousMonth && d.getFullYear() === prevYear;
+            })
+            .reduce((sum, o) => sum + o.total_amount, 0);
+
+          let revenueGrowth = 0;
+          if (previousRevenue === 0) {
+            revenueGrowth = currentRevenue === 0 ? 0 : 100;
+          } else {
+            revenueGrowth = Math.abs(((currentRevenue - previousRevenue) / previousRevenue * 100).toFixed(1));
           }
+
+          const revenueGrowthEl = document.getElementById("revenue-growth");
+          if (revenueGrowthEl) {
+            revenueGrowthEl.textContent = `${revenueGrowth}%`;
+          }
+        }
+
+        // Load month filter options
+        loadMonthFilter();
+
+        // Load charts
+        loadStatusChart();
+        loadRevenueChart();
+
+      } catch (error) {
+        console.error("❌ Error loading orders:", error);
+      }
+    }
+
+    // Load month filter
+    function loadMonthFilter() {
+      const monthFilter = document.getElementById("monthFilter");
+      const months = new Set();
+
+      orders.forEach(order => {
+        const date = new Date(order.order_date);
+        const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        months.add(monthYear);
+      });
+
+      Array.from(months).sort().reverse().forEach(monthYear => {
+        const [year, month] = monthYear.split('-');
+        const date = new Date(year, month - 1);
+        const monthName = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        const option = document.createElement("option");
+        option.value = monthYear;
+        option.textContent = monthName;
+        monthFilter.appendChild(option);
+      });
+    }
+
+    // Load Status Chart
+    function loadStatusChart() {
+      const statusCount = {
+        Completed: 0,
+        Processing: 0,
+        Pending: 0,
+        Cancelled: 0
+      };
+
+      orders.forEach(order => {
+        if (statusCount[order.status] !== undefined) {
+          statusCount[order.status]++;
+        }
+      });
+
+      const ctx = document.getElementById('statusChart').getContext('2d');
+
+      if (statusChart) statusChart.destroy();
+
+      statusChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completed', 'Processing', 'Pending', 'Cancelled'],
+          datasets: [{
+            data: [statusCount.Completed, statusCount.Processing, statusCount.Pending, statusCount.Cancelled],
+            backgroundColor: ['#22c55e', '#f59e0b', '#3b82f6', '#ef4444'],
+            borderWidth: 0,
+            borderRadius: 8,
+            spacing: 4
+          }]
         },
-        tooltip: {
-          backgroundColor: '#111827',
-          padding: 12,
-          cornerRadius: 8,
-          callbacks: {
-            label: function(context) {
-              const total = context.dataset.data.reduce((a, b) => a + b, 0);
-              const percentage = ((context.parsed / total) * 100).toFixed(1);
-              return ` ${context.parsed} orders (${percentage}%)`;
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                font: { size: 14, family: 'Outfit' },
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              backgroundColor: '#111827',
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: function (context) {
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((context.parsed / total) * 100).toFixed(1);
+                  return ` ${context.parsed} orders (${percentage}%)`;
+                }
+              }
+            }
+          },
+          cutout: '70%'
+        }
+      });
+    }
+
+    // Load Revenue Chart (Last 6 months)
+    function loadRevenueChart() {
+      const now = new Date();
+      const last6Months = [];
+
+      for (let i = 5; i >= 0; i--) {
+        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+        last6Months.push({
+          monthYear,
+          label: date.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+          revenue: 0
+        });
+      }
+
+      orders.forEach(order => {
+        if (order.status === "Completed") {
+          const date = new Date(order.order_date);
+          const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+          const monthData = last6Months.find(m => m.monthYear === monthYear);
+          if (monthData) monthData.revenue += order.total_amount;
+        }
+      });
+
+      const ctx = document.getElementById("revenueChart").getContext("2d");
+      if (revenueChart) revenueChart.destroy();
+
+      revenueChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: last6Months.map(m => m.label),
+          datasets: [
+            {
+              label: "Revenue (VND)",
+              data: last6Months.map(m => m.revenue),
+              borderColor: "#3DA547",
+              backgroundColor: "rgba(61,165,71,0.15)",
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 5,
+              pointBackgroundColor: "#3DA547"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: (value) => formatCurrency(value).replace("₫", ""),
+                font: { family: "Outfit" }
+              },
+              grid: { color: "#f3f4f6" }
+            },
+            x: {
+              ticks: { font: { family: "Outfit" } },
+              grid: { display: false }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                font: { size: 13, family: "Outfit" },
+                color: "#374151"
+              }
+            },
+            tooltip: {
+              backgroundColor: "#111827",
+              titleFont: { family: "Outfit", size: 14 },
+              bodyFont: { family: "Outfit", size: 13 },
+              cornerRadius: 8,
+              padding: 12,
+              callbacks: {
+                label: (ctx) => ` ${formatCurrency(ctx.parsed.y)}`
+              }
             }
           }
         }
-      },
-      cutout: '70%'
+      });
     }
-  });
-}
 
-// Load Revenue Chart (Last 6 months)
-function loadRevenueChart() {
-  const now = new Date();
-  const last6Months = [];
+    // HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
+    function handleOrderFilter() {
+      const searchValue = safeLower(document.getElementById("searchInput").value);
+      const statusValue = document.getElementById("statusFilter").value;
+      const monthValue = document.getElementById("monthFilter").value;
 
-  for (let i = 5; i >= 0; i--) {
-    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-    last6Months.push({
-      monthYear,
-      label: date.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
-      revenue: 0
-    });
-  }
+      const filtered = orders.filter(order => {
+        const customerName = getCustomerName(order.customer_id);
+        const matchSearch =
+          searchValue === "" ||
+          order.order_id.toLowerCase().includes(searchValue) ||
+          (order.customer_id && order.customer_id.toString().toLowerCase().includes(searchValue)) ||
+          safeLower(customerName).includes(searchValue);
+        const matchStatus = statusValue === "all" || order.status === statusValue;
+        const matchMonth =
+          monthValue === "all" ||
+          (() => {
+            const d = new Date(order.order_date);
+            const monthYear = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+            return monthYear === monthValue;
+          })();
 
-  orders.forEach(order => {
-    if (order.status === "Completed") {
-      const date = new Date(order.order_date);
-      const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      const monthData = last6Months.find(m => m.monthYear === monthYear);
-      if (monthData) monthData.revenue += order.total_amount;
-    }
-  });
+        return matchSearch && matchStatus && matchMonth;
+      });
 
-  const ctx = document.getElementById("revenueChart").getContext("2d");
-  if (revenueChart) revenueChart.destroy();
+      // Render bảng
+      renderTable(filtered, "table tbody", "table tbody tr.template", (row, order) => {
+        row.querySelector('[name="order-id"]').textContent = order.order_id;
+        row.querySelector('[name="order-date"]').textContent = formatDate(order.order_date);
+        row.querySelector('[name="customer-id"]').textContent = getCustomerName(order.customer_id);
+        row.querySelector('[name="shipping-address"]').textContent = order.shipping_address;
+        row.querySelector('[name="items-count"]').textContent = order.items.length;
+        row.querySelector('[name="total-amount"]').textContent = formatCurrency(order.total_amount);
 
-  revenueChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: last6Months.map(m => m.label),
-      datasets: [
-        {
-          label: "Revenue (VND)",
-          data: last6Months.map(m => m.revenue),
-          borderColor: "#3DA547",
-          backgroundColor: "rgba(61,165,71,0.15)",
-          borderWidth: 3,
-          fill: true,
-          tension: 0.4,
-          pointRadius: 5,
-          pointBackgroundColor: "#3DA547"
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: (value) => formatCurrency(value).replace("₫", ""),
-            font: { family: "Outfit" }
-          },
-          grid: { color: "#f3f4f6" }
-        },
-        x: {
-          ticks: { font: { family: "Outfit" } },
-          grid: { display: false }
-        }
-      },
-      plugins: {
-        legend: {
-          display: true,
-          labels: {
-            font: { size: 13, family: "Outfit" },
-            color: "#374151"
-          }
-        },
-        tooltip: {
-          backgroundColor: "#111827",
-          titleFont: { family: "Outfit", size: 14 },
-          bodyFont: { family: "Outfit", size: 13 },
-          cornerRadius: 8,
-          padding: 12,
-          callbacks: {
-            label: (ctx) => ` ${formatCurrency(ctx.parsed.y)}`
-          }
-        }
-      }
-    }
-  });
-}
-
-// HÀM DUY NHẤT ĐỂ RENDER VÀ FILTER BẢNG ORDERS
-function handleOrderFilter() {
-  const searchValue = safeLower(document.getElementById("searchInput").value);
-  const statusValue = document.getElementById("statusFilter").value;
-  const monthValue = document.getElementById("monthFilter").value;
-
-  const filtered = orders.filter(order => {
-    const customerName = getCustomerName(order.customer_id);
-    const matchSearch =
-      searchValue === "" ||
-      order.order_id.toLowerCase().includes(searchValue) ||
-      (order.customer_id && order.customer_id.toString().toLowerCase().includes(searchValue)) ||
-      safeLower(customerName).includes(searchValue);
-    const matchStatus = statusValue === "all" || order.status === statusValue;
-    const matchMonth =
-      monthValue === "all" ||
-      (() => {
-        const d = new Date(order.order_date);
-        const monthYear = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-        return monthYear === monthValue;
-      })();
-
-    return matchSearch && matchStatus && matchMonth;
-  });
-
-  // Render bảng
-  renderTable(filtered, "table tbody", "table tbody tr.template", (row, order) => {
-    row.querySelector('[name="order-id"]').textContent = order.order_id;
-    row.querySelector('[name="order-date"]').textContent = formatDate(order.order_date);
-    row.querySelector('[name="customer-id"]').textContent = getCustomerName(order.customer_id);
-    row.querySelector('[name="shipping-address"]').textContent = order.shipping_address;
-    row.querySelector('[name="items-count"]').textContent = order.items.length;
-    row.querySelector('[name="total-amount"]').textContent = formatCurrency(order.total_amount);
-
-    // Styling cho status badge
-    const statusSpan = row.querySelector('[name="status"]');
-    statusSpan.textContent = order.status;
-    statusSpan.style.cssText = `
+        // Styling cho status badge
+        const statusSpan = row.querySelector('[name="status"]');
+        statusSpan.textContent = order.status;
+        statusSpan.style.cssText = `
       padding: 6px 16px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
-      background: ${
-        order.status === "Completed"
-          ? "#f0fdf4"
-          : order.status === "Processing"
-          ? "#fefce8"
-          : order.status === "Pending"
-          ? "#eff6ff"
-          : "#fef2f2"
-      };
-      color: ${
-        order.status === "Completed"
-          ? "#16a34a"
-          : order.status === "Processing"
-          ? "#eab308"
-          : order.status === "Pending"
-          ? "#3b82f6"
-          : "#ef4444"
-      };
+      background: ${order.status === "Completed"
+            ? "#f0fdf4"
+            : order.status === "Processing"
+              ? "#fefce8"
+              : order.status === "Pending"
+                ? "#eff6ff"
+                : "#fef2f2"
+          };
+      color: ${order.status === "Completed"
+            ? "#16a34a"
+            : order.status === "Processing"
+              ? "#eab308"
+              : order.status === "Pending"
+                ? "#3b82f6"
+                : "#ef4444"
+          };
     `;
 
-    // Gắn event cho button View
-    const viewBtn = row.querySelector(".action-buttons button[title='View']");
-    if (viewBtn) {
-      viewBtn.addEventListener("click", () => openViewModal(order));
+        // Gắn event cho button View
+        const viewBtn = row.querySelector(".action-buttons button[title='View']");
+        if (viewBtn) {
+          viewBtn.addEventListener("click", () => openViewModal(order));
+        }
+
+        // Gắn event cho button Edit
+        const editBtn = row.querySelector(".action-buttons button[title='Edit']");
+        if (editBtn) {
+          editBtn.addEventListener("click", () => openEditModal(order.order_id));
+        }
+      });
     }
 
-    // Gắn event cho button Edit
-    const editBtn = row.querySelector(".action-buttons button[title='Edit']");
-    if (editBtn) {
-      editBtn.addEventListener("click", () => openEditModal(order.order_id));
-    }
-  });
-}
+    // Hiển thị modal chi tiết đơn hàng
+    function openViewModal(order) {
+      document.getElementById("modal-order-id").textContent = order.order_id;
+      document.getElementById("modal-order-date").textContent = formatDate(order.order_date);
+      document.getElementById("modal-customer-id").textContent = `${getCustomerName(order.customer_id)} (ID ${order.customer_id})`;
+      document.getElementById("modal-shipping-address").textContent = order.shipping_address;
+      document.getElementById("modal-status").textContent = order.status;
+      document.getElementById("modal-discount").textContent = formatCurrency(order.discount);
+      document.getElementById("modal-shipping-fee").textContent = formatCurrency(order.shipping_fee);
+      document.getElementById("modal-total-amount").textContent = formatCurrency(order.total_amount);
 
-// Hiển thị modal chi tiết đơn hàng
-function openViewModal(order) {
-  document.getElementById("modal-order-id").textContent = order.order_id;
-  document.getElementById("modal-order-date").textContent = formatDate(order.order_date);
-  document.getElementById("modal-customer-id").textContent = `${getCustomerName(order.customer_id)} (ID ${order.customer_id})`;
-  document.getElementById("modal-shipping-address").textContent = order.shipping_address;
-  document.getElementById("modal-status").textContent = order.status;
-  document.getElementById("modal-discount").textContent = formatCurrency(order.discount);
-  document.getElementById("modal-shipping-fee").textContent = formatCurrency(order.shipping_fee);
-  document.getElementById("modal-total-amount").textContent = formatCurrency(order.total_amount);
+      const noteRow = document.getElementById("modal-note-row");
+      if (order.note && order.note.trim() !== "") {
+        noteRow.style.display = "flex";
+        document.getElementById("modal-note").textContent = order.note;
+      } else {
+        noteRow.style.display = "none";
+      }
 
-  const noteRow = document.getElementById("modal-note-row");
-  if (order.note && order.note.trim() !== "") {
-    noteRow.style.display = "flex";
-    document.getElementById("modal-note").textContent = order.note;
-  } else {
-    noteRow.style.display = "none";
-  }
-
-  const itemsList = document.getElementById("modal-items-list");
-  itemsList.innerHTML = "";
-  order.items.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "order-item";
-    div.innerHTML = `
+      const itemsList = document.getElementById("modal-items-list");
+      itemsList.innerHTML = "";
+      order.items.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "order-item";
+        div.innerHTML = `
       <div class="order-item-info">
         <div class="order-item-name">${item.product_name}</div>
         <div class="order-item-quantity">x${item.quantity}</div>
       </div>
       <div class="order-item-price">${formatCurrency(item.unit_price * item.quantity)}</div>
     `;
-    itemsList.appendChild(div);
-  });
+        itemsList.appendChild(div);
+      });
 
-  document.getElementById("viewOrderModal").classList.add("show");
-}
+      document.getElementById("viewOrderModal").classList.add("show");
+    }
 
-function closeViewModal() {
-  document.getElementById("viewOrderModal").classList.remove("show");
-}
+    function closeViewModal() {
+      document.getElementById("viewOrderModal").classList.remove("show");
+    }
 
-// Modal chỉnh sửa trạng thái
-function openEditModal(orderId) {
-  currentEditOrderId = orderId;
-  const order = orders.find(o => o.order_id === orderId);
-  if (!order) return;
+    // Modal chỉnh sửa trạng thái
+    function openEditModal(orderId) {
+      currentEditOrderId = orderId;
+      const order = orders.find(o => o.order_id === orderId);
+      if (!order) return;
 
-  document.getElementById("edit-order-id").textContent = order.order_id;
-  document.getElementById("edit-current-status").textContent = order.status;
-  document.getElementById("newStatusSelect").value = order.status;
-  document.getElementById("editStatusModal").classList.add("show");
-}
+      document.getElementById("edit-order-id").textContent = order.order_id;
+      document.getElementById("edit-current-status").textContent = order.status;
+      document.getElementById("newStatusSelect").value = order.status;
+      document.getElementById("editStatusModal").classList.add("show");
+    }
 
-function closeEditModal() {
-  document.getElementById("editStatusModal").classList.remove("show");
-}
+    function closeEditModal() {
+      document.getElementById("editStatusModal").classList.remove("show");
+    }
 
-// ✅ LƯU THAY ĐỔI TRẠNG THÁI - SỬ DỤNG DATAMANAGER
-function saveStatusChange() {
-  if (!currentEditOrderId) return;
-  
-  const newStatus = document.getElementById("newStatusSelect").value;
-  const orderIndex = orders.findIndex(o => o.order_id === currentEditOrderId);
-  if (orderIndex === -1) return;
+    // ✅ LƯU THAY ĐỔI TRẠNG THÁI - SỬ DỤNG DATAMANAGER
+    function saveStatusChange() {
+      if (!currentEditOrderId) return;
 
-  console.log('💾 Saving order status change...');
+      const newStatus = document.getElementById("newStatusSelect").value;
+      const orderIndex = orders.findIndex(o => o.order_id === currentEditOrderId);
+      if (orderIndex === -1) return;
 
-  orders[orderIndex].status = newStatus;
-  
-  // Lưu vào DataManager
-  window.DataManager.saveOrders(orders);
+      console.log('💾 Saving order status change...');
 
-  // Cập nhật lại bảng và biểu đồ
-  handleOrderFilter();
-  loadStatusChart();
-  loadRevenueChart();
+      orders[orderIndex].status = newStatus;
 
-  // Update stats
-  const completedOrders = orders.filter(o => o.status === "Completed");
-  document.getElementById("completed-orders").textContent = completedOrders.length;
-  
-  const processingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
-  document.getElementById("processing-orders").textContent = processingOrders.length;
+      // Lưu vào DataManager
+      window.DataManager.saveOrders(orders);
 
-  closeEditModal();
-  console.log('✅ Order status updated successfully');
-}
+      // Cập nhật lại bảng và biểu đồ
+      handleOrderFilter();
+      loadStatusChart();
+      loadRevenueChart();
 
-// ✅ INITIALIZATION
-document.addEventListener("DOMContentLoaded", () => {
-  console.log('🚀 Initializing orders page...');
-  
-  if (typeof lucide !== "undefined") {
-    lucide.createIcons();
-  }
-  checkAuthentication();
-  loadOrdersData().then(() => {
-    // Render bảng lần đầu
-    handleOrderFilter();
-    
-    // Gắn event cho search và filter
-    document.getElementById("searchInput").addEventListener("input", handleOrderFilter);
-    document.getElementById("statusFilter").addEventListener("change", handleOrderFilter);
-    document.getElementById("monthFilter").addEventListener("change", handleOrderFilter);
-  });
+      // Update stats
+      const completedOrders = orders.filter(o => o.status === "Completed");
+      document.getElementById("completed-orders").textContent = completedOrders.length;
 
-  console.log('✅ Orders page initialized');
-});
+      const processingOrders = orders.filter(o => o.status === "Processing" || o.status === "Pending");
+      document.getElementById("processing-orders").textContent = processingOrders.length;
+
+      closeEditModal();
+      console.log('✅ Order status updated successfully');
+    }
+
+    // ✅ INITIALIZATION
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log('🚀 Initializing orders page...');
+
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+      checkAuthentication();
+      loadOrdersData().then(() => {
+        // Render bảng lần đầu
+        handleOrderFilter();
+
+        // Gắn event cho search và filter
+        document.getElementById("searchInput").addEventListener("input", handleOrderFilter);
+        document.getElementById("statusFilter").addEventListener("change", handleOrderFilter);
+        document.getElementById("monthFilter").addEventListener("change", handleOrderFilter);
+      });
+
+      console.log('✅ Orders page initialized');
+    });
   </script>
 </body>
 
