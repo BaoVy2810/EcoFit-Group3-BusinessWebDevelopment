@@ -95,7 +95,6 @@
         const style = document.createElement('style');
         style.id = 'parent-notification-styles';
         style.textContent = `
-            /* OVERLAY - Trang cha */
             #parent-notification-overlay.parent-notification-overlay {
                 position: fixed !important;
                 top: 0 !important;
@@ -119,7 +118,6 @@
                 pointer-events: auto !important;
             }
             
-            /* POPUP - Trang cha */
             #parent-notification-popup.parent-notification-popup {
                 position: fixed !important;
                 width: 380px !important;
@@ -147,7 +145,6 @@
                 transform: translateY(0) !important;
             }
             
-            /* ARROW - Điều chỉnh vị trí */
             #parent-notification-popup.parent-notification-popup::before {
                 content: '' !important;
                 position: absolute !important;
