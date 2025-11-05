@@ -11,7 +11,8 @@
       "address": "",
       "created_at": "2025-08-04 02:20:00",
       "status": "active",
-      "role": "administrator"
+      "role": "administrator",
+      "green_score": 0
     },
     {
       "profile_id": "2",
@@ -24,7 +25,8 @@
       "address": "144 Bui Thi Xuan, Ho Chi Minh City",
       "created_at": "2024-10-01 09:20:00",
       "status": "active",
-      "role": "administrator"
+      "role": "administrator",
+      "green_score": 0
     },
     {
       "profile_id": "3",
@@ -37,7 +39,8 @@
       "address": "45 Le Loi, Ho Chi Minh City",
       "created_at": "2024-10-03 14:10:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 96
     },
     {
       "profile_id": "4",
@@ -50,7 +53,8 @@
       "address": "67 Tran Phu, Ho Chi Minh City",
       "created_at": "2025-10-03 09:20:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 90
     },
     {
       "profile_id": "5",
@@ -63,7 +67,8 @@
       "address": "33 Phan Dinh Phung, Da Nang",
       "created_at": "2025-09-29 15:15:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 85
     },
     {
       "profile_id": "6",
@@ -76,7 +81,8 @@
       "address": "15 Pham Van Dong, Ho Chi Minh City",
       "created_at": "2025-10-03 09:40:00",
       "status": "active",
-      "role": "administrator"
+      "role": "administrator",
+      "green_score": 0
     },
     {
       "profile_id": "7",
@@ -89,7 +95,8 @@
       "address": "120 Nguyen Van Cu, Can Tho",
       "created_at": "2025-09-28 14:10:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 82
     },
     {
       "profile_id": "8",
@@ -102,7 +109,8 @@
       "address": "78 Tran Hung Dao, Da Nang",
       "created_at": "2025-09-22 08:30:00",
       "status": "inactive",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 75
     },
     {
       "profile_id": "9",
@@ -115,7 +123,8 @@
       "address": "23 Tran Phu, Hanoi",
       "created_at": "2025-09-18 13:45:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 33
     },
     {
       "profile_id": "10",
@@ -128,7 +137,8 @@
       "address": "42 Nguyen Thi Minh Khai, Ho Chi Minh City",
       "created_at": "2025-10-05 11:25:00",
       "status": "inactive",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 67
     },
     {
       "profile_id": "11",
@@ -141,7 +151,8 @@
       "address": "90 Le Loi, Hue",
       "created_at": "2025-09-12 16:00:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 88
     },
     {
       "profile_id": "12",
@@ -154,7 +165,8 @@
       "address": "66 Hai Ba Trung, Da Nang",
       "created_at": "2025-09-07 10:10:00",
       "status": "inactive",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 79
     },
     {
       "profile_id": "13",
@@ -167,7 +179,8 @@
       "address": "32 Bach Dang, Ho Chi Minh City",
       "created_at": "2025-10-01 09:00:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 93
     },
     {
       "profile_id": "14",
@@ -180,7 +193,8 @@
       "address": "88 Le Loi, Hanoi",
       "created_at": "2025-10-10 10:45:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 85
     },
     {
       "profile_id": "15",
@@ -193,7 +207,8 @@
       "address": "101 Nguyen Dinh Chieu, Da Nang",
       "created_at": "2025-09-26 09:25:00",
       "status": "inactive",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 73
     },
     {
       "profile_id": "16",
@@ -206,7 +221,8 @@
       "address": "55 Tran Quang Khai, Ho Chi Minh City",
       "created_at": "2025-09-09 08:50:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 80
     },
     {
       "profile_id": "17",
@@ -219,7 +235,8 @@
       "address": "36 Phan Dinh Phung, Hanoi",
       "created_at": "2025-10-02 12:15:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 90
     },
     {
       "profile_id": "18",
@@ -232,7 +249,8 @@
       "address": "75 Nguyen Hue, Da Nang",
       "created_at": "2025-10-06 15:30:00",
       "status": "inactive",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 71
     },
     {
       "profile_id": "19",
@@ -245,7 +263,8 @@
       "address": "29 Tran Nhan Tong, Hue",
       "created_at": "2025-10-04 17:10:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 86
     },
     {
       "profile_id": "20",
@@ -258,7 +277,8 @@
       "address": "29 Tran Nhan Tong, Ca Mau",
       "created_at": "2025-10-04 17:10:00",
       "status": "active",
-      "role": "customer"
+      "role": "customer",
+      "green_score": 80
     }
   ]
 }
