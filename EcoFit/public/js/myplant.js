@@ -1,5 +1,6 @@
-// myplant.js - FINAL VERSION: Green Score from JSON + Persistent Storage
 /* globals fetch */
+
+// FINAL VERSION - Đã fix: chỉ cho claim hôm nay (ngày, tháng, năm đều phải khớp)
 
 (() => {
   // =====================================================
@@ -23,8 +24,6 @@
   let currentUser = getCurrentUser();
   let userId = currentUser?.profile_id || "guest";
   let userKey = `myplant_${userId}`;
-
-  console.log("🔍 MyPlant User:", userId);
 
   // =====================================================
   // 🎯 DOM ELEMENT REFERENCES
@@ -72,47 +71,44 @@
   // =====================================================
   // 💾 DATA PERSISTENCE - localStorage First Strategy
   // =====================================================
-
   async function loadUserData() {
     if (userId === "guest") {
       console.log("⚠️ Guest mode - no data");
       return false;
     }
 
-    console.log(`📥 Loading data for profile_id: ${userId}`);
-
     // Step 1: Check localStorage FIRST
     const localRaw = localStorage.getItem(userKey);
     if (localRaw) {
-      try {
-        const localData = JSON.parse(localRaw);
-        console.log("✅ Found existing localStorage data - using it directly");
-
-        // Load from localStorage (this is our source of truth after first load)
-        claimedDates = (localData.claimedDates || []).map((s) => new Date(s));
-        streak = Number(localData.streak || 0);
-        greenScore = Number(localData.greenScore || 0);
-        plantStage = localData.plantStage || "Seed";
-        dailyPoints = localData.dailyPoints || {};
-
-        console.log(`   Green Score: ${greenScore}`);
-        console.log(`   Claimed Dates: ${claimedDates.length}`);
-
-        recalcStreak();
-        return true;
-      } catch (e) {
-        console.warn("⚠️ localStorage data corrupted, will fetch from JSON");
+      const localData = JSON.parse(localRaw);
+      const loginInforRaw = localStorage.getItem("login_infor");
+      let jsonScore = 0;
+      if (loginInforRaw) {
+        try {
+          const baseProfile = JSON.parse(loginInforRaw);
+          jsonScore = Number(baseProfile.green_score || 0);
+        } catch (e) {
+          jsonScore = 0;
+        }
       }
+      const localScore = localData.greenScore;
+
+      if (localScore >= jsonScore) {
+        claimedDates = localData.claimedDates.map((d) => new Date(d));
+        greenScore = localScore;
+      } else {
+        greenScore = jsonScore;
+        saveToLocalStorage(); // update new score
+      }
+      return true;
     }
 
     // Step 2: No localStorage? Fetch from JSON (first time only)
-    console.log("📡 No localStorage found - fetching from accounts.json...");
     try {
       const response = await fetch(
         `../../dataset/accounts.json?v=${new Date().getTime()}`
       );
       if (!response.ok) {
-        console.error("❌ Failed to fetch accounts.json");
         return false;
       }
 
@@ -121,51 +117,34 @@
         (p) => p.profile_id === userId || p.profile_id === String(userId)
       );
 
-      if (!baseProfile) {
-        console.error(`❌ Profile not found for user: ${userId}`);
-        return false;
-      }
-
-      console.log("✅ Fetched profile from accounts.json");
+      if (!baseProfile) return false;
 
       // Load attendance data from JSON
       const baseAttendance = baseProfile.attendance || {};
       const jsonClaimedDates = baseAttendance.claimedDates || [];
 
-      // CRITICAL: Green Score = từ field green_score trong JSON
       greenScore = Number(baseProfile.green_score || 0);
 
-      // Load claimed dates
       claimedDates = jsonClaimedDates.map((s) => new Date(s));
 
-      // Build dailyPoints (1 point per claimed date)
       dailyPoints = {};
       jsonClaimedDates.forEach((dateStr) => {
-        dailyPoints[dateStr] = 1; // Simple: 1 point per day
+        dailyPoints[dateStr] = 1; // 1 point per day
       });
 
       plantStage = baseAttendance.plantStage || "Seed";
 
-      console.log(`✅ Loaded from JSON:`);
-      console.log(`   Claimed Dates: ${claimedDates.length} days`);
-      console.log(
-        `   Green Score: ${greenScore} points (from profile.green_score)`
-      );
-
-      // Save to localStorage for future use
       recalcStreak();
       saveToLocalStorage();
 
       return true;
     } catch (error) {
-      console.error("❌ Error loading data:", error);
       return false;
     }
   }
 
   function saveToLocalStorage() {
     if (userId === "guest") return;
-
     const data = {
       userId,
       updatedAt: new Date().toISOString(),
@@ -178,8 +157,6 @@
     };
 
     localStorage.setItem(userKey, JSON.stringify(data));
-
-    // Also update individual items for compatibility
     localStorage.setItem("streak", String(streak));
     localStorage.setItem("greenScore", String(greenScore));
     localStorage.setItem("plantStage", plantStage);
@@ -189,19 +166,12 @@
       const loginInfo = JSON.parse(localStorage.getItem("login_infor") || "{}");
       loginInfo.green_score = greenScore;
       localStorage.setItem("login_infor", JSON.stringify(loginInfo));
-    } catch (e) {
-      console.warn("Could not update login_infor:", e);
-    }
-
-    console.log(
-      `💾 Saved to localStorage (${userKey}) - Green Score: ${greenScore}`
-    );
+    } catch (e) {}
   }
 
   // =====================================================
   // 🎊 VISUAL EFFECTS & ANIMATIONS
   // =====================================================
-
   function launchConfetti(durationMs = 2500, count = 120) {
     if (!document.getElementById("confetti-styles")) {
       const style = document.createElement("style");
@@ -261,7 +231,6 @@
   // =====================================================
   // 🏆 MILESTONE & REWARDS SYSTEM
   // =====================================================
-
   function showStreakAlert(count) {
     const lastShown = Number(
       localStorage.getItem(`lastStreakMilestone_${userId}`) || 0
@@ -318,11 +287,7 @@
   // =====================================================
   // 🌱 PLANT VISUALS & PROGRESS
   // =====================================================
-
   function updatePlantVisuals() {
-    console.log("🌱 Updating Plant Visuals:");
-    console.log(`   Current Green Score: ${greenScore}`);
-
     if (greenScoreElem) {
       greenScoreElem.textContent = String(greenScore);
     }
@@ -349,8 +314,6 @@
       plantStage = "Seed";
       percent = (greenScore / 20) * 100;
     }
-
-    console.log(`   Plant Stage: ${plantStage}`);
 
     if (periodElem) {
       periodElem.textContent = plantStage;
@@ -390,7 +353,6 @@
   // =====================================================
   // 📅 STREAK CALCULATION
   // =====================================================
-
   function recalcStreak() {
     if (!claimedDates.length) {
       streak = 0;
@@ -414,10 +376,16 @@
   // =====================================================
   // ✅ CLAIM & UNCLAIM FUNCTIONS
   // =====================================================
-
   function canClaimDate(date) {
     const today = getToday();
-    if (date.getTime() > today.getTime()) return false;
+    // Chỉ cho claim điểm hôm nay (ngày, tháng, năm phải giống nhau)
+    if (
+      date.getDate() !== today.getDate() ||
+      date.getMonth() !== today.getMonth() ||
+      date.getFullYear() !== today.getFullYear()
+    ) {
+      return false;
+    }
     if (claimedDates.some((d) => dateEq(d, date))) return false;
     return true;
   }
@@ -426,19 +394,17 @@
     if (!canClaimDate(date)) return false;
 
     const dateStr = dateToString(date);
-    const points = 1; // Simple: always 1 point per day
-
-    console.log("🎯 Claiming date:", dateStr, "→ +1 point");
+    const points = 1; // 1 point per day
 
     claimedDates.push(normalizeDate(date));
     claimedDates.sort((a, b) => a - b);
 
     dailyPoints[dateStr] = points;
-    greenScore += points; // Add 1 point
+    greenScore += points;
 
     recalcStreak();
     updatePlantVisuals();
-    saveToLocalStorage(); // CRITICAL: Save immediately
+    saveToLocalStorage();
 
     if (isManualClaim) {
       showToast(`🌿 +1 Green Point! Total: ${greenScore}`);
@@ -449,30 +415,21 @@
   function unclaimDate(date, isManualUnclaim = false) {
     const dateStr = dateToString(date);
 
-    // Kiểm tra: Ngày này có được claim không?
     if (!claimedDates.some((d) => dateEq(d, date))) {
-      console.warn(`Attempted to unclaim a non-claimed date: ${dateStr}`);
       return false;
     }
 
-    const points = 1; // Always 1 point per day
+    const points = 1;
 
-    console.log(`⏪ Unclaiming date:`, dateStr, `→ -1 point`);
-
-    // Trừ điểm
     greenScore -= points;
     if (greenScore < 0) greenScore = 0;
 
-    // Xóa điểm khỏi dailyPoints
     delete dailyPoints[dateStr];
 
-    // Xóa ngày khỏi claimedDates
     claimedDates = claimedDates.filter((d) => !dateEq(d, date));
-
-    // Cập nhật
     recalcStreak();
     updatePlantVisuals();
-    saveToLocalStorage(); // CRITICAL: Save immediately
+    saveToLocalStorage();
 
     if (isManualUnclaim) {
       showToast(`🔄 Unclaimed! Total: ${greenScore}`);
@@ -484,7 +441,6 @@
   // =====================================================
   // 📅 CALENDAR RENDERING
   // =====================================================
-
   function renderCalendar(forDate = new Date()) {
     if (!daysContainer) return;
 
@@ -533,19 +489,18 @@
 
       const isClaimed = claimedSet.has(day);
       const isToday = dateEq(cellDate, today);
-
-      // ➕ NEW RULE
       const isPast = cellDate.getTime() < today.getTime();
       const isFuture = cellDate.getTime() > today.getTime();
 
-      // ✅ Disable nếu là tương lai OR là quá khứ và chưa được claim
-      if (isFuture || (isPast && !isClaimed)) {
+      // Nếu là ngày hôm nay thì tô hiệu ứng cho biết đây là ngày được click/claim
+      if (isToday && !isClaimed) cell.classList.add("next-allowed");
+
+      // Các ngày hôm qua, ngày mai sẽ bị disable
+      if (!isToday) {
         cell.classList.add("disabled");
         cell.style.opacity = "0.3";
         cell.style.cursor = "not-allowed";
       }
-
-      if (isToday && !isClaimed) cell.classList.add("next-allowed");
 
       if (isClaimed) {
         cell.classList.add("claimed");
@@ -558,14 +513,21 @@
         cell.textContent = day;
       }
 
-      // 🎯 CLICK HANDLER (đã thêm hạn chế)
+      // 🎯 CLICK HANDLER - chỉ cho phép claim hôm nay
       cell.addEventListener("click", () => {
-        // 🚫 Không cho click ngày quá khứ chưa claim hoặc tương lai
+        // Check nếu không phải ngày hôm nay (ngày+tháng+năm) thì không cho claim
+        if (
+          cellDate.getDate() !== today.getDate() ||
+          cellDate.getMonth() !== today.getMonth() ||
+          cellDate.getFullYear() !== today.getFullYear()
+        ) {
+          showToast("⚠️ Chỉ có thể điểm danh cho ngày hôm nay.");
+          return;
+        }
         if (isFuture || (isPast && !isClaimed)) {
           showToast("⚠️ Bạn chỉ có thể điểm danh cho ngày hôm nay.");
           return;
         }
-
         if (isClaimed) {
           if (unclaimDate(cellDate, true)) {
             renderCalendar(currentDate);
@@ -580,8 +542,6 @@
       daysContainer.appendChild(cell);
       cells.push(cell);
     }
-
-    // (Phần streak hiệu ứng visual giữ nguyên...)
 
     // Visual streak effects
     for (let i = 0; i < cells.length; i++) {
@@ -615,29 +575,15 @@
   // =====================================================
   // 🚀 INITIALIZATION
   // =====================================================
-
   window.addEventListener("load", async () => {
-    console.log("🚀 Initializing MyPlant...");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-
     if (userId === "guest") {
-      console.log("⚠️ Guest mode - please login");
       alert("👋 Please login to use My Plant & Daily Green Streak!");
       return;
     }
-
     await loadUserData();
-
     recalcStreak();
     updatePlantVisuals();
     renderCalendar(currentDate);
-
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("✅ MyPlant ready!");
-    console.log(`   User: ${userId}`);
-    console.log(`   Green Score: ${greenScore}`);
-    console.log(`   Streak: ${streak} days`);
-    console.log(`   Plant Stage: ${plantStage}`);
   });
 
   // Month navigation
