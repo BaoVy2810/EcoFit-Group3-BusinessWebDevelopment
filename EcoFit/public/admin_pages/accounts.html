@@ -7,6 +7,7 @@
   <title>Account Management - Admin Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -152,76 +153,82 @@
             </div>
           </div>
         </div>
-        <!-- Table -->
-        <div class="chart-container" style="padding: 24px;">
-          <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Accounts</h3>
+        <div style="display: grid; grid-template-columns: 35% 65%; gap: 24px; margin-bottom: 32px;">
+          <div class="chart-container" style="padding: 24px; max-height: 750px;">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">User Activity Chart</h3>
+            <canvas id="userActivityChart" height="350px" align="center"></canvas>
+          </div>
+          <!-- Table -->
+          <div class="chart-container" style="padding: 24px;">
+            <h3 style="margin-bottom: 24px; font-size: 20px; font-weight: bold;">All Accounts</h3>
 
-          <div
-            style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
-            <div style="flex: 1; display: flex; gap: 12px;">
-              <div class="search-box">
-                <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                <input id="searchInput" placeholder="Search by name or email" />
+            <div
+              style="margin-bottom:24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+              <div style="flex: 1; display: flex; gap: 12px;">
+                <div class="search-box">
+                  <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                  <input id="searchInput" placeholder="Search by name or email" />
+                </div>
+                <select id="roleFilter">
+                  <option value="all">All Role</option>
+                  <option value="administrator">Administrator</option>
+                  <option value="customer">Customer</option>
+                </select>
+
+                <select id="statusFilter">
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
               </div>
-              <select id="roleFilter">
-                <option value="all">All Role</option>
-                <option value="administrator">Administrator</option>
-                <option value="customer">Customer</option>
-              </select>
 
-              <select id="statusFilter">
-                <option value="all">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
+              <button onclick="location.href='new_account.html'">
+                <i data-lucide="user-plus" style="width: 20px; height: 20px;"></i>Add New Account
+              </button>
             </div>
 
-            <button onclick="location.href='new_account.html'">
-              <i data-lucide="user-plus" style="width: 20px; height: 20px;"></i>Add New Account
-            </button>
-          </div>
-
-          <div style="
+            <div style="
   max-height: 500px;       
   overflow-y: auto;
   overflow-x: auto;
   border: 1px solid #e5e7eb; 
   border-radius: 8px;
 ">
-            <table style="width: 100%; border-collapse: collapse;">
+              <table style="width: 100%; border-collapse: collapse;">
 
-              <thead>
-                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
-                  <td style="padding: 16px;"></td>
-                  <td style="padding: 16px;"><span name="name"></span></td>
-                  <td style="padding: 16px;" name="email"></td>
-                  <td style="padding: 16px;"><span name="role"></span></td>
-                  <td style="padding: 16px;"><span name="status"></span></td>
-                  <td style="padding: 16px;">
-                    <div class="action-buttons" style="gap: 3px">
-                      <button title="Edit" onclick="handleEditAccount(this)" data-account-id="">
-                        <i data-lucide="edit"></i>
-                      </button>
-                      <button title="Delete" class="delete-btn" onclick="handleDeleteAccount(this)" data-account-id="">
-                        <i data-lucide="trash-2"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                <thead>
+                  <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="template" style="display: none !important; border-bottom: 1px solid #f3f4f6;">
+                    <td style="padding: 16px;"></td>
+                    <td style="padding: 16px;"><span name="name"></span></td>
+                    <td style="padding: 16px;" name="email"></td>
+                    <td style="padding: 16px;"><span name="role"></span></td>
+                    <td style="padding: 16px;"><span name="status"></span></td>
+                    <td style="padding: 16px;">
+                      <div class="action-buttons" style="gap: 3px">
+                        <button title="Edit" onclick="handleEditAccount(this)" data-account-id="">
+                          <i data-lucide="edit"></i>
+                        </button>
+                        <button title="Delete" class="delete-btn" onclick="handleDeleteAccount(this)"
+                          data-account-id="">
+                          <i data-lucide="trash-2"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
       </main>
     </div>
   </div>
@@ -500,7 +507,7 @@
         // Update UI
         loadAccountsData();
         handleFilterChange();
-
+        renderActiveInactiveChart();
         closeConfirmBox();
         showToast("Account deleted successfully!", "success");
 
@@ -557,6 +564,7 @@
       loadAccounts();
       loadAccountsData();
       checkAuthentication();
+      renderActiveInactiveChart();
 
       // Setup event listeners
       document.getElementById("searchInput").addEventListener("input", handleFilterChange);
@@ -571,6 +579,69 @@
 
       console.log('✅ Accounts page initialized');
     });
+    // Render Active/Inactive User Chart
+    let userChart = null; // 🔹 Khai báo biến toàn cục lưu chart instance
+
+function renderActiveInactiveChart() {
+  // Nếu biểu đồ đã tồn tại, hủy trước khi tạo mới
+  if (userChart) {
+    userChart.destroy();
+  }
+
+  const monthlyStats = {};
+  accounts.forEach(acc => {
+    const month = acc.created_at?.slice(0, 7) || "Unknown";
+    if (!monthlyStats[month]) {
+      monthlyStats[month] = { active: 0, inactive: 0 };
+    }
+    if (acc.status === "active") {
+      monthlyStats[month].active++;
+    } else {
+      monthlyStats[month].inactive++;
+    }
+  });
+
+  const labels = Object.keys(monthlyStats).sort();
+  const activeData = labels.map(m => monthlyStats[m].active);
+  const inactiveData = labels.map(m => monthlyStats[m].inactive);
+
+  const ctx = document.getElementById("userActivityChart").getContext("2d");
+
+  userChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Active Users",
+          data: activeData,
+          backgroundColor: "rgb(34, 197, 94)",
+          borderRadius: 8,
+        },
+        {
+          label: "Inactive Users",
+          data: inactiveData,
+          backgroundColor: "rgb(59, 130, 246)",
+          borderRadius: 8,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "top" },
+        title: {
+          display: true,
+          text: "Active / Inactive User Ratio by Month"
+        }
+      },
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, beginAtZero: true }
+      }
+    }
+  });
+}
 
     // ✅ LOAD DỮ LIỆU TỪ DATAMANAGER
     async function loadAccountsData() {
