@@ -43,9 +43,8 @@
         <button class="menu-item" onclick="location.href='products.html'">
           <i data-lucide="package"></i><span>Products</span>
         </button>
-        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order
-            Lists</span></button>
-
+        <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i>
+          <span>Order Lists</span></button>
         <div class="pages-divider">
           <p>PAGES</p>
         </div>
@@ -210,19 +209,12 @@
                   <td style="padding: 16px;"><span name="status"></span></td>
                   <td style="padding: 16px;">
                     <div class="action-buttons" style="gap: 3px">
-                    <button
-                      title="Edit"
-                      onclick="handleEditAccount(this)"
-                      data-account-id="">
-                      <i data-lucide="edit"></i>
-                    </button>
-                    <button
-                      title="Delete"
-                      class="delete-btn"
-                      onclick="handleDeleteAccount(this)"
-                      data-account-id="">
-                      <i data-lucide="trash-2"></i>
-                    </button>
+                      <button title="Edit" onclick="handleEditAccount(this)" data-account-id="">
+                        <i data-lucide="edit"></i>
+                      </button>
+                      <button title="Delete" class="delete-btn" onclick="handleDeleteAccount(this)" data-account-id="">
+                        <i data-lucide="trash-2"></i>
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -266,19 +258,22 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Full Name *</label>
-            <input type="text" id="edit_fullname" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+            <input type="text" id="edit_fullname" required
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
 
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Email *</label>
-            <input type="email" id="edit_email" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+            <input type="email" id="edit_email" required
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Phone</label>
-            <input type="tel" id="edit_phone" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+            <input type="tel" id="edit_phone"
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
 
           <div>
@@ -295,36 +290,42 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Date of Birth</label>
-            <input type="date" id="edit_dob" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+            <input type="date" id="edit_dob"
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
 
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Password</label>
-            <input type="text" id="edit_password" placeholder="Leave blank to keep current password" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+            <input type="text" id="edit_password" placeholder="Leave blank to keep current password"
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
         </div>
 
         <div style="margin-bottom: 20px;">
           <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Address</label>
-          <textarea id="edit_address" rows="2" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; resize: vertical;"></textarea>
+          <textarea id="edit_address" rows="2"
+            style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; resize: vertical;"></textarea>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Green Score</label>
-            <input type="number" id="edit_green_score" min="0" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+            <input type="number" id="edit_green_score" min="0"
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
 
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Created At</label>
-            <input type="text" id="edit_created_at" readonly style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb;" />
+            <input type="text" id="edit_created_at" readonly
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb;" />
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Role *</label>
-            <select id="edit_role" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
+            <select id="edit_role" required
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
               <option value="customer">Customer</option>
               <option value="administrator">Administrator</option>
             </select>
@@ -332,7 +333,8 @@
 
           <div>
             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Status *</label>
-            <select id="edit_status" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
+            <select id="edit_status" required
+              style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
@@ -358,7 +360,7 @@
     function handleEditAccount(button) {
       const accountId = button.getAttribute('data-account-id');
       console.log("📝 Opening edit form for account ID:", accountId);
-      
+
       if (accountId) {
         editAccount(accountId);
       } else {
@@ -370,12 +372,12 @@
     function editAccount(accountId) {
       console.log("🔍 Looking for account:", accountId);
       console.log("📋 Available accounts:", accounts);
-      
+
       const account = accounts.find(acc => {
         const id = acc.id || acc.profile_id;
         return id === accountId || id === String(accountId);
       });
-      
+
       if (!account) {
         console.error("❌ Account not found:", accountId);
         showToast("Account not found!", "error");
@@ -400,7 +402,7 @@
       document.getElementById("edit_created_at").value = account.created_at || "";
 
       console.log("📝 Form populated with data");
-      
+
       document.getElementById("editAccountModal").style.display = "flex";
       if (typeof lucide !== "undefined") lucide.createIcons();
     }
@@ -415,7 +417,7 @@
 
       const accountId = document.getElementById("edit_account_id").value;
       console.log("💾 Saving changes for account:", accountId);
-      
+
       const accountIndex = accounts.findIndex(acc => {
         const id = acc.id || acc.profile_id;
         return id === accountId || id === String(accountId);
@@ -474,7 +476,7 @@
       accountToDelete = accountId;
       const account = accounts.find(acc => (acc.id || acc.profile_id) === accountId);
 
-      document.getElementById("confirmMessage").textContent = 
+      document.getElementById("confirmMessage").textContent =
         `Are you sure you want to delete "${account?.fullname}"?`;
 
       document.getElementById("confirmBox").style.display = "flex";
@@ -555,7 +557,7 @@
       loadAccounts();
       loadAccountsData();
       checkAuthentication();
-      
+
       // Setup event listeners
       document.getElementById("searchInput").addEventListener("input", handleFilterChange);
       document.getElementById("roleFilter").addEventListener("change", handleFilterChange);
@@ -641,7 +643,7 @@
     function updateTable(filteredAccounts) {
       renderTable(filteredAccounts, "table tbody", "table tbody tr.template", (row, acc) => {
         const accountId = acc.id || acc.profile_id;
-        
+
         row.querySelector("td:nth-child(1)").textContent = `#${accountId}`;
         row.querySelector('[name="name"]').textContent = acc.fullname;
         row.querySelector('[name="email"]').textContent = acc.email;
@@ -683,7 +685,7 @@
         // Set account ID cho các button
         const editBtn = row.querySelector('button[onclick*="handleEditAccount"]');
         const deleteBtn = row.querySelector('button[onclick*="handleDeleteAccount"]');
-        
+
         if (editBtn) editBtn.setAttribute('data-account-id', accountId);
         if (deleteBtn) deleteBtn.setAttribute('data-account-id', accountId);
       });
@@ -725,4 +727,5 @@
     document.head.appendChild(style);
   </script>
 </body>
+
 </html>
