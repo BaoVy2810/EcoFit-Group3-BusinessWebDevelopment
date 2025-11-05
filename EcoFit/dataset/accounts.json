@@ -11,8 +11,7 @@
       "address": "",
       "created_at": "2025-08-04 02:20:00",
       "status": "active",
-      "role": "administrator",
-      "green_score": 0
+      "role": "administrator"
     },
     {
       "profile_id": "2",
@@ -25,8 +24,7 @@
       "address": "144 Bui Thi Xuan, Ho Chi Minh City",
       "created_at": "2024-10-01 09:20:00",
       "status": "active",
-      "role": "administrator",
-      "green_score": 0
+      "role": "administrator"
     },
     {
       "profile_id": "3",
@@ -39,8 +37,7 @@
       "address": "45 Le Loi, Ho Chi Minh City",
       "created_at": "2024-10-03 14:10:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 96
+      "role": "customer"
     },
     {
       "profile_id": "4",
@@ -53,8 +50,7 @@
       "address": "67 Tran Phu, Ho Chi Minh City",
       "created_at": "2025-10-03 09:20:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 90
+      "role": "customer"
     },
     {
       "profile_id": "5",
@@ -67,8 +63,7 @@
       "address": "33 Phan Dinh Phung, Da Nang",
       "created_at": "2025-09-29 15:15:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 85
+      "role": "customer"
     },
     {
       "profile_id": "6",
@@ -81,8 +76,7 @@
       "address": "15 Pham Van Dong, Ho Chi Minh City",
       "created_at": "2025-10-03 09:40:00",
       "status": "active",
-      "role": "administrator",
-      "green_score": 0
+      "role": "administrator"
     },
     {
       "profile_id": "7",
@@ -95,8 +89,7 @@
       "address": "120 Nguyen Van Cu, Can Tho",
       "created_at": "2025-09-28 14:10:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 82
+      "role": "customer"
     },
     {
       "profile_id": "8",
@@ -109,8 +102,7 @@
       "address": "78 Tran Hung Dao, Da Nang",
       "created_at": "2025-09-22 08:30:00",
       "status": "inactive",
-      "role": "customer",
-      "green_score": 75
+      "role": "customer"
     },
     {
       "profile_id": "9",
@@ -123,29 +115,7 @@
       "address": "23 Tran Phu, Hanoi",
       "created_at": "2025-09-18 13:45:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 33,
-      "attendance": {
-        "updatedAt": "2025-11-02T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-05",
-          "2025-10-08",
-          "2025-10-11",
-          "2025-10-14",
-          "2025-10-18",
-          "2025-10-19",
-          "2025-10-20",
-          "2025-10-21",
-          "2025-10-22",
-          "2025-10-25",
-          "2025-10-28",
-          "2025-10-30",
-          "2025-11-01",
-          "2025-11-02"
-        ],
-        "streak": 2,
-        "plantStage": "Seed"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "10",
@@ -158,8 +128,7 @@
       "address": "42 Nguyen Thi Minh Khai, Ho Chi Minh City",
       "created_at": "2025-10-05 11:25:00",
       "status": "inactive",
-      "role": "customer",
-      "green_score": 67
+      "role": "customer"
     },
     {
       "profile_id": "11",
@@ -172,27 +141,7 @@
       "address": "90 Le Loi, Hue",
       "created_at": "2025-09-12 16:00:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 88,
-      "attendance": {
-        "updatedAt": "2025-10-31T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-05",
-          "2025-10-08",
-          "2025-10-10",
-          "2025-10-12",
-          "2025-10-14",
-          "2025-10-17",
-          "2025-10-19",
-          "2025-10-21",
-          "2025-10-23",
-          "2025-10-25",
-          "2025-10-28",
-          "2025-10-31"
-        ],
-        "streak": 1,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "12",
@@ -205,8 +154,7 @@
       "address": "66 Hai Ba Trung, Da Nang",
       "created_at": "2025-09-07 10:10:00",
       "status": "inactive",
-      "role": "customer",
-      "green_score": 79
+      "role": "customer"
     },
     {
       "profile_id": "13",
@@ -219,29 +167,7 @@
       "address": "32 Bach Dang, Ho Chi Minh City",
       "created_at": "2025-10-01 09:00:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 93,
-      "attendance": {
-        "updatedAt": "2025-11-01T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-01",
-          "2025-10-03",
-          "2025-10-06",
-          "2025-10-09",
-          "2025-10-10",
-          "2025-10-11",
-          "2025-10-12",
-          "2025-10-13",
-          "2025-10-14",
-          "2025-10-18",
-          "2025-10-22",
-          "2025-10-26",
-          "2025-10-30",
-          "2025-11-01"
-        ],
-        "streak": 1,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "14",
@@ -254,26 +180,7 @@
       "address": "88 Le Loi, Hanoi",
       "created_at": "2025-10-10 10:45:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 85,
-      "attendance": {
-        "updatedAt": "2025-11-02T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-05",
-          "2025-10-08",
-          "2025-10-11",
-          "2025-10-15",
-          "2025-10-18",
-          "2025-10-22",
-          "2025-10-25",
-          "2025-10-28",
-          "2025-10-31",
-          "2025-11-01",
-          "2025-11-02"
-        ],
-        "streak": 2,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "15",
@@ -286,8 +193,7 @@
       "address": "101 Nguyen Dinh Chieu, Da Nang",
       "created_at": "2025-09-26 09:25:00",
       "status": "inactive",
-      "role": "customer",
-      "green_score": 73
+      "role": "customer"
     },
     {
       "profile_id": "16",
@@ -300,25 +206,7 @@
       "address": "55 Tran Quang Khai, Ho Chi Minh City",
       "created_at": "2025-09-09 08:50:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 80,
-      "attendance": {
-        "updatedAt": "2025-10-29T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-05",
-          "2025-10-08",
-          "2025-10-09",
-          "2025-10-12",
-          "2025-10-15",
-          "2025-10-16",
-          "2025-10-20",
-          "2025-10-24",
-          "2025-10-28",
-          "2025-10-29"
-        ],
-        "streak": 2,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "17",
@@ -331,26 +219,7 @@
       "address": "36 Phan Dinh Phung, Hanoi",
       "created_at": "2025-10-02 12:15:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 99,
-      "attendance": {
-        "updatedAt": "2025-11-02T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-05",
-          "2025-10-08",
-          "2025-10-11",
-          "2025-10-15",
-          "2025-10-17",
-          "2025-10-20",
-          "2025-10-23",
-          "2025-10-26",
-          "2025-10-29",
-          "2025-11-01",
-          "2025-11-02"
-        ],
-        "streak": 2,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "18",
@@ -363,8 +232,7 @@
       "address": "75 Nguyen Hue, Da Nang",
       "created_at": "2025-10-06 15:30:00",
       "status": "inactive",
-      "role": "customer",
-      "green_score": 71
+      "role": "customer"
     },
     {
       "profile_id": "19",
@@ -377,25 +245,7 @@
       "address": "29 Tran Nhan Tong, Hue",
       "created_at": "2025-10-04 17:10:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 86,
-      "attendance": {
-        "updatedAt": "2025-11-01T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-03",
-          "2025-10-06",
-          "2025-10-10",
-          "2025-10-13",
-          "2025-10-17",
-          "2025-10-21",
-          "2025-10-25",
-          "2025-10-28",
-          "2025-10-31",
-          "2025-11-01"
-        ],
-        "streak": 1,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     },
     {
       "profile_id": "20",
@@ -408,24 +258,7 @@
       "address": "29 Tran Nhan Tong, Ca Mau",
       "created_at": "2025-10-04 17:10:00",
       "status": "active",
-      "role": "customer",
-      "green_score": 80,
-      "attendance": {
-        "updatedAt": "2025-10-30T00:00:00.000Z",
-        "claimedDates": [
-          "2025-10-02",
-          "2025-10-05",
-          "2025-10-08",
-          "2025-10-11",
-          "2025-10-15",
-          "2025-10-19",
-          "2025-10-23",
-          "2025-10-27",
-          "2025-10-30"
-        ],
-        "streak": 1,
-        "plantStage": "Sapling"
-      }
+      "role": "customer"
     }
   ]
 }
