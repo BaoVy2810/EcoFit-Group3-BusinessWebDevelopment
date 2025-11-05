@@ -30,43 +30,55 @@
 
   <body>
     <iframe id="header-frame" class="header-frame"></iframe>
+
     <script>
-      window.addEventListener("DOMContentLoaded", () => {
+      // 🔧 SIMPLE HEADER LOADER - Always uses localStorage like original
+      (function () {
+        console.log("🔄 Initializing header...");
+
         const header = document.getElementById("header-frame");
+
+        // Always use localStorage (original method) - more reliable
         const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+        console.log("📋 isLoggedIn:", isLoggedIn);
+
         header.src = isLoggedIn
           ? "../template/header.html"
           : "../template/header0.html";
-      });
 
+        console.log("✅ Header src set to:", header.src);
+      })();
+
+      // Handle messages from header iframe
       window.addEventListener("message", (e) => {
         if (!e.data || !e.data.action) return;
 
-        // Bấm nút Login trong header0
+        console.log("📨 Received message:", e.data.action);
+
+        // Go to Login page
         if (e.data.action === "goToLogin") {
           window.location.href = "00_LOGIN.html";
         }
 
-        // Bấm nút Sign Up trong header0
+        // Go to Sign Up page
         if (e.data.action === "goToSignup") {
           window.location.href = "00_SIGNUP.html";
         }
 
-        // Khi đăng nhập thành công
+        // When user logs in successfully
         if (e.data.action === "loginSuccess" || e.data.action === "loggedIn") {
           localStorage.setItem("isLoggedIn", "true");
           document.getElementById("header-frame").src =
             "../template/header.html";
         }
 
-        // Khi người dùng logout từ header.html
+        // When user logs out from header
         if (e.data.action === "logout") {
-          localStorage.removeItem("isLoggedIn");
-          localStorage.removeItem("login_infor");
-          document.getElementById("header-frame").src =
-            "../template/header0.html";
+          handleLogout();
         }
-        // 🟢 Xử lý toggle notifications
+
+        // Toggle notifications
         if (e.data.action === "toggleNotifications") {
           if (!window.NotificationPopup) {
             window.NotificationPopup = createNotificationPopupInParent(
@@ -78,6 +90,50 @@
           }
         }
       });
+
+      // Unified logout function
+      function handleLogout() {
+        console.log("🚪 Logging out...");
+
+        // Clear localStorage
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("login_infor");
+
+        // Clear all myplant related data from localStorage
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (
+            key &&
+            (key.startsWith("myplant_") ||
+              key === "streak" ||
+              key === "greenScore" ||
+              key === "plantStage" ||
+              key === "attendance_data" ||
+              key === "accounts_data" ||
+              key === "myplant_calendar_export")
+          ) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach((key) => localStorage.removeItem(key));
+
+        console.log("🧹 Cleared all user data from localStorage");
+
+        // Send logout message to header
+        const header = document.getElementById("header-frame");
+        if (header && header.contentWindow) {
+          header.contentWindow.postMessage({ action: "logout" }, "*");
+        }
+
+        // Reload header to show logged out state
+        header.src = "../template/header0.html";
+
+        // Redirect to homepage
+        setTimeout(() => {
+          window.location.href = "01_HOMEPAGE.html";
+        }, 100);
+      }
     </script>
 
     <!-- Main Content -->
@@ -128,7 +184,7 @@
                 </div>
                 <div class="info-item">
                   <span class="info-label">Green Score:</span>
-                  <span class="info-value" id="green-score">0%</span>
+                  <span class="info-value" id="green-score">0</span>
                 </div>
               </div>
 
@@ -204,55 +260,24 @@
 
     <!-- Footer -->
     <iframe src="../template/footer.html" class="footer-frame"></iframe>
+
+    <!-- Sidebar Logout Handler -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const logoutLink = document.getElementById("sidebar-logout");
         if (logoutLink) {
           logoutLink.addEventListener("click", (e) => {
             e.preventDefault();
-
-            // Xóa thông tin đăng nhập
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("login_infor");
-
-            // Clear all myplant related data
-            const keysToRemove = [];
-            for (let i = 0; i < localStorage.length; i++) {
-              const key = localStorage.key(i);
-              if (
-                key &&
-                (key.startsWith("myplant_") ||
-                  key === "streak" ||
-                  key === "greenScore" ||
-                  key === "plantStage" ||
-                  key === "attendance_data" ||
-                  key === "accounts_data" ||
-                  key === "myplant_calendar_export")
-              ) {
-                keysToRemove.push(key);
-              }
-            }
-            keysToRemove.forEach((key) => localStorage.removeItem(key));
-
-            console.log("🧹 Cleared all user data on logout");
-
-            // Gửi tín hiệu logout cho header
-            const header = document.getElementById("header-frame");
-            if (header && header.contentWindow) {
-              header.contentWindow.postMessage({ action: "logout" }, "*");
-            }
-
-            // Reload header để trở lại header0
-            header.src = "../template/header0.html";
-
-            // Chuyển về trang chủ
-            window.location.href = "01_HOMEPAGE.html";
+            handleLogout();
           });
         }
       });
     </script>
-    <!-- DEBUG SCRIPT - Add BEFORE myplant.js -->
+
+    <!-- DEBUG SCRIPT -->
     <script src="../js/debug_login.js"></script>
+
+    <!-- MyPlant Script -->
     <script src="../js/myplant.js"></script>
   </body>
 </html>
