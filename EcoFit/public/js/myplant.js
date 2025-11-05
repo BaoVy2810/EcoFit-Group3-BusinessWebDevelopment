@@ -551,9 +551,7 @@
         }
         if (isClaimed) {
           // Ràng buộc chặt: không cho unclaim bằng cách click lại
-          showToast(
-            "✅ Đã claim hôm nay. Trạng thái này là vĩnh viễn trên UI (bị khóa)."
-          );
+          showToast("Claimed today!.");
           return;
         } else {
           if (claimDate(cellDate, true)) renderCalendar(currentDate);
