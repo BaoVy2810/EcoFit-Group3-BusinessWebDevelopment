@@ -1,7 +1,3 @@
-/* globals fetch */
-
-// FINAL VERSION - Enhanced with 3-5 points, Sprout stage, and goal display
-
 (() => {
   // =====================================================
   // 🔐 USER AUTHENTICATION & CONTEXT
@@ -33,46 +29,68 @@
   const rewardBtn = document.getElementById("reward-btn");
   const greenScoreElem = document.getElementById("green-score");
   const periodElem = document.getElementById("period");
-  const goalTextElem = document.getElementById("goal-text"); // 👈 NEW
+  const goalTextElem = document.getElementById("goal-text");
+
+  // =====================================================
+  // 📊 CONFIG - Lock unclaim in UI/normal flow
+  // =====================================================
+  const ALLOW_MANUAL_UNCLAIM = false; // <- bảo vệ unclaim: false = không thể unclaim qua UI / normal flow
 
   // =====================================================
   // 📊 STATE MANAGEMENT
   // =====================================================
   let currentDate = new Date();
-  let claimedDates = [];
+  // We'll keep both: a Set of YYYY-MM-DD strings (claimedSet) for fast checks/storage
+  // and an array of Date objects (claimedDatesArr) for streak calc and sorting.
+  let claimedSet = new Set(); // strings 'YYYY-MM-DD' (local date)
+  let claimedDatesArr = []; // Date objects (local midnight)
   let streak = 0;
   let greenScore = 0;
   let plantStage = "Seed";
   let progressPercent = 0;
-  let dailyPoints = {};
+  let dailyPoints = {}; // keyed by 'YYYY-MM-DD'
 
   // =====================================================
-  // 🛠️ HELPER FUNCTIONS
+  // 🛠️ DATE HELPERS (use local date format to avoid timezone issues)
   // =====================================================
-  function normalizeDate(d) {
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  function formatYMDLocal(d) {
+    const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth() + 1).padStart(2, "0");
+    const day = String(dt.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function parseYMDToDate(s) {
+    const parts = (s || "").split("-");
+    if (parts.length !== 3) return null;
+    const y = Number(parts[0]);
+    const m = Number(parts[1]) - 1;
+    const d = Number(parts[2]);
+    return new Date(y, m, d);
   }
 
   function getToday() {
-    return normalizeDate(new Date());
+    return new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    );
   }
 
-  function dateEq(a, b) {
-    return normalizeDate(a).getTime() === normalizeDate(b).getTime();
-  }
-
-  function dateToString(d) {
-    return normalizeDate(d).toISOString().split("T")[0];
-  }
-
-  function isMilestone(n) {
-    return Number.isFinite(n) && n >= 10 && n % 10 === 0 && n <= 1000;
+  function dateEqByYMD(a, b) {
+    return formatYMDLocal(a) === formatYMDLocal(b);
   }
 
   // =====================================================
   // 💾 DATA PERSISTENCE - localStorage First Strategy
+  //   — store claimed dates as YYYY-MM-DD (local), avoid toISOString timezone shift
   // =====================================================
   async function loadUserData() {
+    claimedSet = new Set();
+    claimedDatesArr = [];
+    dailyPoints = {};
+
     if (userId === "guest") {
       console.log("⚠️ Guest mode - no data");
       return false;
@@ -82,11 +100,20 @@
     if (localRaw) {
       try {
         const localData = JSON.parse(localRaw);
-        claimedDates = localData.claimedDates.map((d) => new Date(d));
-        greenScore = localData.greenScore || 0;
-        plantStage = localData.plantStage || "Seed";
+        const claimedArr = localData.claimedDates || [];
+        claimedArr.forEach((s) => {
+          if (typeof s === "string") {
+            claimedSet.add(s);
+            const dt = parseYMDToDate(s);
+            if (dt) claimedDatesArr.push(dt);
+          }
+        });
+
         dailyPoints = localData.dailyPoints || {};
+        greenScore = Number(localData.greenScore || 0);
+        plantStage = localData.plantStage || "Seed";
         updateLoginInforScore(greenScore);
+        recalcStreak();
         return true;
       } catch (e) {
         console.error("Error parsing localStorage:", e);
@@ -111,21 +138,29 @@
         return false;
       }
 
-      claimedDates = (userAttendance.claimedDates || []).map(
-        (s) => new Date(s)
-      );
+      const claimedArr = userAttendance.claimedDates || [];
+      claimedArr.forEach((s) => {
+        if (typeof s === "string") {
+          // assume attendance.json stores 'YYYY-MM-DD' or ISO; normalize to YMD local
+          // If it's ISO we convert to local YMD:
+          let ymd = s;
+          if (s.length > 10) {
+            const dt = new Date(s);
+            ymd = formatYMDLocal(dt);
+          }
+          claimedSet.add(ymd);
+          const dt = parseYMDToDate(ymd);
+          if (dt) claimedDatesArr.push(dt);
+        }
+      });
+
       greenScore = Number(userAttendance.greenScore || 0);
       plantStage = userAttendance.plantStage || "Seed";
 
-      dailyPoints = {};
-      (userAttendance.claimedDates || []).forEach((dateStr) => {
-        dailyPoints[dateStr] = 1;
-      });
-
+      dailyPoints = userAttendance.dailyPoints || {};
       recalcStreak();
       updateLoginInforScore(greenScore);
-      saveToLocalStorage();
-
+      saveToLocalStorage(); // persist normalized form
       return true;
     } catch (error) {
       console.error("❌ Error loading data:", error);
@@ -145,17 +180,17 @@
 
   function saveToLocalStorage() {
     if (userId === "guest") return;
+    // Store claimed dates as array of YMD strings (local)
     const data = {
       userId,
       updatedAt: new Date().toISOString(),
-      claimedDates: claimedDates.map((d) => dateToString(d)),
+      claimedDates: Array.from(claimedSet.values()),
       streak,
       greenScore,
       plantStage,
       progressPercent,
       dailyPoints,
     };
-
     localStorage.setItem(userKey, JSON.stringify(data));
     localStorage.setItem("streak", String(streak));
     localStorage.setItem("greenScore", String(greenScore));
@@ -164,7 +199,7 @@
   }
 
   // =====================================================
-  // 🎊 VISUAL EFFECTS & ANIMATIONS
+  // 🎊 VISUAL EFFECTS & HELPERS (kept)
   // =====================================================
   function launchConfetti(durationMs = 2500, count = 120) {
     if (!document.getElementById("confetti-styles")) {
@@ -223,8 +258,12 @@
   }
 
   // =====================================================
-  // 🏆 MILESTONE & REWARDS SYSTEM
+  // 🏆 MILESTONE & REWARDS SYSTEM (kept)
   // =====================================================
+  function isMilestone(n) {
+    return Number.isFinite(n) && n >= 10 && n % 10 === 0 && n <= 1000;
+  }
+
   function showStreakAlert(count) {
     const lastShown = Number(
       localStorage.getItem(`lastStreakMilestone_${userId}`) || 0
@@ -279,13 +318,10 @@
   }
 
   // =====================================================
-  // 🌱 PLANT VISUALS & PROGRESS (UPDATED FOR 5 STAGES)
+  // 🌱 PLANT VISUALS & PROGRESS (5 STAGES)
   // =====================================================
   function updatePlantVisuals() {
-    if (greenScoreElem) {
-      greenScoreElem.textContent = String(greenScore);
-    }
-
+    if (greenScoreElem) greenScoreElem.textContent = String(greenScore);
     checkScoreMilestone(greenScore);
 
     const prevStage = plantStage;
@@ -296,31 +332,28 @@
       percent = 100;
     } else if (greenScore >= 200) {
       plantStage = "Tree";
-      percent = ((greenScore - 200) / 200) * 100; // 200 → 400: 200 điểm
+      percent = ((greenScore - 200) / 200) * 100;
     } else if (greenScore >= 100) {
       plantStage = "Sapling";
-      percent = ((greenScore - 100) / 100) * 100; // 100 → 200: 100 điểm
+      percent = ((greenScore - 100) / 100) * 100;
     } else if (greenScore >= 50) {
       plantStage = "Sprout";
-      percent = ((greenScore - 50) / 50) * 100; // 50 → 100: 50 điểm
+      percent = ((greenScore - 50) / 50) * 100;
     } else if (greenScore >= 0) {
       plantStage = "Seed";
-      percent = (greenScore / 50) * 100; // 0 → 50: 50 điểm
+      percent = (greenScore / 50) * 100;
     } else {
       plantStage = "Seed";
       percent = 0;
     }
 
-    if (periodElem) {
-      periodElem.textContent = plantStage;
-    }
+    if (periodElem) periodElem.textContent = plantStage;
 
-    // Cập nhật ảnh cây
     const plantImg = document.getElementById("plant-img");
     if (plantImg) {
       const stages = {
         Seed: "../images/hat.png",
-        Sprout: "../images/sprout.png", // 👈 YÊU CẦU: tạo file này
+        Sprout: "../images/sprout.png",
         Sapling: "../images/cay_con.png",
         Tree: "../images/cay_lon.png",
         "Guardian Tree": "../images/old_tree.png",
@@ -328,13 +361,10 @@
       plantImg.src = stages[plantStage] || stages.Seed;
     }
 
-    // Cập nhật vòng năng lượng
     progressPercent = Math.max(0, Math.min(100, Math.round(percent)));
     const ring = document.getElementById("progress-ring");
     const txt = document.getElementById("progress-percent");
-    if (txt) {
-      txt.textContent = String(progressPercent);
-    }
+    if (txt) txt.textContent = String(progressPercent);
     if (ring) {
       const radius = Number(ring.getAttribute("r") || 42);
       const circumference = 2 * Math.PI * radius;
@@ -344,104 +374,112 @@
       }`;
     }
 
-    // Hiển thị mục tiêu tiếp theo
     if (goalTextElem) {
       let nextGoal = "";
-      if (greenScore < 50) {
-        nextGoal = "Reach 50 to become Sprout";
-      } else if (greenScore < 100) {
-        nextGoal = "Reach 100 to become Sapling";
-      } else if (greenScore < 150) {
-        nextGoal = "Reach 150 to become Tree";
-      } else if (greenScore < 200) {
-        nextGoal = "Reach 200 to become Guardian Tree";
-      } else {
-        nextGoal = "You're at the top! Keep going 🌳";
-      }
+      if (greenScore < 50) nextGoal = "Reach 50 to become Sprout";
+      else if (greenScore < 100) nextGoal = "Reach 100 to become Sapling";
+      else if (greenScore < 150) nextGoal = "Reach 150 to become Tree";
+      else if (greenScore < 200) nextGoal = "Reach 200 to become Guardian Tree";
+      else nextGoal = "You're at the top! Keep going 🌳";
       goalTextElem.textContent = nextGoal;
     }
 
-    // Hiển thị popup khi lên cấp
     if (prevStage !== plantStage && prevStage !== "Seed") {
       showLevelUpPopup(plantStage);
     }
   }
 
   // =====================================================
-  // 📅 STREAK CALCULATION
+  // 📅 STREAK CALCULATION (works from claimedSet)
   // =====================================================
   function recalcStreak() {
-    if (!claimedDates.length) {
+    if (!claimedSet.size) {
       streak = 0;
       return;
     }
-    const arr = claimedDates.map((d) => normalizeDate(d)).sort((a, b) => a - b);
+    const arr = Array.from(claimedSet)
+      .map((s) => parseYMDToDate(s))
+      .filter(Boolean)
+      .sort((a, b) => a - b);
+    if (!arr.length) {
+      streak = 0;
+      return;
+    }
     let currentStreak = 1;
     for (let i = arr.length - 1; i > 0; i--) {
-      const diffDays =
-        (arr[i].getTime() - arr[i - 1].getTime()) / (24 * 3600 * 1000);
-      if (diffDays === 1) {
-        currentStreak++;
-      } else {
-        break;
-      }
+      const diffDays = Math.round((arr[i] - arr[i - 1]) / (24 * 3600 * 1000));
+      if (diffDays === 1) currentStreak++;
+      else break;
     }
     streak = currentStreak;
     if (isMilestone(streak)) showStreakAlert(streak);
   }
 
   // =====================================================
-  // ✅ CLAIM & UNCLAIM FUNCTIONS (UPDATED REWARD)
+  // ✅ CLAIM & UNCLAIM (UI constraints + persistent)
+  // - claim: add YMD to claimedSet + save dailyPoints
+  // - unclaim: disabled by default (ALLOW_MANUAL_UNCLAIM = false)
   // =====================================================
   function canClaimDate(date) {
-    const today = getToday();
-    return dateEq(date, today) && !claimedDates.some((d) => dateEq(d, date));
+    const ymd = formatYMDLocal(date);
+    const todayYmd = formatYMDLocal(getToday());
+    return ymd === todayYmd && !claimedSet.has(ymd);
   }
 
   function claimDate(date, isManualClaim = false) {
     if (!canClaimDate(date)) return false;
-
-    // 💚 Nhận 3-5 điểm ngẫu nhiên
     const points = Math.floor(Math.random() * 3) + 3;
-    const dateStr = dateToString(date);
+    const ymd = formatYMDLocal(date);
 
-    claimedDates.push(normalizeDate(date));
-    claimedDates.sort((a, b) => a - b);
+    // Add to set + array
+    claimedSet.add(ymd);
+    const dt = parseYMDToDate(ymd);
+    if (dt) claimedDatesArr.push(dt);
+    claimedDatesArr.sort((a, b) => a - b);
 
-    dailyPoints[dateStr] = points;
+    dailyPoints[ymd] = points;
     greenScore += points;
 
     recalcStreak();
     updatePlantVisuals();
     saveToLocalStorage();
 
-    if (isManualClaim) {
+    if (isManualClaim)
       showToast(`🌿 +${points} Green Points! Total: ${greenScore}`);
-    }
     return true;
   }
 
   function unclaimDate(date, isManualUnclaim = false) {
-    const dateStr = dateToString(date);
-    if (!claimedDates.some((d) => dateEq(d, date))) return false;
+    // Protected: only allowed when ALLOW_MANUAL_UNCLAIM === true
+    if (!ALLOW_MANUAL_UNCLAIM) {
+      console.warn(
+        "Unclaim is disabled by configuration (ALLOW_MANUAL_UNCLAIM=false)."
+      );
+      return false;
+    }
 
-    const points = dailyPoints[dateStr] || 1;
+    const ymd = formatYMDLocal(date);
+    if (!claimedSet.has(ymd)) return false;
+
+    const points = dailyPoints[ymd] || 1;
     greenScore = Math.max(0, greenScore - points);
-    delete dailyPoints[dateStr];
+    delete dailyPoints[ymd];
 
-    claimedDates = claimedDates.filter((d) => !dateEq(d, date));
+    claimedSet.delete(ymd);
+    claimedDatesArr = claimedDatesArr.filter((d) => formatYMDLocal(d) !== ymd);
+
     recalcStreak();
     updatePlantVisuals();
     saveToLocalStorage();
 
-    if (isManualUnclaim) {
-      showToast(`🔄 Unclaimed! Total: ${greenScore}`);
-    }
+    if (isManualUnclaim) showToast(`🔄 Unclaimed! Total: ${greenScore}`);
     return true;
   }
 
   // =====================================================
   // 📅 CALENDAR RENDERING
+  // - Important: clicking an already-claimed cell does NOT unclaim.
+  // - Claimed state stored as local YYYY-MM-DD strings so reload preserves it.
   // =====================================================
   function renderCalendar(forDate = new Date()) {
     if (!daysContainer) return;
@@ -468,11 +506,6 @@
 
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const claimedDatesThisMonth = claimedDates.filter(
-      (d) => d.getFullYear() === year && d.getMonth() === month
-    );
-    const claimedSet = new Set(claimedDatesThisMonth.map((d) => d.getDate()));
     const today = getToday();
 
     for (let i = 0; i < firstDay; i++) {
@@ -481,16 +514,17 @@
       daysContainer.appendChild(blank);
     }
 
+    const mmStr = String(month + 1).padStart(2, "0");
     for (let day = 1; day <= daysInMonth; day++) {
       const cellDate = new Date(year, month, day);
       const cell = document.createElement("div");
       cell.className = "day-cell";
       cell.dataset.day = String(day);
 
-      const isClaimed = claimedSet.has(day);
-      const isToday = dateEq(cellDate, today);
-      const isPast = cellDate.getTime() < today.getTime();
-      const isFuture = cellDate.getTime() > today.getTime();
+      const ddStr = String(day).padStart(2, "0");
+      const dayYmd = `${year}-${mmStr}-${ddStr}`;
+      const isClaimed = claimedSet.has(dayYmd);
+      const isToday = dateEqByYMD(cellDate, today);
 
       if (isToday && !isClaimed) cell.classList.add("next-allowed");
       if (!isToday) {
@@ -511,12 +545,16 @@
       }
 
       cell.addEventListener("click", () => {
-        if (!dateEq(cellDate, today)) {
+        if (!dateEqByYMD(cellDate, today)) {
           showToast("⚠️ Only today can be claimed.");
           return;
         }
         if (isClaimed) {
-          if (unclaimDate(cellDate, true)) renderCalendar(currentDate);
+          // Ràng buộc chặt: không cho unclaim bằng cách click lại
+          showToast(
+            "✅ Đã claim hôm nay. Trạng thái này là vĩnh viễn trên UI (bị khóa)."
+          );
+          return;
         } else {
           if (claimDate(cellDate, true)) renderCalendar(currentDate);
         }
@@ -552,17 +590,14 @@
 
   rewardBtn?.addEventListener("click", () => {
     const today = getToday();
-    if (claimedDates.some((d) => dateEq(d, today))) {
+    const ymd = formatYMDLocal(today);
+    if (claimedSet.has(ymd)) {
       showToast("ℹ️ Already claimed today.");
       return;
     }
     if (claimDate(today, true)) {
       renderCalendar(currentDate);
-      showToast(
-        `🔥 ${streak}-day streak! +${
-          dailyPoints[dateToString(today)] || "?"
-        } Points`
-      );
+      showToast(`🔥 ${streak}-day streak! +${dailyPoints[ymd] || "?"} Points`);
       launchConfetti();
     }
   });
@@ -571,5 +606,15 @@
     getGreenScore: () => greenScore,
     getStreak: () => streak,
     getUserId: () => userId,
+    // advanced: expose function to allow admin override only if you set ALLOW_MANUAL_UNCLAIM=true in code
+    _unclaimDateAdmin: (ymd) => {
+      if (!ALLOW_MANUAL_UNCLAIM) {
+        console.warn("Unclaim disabled by config.");
+        return false;
+      }
+      const d = parseYMDToDate(ymd);
+      if (!d) return false;
+      return unclaimDate(d, true);
+    },
   };
 })();
