@@ -84,25 +84,20 @@
     // Step 1: Check localStorage FIRST
     const localRaw = localStorage.getItem(userKey);
     if (localRaw) {
-      try {
-        const localData = JSON.parse(localRaw);
-        console.log("✅ Found existing localStorage data - using it directly");
+      const localData = JSON.parse(localRaw);
+      const jsonScore = baseProfile.green_score;
+      const localScore = localData.greenScore;
 
-        // Load from localStorage (this is our source of truth after first load)
-        claimedDates = (localData.claimedDates || []).map((s) => new Date(s));
-        streak = Number(localData.streak || 0);
-        greenScore = Number(localData.greenScore || 0);
-        plantStage = localData.plantStage || "Seed";
-        dailyPoints = localData.dailyPoints || {};
-
-        console.log(`   Green Score: ${greenScore}`);
-        console.log(`   Claimed Dates: ${claimedDates.length}`);
-
-        recalcStreak();
-        return true;
-      } catch (e) {
-        console.warn("⚠️ localStorage data corrupted, will fetch from JSON");
+      if (localScore >= jsonScore) {
+        console.log("✅ Using localStorage (higher score)");
+        claimedDates = localData.claimedDates.map((d) => new Date(d));
+        greenScore = localScore;
+      } else {
+        console.log("⬆️ JSON has higher score → overwrite localStorage");
+        greenScore = jsonScore;
+        saveToLocalStorage(); // update new score
       }
+      return true;
     }
 
     // Step 2: No localStorage? Fetch from JSON (first time only)
