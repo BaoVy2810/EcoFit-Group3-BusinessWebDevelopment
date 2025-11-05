@@ -344,29 +344,57 @@
           </div>
         </section>
 
-        <!-- PAGINATION -->
+<!-- PAGINATION -->
         <section class="pagination-wrapper">
-          <div class="pagination">
-            <button class="pagination-btn prev" disabled>
+          <div class="pagination" role="navigation" aria-label="Pagination">
+            <button
+              class="pagination-btn prev"
+              disabled
+              aria-disabled="true"
+              id="pagination-prev"
+            >
               <span>← Previous</span>
             </button>
 
-            <div class="pagination-numbers">
-              <button class="pagination-number active">1</button>
-              <button class="pagination-number">2</button>
-              <button class="pagination-number">3</button>
-              <span class="pagination-dots">...</span>
-              <button class="pagination-number">29</button>
-              <button class="pagination-number">30</button>
+            <!-- Only show a single page by default.
+                 Use data-total-pages to tell JS how many pages exist.
+                 Default is 1. If you later set data-total-pages or call
+                 window.setBlogTotalPages(n) the JS will render additional numbers. -->
+            <div
+              class="pagination-numbers"
+              id="pagination-numbers"
+              data-total-pages="1"
+            >
+              <button class="pagination-number active" aria-current="page"
+                >1</button
+              >
             </div>
 
-            <button class="pagination-btn next">
+            <button
+              class="pagination-btn next"
+              disabled
+              aria-disabled="true"
+              id="pagination-next"
+            >
               <span>Next →</span>
             </button>
           </div>
         </section>
       </div>
     </main>
+
+    <!-- FOOTER -->
+    <iframe
+      src="../template/footer.html"
+      id="footer-frame"
+      class="footer-frame"
+    ></iframe>
+
+    <!-- Updated JS (keeps previous behaviors but default to single page) -->
+    <script src="../js/blog_general.js"></script>
+  </body>
+</html>
+    <!-- FOOTER -->
 
     <!-- FOOTER -->
     <iframe
