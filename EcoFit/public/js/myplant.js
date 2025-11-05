@@ -514,8 +514,8 @@
     const claimedDatesThisMonth = claimedDates.filter(
       (d) => d.getFullYear() === year && d.getMonth() === month
     );
-
     const claimedSet = new Set(claimedDatesThisMonth.map((d) => d.getDate()));
+    const today = getToday();
     const cells = [];
 
     for (let i = 0; i < firstDay; i++) {
@@ -525,8 +525,6 @@
       cells.push(blank);
     }
 
-    const today = getToday();
-
     for (let day = 1; day <= daysInMonth; day++) {
       const cellDate = new Date(year, month, day);
       const cell = document.createElement("div");
@@ -535,15 +533,19 @@
 
       const isClaimed = claimedSet.has(day);
       const isToday = dateEq(cellDate, today);
+
+      // ➕ NEW RULE
+      const isPast = cellDate.getTime() < today.getTime();
       const isFuture = cellDate.getTime() > today.getTime();
 
-      if (isToday && !isClaimed) cell.classList.add("next-allowed");
-
-      if (isFuture) {
+      // ✅ Disable nếu là tương lai OR là quá khứ và chưa được claim
+      if (isFuture || (isPast && !isClaimed)) {
         cell.classList.add("disabled");
         cell.style.opacity = "0.3";
         cell.style.cursor = "not-allowed";
       }
+
+      if (isToday && !isClaimed) cell.classList.add("next-allowed");
 
       if (isClaimed) {
         cell.classList.add("claimed");
@@ -556,23 +558,21 @@
         cell.textContent = day;
       }
 
-      // Click handler: claim or unclaim
+      // 🎯 CLICK HANDLER (đã thêm hạn chế)
       cell.addEventListener("click", () => {
-        if (isFuture) return;
+        // 🚫 Không cho click ngày quá khứ chưa claim hoặc tương lai
+        if (isFuture || (isPast && !isClaimed)) {
+          showToast("⚠️ Bạn chỉ có thể điểm danh cho ngày hôm nay.");
+          return;
+        }
 
         if (isClaimed) {
-          // Unclaim
           if (unclaimDate(cellDate, true)) {
             renderCalendar(currentDate);
-          } else {
-            showToast("⚠️ Lỗi khi bỏ điểm danh.");
           }
         } else {
-          // Claim
           if (claimDate(cellDate, true)) {
             renderCalendar(currentDate);
-          } else {
-            showToast("⚠️ Không thể điểm danh ngày này.");
           }
         }
       });
@@ -580,6 +580,8 @@
       daysContainer.appendChild(cell);
       cells.push(cell);
     }
+
+    // (Phần streak hiệu ứng visual giữ nguyên...)
 
     // Visual streak effects
     for (let i = 0; i < cells.length; i++) {
