@@ -1,4 +1,4 @@
-// myplant.js - Fetch JSON (base) + Merge localStorage (local changes)
+// myplant.js - FINAL VERSION: Simple & Persistent
 /* globals fetch */
 
 (() => {
@@ -70,7 +70,7 @@
   }
 
   // =====================================================
-  // 💾 DATA PERSISTENCE - MERGE Strategy
+  // 💾 DATA PERSISTENCE - localStorage First Strategy
   // =====================================================
 
   async function loadUserData() {
@@ -81,107 +81,84 @@
 
     console.log(`📥 Loading data for profile_id: ${userId}`);
 
-    let baseProfile = null;
-    let localData = null;
+    // Step 1: Check localStorage FIRST
+    const localRaw = localStorage.getItem(userKey);
+    if (localRaw) {
+      try {
+        const localData = JSON.parse(localRaw);
+        console.log("✅ Found existing localStorage data - using it directly");
 
-    // Step 1: ALWAYS try to fetch the JSON (The "Server" Truth)
+        // Load from localStorage (this is our source of truth after first load)
+        claimedDates = (localData.claimedDates || []).map((s) => new Date(s));
+        streak = Number(localData.streak || 0);
+        greenScore = Number(localData.greenScore || 0);
+        plantStage = localData.plantStage || "Seed";
+        dailyPoints = localData.dailyPoints || {};
+
+        console.log(`   Green Score: ${greenScore}`);
+        console.log(`   Claimed Dates: ${claimedDates.length}`);
+
+        recalcStreak();
+        return true;
+      } catch (e) {
+        console.warn("⚠️ localStorage data corrupted, will fetch from JSON");
+      }
+    }
+
+    // Step 2: No localStorage? Fetch from JSON (first time only)
+    console.log("📡 No localStorage found - fetching from accounts.json...");
     try {
       const response = await fetch(
         `../../dataset/accounts.json?v=${new Date().getTime()}`
       );
-      if (response.ok) {
-        const accountsData = await response.json();
-        baseProfile = accountsData.profile.find(
-          (p) => p.profile_id === userId || p.profile_id === String(userId)
-        );
-        console.log("✅ Fetched base data from accounts.json");
-      } else {
-        console.warn(
-          "⚠️ Failed to fetch accounts.json, will rely on localStorage"
-        );
+      if (!response.ok) {
+        console.error("❌ Failed to fetch accounts.json");
+        return false;
       }
-    } catch (error) {
-      console.warn(
-        "❌ Error fetching accounts.json, will rely on localStorage:",
-        error
+
+      const accountsData = await response.json();
+      const baseProfile = accountsData.profile.find(
+        (p) => p.profile_id === userId || p.profile_id === String(userId)
       );
-    }
 
-    // Step 2: ALWAYS try to load from localStorage (The "Local" Changes)
-    const localRaw = localStorage.getItem(userKey);
-    if (localRaw) {
-      try {
-        localData = JSON.parse(localRaw);
-        console.log("✅ Loaded local data from localStorage");
-      } catch (e) {
-        console.warn("⚠️ localStorage data corrupted");
+      if (!baseProfile) {
+        console.error(`❌ Profile not found for user: ${userId}`);
+        return false;
       }
-    }
 
-    // Step 3: Merge Logic - Trộn dữ liệu
-    if (!baseProfile && !localData) {
-      console.error("❌ No data source found. Cannot load user.");
+      console.log("✅ Fetched profile from accounts.json");
+
+      // Load attendance data from JSON
+      const baseAttendance = baseProfile.attendance || {};
+      const jsonClaimedDates = baseAttendance.claimedDates || [];
+
+      // CRITICAL: Green Score = number of claimed dates (1 point per day)
+      greenScore = jsonClaimedDates.length;
+
+      // Load claimed dates
+      claimedDates = jsonClaimedDates.map((s) => new Date(s));
+
+      // Build dailyPoints (1 point per claimed date)
+      dailyPoints = {};
+      jsonClaimedDates.forEach((dateStr) => {
+        dailyPoints[dateStr] = 1; // Simple: 1 point per day
+      });
+
+      plantStage = baseAttendance.plantStage || "Seed";
+
+      console.log(`✅ Loaded from JSON:`);
+      console.log(`   Claimed Dates: ${claimedDates.length}`);
+      console.log(`   Green Score: ${greenScore} (= claimed dates count)`);
+
+      // Save to localStorage for future use
+      recalcStreak();
+      saveToLocalStorage();
+
+      return true;
+    } catch (error) {
+      console.error("❌ Error loading data:", error);
       return false;
     }
-
-    if (baseProfile) {
-      // JSON là nguồn chính cho điểm GỐC
-      const baseGreenScore = Number(baseProfile.green_score || 0);
-
-      const baseAttendance = baseProfile.attendance || {};
-      const basePoints = baseAttendance.dailyPoints || {};
-      const baseDates = new Set(Object.keys(basePoints));
-
-      const localPoints =
-        localData && localData.dailyPoints ? localData.dailyPoints : {};
-
-      let newPoints = 0;
-      let mergedDailyPoints = { ...basePoints };
-      let allClaimedDates = new Set(Object.keys(basePoints));
-
-      // Duyệt qua các điểm local
-      for (const dateStr in localPoints) {
-        if (!baseDates.has(dateStr)) {
-          // Đây là ngày đã claim (local) mà JSON không có
-          const points = localPoints[dateStr];
-          newPoints += points;
-          mergedDailyPoints[dateStr] = points;
-          allClaimedDates.add(dateStr);
-          console.log(` 	- Merging local-only claim: ${dateStr} (+${points})`);
-        }
-        // *Ghi chú: Nếu một ngày bị 'unclaim', nó sẽ bị xóa khỏi localPoints,
-        // và sẽ không được tính vào `newPoints` ở lần F5 tiếp theo. Điều này là đúng!
-      }
-
-      greenScore = baseGreenScore + newPoints;
-      claimedDates = Array.from(allClaimedDates).map((s) => new Date(s));
-      dailyPoints = mergedDailyPoints;
-      plantStage =
-        localData && localData.plantStage
-          ? localData.plantStage
-          : baseAttendance.plantStage || "Seed";
-
-      console.log(`✅ Merged data:`);
-      console.log(` 	- Base Score (JSON): ${baseGreenScore}`);
-      console.log(` 	- New Local Points: ${newPoints}`);
-      console.log(` 	- Final Green Score: ${greenScore}`);
-
-      // BỔ SUNG: Lưu greenScore đã gộp vào localData để lần reload sau dùng lại
-      if (localData) localData.greenScore = greenScore;
-    } else if (localData) {
-      // Fetch JSON lỗi, nhưng có local data -> dùng tạm
-      console.log("⚠️ Using localStorage as fallback");
-      claimedDates = (localData.claimedDates || []).map((s) => new Date(s));
-      streak = Number(localData.streak || 0);
-      greenScore = Number(localData.greenScore || 0);
-      plantStage = localData.plantStage || "Seed";
-      dailyPoints = localData.dailyPoints || {};
-    }
-
-    // Step 4: Tính toán lại streak VÀ LƯU dữ liệu đã gộp
-    recalcStreak();
-    saveToLocalStorage();
-    return true;
   }
 
   function saveToLocalStorage() {
@@ -192,10 +169,10 @@
       updatedAt: new Date().toISOString(),
       claimedDates: claimedDates.map((d) => dateToString(d)),
       streak,
-      greenScore, // Lưu điểm đã gộp (tăng hoặc giảm)
+      greenScore,
       plantStage,
       progressPercent,
-      dailyPoints, // Lưu các điểm đã gộp
+      dailyPoints,
     };
 
     localStorage.setItem(userKey, JSON.stringify(data));
@@ -214,7 +191,9 @@
       console.warn("Could not update login_infor:", e);
     }
 
-    console.log(`💾 Saved merged data to localStorage (${userKey})`);
+    console.log(
+      `💾 Saved to localStorage (${userKey}) - Green Score: ${greenScore}`
+    );
   }
 
   // =====================================================
@@ -335,30 +314,12 @@
   }
 
   // =====================================================
-  // 🎁 CLAIM REWARD CALCULATION
-  // =====================================================
-
-  function calculateRewardPoints(date) {
-    let points = 1;
-    if (streak > 0) {
-      if (streak >= 30) points += 3;
-      else if (streak >= 14) points += 2;
-      else if (streak >= 7) points += 1;
-    }
-    const dayOfWeek = date.getDay();
-    if (dayOfWeek === 0 || dayOfWeek === 6) points += 1;
-    const dayOfMonth = date.getDate();
-    if (dayOfMonth === 1 || dayOfMonth === 15) points += 2;
-    return points;
-  }
-
-  // =====================================================
   // 🌱 PLANT VISUALS & PROGRESS
   // =====================================================
 
   function updatePlantVisuals() {
     console.log("🌱 Updating Plant Visuals:");
-    console.log(` 	- Current Green Score: ${greenScore}`);
+    console.log(`   Current Green Score: ${greenScore}`);
 
     if (greenScoreElem) {
       greenScoreElem.textContent = String(greenScore);
@@ -387,7 +348,7 @@
       percent = (greenScore / 20) * 100;
     }
 
-    console.log(` 	- Plant Stage: ${plantStage}`);
+    console.log(`   Plant Stage: ${plantStage}`);
 
     if (periodElem) {
       periodElem.textContent = plantStage;
@@ -449,7 +410,7 @@
   }
 
   // =====================================================
-  // ✅ CLAIM & UNCLAIM FUNCTIONS (ĐÃ CẬP NHẬT)
+  // ✅ CLAIM & UNCLAIM FUNCTIONS
   // =====================================================
 
   function canClaimDate(date) {
@@ -463,77 +424,63 @@
     if (!canClaimDate(date)) return false;
 
     const dateStr = dateToString(date);
-    const points = calculateRewardPoints(date);
+    const points = 1; // Simple: always 1 point per day
 
-    console.log("🎯 Claiming date:", dateStr, "→ +" + points + " points");
+    console.log("🎯 Claiming date:", dateStr, "→ +1 point");
 
     claimedDates.push(normalizeDate(date));
     claimedDates.sort((a, b) => a - b);
 
     dailyPoints[dateStr] = points;
-    greenScore += points; // Add points to green score
+    greenScore += points; // Add 1 point
 
     recalcStreak();
     updatePlantVisuals();
-    saveToLocalStorage();
+    saveToLocalStorage(); // CRITICAL: Save immediately
 
     if (isManualClaim) {
-      if (points > 1) {
-        showToast(`🎉 +${points} Green Points! (Bonus applied)`);
-      } else {
-        showToast(`🌿 +${points} Green Point!`);
-      }
+      showToast(`🌿 +1 Green Point! Total: ${greenScore}`);
     }
     return true;
   }
 
-  /**
-   * 🌟 HÀM MỚI: Bỏ điểm danh một ngày
-   */
   function unclaimDate(date, isManualUnclaim = false) {
     const dateStr = dateToString(date);
 
-    // Kiểm tra 1: Ngày này có được claim không?
+    // Kiểm tra: Ngày này có được claim không?
     if (!claimedDates.some((d) => dateEq(d, date))) {
       console.warn(`Attempted to unclaim a non-claimed date: ${dateStr}`);
       return false;
     }
 
-    // Kiểm tra 2: Ngày này có điểm trong dailyPoints không?
-    const points = dailyPoints[dateStr];
-    if (points === undefined || points === null) {
-      console.error(
-        `Data inconsistency: ${dateStr} is claimed but has no points in dailyPoints.`
-      );
-      return false; // Không cho unclaim nếu không có điểm
-    }
+    const points = 1; // Always 1 point per day
 
-    console.log(`⏪ Unclaiming date:`, dateStr, `→ -${points} points`);
+    console.log(`⏪ Unclaiming date:`, dateStr, `→ -1 point`);
 
-    // 1. Trừ điểm
-    greenScore -= Number(points);
-    if (greenScore < 0) greenScore = 0; // Không bao giờ cho điểm âm
+    // Trừ điểm
+    greenScore -= points;
+    if (greenScore < 0) greenScore = 0;
 
-    // 2. Xóa điểm khỏi dailyPoints
+    // Xóa điểm khỏi dailyPoints
     delete dailyPoints[dateStr];
 
-    // 3. Xóa ngày khỏi claimedDates
+    // Xóa ngày khỏi claimedDates
     claimedDates = claimedDates.filter((d) => !dateEq(d, date));
 
-    // 4. Cập nhật mọi thứ
+    // Cập nhật
     recalcStreak();
     updatePlantVisuals();
-    saveToLocalStorage(); // Lưu điểm số mới (đã giảm)
+    saveToLocalStorage(); // CRITICAL: Save immediately
 
     if (isManualUnclaim) {
-      showToast(`🔄 Unclaimed! -${points} Green Points.`);
+      showToast(`🔄 Unclaimed! Total: ${greenScore}`);
     }
 
     return true;
   }
 
   // =====================================================
-  // 📅 CALENDAR RENDERING (ĐÃ CẬP NHẬT)
+  // 📅 CALENDAR RENDERING
   // =====================================================
 
   function renderCalendar(forDate = new Date()) {
@@ -607,24 +554,21 @@
         cell.textContent = day;
       }
 
-      /**
-       * 🌟 LOGIC CLICK ĐÃ CẬP NHẬT
-       * Bây giờ có thể xử lý cả claim và unclaim
-       */
+      // Click handler: claim or unclaim
       cell.addEventListener("click", () => {
-        if (isFuture) return; // Không click ngày tương lai
+        if (isFuture) return;
 
         if (isClaimed) {
-          // --- LOGIC UNCLAIM MỚI ---
+          // Unclaim
           if (unclaimDate(cellDate, true)) {
-            renderCalendar(currentDate); // Vẽ lại lịch để hiện số
+            renderCalendar(currentDate);
           } else {
             showToast("⚠️ Lỗi khi bỏ điểm danh.");
           }
         } else {
-          // --- LOGIC CLAIM CŨ ---
+          // Claim
           if (claimDate(cellDate, true)) {
-            renderCalendar(currentDate); // Vẽ lại lịch để hiện lá
+            renderCalendar(currentDate);
           } else {
             showToast("⚠️ Không thể điểm danh ngày này.");
           }
@@ -714,8 +658,7 @@
 
     if (claimDate(today, true)) {
       renderCalendar(currentDate);
-      const points = dailyPoints[dateToString(today)] || 1;
-      showToast(`🔥 ${streak} day streak! +${points} Points`);
+      showToast(`🔥 ${streak} day streak! +1 Point`);
       launchConfetti();
     }
   });
