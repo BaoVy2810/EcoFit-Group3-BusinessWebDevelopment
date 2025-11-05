@@ -1,6 +1,6 @@
 /* globals fetch */
 
-// FINAL VERSION - All data from attendance.json only
+// FINAL VERSION - Enhanced with 3-5 points, Sprout stage, and goal display
 
 (() => {
   // =====================================================
@@ -33,6 +33,7 @@
   const rewardBtn = document.getElementById("reward-btn");
   const greenScoreElem = document.getElementById("green-score");
   const periodElem = document.getElementById("period");
+  const goalTextElem = document.getElementById("goal-text"); // 👈 NEW
 
   // =====================================================
   // 📊 STATE MANAGEMENT
@@ -77,7 +78,6 @@
       return false;
     }
 
-    // Step 1: Check localStorage FIRST
     const localRaw = localStorage.getItem(userKey);
     if (localRaw) {
       try {
@@ -86,17 +86,13 @@
         greenScore = localData.greenScore || 0;
         plantStage = localData.plantStage || "Seed";
         dailyPoints = localData.dailyPoints || {};
-
-        // Update login_infor with current greenScore
         updateLoginInforScore(greenScore);
-
         return true;
       } catch (e) {
         console.error("Error parsing localStorage:", e);
       }
     }
 
-    // Step 2: No localStorage? Fetch from attendance.json
     try {
       const attendanceResponse = await fetch(
         `../../dataset/attendance.json?v=${new Date().getTime()}`
@@ -115,7 +111,6 @@
         return false;
       }
 
-      // Load all data from attendance.json
       claimedDates = (userAttendance.claimedDates || []).map(
         (s) => new Date(s)
       );
@@ -127,7 +122,6 @@
         dailyPoints[dateStr] = 1;
       });
 
-      // Auto-calculate streak from claimedDates
       recalcStreak();
       updateLoginInforScore(greenScore);
       saveToLocalStorage();
@@ -166,8 +160,6 @@
     localStorage.setItem("streak", String(streak));
     localStorage.setItem("greenScore", String(greenScore));
     localStorage.setItem("plantStage", plantStage);
-
-    // Update green_score in login_infor
     updateLoginInforScore(greenScore);
   }
 
@@ -287,7 +279,7 @@
   }
 
   // =====================================================
-  // 🌱 PLANT VISUALS & PROGRESS
+  // 🌱 PLANT VISUALS & PROGRESS (UPDATED FOR 5 STAGES)
   // =====================================================
   function updatePlantVisuals() {
     if (greenScoreElem) {
@@ -299,32 +291,36 @@
     const prevStage = plantStage;
     let percent = 0;
 
-    // Plant stages based on green_score
-    if (greenScore >= 200) {
+    if (greenScore >= 400) {
       plantStage = "Guardian Tree";
       percent = 100;
-    } else if (greenScore >= 100) {
+    } else if (greenScore >= 200) {
       plantStage = "Tree";
-      percent = ((greenScore - 100) / 100) * 100;
-    } else if (greenScore >= 50) {
+      percent = ((greenScore - 200) / 200) * 100; // 200 → 400: 200 điểm
+    } else if (greenScore >= 100) {
       plantStage = "Sapling";
-      percent = ((greenScore - 50) / 50) * 100;
-    } else if (greenScore >= 20) {
+      percent = ((greenScore - 100) / 100) * 100; // 100 → 200: 100 điểm
+    } else if (greenScore >= 50) {
+      plantStage = "Sprout";
+      percent = ((greenScore - 50) / 50) * 100; // 50 → 100: 50 điểm
+    } else if (greenScore >= 0) {
       plantStage = "Seed";
-      percent = ((greenScore - 20) / 30) * 100;
+      percent = (greenScore / 50) * 100; // 0 → 50: 50 điểm
     } else {
       plantStage = "Seed";
-      percent = (greenScore / 20) * 100;
+      percent = 0;
     }
 
     if (periodElem) {
       periodElem.textContent = plantStage;
     }
 
+    // Cập nhật ảnh cây
     const plantImg = document.getElementById("plant-img");
     if (plantImg) {
       const stages = {
         Seed: "../images/hat.png",
+        Sprout: "../images/sprout.png", // 👈 YÊU CẦU: tạo file này
         Sapling: "../images/cay_con.png",
         Tree: "../images/cay_lon.png",
         "Guardian Tree": "../images/old_tree.png",
@@ -332,6 +328,7 @@
       plantImg.src = stages[plantStage] || stages.Seed;
     }
 
+    // Cập nhật vòng năng lượng
     progressPercent = Math.max(0, Math.min(100, Math.round(percent)));
     const ring = document.getElementById("progress-ring");
     const txt = document.getElementById("progress-percent");
@@ -347,6 +344,24 @@
       }`;
     }
 
+    // Hiển thị mục tiêu tiếp theo
+    if (goalTextElem) {
+      let nextGoal = "";
+      if (greenScore < 50) {
+        nextGoal = "Reach 50 to become Sprout";
+      } else if (greenScore < 100) {
+        nextGoal = "Reach 100 to become Sapling";
+      } else if (greenScore < 150) {
+        nextGoal = "Reach 150 to become Tree";
+      } else if (greenScore < 200) {
+        nextGoal = "Reach 200 to become Guardian Tree";
+      } else {
+        nextGoal = "You're at the top! Keep going 🌳";
+      }
+      goalTextElem.textContent = nextGoal;
+    }
+
+    // Hiển thị popup khi lên cấp
     if (prevStage !== plantStage && prevStage !== "Seed") {
       showLevelUpPopup(plantStage);
     }
@@ -376,26 +391,19 @@
   }
 
   // =====================================================
-  // ✅ CLAIM & UNCLAIM FUNCTIONS
+  // ✅ CLAIM & UNCLAIM FUNCTIONS (UPDATED REWARD)
   // =====================================================
   function canClaimDate(date) {
     const today = getToday();
-    if (
-      date.getDate() !== today.getDate() ||
-      date.getMonth() !== today.getMonth() ||
-      date.getFullYear() !== today.getFullYear()
-    ) {
-      return false;
-    }
-    if (claimedDates.some((d) => dateEq(d, date))) return false;
-    return true;
+    return dateEq(date, today) && !claimedDates.some((d) => dateEq(d, date));
   }
 
   function claimDate(date, isManualClaim = false) {
     if (!canClaimDate(date)) return false;
 
+    // 💚 Nhận 3-5 điểm ngẫu nhiên
+    const points = Math.floor(Math.random() * 3) + 3;
     const dateStr = dateToString(date);
-    const points = 1;
 
     claimedDates.push(normalizeDate(date));
     claimedDates.sort((a, b) => a - b);
@@ -408,23 +416,17 @@
     saveToLocalStorage();
 
     if (isManualClaim) {
-      showToast(`🌿 +1 Green Point! Total: ${greenScore}`);
+      showToast(`🌿 +${points} Green Points! Total: ${greenScore}`);
     }
     return true;
   }
 
   function unclaimDate(date, isManualUnclaim = false) {
     const dateStr = dateToString(date);
+    if (!claimedDates.some((d) => dateEq(d, date))) return false;
 
-    if (!claimedDates.some((d) => dateEq(d, date))) {
-      return false;
-    }
-
-    const points = 1;
-
-    greenScore -= points;
-    if (greenScore < 0) greenScore = 0;
-
+    const points = dailyPoints[dateStr] || 1;
+    greenScore = Math.max(0, greenScore - points);
     delete dailyPoints[dateStr];
 
     claimedDates = claimedDates.filter((d) => !dateEq(d, date));
@@ -435,7 +437,6 @@
     if (isManualUnclaim) {
       showToast(`🔄 Unclaimed! Total: ${greenScore}`);
     }
-
     return true;
   }
 
@@ -463,8 +464,8 @@
     ];
 
     if (monthTitle) monthTitle.textContent = `${monthNames[month]} ${year}`;
-
     daysContainer.innerHTML = "";
+
     const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -473,13 +474,11 @@
     );
     const claimedSet = new Set(claimedDatesThisMonth.map((d) => d.getDate()));
     const today = getToday();
-    const cells = [];
 
     for (let i = 0; i < firstDay; i++) {
       const blank = document.createElement("div");
       blank.className = "day-cell empty";
       daysContainer.appendChild(blank);
-      cells.push(blank);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -494,7 +493,6 @@
       const isFuture = cellDate.getTime() > today.getTime();
 
       if (isToday && !isClaimed) cell.classList.add("next-allowed");
-
       if (!isToday) {
         cell.classList.add("disabled");
         cell.style.opacity = "0.3";
@@ -513,58 +511,18 @@
       }
 
       cell.addEventListener("click", () => {
-        if (
-          cellDate.getDate() !== today.getDate() ||
-          cellDate.getMonth() !== today.getMonth() ||
-          cellDate.getFullYear() !== today.getFullYear()
-        ) {
-          showToast("⚠️ Chỉ có thể điểm danh cho ngày hôm nay.");
-          return;
-        }
-        if (isFuture || (isPast && !isClaimed)) {
-          showToast("⚠️ Bạn chỉ có thể điểm danh cho ngày hôm nay.");
+        if (!dateEq(cellDate, today)) {
+          showToast("⚠️ Only today can be claimed.");
           return;
         }
         if (isClaimed) {
-          if (unclaimDate(cellDate, true)) {
-            renderCalendar(currentDate);
-          }
+          if (unclaimDate(cellDate, true)) renderCalendar(currentDate);
         } else {
-          if (claimDate(cellDate, true)) {
-            renderCalendar(currentDate);
-          }
+          if (claimDate(cellDate, true)) renderCalendar(currentDate);
         }
       });
 
       daysContainer.appendChild(cell);
-      cells.push(cell);
-    }
-
-    for (let i = 0; i < cells.length; i++) {
-      const el = cells[i];
-      if (
-        !el ||
-        el.classList.contains("empty") ||
-        !el.classList.contains("claimed")
-      )
-        continue;
-      el.classList.remove("streak-start", "streak-mid", "streak-end");
-      const dow = i % 7;
-      const prev = cells[i - 1];
-      const next = cells[i + 1];
-      const prevClaimed =
-        prev &&
-        !prev.classList.contains("empty") &&
-        prev.classList.contains("claimed") &&
-        dow !== 0;
-      const nextClaimed =
-        next &&
-        !next.classList.contains("empty") &&
-        next.classList.contains("claimed") &&
-        dow !== 6;
-      if (prevClaimed && nextClaimed) el.classList.add("streak-mid");
-      else if (!prevClaimed && nextClaimed) el.classList.add("streak-start");
-      else if (prevClaimed && !nextClaimed) el.classList.add("streak-end");
     }
   }
 
@@ -594,15 +552,17 @@
 
   rewardBtn?.addEventListener("click", () => {
     const today = getToday();
-
     if (claimedDates.some((d) => dateEq(d, today))) {
       showToast("ℹ️ Already claimed today.");
       return;
     }
-
     if (claimDate(today, true)) {
       renderCalendar(currentDate);
-      showToast(`🔥 ${streak} day streak! +1 Point`);
+      showToast(
+        `🔥 ${streak}-day streak! +${
+          dailyPoints[dateToString(today)] || "?"
+        } Points`
+      );
       launchConfetti();
     }
   });
