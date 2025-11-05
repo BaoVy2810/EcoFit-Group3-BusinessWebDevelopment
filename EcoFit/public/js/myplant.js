@@ -280,12 +280,12 @@
     const popup = document.createElement("div");
     popup.style.cssText = `background: white; border-radius: 16px; padding: 48px 64px; text-align: center; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);`;
     popup.innerHTML = `
-      <div style="width: 80px; height: 80px; background: #69bd76; border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;">
+      <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #69bd76 0%, #3da547 100%); border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
-      <h2 style="font-size: 28px; font-weight: 800; margin: 0 0 12px; color: #1c5b2b;">Congratulations!</h2>
+      <h2 style="font-size: 28px; font-weight: 800; margin: 0 0 12px; color: linear-gradient(135deg, #69bd76 0%, #3da547 100%);">Congratulations!</h2>
       <p style="font-size: 16px; color: #666; margin: 0 0 32px;">You've reached <strong style="color: #3da547;">${newStage}</strong> level!</p>
-      <button id="levelup-ok" style="background: #69bd76; color: white; border: none; padding: 12px 48px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Continue</button>
+      <button id="levelup-ok" style="background: linear-gradient(135deg, #69bd76 0%, #3da547 100%); color: white; border: none; padding: 12px 48px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s;">Continue</button>
     `;
     if (!document.getElementById("popup-animations")) {
       const style = document.createElement("style");
@@ -293,7 +293,7 @@
       style.textContent = `
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        #levelup-ok:hover { background: #3da547; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(105,189,118,0.4); }
+        #levelup-ok:hover { background: linear-gradient(135deg, #69bd76 0%, #3da547 100%); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(105,189,118,0.4); }
       `;
       document.head.appendChild(style);
     }
