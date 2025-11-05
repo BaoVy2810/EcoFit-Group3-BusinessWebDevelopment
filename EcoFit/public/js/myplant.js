@@ -1,4 +1,4 @@
-// myplant.js - FINAL VERSION: Simple & Persistent
+// myplant.js - FINAL VERSION: Green Score from JSON + Persistent Storage
 /* globals fetch */
 
 (() => {
@@ -132,8 +132,8 @@
       const baseAttendance = baseProfile.attendance || {};
       const jsonClaimedDates = baseAttendance.claimedDates || [];
 
-      // CRITICAL: Green Score = number of claimed dates (1 point per day)
-      greenScore = jsonClaimedDates.length;
+      // CRITICAL: Green Score = từ field green_score trong JSON
+      greenScore = Number(baseProfile.green_score || 0);
 
       // Load claimed dates
       claimedDates = jsonClaimedDates.map((s) => new Date(s));
@@ -147,8 +147,10 @@
       plantStage = baseAttendance.plantStage || "Seed";
 
       console.log(`✅ Loaded from JSON:`);
-      console.log(`   Claimed Dates: ${claimedDates.length}`);
-      console.log(`   Green Score: ${greenScore} (= claimed dates count)`);
+      console.log(`   Claimed Dates: ${claimedDates.length} days`);
+      console.log(
+        `   Green Score: ${greenScore} points (from profile.green_score)`
+      );
 
       // Save to localStorage for future use
       recalcStreak();
