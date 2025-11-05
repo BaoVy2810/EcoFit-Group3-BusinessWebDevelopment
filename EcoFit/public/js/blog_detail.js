@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (blog.image && blog.image.trim() !== "") {
         // Thêm path đầy đủ nếu chỉ có tên file
         if (!blog.image.includes("/")) {
-          img.src = `../../dataset/banner/${blog.image}`;
+          img.src = `../../dataset/banner/blog_banner.png`;
         } else {
           img.src = blog.image;
         }
