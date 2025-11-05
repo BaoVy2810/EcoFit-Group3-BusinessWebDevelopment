@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog General</title>
-    <link rel="icon" href="../images/ecofit_logo2.png" sizes="32x32" type="image/png">
+    <link
+      rel="icon"
+      href="../images/ecofit_logo2.png"
+      sizes="32x32"
+      type="image/png"
+    />
 
     <link rel="stylesheet" href="../css/USER_MAINSTYLE.css" />
     <script src="../js/notification_handler.js"></script>
@@ -13,7 +18,7 @@
     <iframe id="header-frame" class="header-frame"></iframe>
 
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
+      window.addEventListener("DOMContentLoaded", () => {
         const header = document.getElementById("header-frame");
         const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
         header.src = isLoggedIn
@@ -50,14 +55,14 @@
         }
         // 🟢 Xử lý toggle notifications
         if (e.data.action === "toggleNotifications") {
-            if (!window.NotificationPopup) {
-                window.NotificationPopup = createNotificationPopupInParent(
-                    e.data.notifications, 
-                    e.data.bellPosition
-                );
-            } else {
-                window.NotificationPopup.toggle();
-            }
+          if (!window.NotificationPopup) {
+            window.NotificationPopup = createNotificationPopupInParent(
+              e.data.notifications,
+              e.data.bellPosition
+            );
+          } else {
+            window.NotificationPopup.toggle();
+          }
         }
       });
     </script>
@@ -367,7 +372,7 @@
       id="footer-frame"
       class="footer-frame"
     ></iframe>
-    <script src="../js/script.js"></script>
+    <script src="../js/blog_general.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         // Handle filter buttons
