@@ -20,22 +20,11 @@
   <script src="./dataManager.js"></script>
   <script src="./script.js"></script>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Toggle Sidebar
-      const menuToggle = document.querySelector('.menu-toggle');
-      const sidebar = document.querySelector('.sidebar');
-      const mainContent = document.querySelector('.main-content');
-
-      if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-          sidebar.classList.toggle('collapsed');
-          mainContent.classList.toggle('expanded');
-        });
-      }
-
-    });
-  </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        toggleSidebar();
+      });
+    </script>
 </head>
 
 <body>

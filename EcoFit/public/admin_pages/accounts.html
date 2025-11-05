@@ -11,23 +11,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="../images/ecofit_logo3.png" sizes="32x32" type="image/png">
-
   <script src="./dataManager.js"></script>
   <script src="./script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Toggle Sidebar
-      const menuToggle = document.querySelector('.menu-toggle');
-      const sidebar = document.querySelector('.sidebar');
-      const mainContent = document.querySelector('.main-content');
-
-      if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-          sidebar.classList.toggle('collapsed');
-          mainContent.classList.toggle('expanded');
-        });
-      }
-
+      toggleSidebar();
     });
   </script>
 </head>
@@ -57,7 +45,6 @@
         </button>
         <button class="menu-item" onclick="location.href='orders.html'"><i data-lucide="list"></i><span>Order
             Lists</span></button>
-        <button class="menu-item"><i data-lucide="inbox"></i><span>Inbox</span></button>
 
         <div class="pages-divider">
           <p>PAGES</p>
@@ -222,18 +209,21 @@
                   <td style="padding: 16px;"><span name="role"></span></td>
                   <td style="padding: 16px;"><span name="status"></span></td>
                   <td style="padding: 16px;">
+                    <div class="action-buttons" style="gap: 3px">
                     <button
-                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #3b82f6;"
+                      title="Edit"
                       onclick="handleEditAccount(this)"
                       data-account-id="">
                       <i data-lucide="edit"></i>
                     </button>
                     <button
-                      style="padding: 8px; border: none; background: transparent; cursor: pointer; color: #ef4444;"
+                      title="Delete"
+                      class="delete-btn"
                       onclick="handleDeleteAccount(this)"
                       data-account-id="">
                       <i data-lucide="trash-2"></i>
                     </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -261,7 +251,7 @@
 
   <!-- EDIT ACCOUNT MODAL -->
   <div id="editAccountModal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
       <div class="modal-header">
         <h3>Edit Account Information</h3>
         <button onclick="closeEditModal()">
@@ -271,31 +261,78 @@
 
       <form id="editAccountForm" class="modal-form">
         <input type="hidden" id="edit_account_id" />
+        <input type="hidden" id="edit_profile_id" />
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
-            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Full Name</label>
-            <input type="text" id="edit_fullname" required />
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Full Name *</label>
+            <input type="text" id="edit_fullname" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
 
           <div>
-            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Email</label>
-            <input type="email" id="edit_email" required />
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Email *</label>
+            <input type="email" id="edit_email" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
           <div>
-            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Role</label>
-            <select id="edit_role" required>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Phone</label>
+            <input type="tel" id="edit_phone" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Gender</label>
+            <select id="edit_gender" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Date of Birth</label>
+            <input type="date" id="edit_dob" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Password</label>
+            <input type="text" id="edit_password" placeholder="Leave blank to keep current password" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Address</label>
+          <textarea id="edit_address" rows="2" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Green Score</label>
+            <input type="number" id="edit_green_score" min="0" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;" />
+          </div>
+
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Created At</label>
+            <input type="text" id="edit_created_at" readonly style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb;" />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Role *</label>
+            <select id="edit_role" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
               <option value="customer">Customer</option>
               <option value="administrator">Administrator</option>
             </select>
           </div>
 
           <div>
-            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Status</label>
-            <select id="edit_status" required>
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Status *</label>
+            <select id="edit_status" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
@@ -320,21 +357,50 @@
     // ✅ XỬ LÝ EDIT ACCOUNT
     function handleEditAccount(button) {
       const accountId = button.getAttribute('data-account-id');
+      console.log("📝 Opening edit form for account ID:", accountId);
+      
       if (accountId) {
         editAccount(accountId);
+      } else {
+        console.error("❌ No account ID found");
+        showToast("Cannot find account ID!", "error");
       }
     }
 
     function editAccount(accountId) {
-      const account = accounts.find(acc => (acc.id || acc.profile_id) === accountId);
-      if (!account) return;
+      console.log("🔍 Looking for account:", accountId);
+      console.log("📋 Available accounts:", accounts);
+      
+      const account = accounts.find(acc => {
+        const id = acc.id || acc.profile_id;
+        return id === accountId || id === String(accountId);
+      });
+      
+      if (!account) {
+        console.error("❌ Account not found:", accountId);
+        showToast("Account not found!", "error");
+        return;
+      }
 
+      console.log("✅ Found account:", account);
+
+      // Populate all fields from the account data
       document.getElementById("edit_account_id").value = accountId;
-      document.getElementById("edit_fullname").value = account.fullname;
-      document.getElementById("edit_email").value = account.email;
-      document.getElementById("edit_role").value = account.role;
-      document.getElementById("edit_status").value = account.status;
+      document.getElementById("edit_profile_id").value = account.profile_id || accountId;
+      document.getElementById("edit_fullname").value = account.fullname || "";
+      document.getElementById("edit_email").value = account.email || "";
+      document.getElementById("edit_phone").value = account.phone || "";
+      document.getElementById("edit_gender").value = account.gender || "";
+      document.getElementById("edit_dob").value = account.dob || "";
+      document.getElementById("edit_address").value = account.address || "";
+      document.getElementById("edit_green_score").value = account.green_score || "0";
+      document.getElementById("edit_password").value = account.password || "";
+      document.getElementById("edit_role").value = account.role || "customer";
+      document.getElementById("edit_status").value = account.status || "active";
+      document.getElementById("edit_created_at").value = account.created_at || "";
 
+      console.log("📝 Form populated with data");
+      
       document.getElementById("editAccountModal").style.display = "flex";
       if (typeof lucide !== "undefined") lucide.createIcons();
     }
@@ -348,35 +414,52 @@
       e.preventDefault();
 
       const accountId = document.getElementById("edit_account_id").value;
-      const accountIndex = accounts.findIndex(acc => (acc.id || acc.profile_id) === accountId);
+      console.log("💾 Saving changes for account:", accountId);
+      
+      const accountIndex = accounts.findIndex(acc => {
+        const id = acc.id || acc.profile_id;
+        return id === accountId || id === String(accountId);
+      });
 
       if (accountIndex === -1) {
+        console.error("❌ Account not found for saving");
         showToast("Account not found!", "error");
         return;
       }
 
-      console.log("💾 Saving account changes...");
+      // Get the password value
+      const newPassword = document.getElementById("edit_password").value.trim();
 
-      // Update account information
+      // Update account information with all fields
       accounts[accountIndex] = {
         ...accounts[accountIndex],
-        fullname: document.getElementById("edit_fullname").value,
-        email: document.getElementById("edit_email").value,
+        fullname: document.getElementById("edit_fullname").value.trim(),
+        email: document.getElementById("edit_email").value.trim(),
+        phone: document.getElementById("edit_phone").value.trim(),
+        gender: document.getElementById("edit_gender").value,
+        dob: document.getElementById("edit_dob").value,
+        address: document.getElementById("edit_address").value.trim(),
+        green_score: document.getElementById("edit_green_score").value || "0",
         role: document.getElementById("edit_role").value,
         status: document.getElementById("edit_status").value,
+        // Only update password if a new one was entered
+        password: newPassword ? newPassword : accounts[accountIndex].password
       };
+
+      console.log("💾 Updated account data:", accounts[accountIndex]);
 
       // Save to DataManager
       let accountsData = window.DataManager.getData('accounts');
       accountsData.profile = accounts;
       window.DataManager.saveData('accounts', accountsData);
 
+      console.log("✅ Data saved to localStorage");
+
       // Update UI
       loadAccountsData();
       handleFilterChange();
       closeEditModal();
       showToast("Account updated successfully!", "success");
-      console.log("✅ Account updated successfully");
     };
 
     // ✅ XỬ LÝ DELETE ACCOUNT
@@ -471,7 +554,8 @@
       // Load data
       loadAccounts();
       loadAccountsData();
-checkAuthentication();
+      checkAuthentication();
+      
       // Setup event listeners
       document.getElementById("searchInput").addEventListener("input", handleFilterChange);
       document.getElementById("roleFilter").addEventListener("change", handleFilterChange);
