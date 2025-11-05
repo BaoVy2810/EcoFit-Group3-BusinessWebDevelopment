@@ -54,8 +54,8 @@ async function loadData() {
             // 🔹 Luôn fetch lại bản mới, thêm timestamp để tránh cache
             const timestamp = new Date().getTime();
             const [productsResponse, promotionsResponse] = await Promise.all([
-                fetch('../../dataset/products.json?t=${timestamp}'),
-                fetch('../../dataset/promotions.json?t=${timestamp}')
+                fetch(`../../dataset/products.json?t=${timestamp}`),
+                fetch(`../../dataset/promotions.json?t=${timestamp}`)
             ]);
 
     productsData = await productsResponse.json();
