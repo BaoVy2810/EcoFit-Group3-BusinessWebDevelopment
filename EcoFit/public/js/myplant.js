@@ -1,6 +1,6 @@
 /* globals fetch */
 
-// FINAL VERSION - Đã fix: chỉ cho claim hôm nay (ngày, tháng, năm đều phải khớp)
+// FINAL VERSION - All data from attendance.json only
 
 (() => {
   // =====================================================
@@ -80,66 +80,72 @@
     // Step 1: Check localStorage FIRST
     const localRaw = localStorage.getItem(userKey);
     if (localRaw) {
-      const localData = JSON.parse(localRaw);
-      const loginInforRaw = localStorage.getItem("login_infor");
-      let jsonScore = 0;
-      if (loginInforRaw) {
-        try {
-          const baseProfile = JSON.parse(loginInforRaw);
-          jsonScore = Number(baseProfile.green_score || 0);
-        } catch (e) {
-          jsonScore = 0;
-        }
-      }
-      const localScore = localData.greenScore;
-
-      if (localScore >= jsonScore) {
+      try {
+        const localData = JSON.parse(localRaw);
         claimedDates = localData.claimedDates.map((d) => new Date(d));
-        greenScore = localScore;
-      } else {
-        greenScore = jsonScore;
-        saveToLocalStorage(); // update new score
+        greenScore = localData.greenScore || 0;
+        plantStage = localData.plantStage || "Seed";
+        dailyPoints = localData.dailyPoints || {};
+
+        // Update login_infor with current greenScore
+        updateLoginInforScore(greenScore);
+
+        return true;
+      } catch (e) {
+        console.error("Error parsing localStorage:", e);
       }
-      return true;
     }
 
-    // Step 2: No localStorage? Fetch from JSON (first time only)
+    // Step 2: No localStorage? Fetch from attendance.json
     try {
-      const response = await fetch(
-        `../../dataset/accounts.json?v=${new Date().getTime()}`
+      const attendanceResponse = await fetch(
+        `../../dataset/attendance.json?v=${new Date().getTime()}`
       );
-      if (!response.ok) {
+
+      if (!attendanceResponse.ok) {
+        console.error("Failed to fetch attendance.json");
         return false;
       }
 
-      const accountsData = await response.json();
-      const baseProfile = accountsData.profile.find(
-        (p) => p.profile_id === userId || p.profile_id === String(userId)
+      const attendanceData = await attendanceResponse.json();
+      const userAttendance = attendanceData[userId];
+
+      if (!userAttendance) {
+        console.log("No attendance data for user:", userId);
+        return false;
+      }
+
+      // Load all data from attendance.json
+      claimedDates = (userAttendance.claimedDates || []).map(
+        (s) => new Date(s)
       );
-
-      if (!baseProfile) return false;
-
-      // Load attendance data from JSON
-      const baseAttendance = baseProfile.attendance || {};
-      const jsonClaimedDates = baseAttendance.claimedDates || [];
-
-      greenScore = Number(baseProfile.green_score || 0);
-
-      claimedDates = jsonClaimedDates.map((s) => new Date(s));
+      greenScore = Number(userAttendance.greenScore || 0);
+      plantStage = userAttendance.plantStage || "Seed";
 
       dailyPoints = {};
-      jsonClaimedDates.forEach((dateStr) => {
-        dailyPoints[dateStr] = 1; // 1 point per day
+      (userAttendance.claimedDates || []).forEach((dateStr) => {
+        dailyPoints[dateStr] = 1;
       });
 
-      plantStage = baseAttendance.plantStage || "Seed";
-
+      // Auto-calculate streak from claimedDates
       recalcStreak();
+      updateLoginInforScore(greenScore);
       saveToLocalStorage();
 
       return true;
     } catch (error) {
+      console.error("❌ Error loading data:", error);
       return false;
+    }
+  }
+
+  function updateLoginInforScore(score) {
+    try {
+      const loginInfo = JSON.parse(localStorage.getItem("login_infor") || "{}");
+      loginInfo.green_score = score;
+      localStorage.setItem("login_infor", JSON.stringify(loginInfo));
+    } catch (e) {
+      console.error("Error updating login_infor:", e);
     }
   }
 
@@ -162,11 +168,7 @@
     localStorage.setItem("plantStage", plantStage);
 
     // Update green_score in login_infor
-    try {
-      const loginInfo = JSON.parse(localStorage.getItem("login_infor") || "{}");
-      loginInfo.green_score = greenScore;
-      localStorage.setItem("login_infor", JSON.stringify(loginInfo));
-    } catch (e) {}
+    updateLoginInforScore(greenScore);
   }
 
   // =====================================================
@@ -378,7 +380,6 @@
   // =====================================================
   function canClaimDate(date) {
     const today = getToday();
-    // Chỉ cho claim điểm hôm nay (ngày, tháng, năm phải giống nhau)
     if (
       date.getDate() !== today.getDate() ||
       date.getMonth() !== today.getMonth() ||
@@ -394,7 +395,7 @@
     if (!canClaimDate(date)) return false;
 
     const dateStr = dateToString(date);
-    const points = 1; // 1 point per day
+    const points = 1;
 
     claimedDates.push(normalizeDate(date));
     claimedDates.sort((a, b) => a - b);
@@ -492,10 +493,8 @@
       const isPast = cellDate.getTime() < today.getTime();
       const isFuture = cellDate.getTime() > today.getTime();
 
-      // Nếu là ngày hôm nay thì tô hiệu ứng cho biết đây là ngày được click/claim
       if (isToday && !isClaimed) cell.classList.add("next-allowed");
 
-      // Các ngày hôm qua, ngày mai sẽ bị disable
       if (!isToday) {
         cell.classList.add("disabled");
         cell.style.opacity = "0.3";
@@ -513,9 +512,7 @@
         cell.textContent = day;
       }
 
-      // 🎯 CLICK HANDLER - chỉ cho phép claim hôm nay
       cell.addEventListener("click", () => {
-        // Check nếu không phải ngày hôm nay (ngày+tháng+năm) thì không cho claim
         if (
           cellDate.getDate() !== today.getDate() ||
           cellDate.getMonth() !== today.getMonth() ||
@@ -543,7 +540,6 @@
       cells.push(cell);
     }
 
-    // Visual streak effects
     for (let i = 0; i < cells.length; i++) {
       const el = cells[i];
       if (
@@ -586,7 +582,6 @@
     renderCalendar(currentDate);
   });
 
-  // Month navigation
   document.getElementById("prev-month")?.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     renderCalendar(currentDate);
@@ -597,7 +592,6 @@
     renderCalendar(currentDate);
   });
 
-  // Claim Reward button
   rewardBtn?.addEventListener("click", () => {
     const today = getToday();
 
@@ -613,7 +607,6 @@
     }
   });
 
-  // Export API
   window.MyPlantAPI = {
     getGreenScore: () => greenScore,
     getStreak: () => streak,

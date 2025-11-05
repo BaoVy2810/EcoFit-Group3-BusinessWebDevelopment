@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPage = 1;
   const totalPages = 30;
   const windowSize = 3;
+  const postsPerPage = 9; // số bài mỗi trang
+  let allPagesData = []; // chứa toàn bộ dữ liệu (dùng cho sorting)
 
   // Store ONLY page 1 original data ONCE at load
   const page1OriginalData = [];
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         category: card.getAttribute("data-category") || "",
         dataId: dataId || String(Array.from(cards).indexOf(card) + 1),
       });
+      allPagesData.push({ ...page1OriginalData[page1OriginalData.length - 1] });
     });
   }
 
@@ -120,57 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cards = blogGrid.querySelectorAll(".blog-card");
 
-    // Generic data for pages 2+
-    const genericTitles = [
-      "Sustainable Living Tips for Beginners",
-      "How to Reduce Plastic Waste at Home",
-      "The Benefits of Organic Gardening",
-      "Eco-Friendly Cleaning Products Guide",
-      "Understanding Carbon Footprints",
-      "Green Transportation Alternatives",
-      "Composting: A Complete Beginner's Guide",
-      "Renewable Energy for Your Home",
-      "Sustainable Fashion Choices",
-    ];
-
-    const genericExcerpts = [
-      "Discover simple ways to start your eco-friendly journey today.",
-      "Practical tips for reducing single-use plastics in your daily life.",
-      "Learn the benefits of growing your own organic vegetables.",
-      "Find the best eco-friendly products for a cleaner home.",
-      "Understand how your choices impact the environment.",
-      "Explore sustainable ways to travel and commute.",
-      "A step-by-step guide to starting your compost pile.",
-      "Harness the power of renewable energy at home.",
-      "Make sustainable fashion choices that look great.",
-    ];
-
-    const genericTags = [
-      "Eco Habits",
-      "Smart Shopping",
-      "Community & Local",
-      "Eco Habits",
-      "Smart Shopping",
-      "Sustainable Fashion",
-      "Eco Habits",
-      "Community & Local",
-      "Greentech",
-    ];
-
-    const genericCategories = [
-      "eco-habits",
-      "smart-shopping",
-      "community",
-      "eco-habits",
-      "smart-shopping",
-      "fashion",
-      "eco-habits",
-      "community",
-      "greentech",
-    ];
-
-    // Update each card
     cards.forEach((card, index) => {
+      // Lấy các phần tử bên trong thẻ bài viết
       const titleElem = card.querySelector(".card-title");
       const imgElem = card.querySelector(".card-image img");
       const excerptElem = card.querySelector(".card-excerpt");
@@ -179,7 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const linkBtn = card.querySelector(".card-link");
 
       if (page === 1) {
-        // RESTORE PAGE 1 ORIGINAL DATA
+        // --- TRANG 1: KHÔI PHỤC DỮ LIỆU GỐC VÀ HIỂN THỊ THẺ ---
+        card.style.display = "block"; // Hiển thị thẻ bài viết
+
         if (page1OriginalData[index]) {
           const original = page1OriginalData[index];
 
@@ -188,10 +144,9 @@ document.addEventListener("DOMContentLoaded", () => {
           if (dateElem) dateElem.textContent = original.date;
           if (tagElem) tagElem.textContent = original.tag;
 
-          // IMPORTANT: Force reload original image
           if (imgElem && original.image) {
             imgElem.setAttribute("src", original.image);
-            imgElem.src = original.image; // Double set to force refresh
+            imgElem.src = original.image;
           }
 
           card.setAttribute("data-id", original.dataId);
@@ -202,87 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       } else {
-        // GENERATE NEW DATA FOR PAGE 2+
-        const dataIndex =
-          ((page - 2) * cards.length + index) % genericTitles.length;
-        const newDataId = (page - 1) * cards.length + index + 1;
-
-        // Update all attributes
-        card.setAttribute("data-id", String(newDataId));
-        card.setAttribute(
-          "data-category",
-          genericCategories[index % genericCategories.length]
-        );
-
-        if (linkBtn) {
-          linkBtn.setAttribute("data-id", String(newDataId));
-        }
-
-        if (titleElem) {
-          titleElem.textContent = `${genericTitles[dataIndex]}`;
-        }
-
-        // GENERATE NEW PLACEHOLDER IMAGE
-        if (imgElem) {
-          const colors = [
-            "81c784/white",
-            "66bb6a/white",
-            "5cb85c/white",
-            "4caf50/white",
-            "43a047/white",
-            "388e3c/white",
-            "2e7d32/white",
-            "1b5e20/white",
-            "689f38/white",
-          ];
-          const colorIndex =
-            ((page - 2) * cards.length + index) % colors.length;
-          const placeholderNames = [
-            "Eco+Tips",
-            "Green+Life",
-            "Organic+Farm",
-            "Eco+Product",
-            "Carbon+Free",
-            "Green+Travel",
-            "Smart+Compost",
-            "Renewable+Energy",
-            "Eco+Fashion",
-          ];
-          const placeholderText =
-            placeholderNames[index % placeholderNames.length];
-          const newSrc = `https://placehold.co/400x250/${colors[colorIndex]}?text=${placeholderText}`;
-
-          imgElem.setAttribute("src", newSrc);
-          imgElem.src = newSrc; // Force update
-        }
-
-        if (excerptElem) {
-          excerptElem.textContent = genericExcerpts[dataIndex];
-        }
-
-        if (dateElem) {
-          const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = (((page - 1) * 3 + index + 1) % 28) + 1;
-          const monthIndex = ((page - 1) * 2 + index) % 12;
-          dateElem.textContent = `${day} ${months[monthIndex]} 2025`;
-        }
-
-        if (tagElem) {
-          tagElem.textContent = genericTags[index % genericTags.length];
-        }
+        // --- TRANG 2 TRỞ ĐI: ẨN HẾT CÁC THẺ BÀI VIẾT (TRANG TRẮNG) ---
+        card.style.display = "none";
       }
     });
   }
