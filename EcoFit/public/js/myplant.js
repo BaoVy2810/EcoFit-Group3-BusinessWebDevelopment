@@ -4,7 +4,7 @@
   // Load accounts.json vào localStorage lần đầu
   // =====================================================
   (async function loadAccountsToLocalStorage() {
-    console.log("🔄 Checking accounts in localStorage...");
+    console.log("Checking accounts in localStorage...");
 
     // Kiểm tra xem đã có accounts trong localStorage chưa
     const existingAccounts = localStorage.getItem("accounts");
@@ -18,18 +18,18 @@
           parsed.profile.length > 0
         ) {
           console.log(
-            `✅ Accounts already loaded (${parsed.profile.length} users)`
+            `Accounts already loaded (${parsed.profile.length} users)`
           );
           return;
         }
       } catch (e) {
-        console.warn("⚠️  Invalid accounts data, reloading...");
+        console.warn("Invalid accounts data, reloading...");
       }
     }
 
     // Chưa có hoặc data không hợp lệ → Load từ file
     try {
-      console.log("📥 Loading accounts.json...");
+      console.log("Loading accounts.json...");
       const response = await fetch("../../dataset/accounts.json");
 
       if (!response.ok) {
@@ -47,7 +47,7 @@
       accountsData.profile.forEach((user, index) => {
         if (!("green_score" in user)) {
           console.warn(
-            `⚠️  User ${user.profile_id} missing green_score, setting to 0`
+            `User ${user.profile_id} missing green_score, setting to 0`
           );
           accountsData.profile[index].green_score = 0;
         } else {
@@ -61,14 +61,14 @@
       // Save to localStorage
       localStorage.setItem("accounts", JSON.stringify(accountsData));
       console.log(
-        `✅ Loaded ${accountsData.profile.length} accounts to localStorage`
+        `Loaded ${accountsData.profile.length} accounts to localStorage`
       );
 
       // Set flag to indicate data is loaded
       localStorage.setItem("isDataLoaded", "true");
       localStorage.setItem("dataLoadTime", new Date().toISOString());
     } catch (error) {
-      console.error("❌ Error loading accounts.json:", error);
+      console.error("Error loading accounts.json:", error);
       console.error(
         "   Make sure the file exists at: ../../dataset/accounts.json"
       );
@@ -88,7 +88,7 @@
 
       return JSON.parse(raw);
     } catch (error) {
-      console.error("❌ Error parsing login_infor:", error);
+      console.error("Error parsing login_infor:", error);
       return null;
     }
   }
@@ -175,7 +175,7 @@
       const user = accounts.profile.find((u) => u.profile_id === uid);
       return user ? Number(user.green_score || 0) : 0;
     } catch (e) {
-      console.error("❌ Error reading green_score from accounts:", e);
+      console.error("Error reading green_score from accounts:", e);
       return 0;
     }
   }
@@ -191,13 +191,13 @@
     dailyPoints = {};
 
     if (userId === "guest") {
-      console.log("⚠️ Guest mode - no data");
+      console.log("Guest mode - no data");
       return false;
     }
 
     // ⭐ STEP 1: Load green_score từ ACCOUNTS (nguồn chính duy nhất)
     greenScore = getGreenScoreFromAccounts(userId);
-    console.log(`📖 Loaded green_score from accounts: ${greenScore}`);
+    console.log(`Loaded green_score from accounts: ${greenScore}`);
 
     // ⭐ STEP 2: Load myplant data (chỉ có streak, dates, dailyPoints)
     const localRaw = localStorage.getItem(userKey);
@@ -773,7 +773,7 @@
     updatePlantVisuals();
     saveToLocalStorage();
 
-    if (isManualUnclaim) showToast(`🔄 Unclaimed! Total: ${greenScore}`);
+    if (isManualUnclaim) showToast(`Unclaimed! Total: ${greenScore}`);
     return true;
   }
 
@@ -891,7 +891,7 @@
     const today = getToday();
     const ymd = formatYMDLocal(today);
     if (claimedSet.has(ymd)) {
-      showToast("ℹ️ Already claimed today.");
+      showToast("Already claimed today.");
       return;
     }
     if (claimDate(today, true)) {
