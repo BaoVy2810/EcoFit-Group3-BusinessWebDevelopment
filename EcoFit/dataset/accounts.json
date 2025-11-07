@@ -19,13 +19,13 @@
       "fullname": "Tran Ngoc Bao Vy",
       "email": "vytnb234112e@st.uel.edu.vn",
       "phone": "0903657297",
-      "password": "123",
+      "password": "password123",
       "gender": "female",
       "dob": "2005-10-28",
       "address": "144 Bui Thi Xuan, Ho Chi Minh City",
       "created_at": "2024-10-01 09:20:00",
       "status": "active",
-      "role": "administrator",
+      "role": "customer",
       "green_score": 0
     },
     {
