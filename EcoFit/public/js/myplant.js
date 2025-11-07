@@ -96,6 +96,7 @@
       return false;
     }
 
+    // ⭐ PRIORITY 1: Load from myplant_userId (source of truth)
     const localRaw = localStorage.getItem(userKey);
     if (localRaw) {
       try {
@@ -112,7 +113,11 @@
         dailyPoints = localData.dailyPoints || {};
         greenScore = Number(localData.greenScore || 0);
         plantStage = localData.plantStage || "Seed";
-        updateLoginInforScore(greenScore);
+
+        // ⭐ Sync to ensure all locations are consistent
+        console.log(`📖 Loaded from myplant_${userId}: score=${greenScore}`);
+        syncAllScores(greenScore, userId);
+
         recalcStreak();
         return true;
       } catch (e) {
@@ -159,8 +164,10 @@
 
       dailyPoints = userAttendance.dailyPoints || {};
       recalcStreak();
-      updateLoginInforScore(greenScore);
-      saveToLocalStorage(); // persist normalized form
+
+      // ⭐ Save to localStorage and sync all locations
+      console.log(`📖 Loaded from attendance.json: score=${greenScore}`);
+      saveToLocalStorage(); // This will call syncAllScores internally
       return true;
     } catch (error) {
       console.error("❌ Error loading data:", error);
@@ -168,18 +175,51 @@
     }
   }
 
-  function updateLoginInforScore(score) {
+  // =====================================================
+  // 🔄 SYNC ALL SCORES - Fix localStorage inconsistency
+  // Updates ALL 4 locations where green_score is stored
+  // =====================================================
+  function syncAllScores(correctScore, targetUserId) {
+    const uid = targetUserId || userId;
+
     try {
+      // 1. Update standalone greenScore
+      localStorage.setItem("greenScore", String(correctScore));
+
+      // 2. Update login_infor.green_score
       const loginInfo = JSON.parse(localStorage.getItem("login_infor") || "{}");
-      loginInfo.green_score = score;
-      localStorage.setItem("login_infor", JSON.stringify(loginInfo));
+      if (loginInfo.profile_id === uid) {
+        loginInfo.green_score = correctScore;
+        localStorage.setItem("login_infor", JSON.stringify(loginInfo));
+      }
+
+      // 3. ⭐ UPDATE ACCOUNTS - CRITICAL FIX
+      const accounts = JSON.parse(
+        localStorage.getItem("accounts") || '{"profile":[]}'
+      );
+      const userIndex = accounts.profile.findIndex((u) => u.profile_id === uid);
+      if (userIndex !== -1) {
+        accounts.profile[userIndex].green_score = correctScore;
+        localStorage.setItem("accounts", JSON.stringify(accounts));
+        console.log(
+          `✅ Synced score ${correctScore} to accounts[${userIndex}]`
+        );
+      }
+
+      // Note: myplant_userId is updated separately in saveToLocalStorage()
     } catch (e) {
-      console.error("Error updating login_infor:", e);
+      console.error("❌ Error syncing scores:", e);
     }
+  }
+
+  function updateLoginInforScore(score) {
+    // Use the comprehensive sync function instead
+    syncAllScores(score, userId);
   }
 
   function saveToLocalStorage() {
     if (userId === "guest") return;
+
     // Store claimed dates as array of YMD strings (local)
     const data = {
       userId,
@@ -191,11 +231,21 @@
       progressPercent,
       dailyPoints,
     };
+
+    // 4. Update myplant_userId (main source of truth)
     localStorage.setItem(userKey, JSON.stringify(data));
+
+    // Legacy standalone keys (for backward compatibility)
     localStorage.setItem("streak", String(streak));
     localStorage.setItem("greenScore", String(greenScore));
     localStorage.setItem("plantStage", plantStage);
-    updateLoginInforScore(greenScore);
+
+    // ⭐ Sync to ALL other locations (login_infor, accounts, greenScore)
+    syncAllScores(greenScore, userId);
+
+    console.log(
+      `💾 Saved: score=${greenScore}, streak=${streak}, stage=${plantStage}`
+    );
   }
 
   // =====================================================
@@ -258,10 +308,43 @@
   }
 
   // =====================================================
-  // 🏆 MILESTONE & REWARDS SYSTEM (kept)
+  // 🏆 MILESTONE & REWARDS SYSTEM (enhanced with badges)
   // =====================================================
   function isMilestone(n) {
     return Number.isFinite(n) && n >= 10 && n % 10 === 0 && n <= 1000;
+  }
+
+  // Streak milestone rewards
+  function getStreakMilestoneReward(streak) {
+    if (streak >= 90)
+      return {
+        badge: "Platinum",
+        multiplier: 1.5,
+        discount: 10,
+        title: "Guardian Tree Unlock + VIP Status",
+      };
+    if (streak >= 30)
+      return {
+        badge: "Gold",
+        multiplier: 1.3,
+        discount: 10,
+        title: "Permanent 10% Discount",
+      };
+    if (streak >= 15)
+      return {
+        badge: "Silver",
+        multiplier: 1.2,
+        discount: 0,
+        title: "1.2× Purchase Points",
+      };
+    if (streak >= 5)
+      return {
+        badge: "Bronze",
+        multiplier: 1.0,
+        discount: 0,
+        title: "Seed→Sprout Evolution",
+      };
+    return null;
   }
 
   function showStreakAlert(count) {
@@ -269,9 +352,16 @@
       localStorage.getItem(`lastStreakMilestone_${userId}`) || 0
     );
     if (count <= lastShown) return;
-    alert(`🔥 Congratulations! You achieved ${count}-day streak! 🔥`);
-    launchConfetti();
-    localStorage.setItem(`lastStreakMilestone_${userId}`, String(count));
+
+    const reward = getStreakMilestoneReward(count);
+    if (reward && [5, 15, 30, 90].includes(count)) {
+      alert(
+        `🔥 ${count}-DAY STREAK!\n${reward.badge} Badge Unlocked!\n${reward.title}`
+      );
+      launchConfetti(3500, 180);
+      localStorage.setItem(`lastStreakMilestone_${userId}`, String(count));
+      localStorage.setItem(`streakBadge_${userId}`, reward.badge);
+    }
   }
 
   function showLevelUpPopup(newStage) {
@@ -319,6 +409,12 @@
 
   // =====================================================
   // 🌱 PLANT VISUALS & PROGRESS (5 STAGES)
+  // ⭐ UPDATED THRESHOLDS:
+  // Seed: 0-20 points
+  // Sprout: 21-50 points (can unlock at 5-day streak)
+  // Sapling: 51-100 points
+  // Tree: 101-200 points
+  // Guardian Tree: 201+ points (can unlock at 90-day streak)
   // =====================================================
   function updatePlantVisuals() {
     if (greenScoreElem) greenScoreElem.textContent = String(greenScore);
@@ -327,21 +423,27 @@
     const prevStage = plantStage;
     let percent = 0;
 
-    if (greenScore >= 400) {
+    // Determine plant stage based on score and streak
+    if (greenScore >= 201 || (streak >= 90 && greenScore >= 201)) {
       plantStage = "Guardian Tree";
       percent = 100;
-    } else if (greenScore >= 200) {
+    } else if (greenScore >= 101) {
       plantStage = "Tree";
-      percent = ((greenScore - 200) / 200) * 100;
-    } else if (greenScore >= 100) {
+      percent = ((greenScore - 101) / 100) * 100; // 101-200 range
+    } else if (greenScore >= 51) {
       plantStage = "Sapling";
-      percent = ((greenScore - 100) / 100) * 100;
-    } else if (greenScore >= 50) {
+      percent = ((greenScore - 51) / 50) * 100; // 51-100 range
+    } else if (greenScore >= 21 || streak >= 5) {
+      // Sprout unlocks at 21 points OR 5-day streak
       plantStage = "Sprout";
-      percent = ((greenScore - 50) / 50) * 100;
+      if (greenScore >= 21) {
+        percent = ((greenScore - 21) / 30) * 100; // 21-50 range
+      } else {
+        percent = 50; // Visual feedback for streak unlock
+      }
     } else if (greenScore >= 0) {
       plantStage = "Seed";
-      percent = (greenScore / 50) * 100;
+      percent = (greenScore / 20) * 100; // 0-20 range
     } else {
       plantStage = "Seed";
       percent = 0;
@@ -376,10 +478,10 @@
 
     if (goalTextElem) {
       let nextGoal = "";
-      if (greenScore < 50) nextGoal = "Reach 50 to become Sprout";
-      else if (greenScore < 100) nextGoal = "Reach 100 to become Sapling";
-      else if (greenScore < 150) nextGoal = "Reach 150 to become Tree";
-      else if (greenScore < 200) nextGoal = "Reach 200 to become Guardian Tree";
+      if (greenScore < 21) nextGoal = "Reach 21 to become Sprout";
+      else if (greenScore < 51) nextGoal = "Reach 51 to become Sapling";
+      else if (greenScore < 101) nextGoal = "Reach 101 to become Tree";
+      else if (greenScore < 201) nextGoal = "Reach 201 to become Guardian Tree";
       else nextGoal = "You're at the top! Keep going 🌳";
       goalTextElem.textContent = nextGoal;
     }
@@ -428,7 +530,9 @@
 
   function claimDate(date, isManualClaim = false) {
     if (!canClaimDate(date)) return false;
-    const points = Math.floor(Math.random() * 3) + 3;
+
+    // 🎯 FIX: Generate new points (3-5 random) for THIS claim only
+    const newPoints = Math.floor(Math.random() * 3) + 3; // Returns 3, 4, or 5
     const ymd = formatYMDLocal(date);
 
     // Add to set + array
@@ -437,15 +541,18 @@
     if (dt) claimedDatesArr.push(dt);
     claimedDatesArr.sort((a, b) => a - b);
 
-    dailyPoints[ymd] = points;
-    greenScore += points;
+    // 🎯 FIX: Store ONLY the new points earned for this specific date
+    dailyPoints[ymd] = newPoints;
+
+    // 🎯 FIX: Add new points to total (not replace)
+    greenScore += newPoints;
 
     recalcStreak();
     updatePlantVisuals();
     saveToLocalStorage();
 
     if (isManualClaim)
-      showToast(`🌿 +${points} Green Points! Total: ${greenScore}`);
+      showToast(`🌿 +${newPoints} Green Points! Total: ${greenScore}`);
     return true;
   }
 
@@ -600,11 +707,93 @@
     }
   });
 
+  // =====================================================
+  // 💰 ORDER PURCHASE POINTS SYSTEM
+  // Formula: Order Value / 5000 (e.g., 100,000đ = 20 points)
+  // Applies streak multiplier if available
+  // =====================================================
+  async function calculateOrderPoints(orderValue) {
+    const basePoints = Math.floor(orderValue / 5000);
+    const reward = getStreakMilestoneReward(streak);
+    const multiplier = reward ? reward.multiplier : 1.0;
+    const finalPoints = Math.floor(basePoints * multiplier);
+    return finalPoints;
+  }
+
+  async function addOrderPoints(orderId, orderValue) {
+    if (userId === "guest") return false;
+
+    const points = await calculateOrderPoints(orderValue);
+    greenScore += points;
+
+    // Store order point history
+    const orderKey = `order_${orderId}_${userId}`;
+    localStorage.setItem(
+      orderKey,
+      JSON.stringify({
+        orderId,
+        orderValue,
+        points,
+        timestamp: new Date().toISOString(),
+      })
+    );
+
+    updatePlantVisuals();
+    saveToLocalStorage();
+
+    showToast(
+      `🛒 Order completed! +${points} Green Points (Total: ${greenScore})`
+    );
+    launchConfetti(2000, 80);
+    return true;
+  }
+
+  // =====================================================
+  // 🎁 SPECIAL MISSIONS SYSTEM
+  // Can be triggered by admin or special events
+  // =====================================================
+  function addMissionPoints(missionName, points) {
+    if (userId === "guest") return false;
+
+    greenScore += points;
+
+    localStorage.setItem(
+      `mission_${Date.now()}_${userId}`,
+      JSON.stringify({
+        missionName,
+        points,
+        timestamp: new Date().toISOString(),
+      })
+    );
+
+    updatePlantVisuals();
+    saveToLocalStorage();
+
+    showToast(`🎯 Mission "${missionName}" completed! +${points} Points`);
+    launchConfetti(2500, 100);
+    return true;
+  }
+
+  // =====================================================
+  // 📊 PUBLIC API
+  // =====================================================
   window.MyPlantAPI = {
+    // Getters
     getGreenScore: () => greenScore,
     getStreak: () => streak,
     getUserId: () => userId,
-    // advanced: expose function to allow admin override only if you set ALLOW_MANUAL_UNCLAIM=true in code
+    getPlantStage: () => plantStage,
+    getStreakBadge: () =>
+      localStorage.getItem(`streakBadge_${userId}`) || "None",
+
+    // Point systems
+    addOrderPoints: (orderId, orderValue) =>
+      addOrderPoints(orderId, orderValue),
+    addMissionPoints: (missionName, points) =>
+      addMissionPoints(missionName, points),
+    calculateOrderPoints: (orderValue) => calculateOrderPoints(orderValue),
+
+    // Admin functions
     _unclaimDateAdmin: (ymd) => {
       if (!ALLOW_MANUAL_UNCLAIM) {
         console.warn("Unclaim disabled by config.");
@@ -613,6 +802,12 @@
       const d = parseYMDToDate(ymd);
       if (!d) return false;
       return unclaimDate(d, true);
+    },
+    _resetUserData: () => {
+      if (confirm("⚠️ This will reset ALL plant data. Continue?")) {
+        localStorage.removeItem(userKey);
+        location.reload();
+      }
     },
   };
 })();

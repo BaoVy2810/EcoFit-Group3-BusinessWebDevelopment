@@ -10,8 +10,18 @@
       "shipping_fee": 30000,
       "total_amount": 630000,
       "items": [
-        { "product_id": "P001", "product_name": "Organic Cotton Tee", "quantity": 2, "unit_price": 150000 },
-        { "product_id": "P005", "product_name": "Organic Linen Pants", "quantity": 1, "unit_price": 350000 }
+        {
+          "product_id": "P001",
+          "product_name": "Organic Cotton Tee",
+          "quantity": 2,
+          "unit_price": 150000
+        },
+        {
+          "product_id": "P005",
+          "product_name": "Organic Linen Pants",
+          "quantity": 1,
+          "unit_price": 350000
+        }
       ],
       "time_completed": "2025-10-17 14:30:00",
       "note": "Khách hàng thân thiết, giao hàng nhanh."
@@ -26,7 +36,12 @@
       "shipping_fee": 30000,
       "total_amount": 480000,
       "items": [
-        { "product_id": "P010", "product_name": "Organic Cotton Wrap Dress", "quantity": 1, "unit_price": 450000 }
+        {
+          "product_id": "P010",
+          "product_name": "Organic Cotton Wrap Dress",
+          "quantity": 1,
+          "unit_price": 450000
+        }
       ],
       "time_completed": "",
       "note": "Yêu cầu kiểm tra hàng trước khi thanh toán."
@@ -41,7 +56,12 @@
       "shipping_fee": 25000,
       "total_amount": 410000,
       "items": [
-        { "product_id": "P003", "product_name": "Recycled Fiber Polo", "quantity": 2, "unit_price": 200000 }
+        {
+          "product_id": "P003",
+          "product_name": "Recycled Fiber Polo",
+          "quantity": 2,
+          "unit_price": 200000
+        }
       ],
       "time_completed": "2025-10-22 10:15:00",
       "note": ""
@@ -56,9 +76,24 @@
       "shipping_fee": 20000,
       "total_amount": 950000,
       "items": [
-        { "product_id": "P002", "product_name": "Bamboo Daily Shirt", "quantity": 1, "unit_price": 180000 },
-        { "product_id": "P004", "product_name": "Hemp Oversized Tee", "quantity": 2, "unit_price": 190000 },
-        { "product_id": "P006", "product_name": "Recycled Denim Jeans", "quantity": 1, "unit_price": 420000 }
+        {
+          "product_id": "P002",
+          "product_name": "Bamboo Daily Shirt",
+          "quantity": 1,
+          "unit_price": 180000
+        },
+        {
+          "product_id": "P004",
+          "product_name": "Hemp Oversized Tee",
+          "quantity": 2,
+          "unit_price": 190000
+        },
+        {
+          "product_id": "P006",
+          "product_name": "Recycled Denim Jeans",
+          "quantity": 1,
+          "unit_price": 420000
+        }
       ],
       "time_completed": "2025-09-30 16:45:00",
       "note": "Thanh toán thẻ, đã xuất hóa đơn."
@@ -73,7 +108,12 @@
       "shipping_fee": 0,
       "total_amount": 340000,
       "items": [
-        { "product_id": "P007", "product_name": "Bamboo Lounge Pants", "quantity": 1, "unit_price": 310000 }
+        {
+          "product_id": "P007",
+          "product_name": "Bamboo Lounge Pants",
+          "quantity": 1,
+          "unit_price": 310000
+        }
       ],
       "time_completed": "",
       "note": "Khách hủy đơn do sai địa chỉ giao hàng."
@@ -88,8 +128,18 @@
       "shipping_fee": 25000,
       "total_amount": 970000,
       "items": [
-        { "product_id": "P011", "product_name": "Recycled Satin Slip Dress", "quantity": 1, "unit_price": 500000 },
-        { "product_id": "P012", "product_name": "Bamboo Ribbed Dress", "quantity": 1, "unit_price": 460000 }
+        {
+          "product_id": "P011",
+          "product_name": "Recycled Satin Slip Dress",
+          "quantity": 1,
+          "unit_price": 500000
+        },
+        {
+          "product_id": "P012",
+          "product_name": "Bamboo Ribbed Dress",
+          "quantity": 1,
+          "unit_price": 460000
+        }
       ],
       "time_completed": "",
       "note": "Đơn đang đóng gói, dự kiến giao trong 2 ngày."
@@ -104,8 +154,18 @@
       "shipping_fee": 15000,
       "total_amount": 450000,
       "items": [
-        { "product_id": "P015", "product_name": "Organic Cotton Cap", "quantity": 1, "unit_price": 180000 },
-        { "product_id": "P013", "product_name": "Upcycled Tote Bag", "quantity": 1, "unit_price": 220000 }
+        {
+          "product_id": "P015",
+          "product_name": "Organic Cotton Cap",
+          "quantity": 1,
+          "unit_price": 180000
+        },
+        {
+          "product_id": "P013",
+          "product_name": "Upcycled Tote Bag",
+          "quantity": 1,
+          "unit_price": 220000
+        }
       ],
       "time_completed": "2025-09-17 09:00:00",
       "note": ""
@@ -120,8 +180,18 @@
       "shipping_fee": 25000,
       "total_amount": 735000,
       "items": [
-        { "product_id": "P009", "product_name": "Eco Linen Midi Dress", "quantity": 1, "unit_price": 480000 },
-        { "product_id": "P016", "product_name": "Recycled Plastic Sunglasses", "quantity": 1, "unit_price": 320000 }
+        {
+          "product_id": "P009",
+          "product_name": "Eco Linen Midi Dress",
+          "quantity": 1,
+          "unit_price": 480000
+        },
+        {
+          "product_id": "P016",
+          "product_name": "Recycled Plastic Sunglasses",
+          "quantity": 1,
+          "unit_price": 320000
+        }
       ],
       "time_completed": "2025-10-04 11:25:00",
       "note": "Giảm giá sinh nhật khách hàng."
@@ -136,7 +206,12 @@
       "shipping_fee": 20000,
       "total_amount": 250000,
       "items": [
-        { "product_id": "P013", "product_name": "Upcycled Tote Bag", "quantity": 1, "unit_price": 220000 }
+        {
+          "product_id": "P013",
+          "product_name": "Upcycled Tote Bag",
+          "quantity": 1,
+          "unit_price": 220000
+        }
       ],
       "time_completed": "2025-09-27 13:50:00",
       "note": ""
@@ -151,8 +226,18 @@
       "shipping_fee": 20000,
       "total_amount": 890000,
       "items": [
-        { "product_id": "P014", "product_name": "Cork Leather Wallet", "quantity": 2, "unit_price": 280000 },
-        { "product_id": "P015", "product_name": "Organic Cotton Cap", "quantity": 1, "unit_price": 180000 }
+        {
+          "product_id": "P014",
+          "product_name": "Cork Leather Wallet",
+          "quantity": 2,
+          "unit_price": 280000
+        },
+        {
+          "product_id": "P015",
+          "product_name": "Organic Cotton Cap",
+          "quantity": 1,
+          "unit_price": 180000
+        }
       ],
       "time_completed": "",
       "note": "Chờ xác nhận từ kho."
@@ -167,136 +252,211 @@
       "shipping_fee": 20000,
       "total_amount": 250000,
       "items": [
-        { "product_id": "P013", "product_name": "Upcycled Tote Bag", "quantity": 1, "unit_price": 220000 }
+        {
+          "product_id": "P013",
+          "product_name": "Upcycled Tote Bag",
+          "quantity": 1,
+          "unit_price": 220000
+        }
       ],
       "time_completed": "2025-09-27 13:50:00",
       "note": ""
     },
-  {
-    "order_id": "O012",
-    "customer_id": "2",
-    "order_date": "2025-11-01",
-    "status": "Completed",
-    "shipping_address": "123 Nguyen Trai, Hanoi",
-    "discount": 30000,
-    "shipping_fee": 25000,
-    "total_amount": 520000,
-    "items": [
-      { "product_id": "P001", "product_name": "Organic Cotton Tee", "quantity": 2, "unit_price": 150000 },
-      { "product_id": "P015", "product_name": "Organic Cotton Cap", "quantity": 1, "unit_price": 180000 }
-    ],
-    "time_completed": "2025-11-03 10:20:00",
-    "note": "Khách quen, giao trong ngày."
-  },
-  {
-    "order_id": "O013",
-    "customer_id": "3",
-    "order_date": "2025-11-02",
-    "status": "Processing",
-    "shipping_address": "45 Le Loi, Ho Chi Minh City",
-    "discount": 50000,
-    "shipping_fee": 30000,
-    "total_amount": 670000,
-    "items": [
-      { "product_id": "P010", "product_name": "Organic Cotton Wrap Dress", "quantity": 1, "unit_price": 450000 },
-      { "product_id": "P016", "product_name": "Recycled Plastic Sunglasses", "quantity": 1, "unit_price": 320000 }
-    ],
-    "time_completed": "",
-    "note": "Đang đóng gói, dự kiến giao 2-3 ngày."
-  },
-  {
-    "order_id": "O014",
-    "customer_id": "4",
-    "order_date": "2025-11-03",
-    "status": "Pending",
-    "shipping_address": "12 Tran Hung Dao, Da Nang",
-    "discount": 0,
-    "shipping_fee": 25000,
-    "total_amount": 450000,
-    "items": [
-      { "product_id": "P013", "product_name": "Upcycled Tote Bag", "quantity": 2, "unit_price": 220000 }
-    ],
-    "time_completed": "",
-    "note": "Khách chưa xác nhận thanh toán."
-  },
-  {
-    "order_id": "O015",
-    "customer_id": "3",
-    "order_date": "2025-11-05",
-    "status": "Completed",
-    "shipping_address": "45 Le Loi, Ho Chi Minh City",
-    "discount": 100000,
-    "shipping_fee": 25000,
-    "total_amount": 735000,
-    "items": [
-      { "product_id": "P009", "product_name": "Eco Linen Midi Dress", "quantity": 1, "unit_price": 480000 },
-      { "product_id": "P016", "product_name": "Recycled Plastic Sunglasses", "quantity": 1, "unit_price": 320000 }
-    ],
-    "time_completed": "2025-11-07 14:10:00",
-    "note": "Giảm giá khách hàng thân thiết."
-  },
-  {
-    "order_id": "O016",
-    "customer_id": "2",
-    "order_date": "2025-11-07",
-    "status": "Cancelled",
-    "shipping_address": "123 Nguyen Trai, Hanoi",
-    "discount": 0,
-    "shipping_fee": 0,
-    "total_amount": 310000,
-    "items": [
-      { "product_id": "P007", "product_name": "Bamboo Lounge Pants", "quantity": 1, "unit_price": 310000 }
-    ],
-    "time_completed": "",
-    "note": "Khách hủy do thay đổi địa chỉ giao hàng."
-  },
-  {
-    "order_id": "O017",
-    "customer_id": "4",
-    "order_date": "2025-11-09",
-    "status": "Processing",
-    "shipping_address": "12 Tran Hung Dao, Da Nang",
-    "discount": 20000,
-    "shipping_fee": 20000,
-    "total_amount": 940000,
-    "items": [
-      { "product_id": "P011", "product_name": "Recycled Satin Slip Dress", "quantity": 1, "unit_price": 500000 },
-      { "product_id": "P012", "product_name": "Bamboo Ribbed Dress", "quantity": 1, "unit_price": 460000 }
-    ],
-    "time_completed": "",
-    "note": "Đơn ưu tiên giao trong tuần."
-  },
-  {
-    "order_id": "O018",
-    "customer_id": "3",
-    "order_date": "2025-11-11",
-    "status": "Completed",
-    "shipping_address": "45 Le Loi, Ho Chi Minh City",
-    "discount": 50000,
-    "shipping_fee": 20000,
-    "total_amount": 880000,
-    "items": [
-      { "product_id": "P014", "product_name": "Cork Leather Wallet", "quantity": 2, "unit_price": 280000 },
-      { "product_id": "P015", "product_name": "Organic Cotton Cap", "quantity": 1, "unit_price": 180000 }
-    ],
-    "time_completed": "2025-11-13 09:45:00",
-    "note": "Khách thanh toán online, giao đúng hẹn."
-  },
-  {
-    "order_id": "O019",
-    "customer_id": "2",
-    "order_date": "2025-11-12",
-    "status": "Pending",
-    "shipping_address": "123 Nguyen Trai, Hanoi",
-    "discount": 0,
-    "shipping_fee": 20000,
-    "total_amount": 370000,
-    "items": [
-      { "product_id": "P013", "product_name": "Upcycled Tote Bag", "quantity": 1, "unit_price": 220000 },
-      { "product_id": "P015", "product_name": "Organic Cotton Cap", "quantity": 1, "unit_price": 180000 }
-    ],
-    "time_completed": "",
-    "note": "Chờ xác nhận thanh toán."
-  }
-]
+    {
+      "order_id": "O012",
+      "customer_id": "2",
+      "order_date": "2025-11-01",
+      "status": "Completed",
+      "shipping_address": "123 Nguyen Trai, Hanoi",
+      "discount": 30000,
+      "shipping_fee": 25000,
+      "total_amount": 520000,
+      "items": [
+        {
+          "product_id": "P001",
+          "product_name": "Organic Cotton Tee",
+          "quantity": 2,
+          "unit_price": 150000
+        },
+        {
+          "product_id": "P015",
+          "product_name": "Organic Cotton Cap",
+          "quantity": 1,
+          "unit_price": 180000
+        }
+      ],
+      "time_completed": "2025-11-03 10:20:00",
+      "note": "Khách quen, giao trong ngày."
+    },
+    {
+      "order_id": "O013",
+      "customer_id": "3",
+      "order_date": "2025-11-02",
+      "status": "Processing",
+      "shipping_address": "45 Le Loi, Ho Chi Minh City",
+      "discount": 50000,
+      "shipping_fee": 30000,
+      "total_amount": 670000,
+      "items": [
+        {
+          "product_id": "P010",
+          "product_name": "Organic Cotton Wrap Dress",
+          "quantity": 1,
+          "unit_price": 450000
+        },
+        {
+          "product_id": "P016",
+          "product_name": "Recycled Plastic Sunglasses",
+          "quantity": 1,
+          "unit_price": 320000
+        }
+      ],
+      "time_completed": "",
+      "note": "Đang đóng gói, dự kiến giao 2-3 ngày."
+    },
+    {
+      "order_id": "O014",
+      "customer_id": "4",
+      "order_date": "2025-11-03",
+      "status": "Pending",
+      "shipping_address": "12 Tran Hung Dao, Da Nang",
+      "discount": 0,
+      "shipping_fee": 25000,
+      "total_amount": 450000,
+      "items": [
+        {
+          "product_id": "P013",
+          "product_name": "Upcycled Tote Bag",
+          "quantity": 2,
+          "unit_price": 220000
+        }
+      ],
+      "time_completed": "",
+      "note": "Khách chưa xác nhận thanh toán."
+    },
+    {
+      "order_id": "O015",
+      "customer_id": "3",
+      "order_date": "2025-11-05",
+      "status": "Completed",
+      "shipping_address": "45 Le Loi, Ho Chi Minh City",
+      "discount": 100000,
+      "shipping_fee": 25000,
+      "total_amount": 735000,
+      "items": [
+        {
+          "product_id": "P009",
+          "product_name": "Eco Linen Midi Dress",
+          "quantity": 1,
+          "unit_price": 480000
+        },
+        {
+          "product_id": "P016",
+          "product_name": "Recycled Plastic Sunglasses",
+          "quantity": 1,
+          "unit_price": 320000
+        }
+      ],
+      "time_completed": "2025-11-07 14:10:00",
+      "note": "Giảm giá khách hàng thân thiết."
+    },
+    {
+      "order_id": "O016",
+      "customer_id": "2",
+      "order_date": "2025-11-07",
+      "status": "Cancelled",
+      "shipping_address": "123 Nguyen Trai, Hanoi",
+      "discount": 0,
+      "shipping_fee": 0,
+      "total_amount": 310000,
+      "items": [
+        {
+          "product_id": "P007",
+          "product_name": "Bamboo Lounge Pants",
+          "quantity": 1,
+          "unit_price": 310000
+        }
+      ],
+      "time_completed": "",
+      "note": "Khách hủy do thay đổi địa chỉ giao hàng."
+    },
+    {
+      "order_id": "O017",
+      "customer_id": "4",
+      "order_date": "2025-11-09",
+      "status": "Processing",
+      "shipping_address": "12 Tran Hung Dao, Da Nang",
+      "discount": 20000,
+      "shipping_fee": 20000,
+      "total_amount": 940000,
+      "items": [
+        {
+          "product_id": "P011",
+          "product_name": "Recycled Satin Slip Dress",
+          "quantity": 1,
+          "unit_price": 500000
+        },
+        {
+          "product_id": "P012",
+          "product_name": "Bamboo Ribbed Dress",
+          "quantity": 1,
+          "unit_price": 460000
+        }
+      ],
+      "time_completed": "",
+      "note": "Đơn ưu tiên giao trong tuần."
+    },
+    {
+      "order_id": "O018",
+      "customer_id": "3",
+      "order_date": "2025-11-11",
+      "status": "Completed",
+      "shipping_address": "45 Le Loi, Ho Chi Minh City",
+      "discount": 50000,
+      "shipping_fee": 20000,
+      "total_amount": 880000,
+      "items": [
+        {
+          "product_id": "P014",
+          "product_name": "Cork Leather Wallet",
+          "quantity": 2,
+          "unit_price": 280000
+        },
+        {
+          "product_id": "P015",
+          "product_name": "Organic Cotton Cap",
+          "quantity": 1,
+          "unit_price": 180000
+        }
+      ],
+      "time_completed": "2025-11-13 09:45:00",
+      "note": "Khách thanh toán online, giao đúng hẹn."
+    },
+    {
+      "order_id": "O019",
+      "customer_id": "2",
+      "order_date": "2025-11-12",
+      "status": "Pending",
+      "shipping_address": "123 Nguyen Trai, Hanoi",
+      "discount": 0,
+      "shipping_fee": 20000,
+      "total_amount": 370000,
+      "items": [
+        {
+          "product_id": "P013",
+          "product_name": "Upcycled Tote Bag",
+          "quantity": 1,
+          "unit_price": 220000
+        },
+        {
+          "product_id": "P015",
+          "product_name": "Organic Cotton Cap",
+          "quantity": 1,
+          "unit_price": 180000
+        }
+      ],
+      "time_completed": "",
+      "note": "Chờ xác nhận thanh toán."
+    }
+  ]
 }
