@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // === 2. HIỂN THỊ SẢN PHẨM ===
   if (cartData.length === 0) {
     orderDetail.innerHTML +=
-      '<p style="text-align:center;padding:20px;color:#999;">Giỏ hàng trống</p>';
+      '<p style="text-align:center;padding:20px;color:#999;">Empty Cart</p>';
   } else {
     cartData.forEach((p) => {
       const img = p.img || p.image || "../images/Product_images/organic_cotton_tee.png";
