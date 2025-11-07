@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderOrderItems(items);
   renderOrderSummary(subtotal, shipping, discount, total);
 
-  // Lưu đơn hàng vào lịch sử
+  // 🟢 LƯU ĐƠN HÀNG VÀO LỊCH SỬ
   pushOrderHistory({
     orderId,
     total,
@@ -43,7 +43,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🟢 XÓA SẢN PHẨM ĐÃ THANH TOÁN KHỎI CART
   removePaidItemsFromCart(items);
+
+  // 🟢 XÓA TẤT CẢ CÁC BƯỚC ĐỆM SAU KHI ĐẶT HÀNG THÀNH CÔNG
+  cleanupAfterOrderSuccess();
 });
+
+// ======================= XÓA CÁC BƯỚC ĐỆM =======================
+function cleanupAfterOrderSuccess() {
+  try {
+    // Xóa các key trung gian
+    localStorage.removeItem("checkoutCart");
+    localStorage.removeItem("checkoutOrder");
+    localStorage.removeItem("paymentInfo");
+    
+    console.log("✅ Cleanup completed: checkoutCart, checkoutOrder, paymentInfo removed");
+  } catch (e) {
+    console.error("Error during cleanup:", e);
+  }
+}
 
 // ======================= XÓA SẢN PHẨM ĐÃ THANH TOÁN =======================
 function removePaidItemsFromCart(paidItems) {
@@ -107,21 +124,25 @@ function tryParse(str) {
     return null;
   }
 }
+
 function safeNumber(v) {
   if (v == null) return 0;
   if (typeof v === "number") return v;
   const s = String(v).replace(/[^\d\-]/g, "");
   return s === "" ? 0 : Number(s);
 }
+
 function calcSubtotal(cart) {
   return (cart || []).reduce(
     (s, it) => s + safeNumber(it.price) * Number(it.qty ?? it.quantity ?? 1),
     0
   );
 }
+
 function formatNumber(num) {
   return (Number(num) || 0).toLocaleString("vi-VN");
 }
+
 function escapeHtml(str) {
   if (!str && str !== 0) return "";
   return String(str)
@@ -130,6 +151,7 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
 function renderOrderItems(list) {
   const rd = document.querySelector(".order-detail");
   if (!rd) return;
@@ -191,6 +213,7 @@ function renderOrderItems(list) {
   
   rd.innerHTML = html + '<hr style="border:none;border-top:1px solid #ccc;margin-top:10px;">';
 }
+
 function renderOrderSummary(subtotal, shipping, discount, total) {
   document.querySelector(".subtotal").textContent =
     formatNumber(subtotal) + "đ";
@@ -202,6 +225,7 @@ function renderOrderSummary(subtotal, shipping, discount, total) {
   document.querySelector(".total-value").textContent =
     formatNumber(total) + "đ";
 }
+
 function normalizeItem(it) {
   const qty = Number(it.qty ?? it.quantity ?? 1);
   const price = safeNumber(it.price ?? 0);
@@ -215,9 +239,11 @@ function normalizeItem(it) {
     image: it.image || it.img || "../images/Product_images/default.png",
   };
 }
+
 function generateOrderId() {
   return "ORDER_" + Math.floor(1000 + Math.random() * 9000);
 }
+
 function pushOrderHistory(paymentData) {
   try {
     const hist = tryParse(localStorage.getItem("orders")) || [];
@@ -229,7 +255,8 @@ function pushOrderHistory(paymentData) {
       paidAt: new Date().toISOString(),
     });
     localStorage.setItem("orders", JSON.stringify(hist));
+    console.log("✅ Order saved to history:", paymentData.orderId);
   } catch (e) {
-    console.warn(e);
+    console.warn("Error saving order history:", e);
   }
 }
