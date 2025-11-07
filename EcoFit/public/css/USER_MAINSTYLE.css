@@ -2838,16 +2838,6 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
-.order-detail__title,
-.order-summary__title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 30px;
-  color: black;
-  letter-spacing: 1px;
-}
-
 .order-summary__row {
   display: flex;
   justify-content: space-between;

@@ -133,62 +133,63 @@ function escapeHtml(str) {
 function renderOrderItems(list) {
   const rd = document.querySelector(".order-detail");
   if (!rd) return;
+  
   const normalized = list.map(normalizeItem);
+  
   if (!normalized.length) {
-    rd.innerHTML =
-      '<p style="text-align:center;padding:20px;color:#999;">No items</p>';
+    rd.innerHTML = '<p style="text-align:center;padding:20px;color:#999;">No items</p>';
     return;
   }
+  
   let html = '<h3 style="margin-bottom:12px;">ORDER DETAIL</h3>';
+  
   normalized.forEach((item) => {
     html += `
       <div class="order-item"
            style="display:flex;
                   align-items:center;
                   justify-content:space-between;
-                  padding:8px 0;
-                  border-bottom:1px solid #eee;">
+                  margin-bottom:20px;">
         <div style="display:flex;
                     align-items:center;
                     gap:12px;
                     flex:1;">
-          <a href="../pages/04_PRODUCT_Detail.html?id=${escapeHtml(
-            item.id || ""
-          )}">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}"
-                 style="width:70px;height:70px;object-fit:cover;border-radius:8px;"
+          <a href="../pages/04_PRODUCT_Detail.html?id=${escapeHtml(item.id || "")}" 
+             style="display:block;">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" 
+                 style="width:80px;
+                       height:80px;
+                       object-fit:cover;
+                       border-radius:8px;"
                  onerror="this.src='../images/Product_images/default.png'">
           </a>
-          <div class="order-item-info" style="flex:1;min-width:0;">
+          <div class="order-item-info" style="flex:1; min-width:0;">
             <h4 style="margin:0;
-                      white-space:nowrap;
-                      overflow:hidden;
+                       white-space:nowrap;
+                       overflow:hidden;
                        text-overflow:ellipsis;
                        font-size:15px;
-                       font-weight:600;">
+                       font-weight:600;
+                       max-width:100%;">
               ${escapeHtml(item.name)}
             </h4>
-            <p style="margin:2px 0;
-                      color:#666;
-                      font-size:14px;">
-              Color: ${escapeHtml(item.color)} | Size: ${escapeHtml(item.size)}
-            </p>
-            <span style="font-weight:500;
-                          font-size:14px;">
-              ${formatNumber(item.price)}đ
-            </span>
+            <p style="margin:4px 0; color:#666;">Color: ${escapeHtml(item.color)} | Size: ${escapeHtml(item.size)}</p>
+            <span class="order-item-price"
+                  style="font-weight:500;">${formatNumber(item.price)}đ</span>
           </div>
         </div>
-        <span style="min-width:40px;
+
+        <span class="order-item-qty"
+              style="min-width:45px;
                     text-align:right;
                     font-weight:600;
-                    color:#333;
-                    font-size:14px;">x${item.qty}</span>
+                    color:#333;">
+          x${item.qty}
+        </span>
       </div>`;
   });
-  rd.innerHTML =
-    html +
-    '<hr style="border:none;border-top:1px solid #ccc;margin-top:10px;">';
+  
+  rd.innerHTML = html + '<hr style="border:none;border-top:1px solid #ccc;margin-top:10px;">';
 }
 function renderOrderSummary(subtotal, shipping, discount, total) {
   document.querySelector(".subtotal").textContent =
