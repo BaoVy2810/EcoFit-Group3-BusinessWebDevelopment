@@ -1,5 +1,81 @@
 (() => {
   // =====================================================
+  // 🔄 LOAD ACCOUNTS.JSON VÀO LOCALSTORAGE
+  // Load accounts.json vào localStorage lần đầu
+  // =====================================================
+  (async function loadAccountsToLocalStorage() {
+    console.log("🔄 Checking accounts in localStorage...");
+
+    // Kiểm tra xem đã có accounts trong localStorage chưa
+    const existingAccounts = localStorage.getItem("accounts");
+
+    if (existingAccounts) {
+      try {
+        const parsed = JSON.parse(existingAccounts);
+        if (
+          parsed.profile &&
+          Array.isArray(parsed.profile) &&
+          parsed.profile.length > 0
+        ) {
+          console.log(
+            `✅ Accounts already loaded (${parsed.profile.length} users)`
+          );
+          return;
+        }
+      } catch (e) {
+        console.warn("⚠️  Invalid accounts data, reloading...");
+      }
+    }
+
+    // Chưa có hoặc data không hợp lệ → Load từ file
+    try {
+      console.log("📥 Loading accounts.json...");
+      const response = await fetch("../../dataset/accounts.json");
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const accountsData = await response.json();
+
+      // Validate structure
+      if (!accountsData.profile || !Array.isArray(accountsData.profile)) {
+        throw new Error("Invalid accounts.json structure");
+      }
+
+      // Ensure all users have green_score field
+      accountsData.profile.forEach((user, index) => {
+        if (!("green_score" in user)) {
+          console.warn(
+            `⚠️  User ${user.profile_id} missing green_score, setting to 0`
+          );
+          accountsData.profile[index].green_score = 0;
+        } else {
+          // Ensure it's a number
+          accountsData.profile[index].green_score = Number(
+            user.green_score || 0
+          );
+        }
+      });
+
+      // Save to localStorage
+      localStorage.setItem("accounts", JSON.stringify(accountsData));
+      console.log(
+        `✅ Loaded ${accountsData.profile.length} accounts to localStorage`
+      );
+
+      // Set flag to indicate data is loaded
+      localStorage.setItem("isDataLoaded", "true");
+      localStorage.setItem("dataLoadTime", new Date().toISOString());
+    } catch (error) {
+      console.error("❌ Error loading accounts.json:", error);
+      console.error(
+        "   Make sure the file exists at: ../../dataset/accounts.json"
+      );
+    }
+  })();
+
+  // =====================================================
   // 🔐 USER AUTHENTICATION & CONTEXT
   // =====================================================
   function getCurrentUser() {
@@ -35,6 +111,11 @@
   // 📊 CONFIG - Lock unclaim in UI/normal flow
   // =====================================================
   const ALLOW_MANUAL_UNCLAIM = false; // <- bảo vệ unclaim: false = không thể unclaim qua UI / normal flow
+
+  // =====================================================
+  // 🔄 CONFIG - Auto-sync accounts.json
+  // =====================================================
+  const AUTO_SYNC_ENABLED = true; // <- true = tự động download accounts.json khi có thay đổi
 
   // =====================================================
   // 📊 STATE MANAGEMENT
@@ -83,8 +164,26 @@
   }
 
   // =====================================================
-  // 💾 DATA PERSISTENCE - localStorage First Strategy
-  //   — store claimed dates as YYYY-MM-DD (local), avoid toISOString timezone shift
+  // 💾 UTILITY - Get green_score từ accounts (nguồn chính)
+  // =====================================================
+  function getGreenScoreFromAccounts(targetUserId) {
+    const uid = targetUserId || userId;
+    try {
+      const accounts = JSON.parse(
+        localStorage.getItem("accounts") || '{"profile":[]}'
+      );
+      const user = accounts.profile.find((u) => u.profile_id === uid);
+      return user ? Number(user.green_score || 0) : 0;
+    } catch (e) {
+      console.error("❌ Error reading green_score from accounts:", e);
+      return 0;
+    }
+  }
+
+  // =====================================================
+  // 💾 DATA PERSISTENCE - accounts First Strategy
+  //   — Load green_score từ accounts (nguồn chính duy nhất)
+  //   — Load streak, dates, dailyPoints từ myplant_userId
   // =====================================================
   async function loadUserData() {
     claimedSet = new Set();
@@ -96,7 +195,11 @@
       return false;
     }
 
-    // ⭐ PRIORITY 1: Load from myplant_userId (source of truth)
+    // ⭐ STEP 1: Load green_score từ ACCOUNTS (nguồn chính duy nhất)
+    greenScore = getGreenScoreFromAccounts(userId);
+    console.log(`📖 Loaded green_score from accounts: ${greenScore}`);
+
+    // ⭐ STEP 2: Load myplant data (chỉ có streak, dates, dailyPoints)
     const localRaw = localStorage.getItem(userKey);
     if (localRaw) {
       try {
@@ -111,17 +214,24 @@
         });
 
         dailyPoints = localData.dailyPoints || {};
-        greenScore = Number(localData.greenScore || 0);
         plantStage = localData.plantStage || "Seed";
 
-        // ⭐ Sync to ensure all locations are consistent
-        console.log(`📖 Loaded from myplant_${userId}: score=${greenScore}`);
-        syncAllScores(greenScore, userId);
+        // Sync login_infor nếu cần
+        const loginInfo = JSON.parse(
+          localStorage.getItem("login_infor") || "{}"
+        );
+        if (
+          loginInfo.profile_id === userId &&
+          loginInfo.green_score !== greenScore
+        ) {
+          console.log(`⚠️ Score mismatch in login_infor, syncing...`);
+          syncAllScores(greenScore, userId);
+        }
 
         recalcStreak();
         return true;
       } catch (e) {
-        console.error("Error parsing localStorage:", e);
+        console.error("Error parsing myplant localStorage:", e);
       }
     }
 
@@ -159,15 +269,20 @@
         }
       });
 
-      greenScore = Number(userAttendance.greenScore || 0);
+      // Load score từ attendance.json và update vào accounts
+      const attendanceScore = Number(userAttendance.greenScore || 0);
       plantStage = userAttendance.plantStage || "Seed";
 
       dailyPoints = userAttendance.dailyPoints || {};
       recalcStreak();
 
-      // ⭐ Save to localStorage and sync all locations
-      console.log(`📖 Loaded from attendance.json: score=${greenScore}`);
-      saveToLocalStorage(); // This will call syncAllScores internally
+      // ⭐ Update score vào accounts (nguồn chính)
+      console.log(`📖 Loaded from attendance.json: score=${attendanceScore}`);
+      greenScore = attendanceScore;
+      syncAllScores(attendanceScore, userId);
+
+      // Save myplant data
+      saveToLocalStorage();
       return true;
     } catch (error) {
       console.error("❌ Error loading data:", error);
@@ -176,24 +291,78 @@
   }
 
   // =====================================================
-  // 🔄 SYNC ALL SCORES - Fix localStorage inconsistency
-  // Updates ALL 4 locations where green_score is stored
+  // 🔄 AUTO-SYNC - Download accounts.json when changed
+  // For development & testing across multiple machines
+  // =====================================================
+  function autoDownloadAccounts() {
+    try {
+      const accounts = localStorage.getItem("accounts");
+      if (!accounts) return;
+
+      // Format đẹp
+      const formatted = JSON.stringify(JSON.parse(accounts), null, 2);
+
+      // Create download
+      const blob = new Blob([formatted], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `accounts_${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      // Show toast notification
+      const toast = document.createElement("div");
+      toast.innerHTML = `
+        <strong>💾 Auto-Sync Triggered!</strong><br>
+        <small>Downloaded: ${a.download}</small><br>
+        <small style="opacity: 0.8;">Replace EcoFit/dataset/accounts.json with this file</small>
+      `;
+      toast.style.cssText = `
+        position: fixed; bottom: 24px; right: 24px;
+        background: linear-gradient(135deg, #1c5b2b 0%, #3da547 100%);
+        color: white; padding: 16px 20px; border-radius: 12px;
+        font-size: 14px; z-index: 9999;
+        box-shadow: 0 8px 24px rgba(28, 91, 43, 0.4);
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+        line-height: 1.5;
+      `;
+
+      if (!document.getElementById("autosync-anim")) {
+        const style = document.createElement("style");
+        style.id = "autosync-anim";
+        style.textContent = `
+          @keyframes slideIn { 
+            from { transform: translateX(400px); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 6000);
+
+      console.log(
+        `💾 Auto-sync: Downloaded ${a.download} - Replace dataset/accounts.json`
+      );
+    } catch (e) {
+      console.error("❌ Auto-sync failed:", e);
+    }
+  }
+
+  // =====================================================
+  // 🔄 SYNC SCORES - accounts là nguồn chính DUY NHẤT
+  // ⭐ CHỈ CẬP NHẬT 2 NƠI: accounts (chính) và login_infor (sync)
+  // KHÔNG TẠO KEY greenScore standalone nữa
+  // + AUTO-DOWNLOAD accounts.json khi có thay đổi
   // =====================================================
   function syncAllScores(correctScore, targetUserId) {
     const uid = targetUserId || userId;
 
     try {
-      // 1. Update standalone greenScore
-      localStorage.setItem("greenScore", String(correctScore));
-
-      // 2. Update login_infor.green_score
-      const loginInfo = JSON.parse(localStorage.getItem("login_infor") || "{}");
-      if (loginInfo.profile_id === uid) {
-        loginInfo.green_score = correctScore;
-        localStorage.setItem("login_infor", JSON.stringify(loginInfo));
-      }
-
-      // 3. ⭐ UPDATE ACCOUNTS - CRITICAL FIX
+      // 1. ⭐ UPDATE ACCOUNTS - NGUỒN CHÍNH DUY NHẤT
       const accounts = JSON.parse(
         localStorage.getItem("accounts") || '{"profile":[]}'
       );
@@ -202,13 +371,37 @@
         accounts.profile[userIndex].green_score = correctScore;
         localStorage.setItem("accounts", JSON.stringify(accounts));
         console.log(
-          `✅ Synced score ${correctScore} to accounts[${userIndex}]`
+          `✅ Updated accounts[${userIndex}].green_score = ${correctScore}`
         );
+
+        // 🔄 AUTO-SYNC: Download accounts.json
+        // Chỉ trigger khi có thay đổi thực sự và AUTO_SYNC_ENABLED = true
+        if (AUTO_SYNC_ENABLED) {
+          autoDownloadAccounts();
+        }
+      } else {
+        console.error(`❌ User ${uid} not found in accounts`);
+        return false;
       }
 
-      // Note: myplant_userId is updated separately in saveToLocalStorage()
+      // 2. Sync login_infor từ accounts
+      const loginInfo = JSON.parse(localStorage.getItem("login_infor") || "{}");
+      if (loginInfo.profile_id === uid) {
+        loginInfo.green_score = correctScore;
+        localStorage.setItem("login_infor", JSON.stringify(loginInfo));
+        console.log(`✅ Synced login_infor.green_score = ${correctScore}`);
+      }
+
+      // ❌ KHÔNG TẠO greenScore standalone nữa
+      // ❌ localStorage.setItem("greenScore", String(correctScore));
+
+      // Note: myplant_userId chỉ lưu streak, dates, dailyPoints
+      // KHÔNG lưu greenScore trong myplant nữa
+
+      return true;
     } catch (e) {
       console.error("❌ Error syncing scores:", e);
+      return false;
     }
   }
 
@@ -220,31 +413,32 @@
   function saveToLocalStorage() {
     if (userId === "guest") return;
 
-    // Store claimed dates as array of YMD strings (local)
+    // ⭐ myplant_userId CHỈ lưu streak, dates, dailyPoints
+    // KHÔNG lưu greenScore nữa (vì accounts là nguồn chính)
     const data = {
       userId,
       updatedAt: new Date().toISOString(),
       claimedDates: Array.from(claimedSet.values()),
       streak,
-      greenScore,
+      // greenScore: greenScore, // ❌ KHÔNG lưu nữa
       plantStage,
       progressPercent,
       dailyPoints,
     };
 
-    // 4. Update myplant_userId (main source of truth)
+    // Update myplant_userId
     localStorage.setItem(userKey, JSON.stringify(data));
 
-    // Legacy standalone keys (for backward compatibility)
-    localStorage.setItem("streak", String(streak));
-    localStorage.setItem("greenScore", String(greenScore));
-    localStorage.setItem("plantStage", plantStage);
+    // ❌ KHÔNG tạo standalone keys nữa
+    // localStorage.setItem("streak", String(streak));
+    // localStorage.setItem("greenScore", String(greenScore)); // ❌ BỎ
+    // localStorage.setItem("plantStage", plantStage);
 
-    // ⭐ Sync to ALL other locations (login_infor, accounts, greenScore)
+    // ⭐ Sync greenScore VÀO accounts (nguồn chính)
     syncAllScores(greenScore, userId);
 
     console.log(
-      `💾 Saved: score=${greenScore}, streak=${streak}, stage=${plantStage}`
+      `💾 Saved myplant: streak=${streak}, stage=${plantStage}, score=${greenScore} (in accounts)`
     );
   }
 
