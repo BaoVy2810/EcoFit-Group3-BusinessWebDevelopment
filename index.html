@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoFit | Redirecting...</title>
   <script>
-    window.location.href = "./public/pages/01_HOMEPAGE.html";
+    document.addEventListener("DOMContentLoaded", function() {
+        window.location.replace("./public/pages/01_HOMEPAGE.html");
+    });
   </script>
 </head>
 <body>
-    <p>Redirecting to homepage...</p>
+  <p>Redirecting to homepage...</p>
 </body>
 </html>
