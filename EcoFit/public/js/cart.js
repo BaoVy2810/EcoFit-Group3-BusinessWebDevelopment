@@ -58,7 +58,7 @@ function updateCartBadge() {
     window.parent.postMessage({
       action: 'updateCartBadge',
       count: totalItems
-    }, '*');
+    }, 'https://ecofit-store.netlify.app');
   }
 }
 
