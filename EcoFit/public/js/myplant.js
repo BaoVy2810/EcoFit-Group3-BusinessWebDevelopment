@@ -311,39 +311,7 @@
       a.click();
       URL.revokeObjectURL(url);
 
-      // Show toast notification
-      const toast = document.createElement("div");
-      toast.innerHTML = `
-        <strong>💾 Auto-Sync Triggered!</strong><br>
-        <small>Downloaded: ${a.download}</small><br>
-        <small style="opacity: 0.8;">Replace EcoFit/dataset/accounts.json with this file</small>
-      `;
-      toast.style.cssText = `
-        position: fixed; bottom: 24px; right: 24px;
-        background: linear-gradient(135deg, #1c5b2b 0%, #3da547 100%);
-        color: white; padding: 16px 20px; border-radius: 12px;
-        font-size: 14px; z-index: 9999;
-        box-shadow: 0 8px 24px rgba(28, 91, 43, 0.4);
-        animation: slideIn 0.3s ease;
-        max-width: 300px;
-        line-height: 1.5;
-      `;
-
-      if (!document.getElementById("autosync-anim")) {
-        const style = document.createElement("style");
-        style.id = "autosync-anim";
-        style.textContent = `
-          @keyframes slideIn { 
-            from { transform: translateX(400px); opacity: 0; } 
-            to { transform: translateX(0); opacity: 1; } 
-          }
-        `;
-        document.head.appendChild(style);
-      }
-
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 6000);
-
+      // Silent sync - only log to console
       console.log(
         `💾 Auto-sync: Downloaded ${a.download} - Replace dataset/accounts.json`
       );
