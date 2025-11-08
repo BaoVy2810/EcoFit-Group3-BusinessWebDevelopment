@@ -113,9 +113,9 @@
   const ALLOW_MANUAL_UNCLAIM = false; // <- bảo vệ unclaim: false = không thể unclaim qua UI / normal flow
 
   // =====================================================
-  // 🔄 CONFIG - Auto-sync accounts.json
+  // 🔄 CONFIG - Auto-sync (silent, localStorage only)
   // =====================================================
-  const AUTO_SYNC_ENABLED = true; // <- true = tự động download accounts.json khi có thay đổi
+  // Auto-sync is always enabled for localStorage sync
 
   // =====================================================
   // 📊 STATE MANAGEMENT
@@ -291,34 +291,9 @@
   }
 
   // =====================================================
-  // 🔄 AUTO-SYNC - Download accounts.json when changed
-  // For development & testing across multiple machines
+  // 🔄 AUTO-SYNC - Silent sync in localStorage only
   // =====================================================
-  function autoDownloadAccounts() {
-    try {
-      const accounts = localStorage.getItem("accounts");
-      if (!accounts) return;
-
-      // Format đẹp
-      const formatted = JSON.stringify(JSON.parse(accounts), null, 2);
-
-      // Create download
-      const blob = new Blob([formatted], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `accounts_${new Date().toISOString().split("T")[0]}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-
-      // Silent sync - only log to console
-      console.log(
-        `💾 Auto-sync: Downloaded ${a.download} - Replace dataset/accounts.json`
-      );
-    } catch (e) {
-      console.error("❌ Auto-sync failed:", e);
-    }
-  }
+  // Removed auto-download feature - now sync silently in localStorage only
 
   // =====================================================
   // 🔄 SYNC SCORES - accounts là nguồn chính DUY NHẤT
@@ -341,12 +316,6 @@
         console.log(
           `✅ Updated accounts[${userIndex}].green_score = ${correctScore}`
         );
-
-        // 🔄 AUTO-SYNC: Download accounts.json
-        // Chỉ trigger khi có thay đổi thực sự và AUTO_SYNC_ENABLED = true
-        if (AUTO_SYNC_ENABLED) {
-          autoDownloadAccounts();
-        }
       } else {
         console.error(`❌ User ${uid} not found in accounts`);
         return false;
