@@ -306,9 +306,7 @@
         logoutLink.addEventListener("click", (e) => {
           e.preventDefault();
 
-          // Xóa thông tin đăng nhập
-          localStorage.removeItem("isLoggedIn");
-          localStorage.removeItem("login_infor");
+          localStorage.clear();
 
           // Gửi tín hiệu logout cho header
           const header = document.getElementById("header-frame");
