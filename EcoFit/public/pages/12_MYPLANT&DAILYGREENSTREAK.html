@@ -94,10 +94,7 @@
       // Unified logout function
       function handleLogout() {
         console.log("🚪 Logging out...");
-
-        // Clear localStorage
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("login_infor");
+        localStorage.clear();
 
         // Clear all myplant related data from localStorage
         const keysToRemove = [];
@@ -149,7 +146,7 @@
                   >My Plant & Daily Green Streak</a
                 >
               </li>
-              <li><a href="08_PAYMENT2.html">Orders</a></li>
+              <li><a href="19_ORDERMANAGEMENT.html">Orders</a></li>
             </ul>
           </nav>
         </div>

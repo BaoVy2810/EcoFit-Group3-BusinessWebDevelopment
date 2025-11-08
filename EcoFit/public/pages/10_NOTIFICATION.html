@@ -53,8 +53,7 @@
 
       // Khi người dùng logout từ header.html
       if (e.data.action === "logout") {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("login_infor");
+        localStorage.clear();
         document.getElementById("header-frame").src = "../template/header0.html";
       }
       // 🟢 Xử lý toggle notifications
@@ -80,7 +79,7 @@
         <nav>
           <ul>
             <li><a href="12_MYPLANT&DAILYGREENSTREAK.html">My Plant & Daily Green Streak</a></li>
-            <li><a href="08_PAYMENT2.html">Orders</a></li>
+            <li><a href="19_ORDERMANAGEMENT.html">Orders</a></li>
           </ul>
         </nav>
       </div>
@@ -307,9 +306,7 @@
         logoutLink.addEventListener("click", (e) => {
           e.preventDefault();
 
-          // Xóa thông tin đăng nhập
-          localStorage.removeItem("isLoggedIn");
-          localStorage.removeItem("login_infor");
+          localStorage.clear();
 
           // Gửi tín hiệu logout cho header
           const header = document.getElementById("header-frame");
