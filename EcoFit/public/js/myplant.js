@@ -328,13 +328,6 @@
         localStorage.setItem("login_infor", JSON.stringify(loginInfo));
         console.log(`✅ Synced login_infor.green_score = ${correctScore}`);
       }
-
-      // ❌ KHÔNG TẠO greenScore standalone nữa
-      // ❌ localStorage.setItem("greenScore", String(correctScore));
-
-      // Note: myplant_userId chỉ lưu streak, dates, dailyPoints
-      // KHÔNG lưu greenScore trong myplant nữa
-
       return true;
     } catch (e) {
       console.error("❌ Error syncing scores:", e);
@@ -349,29 +342,17 @@
 
   function saveToLocalStorage() {
     if (userId === "guest") return;
-
-    // ⭐ myplant_userId CHỈ lưu streak, dates, dailyPoints
-    // KHÔNG lưu greenScore nữa (vì accounts là nguồn chính)
     const data = {
       userId,
       updatedAt: new Date().toISOString(),
       claimedDates: Array.from(claimedSet.values()),
       streak,
-      // greenScore: greenScore, // ❌ KHÔNG lưu nữa
       plantStage,
       progressPercent,
       dailyPoints,
     };
 
-    // Update myplant_userId
     localStorage.setItem(userKey, JSON.stringify(data));
-
-    // ❌ KHÔNG tạo standalone keys nữa
-    // localStorage.setItem("streak", String(streak));
-    // localStorage.setItem("greenScore", String(greenScore)); // ❌ BỎ
-    // localStorage.setItem("plantStage", plantStage);
-
-    // ⭐ Sync greenScore VÀO accounts (nguồn chính)
     syncAllScores(greenScore, userId);
 
     console.log(
@@ -379,9 +360,6 @@
     );
   }
 
-  // =====================================================
-  // 🎊 VISUAL EFFECTS & HELPERS (kept)
-  // =====================================================
   function launchConfetti(durationMs = 2500, count = 120) {
     if (!document.getElementById("confetti-styles")) {
       const style = document.createElement("style");
@@ -776,7 +754,7 @@
         const img = document.createElement("img");
         img.className = "leaf-icon";
         img.alt = "leaf";
-        img.src = "../images/EcoFit_logo_black.png";
+        img.src="../images/Ecofit_logo_black.png";
         cell.appendChild(img);
       } else {
         cell.textContent = day;
@@ -789,7 +767,7 @@
         }
         if (isClaimed) {
           // Ràng buộc chặt: không cho unclaim bằng cách click lại
-          showToast("Claimed today!.");
+          showToast("Claimed today!");
           return;
         } else {
           if (claimDate(cellDate, true)) renderCalendar(currentDate);
