@@ -533,12 +533,38 @@
             }
         });
     </script>
+    <div class="personal_info_container">
+      <aside class="sidebar">
+        <div class="menu-section">
+          <h1>My Account</h1>
+          <nav>
+            <ul>
+              <li>
+                <a href="12_MYPLANT&DAILYGREENSTREAK.html">My Plant & Daily Green Streak</a>
+              </li>
+              <li class="active"><a href="19_ORDERMANAGEMENT.html">Orders</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="menu-section">
+          <h1>Settings</h1>
+          <nav>
+            <ul>
+              <li>
+                <a href="09_PERSONAL_INFO.html">Personal Info</a>
+              </li>
+              <li><a href="11_PASSWORD.html">Password</a></li>
+              <li><a href="10_NOTIFICATION.html">Notifications</a></li>
+              <li><a href="#" id="sidebar-logout">Logout</a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
 
-    <div class="container">
+      <main class="container">
         <div class="page-title">
             <h1>My Orders</h1>
         </div>
-
         <div class="tabs-container">
             <div class="tabs-nav">
                 <button class="tab-btn active" data-tab="pending">
@@ -572,10 +598,9 @@
             <button>3</button>
             <button>›</button>
         </div>
+      </main>
     </div>
-    
     <iframe src="../template/footer.html" class="footer-frame"></iframe>
-    
     <script>
         // ===== 1️⃣ Load orders from localStorage or orders.json =====
         async function fetchOrdersData() {
@@ -742,6 +767,27 @@
         document.addEventListener('DOMContentLoaded', async () => {
             await initializeOrdersData();
             renderOrders();
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoutLink = document.getElementById("sidebar-logout");
+            if (logoutLink) {
+            logoutLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.clear()
+
+                // Gửi tín hiệu logout cho header
+                const header = document.getElementById("header-frame");
+                if (header && header.contentWindow) {
+                header.contentWindow.postMessage({ action: "logout" }, "*");
+                }
+
+                // Reload header để trở lại header0
+                header.src = "../template/header0.html";
+
+                // Chuyển về trang chủ
+                window.location.href = "01_HOMEPAGE.html";
+            });
+            }
         });
     </script>
 </body>
