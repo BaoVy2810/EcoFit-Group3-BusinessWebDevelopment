@@ -754,7 +754,7 @@
         const img = document.createElement("img");
         img.className = "leaf-icon";
         img.alt = "leaf";
-        img.src="images/Ecofit_logo_black.png";
+        img.src="../images/Ecofit_logo_black.png";
         cell.appendChild(img);
       } else {
         cell.textContent = day;
